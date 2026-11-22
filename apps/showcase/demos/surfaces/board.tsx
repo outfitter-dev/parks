@@ -185,9 +185,9 @@ export function BoardSurface() {
             >
               Work by state
             </Heading>
-            <div className="grid divide-y rounded-xl bg-muted/50 @3xl:grid-cols-4 @3xl:divide-x @3xl:divide-y-0">
+            <div className="grid gap-4 rounded-xl bg-muted/50 p-2 @3xl:grid-cols-4 @3xl:gap-2">
               {lanes.map((lane) => (
-                <div key={lane.id} className="flex flex-col gap-2 p-2">
+                <div key={lane.id} className="flex flex-col gap-2">
                   <span className="flex items-center gap-2 px-1 text-muted-foreground">
                     {lane.title}
                     <span className="ml-auto text-xs tabular-nums">{tasks.filter((task) => task.lane === lane.id).length}</span>
