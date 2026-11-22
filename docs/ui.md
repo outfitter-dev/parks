@@ -11,15 +11,15 @@ Import shared pieces by their package path, for example `import { Button } from 
 
 ## Adding a shadcn component
 
-Run the CLI against the package so the component lands there:
+Add components through the repo script, which runs the shadcn CLI against `packages/ui` and then swaps every icon for Solar:
 
 ```sh
-bunx --bun shadcn@4.23.0 add <component> -c packages/ui
+bun run ui:add <component> [<component>...]
 ```
 
-Check the result before committing. In CLI 4.23.0 the `#lib/utils` alias was written as `from "cn"` and the unrelated npm package `cn` was added to `packages/ui/package.json`; fix the import and remove that dependency if it happens again.
+The CLI has no Solar support. Because `components.json` sets `iconLibrary` to `solar`, it leaves each icon as an `<IconPlaceholder lucide="…" …/>`. The script replaces each placeholder with the Solar icon that `packages/ui/icons.json` maps that Lucide name to, adds the per-icon import, and removes the placeholder import. If a name has no mapping it stops and lists it: add the name to `icons.json` and run `bun run ui:add --fix-only`.
 
-The shadcn CLI has no Solar support, so `components.json` names `solar` only as a record. A component the CLI adds may arrive with Lucide icons or an icon placeholder. Swap each one for its Solar equivalent before committing, and remove `lucide-react` if the CLI added it.
+The script also fixes a CLI 4.23.0 bug that writes the `#lib/utils` import as `from "cn"` and adds the unrelated npm package `cn`. Review the result before committing: Base UI `className` callbacks still need `cnState`, which `test/ui-boundary.test.ts` checks.
 
 ## Icons
 
