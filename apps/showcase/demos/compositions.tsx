@@ -52,7 +52,7 @@ const places: { id: Place; label: string; icon: typeof InboxIcon; count?: number
 /** The app frame: a quiet sidebar, a top bar and the page. */
 function AppFrame({ place, title, actions, children }: { place: Place; title: string; actions?: ReactNode; children: ReactNode }) {
   return (
-    <div className="flex min-h-[640px] bg-background text-foreground">
+    <div className="flex min-h-160 bg-background text-foreground">
       <aside className="hidden w-56 shrink-0 flex-col border-r bg-muted/40 p-2 @3xl:flex">
         <div className="flex items-center gap-2 px-2 py-2 font-semibold">
           <span className="grid size-6 place-items-center rounded-md bg-brand text-xs text-brand-foreground">O</span>
@@ -198,7 +198,7 @@ export function NeedsYouComposition() {
             </div>
           </div>
         ) : (
-        <div className="grid h-full @3xl:grid-cols-[minmax(16rem,22rem)_1fr]">
+        <div className="grid h-full @3xl:grid-cols-[minmax(--spacing(64),--spacing(88))_1fr]">
           <div className="border-b p-2 @3xl:border-r @3xl:border-b-0">
             {asks.map((item) => (
               <AskRow key={item.id} ask={item} active={item.id === ask?.id} onSelect={() => setSelected(item.id)} />
@@ -274,7 +274,7 @@ export function AdminComposition() {
           </Badge>
         }
       >
-        <div className="grid gap-(--pad) p-(--pad) @5xl:grid-cols-[1fr_20rem]">
+        <div className="grid gap-(--pad) p-(--pad) @5xl:grid-cols-[1fr_--spacing(80)]">
           <Card>
             <CardHeader>
               <CardTitle>Routing versions</CardTitle>
@@ -323,7 +323,7 @@ export function AdminComposition() {
 export function SignInComposition() {
   return (
     <Viewport>
-      <div className="grid min-h-[640px] place-items-center gap-(--pad) bg-muted/40 p-(--pad) @3xl:grid-cols-2">
+      <div className="grid min-h-160 place-items-center gap-(--pad) bg-muted/40 p-(--pad) @3xl:grid-cols-2">
         <Card className="w-full max-w-sm">
           <CardHeader>
             <span className="mb-2 grid size-8 place-items-center rounded-lg bg-brand text-brand-foreground">

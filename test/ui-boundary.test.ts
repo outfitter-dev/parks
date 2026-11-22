@@ -68,5 +68,20 @@ describe("packages/ui boundary", () => {
     it(`${name} carries no Outpost-specific terms`, () => {
       expect(text).not.toMatch(/outpost/i);
     });
+
+    if (name.endsWith(".tsx")) {
+      // Components derive every colour and size from globals.css tokens or
+      // the Tailwind scale. Only 1px and 2px hairline offsets may be literal.
+      it(`${name} hard-codes no colours or sizes`, () => {
+        expect(text, "literal colour").not.toMatch(/oklch\(|rgba?\(|hsla?\(|#[0-9a-f]{3,8}\b/i);
+        expect(text, "Tailwind palette colour").not.toMatch(
+          /\b(?:bg|text|border|ring|fill|stroke|outline|shadow|from|to)-(?:white|black|(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d+)\b/,
+        );
+        for (const [value] of text.matchAll(/\[[^\]]*\d(?:\.\d+)?(?:px|rem|em)[^\]]*\]/g)) {
+          const lengths = value.match(/\d+(?:\.\d+)?(?:px|rem|em)/g) ?? [];
+          expect(lengths.every((length) => length === "1px" || length === "2px"), `${name}: ${value}`).toBe(true);
+        }
+      });
+    }
   }
 });

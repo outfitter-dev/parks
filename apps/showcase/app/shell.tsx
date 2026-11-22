@@ -10,7 +10,7 @@ import { entries, sections } from "#lib/nav";
 export function Shell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   return (
-    <div className="grid min-h-dvh md:grid-cols-[15rem_1fr]">
+    <div className="grid min-h-dvh md:grid-cols-[--spacing(60)_1fr]">
       <aside className="border-b bg-muted/40 md:sticky md:top-0 md:h-dvh md:overflow-y-auto md:border-r md:border-b-0">
         <Link href="/" className="flex items-center gap-2 px-4 pt-4 pb-3 font-medium">
           <Widget2Icon className="size-4 text-brand" />

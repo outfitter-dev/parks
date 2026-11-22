@@ -17,10 +17,6 @@
 }
 
 /*
- * Provisional neutral theme. The approved direction (POST-108) replaces these
- * values in POST-109; components read only these variables.
- */
-/*
  * Structural tokens. Corners stay concentric at every depth:
  *
  *   frame (card, dialog)      radius = --radius + its padding
@@ -47,90 +43,109 @@
   inherits: false;
 }
 
+/*
+ * Seeds: the values a theme tunes. Everything below and every component
+ * derives from them, so a theme overrides seeds, never derived tokens, and
+ * components never restate a colour, radius or size.
+ */
 :root {
+  /* Shape */
   --radius: 0.5rem;
+  --radius-step: 2px;
+  --radius-floor: var(--radius-step);
+  --field-radius: 0.5rem;
   --pad: 1rem;
   --panel-pad-base: 0.5rem;
   --inset-ratio: 0.4;
-  --inset: calc(var(--pad) * var(--inset-ratio));
-  --frame-radius: calc(var(--radius) + var(--pad));
-  --inner-radius: max(2px, calc(var(--radius) - var(--panel-pad-base)));
-  --control-h: 2rem;
   --corner-gap: 0.5rem;
-  --field-radius: 0.5rem;
+  --control-h: 2rem;
+
+  /* Type */
+  --text-control-small: 0.8rem;
   --font-ui: ui-sans-serif, system-ui, sans-serif;
   --font-code: ui-monospace, SFMono-Regular, Menlo, monospace;
-  --shadow-frame: 0 0 #0000;
+
+  /* Colour. Every neutral is a lightness step on one hue and tint. */
+  --neutral-hue: 70;
+  --neutral-tint: 0.0015;
+  --border-strength: 0.5;
+  --shadow-level: 0;
   --brand: oklch(0.21 0.003 70);
-  --brand-foreground: oklch(0.985 0.0004 70);
-  --background: oklch(0.992 0.0009 70);
-  --foreground: oklch(0.18 0.003 70);
-  --card: oklch(1 0.0003 70);
-  --card-foreground: oklch(0.18 0.003 70);
-  --popover: oklch(1 0.0003 70);
-  --popover-foreground: oklch(0.18 0.003 70);
-  --primary: oklch(0.21 0.003 70);
-  --primary-foreground: oklch(0.985 0.0004 70);
-  --secondary: oklch(0.962 0.0018 70);
-  --secondary-foreground: oklch(0.21 0.003 70);
-  --muted: oklch(0.962 0.0018 70);
-  --muted-foreground: oklch(0.5 0.0037 70);
-  --accent: oklch(0.952 0.0021 70);
-  --accent-foreground: oklch(0.21 0.003 70);
-  --destructive: oklch(0.577 0.245 27.325);
-  --success: oklch(0.63 0.15 155);
-  --success-foreground: oklch(0.46 0.11 155);
-  --border: oklch(0.9 0.0023 70);
-  --input: oklch(0.89 0.0023 70);
-  --ring: oklch(0.708 0 0);
+  --overlay: oklch(0 0 0 / 0.1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    --background: oklch(0.165 0.0023 70);
-    --foreground: oklch(0.965 0.0009 70);
-    --card: oklch(0.2 0.0024 70);
-    --card-foreground: oklch(0.965 0.0009 70);
-    --popover: oklch(0.22 0.0024 70);
-    --popover-foreground: oklch(0.965 0.0009 70);
-    --primary: oklch(0.94 0.0015 70);
-    --primary-foreground: oklch(0.2 0.003 70);
-    --secondary: oklch(0.255 0.0027 70);
-    --secondary-foreground: oklch(0.965 0.0009 70);
-    --muted: oklch(0.255 0.0027 70);
-    --muted-foreground: oklch(0.7 0.003 70);
-    --accent: oklch(0.27 0.003 70);
-    --accent-foreground: oklch(0.965 0.0009 70);
-    --destructive: oklch(0.704 0.191 22.216);
-    --success: oklch(0.74 0.15 155);
-    --success-foreground: oklch(0.84 0.12 155);
-    --border: oklch(1 0 0 / 0.1);
-    --input: oklch(1 0 0 / 0.14);
-    --ring: oklch(0.556 0 0);
-  }
+/* Derived shape tokens. */
+:root {
+  --inset: calc(var(--pad) * var(--inset-ratio));
+  --frame-radius: calc(var(--radius) + var(--pad));
+  --frame-pad-sm: calc(var(--pad) * 0.75);
+  --inner-radius: max(var(--radius-floor), calc(var(--radius) - var(--panel-pad-base)));
 }
 
-:root.dark {
-  --background: oklch(0.165 0.0023 70);
-  --foreground: oklch(0.965 0.0009 70);
-  --card: oklch(0.2 0.0024 70);
-  --card-foreground: oklch(0.965 0.0009 70);
-  --popover: oklch(0.22 0.0024 70);
-  --popover-foreground: oklch(0.965 0.0009 70);
-  --primary: oklch(0.94 0.0015 70);
-  --primary-foreground: oklch(0.2 0.003 70);
-  --secondary: oklch(0.255 0.0027 70);
-  --secondary-foreground: oklch(0.965 0.0009 70);
-  --muted: oklch(0.255 0.0027 70);
-  --muted-foreground: oklch(0.7 0.003 70);
-  --accent: oklch(0.27 0.003 70);
-  --accent-foreground: oklch(0.965 0.0009 70);
-  --destructive: oklch(0.704 0.191 22.216);
-  --success: oklch(0.74 0.15 155);
-  --success-foreground: oklch(0.84 0.12 155);
-  --border: oklch(1 0 0 / 0.1);
-  --input: oklch(1 0 0 / 0.14);
-  --ring: oklch(0.556 0 0);
+/*
+ * Derived colour tokens. Each neutral is oklch(lightness, tint × weight, hue), with
+ * the light value first and the dark value second. Foregrounds point at the
+ * surface text they share instead of repeating it.
+ *
+ * The block repeats on .light and .dark so a subtree that switches mode
+ * resolves its own values: Tailwind's CSS build turns light-dark() into
+ * variables that resolve where a token is declared, not where it is used.
+ */
+:root,
+.light,
+.dark {
+  --background: light-dark(oklch(0.992 calc(var(--neutral-tint) * 0.6) var(--neutral-hue)), oklch(0.165 calc(var(--neutral-tint) * 1.5) var(--neutral-hue)));
+  --foreground: light-dark(oklch(0.18 calc(var(--neutral-tint) * 2) var(--neutral-hue)), oklch(0.965 calc(var(--neutral-tint) * 0.6) var(--neutral-hue)));
+  --card: light-dark(oklch(1 calc(var(--neutral-tint) * 0.2) var(--neutral-hue)), oklch(0.2 calc(var(--neutral-tint) * 1.6) var(--neutral-hue)));
+  --popover: light-dark(oklch(1 calc(var(--neutral-tint) * 0.2) var(--neutral-hue)), oklch(0.22 calc(var(--neutral-tint) * 1.6) var(--neutral-hue)));
+  --secondary: light-dark(oklch(0.962 calc(var(--neutral-tint) * 1.2) var(--neutral-hue)), oklch(0.255 calc(var(--neutral-tint) * 1.8) var(--neutral-hue)));
+  --accent: light-dark(oklch(0.952 calc(var(--neutral-tint) * 1.4) var(--neutral-hue)), oklch(0.27 calc(var(--neutral-tint) * 2) var(--neutral-hue)));
+  --ink: light-dark(oklch(0.21 calc(var(--neutral-tint) * 2) var(--neutral-hue)), var(--foreground));
+  --muted: var(--secondary);
+  --muted-foreground: light-dark(oklch(0.5 calc(var(--neutral-tint) * 2.5) var(--neutral-hue)), oklch(0.7 calc(var(--neutral-tint) * 2) var(--neutral-hue)));
+
+  --card-foreground: var(--foreground);
+  --popover-foreground: var(--foreground);
+  --secondary-foreground: var(--ink);
+  --accent-foreground: var(--ink);
+
+  /* Primary is ink unless a theme sets --primary-seed (e.g. var(--brand)). */
+  --primary: var(--primary-seed, light-dark(var(--ink), oklch(0.94 var(--neutral-tint) var(--neutral-hue))));
+  --primary-foreground: var(
+    --primary-foreground-seed,
+    light-dark(oklch(0.985 calc(var(--neutral-tint) * 0.3) var(--neutral-hue)), oklch(0.2 calc(var(--neutral-tint) * 2) var(--neutral-hue)))
+  );
+  --brand-foreground: oklch(from var(--brand) clamp(0.16, (0.7 - l) * 1000, 0.99) 0.01 h);
+
+  --border: light-dark(
+    oklch(calc(0.94 - var(--border-strength) * 0.08) calc(var(--neutral-tint) * 1.5) var(--neutral-hue)),
+    oklch(1 0 0 / calc(0.06 + var(--border-strength) * 0.08))
+  );
+  --input: light-dark(
+    oklch(calc(0.93 - var(--border-strength) * 0.08) calc(var(--neutral-tint) * 1.5) var(--neutral-hue)),
+    oklch(1 0 0 / calc(0.1 + var(--border-strength) * 0.08))
+  );
+  --ring: color-mix(in oklch, var(--brand) 70%, transparent);
+
+  /* Semantic colours keep their own hue in both modes. */
+  --destructive: light-dark(oklch(0.577 0.245 27.325), oklch(0.704 0.191 22.216));
+  --success: light-dark(oklch(0.63 0.15 155), oklch(0.74 0.15 155));
+  --success-foreground: light-dark(oklch(0.46 0.11 155), oklch(0.84 0.12 155));
+
+  /* Lift grows with --shadow-level; dark surfaces add a top highlight. */
+  --shadow-color: light-dark(
+    oklch(0 0 0 / calc(0.035 * var(--shadow-level))),
+    oklch(0 0 0 / calc(0.22 * var(--shadow-level)))
+  );
+  --shadow-color-soft: light-dark(
+    oklch(0 0 0 / calc(0.035 * 0.8 * var(--shadow-level))),
+    oklch(0 0 0 / calc(0.22 * 0.8 * var(--shadow-level)))
+  );
+  --shadow-highlight: light-dark(transparent, oklch(1 0 0 / 0.05));
+  --shadow-frame:
+    0 1px 2px var(--shadow-color),
+    0 calc(var(--shadow-level) * 2px) calc(var(--shadow-level) * 6px) var(--shadow-color-soft),
+    inset 0 1px 0 var(--shadow-highlight);
 }
 
 /* A frame: the outer padded surface. Its radius is --radius plus its padding. */
@@ -145,7 +160,7 @@
    shares the corner's centre, so it sits --corner-gap in from both edges and
    its height is 2 × (frame radius − gap). Pill controls then stay concentric. */
 @utility corner-tray {
-  --corner-control-h: max(1.5rem, calc(2 * (var(--frame-radius) - var(--corner-gap))));
+  --corner-control-h: max(--spacing(6), calc(2 * (var(--frame-radius) - var(--corner-gap))));
   padding: 0 var(--corner-gap) var(--corner-gap);
 }
 
@@ -191,7 +206,7 @@
 /* A panel: a surface inside a frame. Its radius is the frame's inner radius. */
 @utility panel {
   --panel-space: var(--panel-pad, var(--panel-pad-base));
-  --inner-radius: max(2px, calc(var(--radius) - var(--panel-space)));
+  --inner-radius: max(var(--radius-floor), calc(var(--radius) - var(--panel-space)));
   --inset: calc(var(--panel-space) * var(--inset-ratio));
   border-radius: var(--radius);
   padding: var(--panel-space);
@@ -239,10 +254,13 @@
   --color-ring: var(--ring);
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --color-overlay: var(--overlay);
+  --radius-2xs: var(--radius-step);
+  --radius-xs: calc(var(--radius-step) * 2);
+  --radius-sm: calc(var(--radius) - var(--radius-step) * 2);
+  --radius-md: calc(var(--radius) - var(--radius-step));
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + var(--radius-step) * 2);
   --radius-frame: var(--frame-radius);
   --radius-inner: var(--inner-radius);
   --font-sans: var(--font-ui);
@@ -253,13 +271,15 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* Colour tokens use light-dark(), so color-scheme picks the mode. A
+     .light or .dark element switches its own subtree. */
   html {
     color-scheme: light dark;
   }
-  html.light {
+  .light {
     color-scheme: light;
   }
-  html.dark {
+  .dark {
     color-scheme: dark;
   }
   body {
