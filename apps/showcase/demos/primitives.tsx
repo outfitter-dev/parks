@@ -103,6 +103,19 @@ export function ShapeDemo() {
           </div>
         </div>
       </Specimen>
+      <Specimen
+        title="Text inset"
+        note="Frame padding is even on every side so corner pieces stay concentric. Text adds --inset on the left and right so it doesn't read top-heavy."
+        className="block"
+      >
+        <div className="max-w-sm rounded-frame bg-card p-(--pad) shadow-(--shadow-frame) ring-1 ring-foreground/10">
+          <div className="flex items-start justify-between gap-3">
+            <p className="px-inset font-medium">Merge once CI is green?</p>
+            <span className="rounded-lg bg-muted px-2 py-0.5 text-xs">Approval</span>
+          </div>
+          <p className="mt-1 px-inset text-muted-foreground">Text sits at --pad + --inset. The pill sits in the corner at --pad.</p>
+        </div>
+      </Specimen>
       <Specimen title="Radius steps">
         {[
           ["sm", "rounded-sm"],
