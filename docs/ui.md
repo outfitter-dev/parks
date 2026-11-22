@@ -21,4 +21,12 @@ Check the result before committing. In CLI 4.23.0 the `#lib/utils` alias was wri
 
 ## Theme
 
-Components read only the CSS variables in `globals.css`. Dark mode follows the system unless the root element carries `.light` or `.dark`. The current values are a provisional neutral theme until the design direction lands.
+Components read only the CSS variables in `globals.css`. Dark mode follows the system unless the root element carries `.light` or `.dark`; either class also switches a subtree.
+
+Values are stacked, not hard-coded:
+
+- **Seeds** are the few values a theme tunes: radius and padding, the neutral hue and tint, border strength, shadow level, the brand colour. The workbench theme panel sets only seeds.
+- **Derived tokens** are built from seeds. Every neutral is a lightness step on the neutral hue and tint, written once with `light-dark()` for both modes. Foregrounds point at the surface text they share (`--card-foreground: var(--foreground)`), and radii step from `--radius` by `--radius-step`.
+- **Components** use tokens or the Tailwind scale (`p-0.75`, `--spacing(60)`), never a literal colour or length. The only literals allowed are 1px and 2px hairline offsets. `test/ui-boundary.test.ts` enforces this.
+
+A theme that sets `--primary-seed` (for example `var(--brand)`) replaces the default ink primary.

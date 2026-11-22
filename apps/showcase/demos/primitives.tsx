@@ -124,7 +124,7 @@ export function ShapeDemo() {
         <div className="grid max-w-2xl gap-4 sm:grid-cols-2">
           {[
             ["Frame", ""],
-            ["Small frame", "[--frame-pad:calc(var(--pad)*0.75)]"],
+            ["Small frame", "[--frame-pad:var(--frame-pad-sm)]"],
           ].map(([label, size]) => (
             <div key={label} className={`frame p-frame bg-card shadow-(--shadow-frame) ring-1 ring-foreground/10 ${size}`}>
               <div className="flex items-start justify-between gap-3">
