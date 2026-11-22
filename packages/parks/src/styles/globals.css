@@ -146,7 +146,8 @@
 /* Card content sits one --corner-gap in, flush with the footer's pills. Its
    single-line pieces (inputs, rows) are not near a corner, so they take the
    flatter --field-radius. Text keeps the title's column: bare text uses
-   ps-text, rows and panels use px-text, and direct inputs get it built in. */
+   ps-text, rows and panels use px-text, and inputs inset so their box edge
+   sits on that column. */
 @utility ps-text {
   padding-inline-start: var(--text-offset, 0);
 }
