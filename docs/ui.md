@@ -19,6 +19,18 @@ bunx --bun shadcn@4.23.0 add <component> -c packages/ui
 
 Check the result before committing. In CLI 4.23.0 the `#lib/utils` alias was written as `from "cn"` and the unrelated npm package `cn` was added to `packages/ui/package.json`; fix the import and remove that dependency if it happens again.
 
+The shadcn CLI has no Solar support, so `components.json` names `solar` only as a record. A component the CLI adds may arrive with Lucide icons or an icon placeholder. Swap each one for its Solar equivalent before committing, and remove `lucide-react` if the CLI added it.
+
+## Icons
+
+Solar (`@solar-icons/react`) is the only icon library. Import each icon on its own from a style subpath, never from the package root:
+
+```tsx
+import { BellIcon } from "@solar-icons/react/linear/bell";
+```
+
+Use `linear` by default, `bold` for selected states and `bold-duotone` for empty states. Icons take their colour from `currentColor` and their size from the component (usually `size-4`). `test/icons.test.ts` fails on any other icon library or a root import.
+
 ## Theme
 
 Components read only the CSS variables in `globals.css`. Dark mode follows the system unless the root element carries `.light` or `.dark`; either class also switches a subtree.
