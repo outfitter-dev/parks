@@ -188,7 +188,7 @@ export function SkillsetSurface() {
               </section>
               <section>
                 <Heading>Change ledger</Heading>
-                <Timeline defaultValue={2} className="ps-6">
+                <Timeline defaultValue={2}>
                   {[
                     { date: "Nov 22", title: "Pending · minor", body: "Adds the confirm-what-landed step." },
                     { date: "Nov 20", title: "Released 0.4.0", body: "Bottom-up merge order for stacks." },

@@ -4,6 +4,7 @@ import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Progress } from "@workspace/ui/components/progress";
 import { cn } from "@workspace/ui/lib/utils";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
 import { ChatRoundDotsIcon } from "@solar-icons/react/linear/chat-round-dots";
 import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
 import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
@@ -38,33 +39,77 @@ const lanes: { id: Lane; title: string }[] = [
   { id: "done", title: "Done today" },
 ];
 
-const tasks: { lane: Lane; title: string; agent: string; project: string; note: string; progress?: number }[] = [
+type Task = {
+  lane: Lane;
+  title: string;
+  agent: string;
+  project: string;
+  note?: string;
+  /** Counted steps draw as segments; a bare percentage draws as a bar. */
+  steps?: { done: number; total: number };
+  progress?: number;
+};
+
+const tasks: Task[] = [
   { lane: "asking", title: "Merge outpost#47 once CI is green?", agent: "Donna", project: "outpost", note: "Approval · 4 min" },
   { lane: "asking", title: "Run the v5 vs v6 held-out comparison?", agent: "Ranger lead", project: "ranger", note: "Choice · 1 hr" },
-  { lane: "working", title: "Fix the parent-cycle hang in stackLayers", agent: "Climb lead", project: "climb", note: "Step 3 of 5", progress: 60 },
+  { lane: "working", title: "Fix the parent-cycle hang in stackLayers", agent: "Climb lead", project: "climb", steps: { done: 3, total: 5 } },
   { lane: "working", title: "Trusted-install check, round 4", agent: "Forge lead", project: "forge", note: "Running tests", progress: 35 },
   { lane: "review", title: "rumdl replaces markdownlint", agent: "Rex", project: "ropes", note: "Devin and Codex reviewing" },
   { lane: "done", title: "Gate policy", agent: "Forge lead", project: "forge", note: "Merged forge#52" },
   { lane: "done", title: "RNG-43 eval harness", agent: "Ranger lead", project: "ranger", note: "Merged #56" },
 ];
 
-function TaskCard({ task }: { task: (typeof tasks)[number] }) {
+/** Progress and its label on one line: segments for counted steps, a bar for a percentage. */
+function Meter({ task }: { task: Task }) {
+  if (task.steps) {
+    const { done, total } = task.steps;
+    return (
+      <span className="flex items-center gap-2" role="img" aria-label={`Step ${done} of ${total}`}>
+        <span className="flex flex-1 gap-0.5">
+          {Array.from({ length: total }, (_, index) => (
+            <span
+              key={index}
+              className={cn("h-1 flex-1 rounded-full", index < done ? "bg-brand" : "bg-foreground/10")}
+            />
+          ))}
+        </span>
+        <span className="text-xs text-muted-foreground tabular-nums">
+          {done}/{total}
+        </span>
+      </span>
+    );
+  }
+  if (task.progress === undefined) return null;
+  return (
+    <span className="flex items-center gap-2">
+      <Progress value={task.progress} aria-label="Progress" className="flex-1" />
+      <span className="text-xs text-muted-foreground tabular-nums">{task.progress}%</span>
+    </span>
+  );
+}
+
+function TaskCard({ task }: { task: Task }) {
   return (
     <article className="flex flex-col gap-2 rounded-lg border bg-background p-3 shadow-xs">
-      <span className="flex items-center gap-2 text-muted-foreground">
+      <span className="flex h-6 items-center gap-2">
+        <span className="min-w-0 flex-1 truncate font-medium">{task.agent}</span>
         {task.lane === "working" ? (
           <span className="grid size-6 place-items-center rounded-full bg-muted text-brand-600 dark:text-brand-400">
             <DotmCircular4 size={18} dotSize={3} ariaLabel={`${task.agent} is working`} />
           </span>
         ) : (
-          <Signal tone={task.lane === "asking" ? "wait" : task.lane === "done" ? "live" : "off"} />
+          <span className="grid size-6 place-items-center">
+            <Signal tone={task.lane === "asking" ? "wait" : task.lane === "done" ? "live" : "off"} />
+          </span>
         )}
-        <span className="font-medium text-foreground">{task.agent}</span>
-        <span className="ml-auto text-xs">{task.project}</span>
       </span>
-      <span className="leading-snug">{task.title}</span>
-      {task.progress !== undefined ? <Progress value={task.progress} aria-label="Progress" /> : null}
-      <span className="text-xs text-muted-foreground">{task.note}</span>
+      <span className="flex flex-col">
+        <span className="leading-snug">{task.title}</span>
+        <span className="text-xs text-muted-foreground">{task.project}</span>
+      </span>
+      <Meter task={task} />
+      {task.note ? <span className="text-xs text-muted-foreground">{task.note}</span> : null}
     </article>
   );
 }
@@ -78,7 +123,7 @@ function RunTimeline() {
     { date: "next", title: "Open the PR", body: "Draft, then ask Codex for review." },
   ];
   return (
-    <Timeline defaultValue={3} className="ps-6">
+    <Timeline defaultValue={3}>
       {steps.map((step, index) => (
         <TimelineItem key={step.title} step={index + 1} className="pb-5 last:pb-0">
           <TimelineHeader>
@@ -130,10 +175,19 @@ export function BoardSurface() {
           </div>
 
           <section>
-            <Heading action={<Button variant="ghost" size="sm">All projects</Button>}>Work by state</Heading>
-            <div className="grid gap-3 @3xl:grid-cols-4">
+            <Heading
+              action={
+                <Button variant="secondary" size="sm">
+                  All projects
+                  <AltArrowDownIcon data-icon="inline-end" />
+                </Button>
+              }
+            >
+              Work by state
+            </Heading>
+            <div className="grid divide-y rounded-xl bg-muted/50 @3xl:grid-cols-4 @3xl:divide-x @3xl:divide-y-0">
               {lanes.map((lane) => (
-                <div key={lane.id} className="flex flex-col gap-2 rounded-xl bg-muted/50 p-2">
+                <div key={lane.id} className="flex flex-col gap-2 p-2">
                   <span className="flex items-center gap-2 px-1 text-muted-foreground">
                     {lane.title}
                     <span className="ml-auto text-xs tabular-nums">{tasks.filter((task) => task.lane === lane.id).length}</span>
