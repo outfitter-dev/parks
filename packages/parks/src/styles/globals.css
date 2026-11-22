@@ -56,6 +56,7 @@
   --frame-radius: calc(var(--radius) + var(--pad));
   --inner-radius: max(2px, calc(var(--radius) - var(--panel-pad-base)));
   --control-h: 2rem;
+  --corner-gap: 0.5rem;
   --font-ui: ui-sans-serif, system-ui, sans-serif;
   --font-code: ui-monospace, SFMono-Regular, Menlo, monospace;
   --shadow-frame: 0 0 #0000;
@@ -131,6 +132,14 @@
   --frame-radius: calc(var(--radius) + var(--frame-space));
   --inset: calc(var(--frame-space) * var(--inset-ratio));
   border-radius: var(--frame-radius);
+}
+
+/* A tray of controls along a frame's bottom edge. A control in a corner
+   shares the corner's centre, so it sits --corner-gap in from both edges and
+   its height is 2 × (frame radius − gap). Pill controls then stay concentric. */
+@utility corner-tray {
+  --corner-control-h: max(1.5rem, calc(2 * (var(--frame-radius) - var(--corner-gap))));
+  padding: 0 var(--corner-gap) var(--corner-gap);
 }
 
 /* Even padding for a frame that lays out its own content. */
