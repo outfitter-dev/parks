@@ -1,6 +1,7 @@
 "use client";
 
-import { Alert, AlertDescription, AlertTitle } from "@workspace/ui/components/alert";
+import { Alert, AlertDescription, AlertMeta, AlertTitle } from "@workspace/ui/components/alert";
+import { CodeRef } from "@workspace/ui/components/code-ref";
 import { Avatar, AvatarFallback, AvatarGroup } from "@workspace/ui/components/avatar";
 import { Badge } from "@workspace/ui/components/badge";
 import { ScrollArea } from "@workspace/ui/components/scroll-area";
@@ -447,13 +448,55 @@ export function FeedbackDemo() {
         <Alert variant="warning">
           <DangerCircleIcon />
           <AlertTitle>Approval waiting</AlertTitle>
-          <AlertDescription>Rex has asked to merge outpost#47. The request expires in 40 minutes.</AlertDescription>
+          <AlertDescription>
+            Rex has asked to merge <CodeRef kind="pr" state="open">outpost#47</CodeRef>. The request expires in 40 minutes.
+          </AlertDescription>
         </Alert>
         <Alert variant="info">
           <InfoCircleIcon />
           <AlertTitle>Quiet hours on</AlertTitle>
           <AlertDescription>Notices queue until 8:00 AM and arrive as one digest.</AlertDescription>
         </Alert>
+      </Specimen>
+      <Specimen
+        title="Alert with time"
+        note="The time sits on the title's line in the top-right corner. Use relative time for recent events and a clock time once it is older than a day."
+        className="grid max-w-lg grid-cols-1"
+      >
+        <Alert variant="destructive">
+          <DangerTriangleIcon />
+          <AlertTitle>Checks failing</AlertTitle>
+          <AlertMeta>
+            <time dateTime="2026-11-22T21:22:00Z">4 min ago</time>
+          </AlertMeta>
+          <AlertDescription>
+            <CodeRef kind="pr" state="failing">climb#91</CodeRef> failed 2 of 4 jobs. Climb lead is looking at it.
+          </AlertDescription>
+        </Alert>
+        <Alert variant="success">
+          <CheckCircleIcon />
+          <AlertTitle>Merged</AlertTitle>
+          <AlertMeta>
+            <time dateTime="2026-11-22T20:26:00Z">1 hr ago</time>
+          </AlertMeta>
+          <AlertDescription>
+            <CodeRef kind="pr" state="merged">forge#52</CodeRef> landed on main from{" "}
+            <CodeRef kind="branch">gate-policy</CodeRef>.
+          </AlertDescription>
+        </Alert>
+      </Specimen>
+      <Specimen
+        title="Code references"
+        note="Pull requests, branches and commits read as one unit. The glyph colour carries the state; text stays neutral."
+        className="flex flex-wrap items-center gap-x-5 gap-y-2"
+      >
+        <CodeRef kind="pr" state="open">outpost#47</CodeRef>
+        <CodeRef kind="pr" state="draft">ropes#18</CodeRef>
+        <CodeRef kind="pr" state="merged">forge#52</CodeRef>
+        <CodeRef kind="pr" state="closed">climb#88</CodeRef>
+        <CodeRef kind="pr" state="failing">climb#91</CodeRef>
+        <CodeRef kind="branch">claude/project-thread</CodeRef>
+        <CodeRef kind="commit">8203cae</CodeRef>
       </Specimen>
       <Specimen title="Spinner" className="flex flex-wrap items-center gap-4">
         <Spinner />

@@ -69,6 +69,8 @@
 
   /* Type */
   --text-control-small: 0.8rem;
+  /* Line glyphs draw at this weight on screen at every size. */
+  --icon-stroke: 1.5px;
   --font-ui: ui-sans-serif, system-ui, sans-serif;
   --font-code: ui-monospace, SFMono-Regular, Menlo, monospace;
 
@@ -549,6 +551,15 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+  /* Solar draws a 1.5 stroke on a 24 grid, which thins to 1px at 16px.
+     A non-scaling stroke holds every line glyph at --icon-stroke on screen,
+     whatever size it renders at. Filled (bold) glyphs are unaffected. */
+  svg.solar {
+    stroke-width: var(--icon-stroke);
+  }
+  svg.solar :is(path, circle, ellipse, line, polyline, polygon, rect) {
+    vector-effect: non-scaling-stroke;
   }
   /* Smooth corners everywhere a radius is set. Full pills and dots stay
      true capsules and circles. */
