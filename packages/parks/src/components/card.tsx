@@ -73,7 +73,7 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-content"
       className={cn(
-        "px-(--corner-gap) [--radius:var(--field-radius)] [--text-offset:calc(var(--frame-space)*(1+var(--inset-ratio))-var(--corner-gap))] [&_[data-slot=input]]:px-[calc(var(--text-offset)-1px)]",
+        "px-(--corner-gap) [--radius:var(--field-radius)] [--text-offset:calc(var(--frame-space)*(1+var(--inset-ratio))-var(--corner-gap))] [&_[data-slot=input]]:mx-(--text-offset) [&_[data-slot=input]]:w-[calc(100%-2*var(--text-offset))]",
         className
       )}
       {...props}
