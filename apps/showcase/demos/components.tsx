@@ -167,11 +167,9 @@ export function CardDemo() {
               <span className="pe-inset font-mono text-muted-foreground">webhook · devin</span>
             </div>
           </CardContent>
-          <CardFooter className="gap-2 border-t pt-(--pad)">
-            <Button size="sm">Open</Button>
-            <Button size="sm" variant="ghost">
-              Mute
-            </Button>
+          <CardFooter>
+            <Button variant="ghost">Mute</Button>
+            <Button>Open</Button>
           </CardFooter>
         </Card>
       </Specimen>
