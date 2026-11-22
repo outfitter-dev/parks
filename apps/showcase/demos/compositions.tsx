@@ -270,7 +270,7 @@ export function AdminComposition() {
         title="Admin"
         actions={
           <Badge variant="outline">
-            <Signal tone="wait" /> Elevated · 11:42 left
+            <span className="lead"><Signal tone="wait" /></span>Elevated · 11:42 left
           </Badge>
         }
       >
@@ -286,7 +286,7 @@ export function AdminComposition() {
                 <div key={item.version} className="flex h-(--control-h) items-center gap-3 px-text">
                   <span className="font-mono text-muted-foreground">v{item.version}</span>
                   <span className="min-w-0 flex-1 truncate">{item.change}</span>
-                  {index === 0 ? <Badge variant="outline">Live</Badge> : <span className="text-muted-foreground">{item.when}</span>}
+                  {index === 0 ? <Badge variant="success">Live</Badge> : <span className="text-muted-foreground">{item.when}</span>}
                 </div>
               ))}
               </div>
@@ -303,8 +303,8 @@ export function AdminComposition() {
             </CardHeader>
             <CardContent className="grid gap-3">
               <Progress value={78} aria-label="Time left" />
-              <div className="panel flex items-center gap-2 bg-muted px-text">
-                <KeyIcon className="size-4 text-muted-foreground" />
+              <div className="flex h-(--control-h) items-center rounded-lg bg-muted pe-text [--lead-size:var(--control-h)]">
+                <span className="lead"><KeyIcon className="size-4 text-muted-foreground" /></span>
                 Passkey confirmed at 9:38 PM
               </div>
             </CardContent>
