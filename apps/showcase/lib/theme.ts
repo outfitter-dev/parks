@@ -35,8 +35,8 @@ export const presets: Record<PresetId, { label: string; values: PresetValues }> 
       color: {
         brand: "oklch(0.76 0.15 70)",
         primary: "ink",
-        hue: 250,
-        tint: 0.004,
+        hue: 70,
+        tint: 0.0015,
         border: 0.5,
         shadow: 2,
       },
