@@ -127,16 +127,16 @@ export function BadgeDemo() {
       </Specimen>
       <Specimen title="With a signal dot" note="The dot carries the state; the label stays neutral.">
         <Badge variant="outline">
-          <Signal tone="live" /> Live
+          <span className="lead"><Signal tone="live" /></span>Live
         </Badge>
         <Badge variant="outline">
-          <Signal tone="wait" /> Waiting on you
+          <span className="lead"><Signal tone="wait" /></span>Waiting on you
         </Badge>
         <Badge variant="outline">
-          <Signal tone="off" /> Off
+          <span className="lead"><Signal tone="off" /></span>Off
         </Badge>
         <Badge variant="outline">
-          <Signal tone="alert" /> Failing
+          <span className="lead"><Signal tone="alert" /></span>Failing
         </Badge>
       </Specimen>
     </>
@@ -157,7 +157,7 @@ export function CardDemo() {
             <CardDescription>Devin · overnight PR backlog</CardDescription>
             <CardAction>
               <Badge variant="outline">
-                <Signal tone="live" /> Live
+                <span className="lead"><Signal tone="live" /></span>Live
               </Badge>
             </CardAction>
           </CardHeader>

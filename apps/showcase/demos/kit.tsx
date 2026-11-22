@@ -91,7 +91,7 @@ export function Signal({ tone }: { tone: "live" | "wait" | "off" | "alert" }) {
       aria-hidden
       className={cn(
         "inline-block size-2 shrink-0 rounded-full",
-        tone === "live" && "bg-emerald-500",
+        tone === "live" && "bg-success",
         tone === "wait" && "bg-brand",
         tone === "off" && "bg-muted-foreground/40",
         tone === "alert" && "bg-destructive",
