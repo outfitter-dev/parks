@@ -1,0 +1,23 @@
+@import "@workspace/ui/globals.css";
+@import "allo-font";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+@source "../";
+
+@layer base {
+  body {
+    font-family: var(--font-ui);
+    font-size: var(--text-ui, 14px);
+    font-variation-settings: "ROND" var(--rond, 50);
+    font-feature-settings: "cv11", "ss01";
+  }
+  code,
+  kbd,
+  samp,
+  .font-mono {
+    font-size: calc(var(--mono-scale, 0.92) * 1em);
+  }
+}
