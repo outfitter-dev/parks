@@ -96,8 +96,8 @@ export function ShapeDemo() {
         note="Set the inner radius and the padding. The frame radius is their sum."
         className="block"
       >
-        <div className="max-w-sm rounded-frame bg-card p-(--pad) shadow-(--shadow-frame) ring-1 ring-foreground/10">
-          <div className="rounded-lg bg-muted p-3">Inner surface · --radius</div>
+        <div className="max-w-sm frame p-frame bg-card shadow-(--shadow-frame) ring-1 ring-foreground/10">
+          <div className="panel bg-muted"><span className="px-inset">Panel · --radius</span></div>
           <div className="mt-2 flex h-(--control-h) items-center rounded-lg border px-3">
             Control · --control-h
           </div>
@@ -108,7 +108,7 @@ export function ShapeDemo() {
         note="Frame padding is even on every side so corner pieces stay concentric. Text adds --inset on the left and right so it doesn't read top-heavy."
         className="block"
       >
-        <div className="max-w-sm rounded-frame bg-card p-(--pad) shadow-(--shadow-frame) ring-1 ring-foreground/10">
+        <div className="max-w-sm frame p-frame bg-card shadow-(--shadow-frame) ring-1 ring-foreground/10">
           <div className="flex items-start justify-between gap-3">
             <p className="px-inset font-medium">Merge once CI is green?</p>
             <span className="rounded-lg bg-muted px-2 py-0.5 text-xs">Approval</span>
@@ -116,13 +116,40 @@ export function ShapeDemo() {
           <p className="mt-1 px-inset text-muted-foreground">Text sits at --pad + --inset. The pill sits in the corner at --pad.</p>
         </div>
       </Specimen>
+      <Specimen
+        title="Nesting"
+        note="Each level pads evenly and its text inset is a share of that padding, so smaller and deeper containers get a smaller inset. Corners stay concentric all the way down."
+        className="block"
+      >
+        <div className="grid max-w-2xl gap-4 sm:grid-cols-2">
+          {[
+            ["Frame", ""],
+            ["Small frame", "[--frame-pad:calc(var(--pad)*0.75)]"],
+          ].map(([label, size]) => (
+            <div key={label} className={`frame p-frame bg-card shadow-(--shadow-frame) ring-1 ring-foreground/10 ${size}`}>
+              <div className="flex items-start justify-between gap-3">
+                <p className="px-inset font-medium">{label}</p>
+                <span className="rounded-lg bg-muted px-2 py-0.5 text-xs">Corner</span>
+              </div>
+              <div className="panel mt-2 bg-muted">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="ps-inset">Panel</span>
+                  <span className="rounded-inner bg-background px-1.5 py-0.5 font-mono text-xs ring-1 ring-foreground/10">piece</span>
+                </div>
+                <p className="px-inset text-muted-foreground">Text inset follows the panel.</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Specimen>
       <Specimen title="Radius steps">
         {[
           ["sm", "rounded-sm"],
           ["md", "rounded-md"],
-          ["lg (inner)", "rounded-lg"],
+          ["lg (panel)", "rounded-lg"],
           ["xl", "rounded-xl"],
           ["frame", "rounded-frame"],
+          ["inner", "rounded-inner"],
         ].map(([name, className]) => (
           <div key={name} className="text-center">
             <div className={`size-16 bg-muted ring-1 ring-foreground/10 ${className}`} />

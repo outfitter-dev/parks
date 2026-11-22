@@ -22,7 +22,7 @@ export function Specimen({
       {note ? <p className="mt-0.5 max-w-prose text-muted-foreground">{note}</p> : null}
       <div
         className={cn(
-          "mt-3 flex flex-wrap items-center gap-3 rounded-frame border border-dashed bg-background p-(--pad)",
+          "mt-3 flex flex-wrap items-center gap-3 frame p-frame border border-dashed bg-background",
           className,
         )}
       >

@@ -21,19 +21,40 @@
  * values in ; components read only these variables.
  */
 /*
- * Structural tokens. --radius is the radius of inner surfaces (rows, inputs,
- * controls). A frame such as a card adds its padding to that radius, so nested
- * corners stay concentric: --radius-frame = --radius + --pad.
+ * Structural tokens. Corners stay concentric at every depth:
  *
- * --pad is the same on every side, so corner pieces (pills, buttons, glyphs)
- * sit concentric in a frame's corners. Text reads as top-heavy with equal
- * padding, so text blocks add --inset on the left and right instead of the
- * frame padding them unevenly: use the px-inset utility on text.
+ *   frame (card, dialog)      radius = --radius + its padding
+ *   panel (row, inner box)    radius = --radius
+ *   piece inside a panel      radius = --radius - the panel's padding (min 2px)
+ *
+ * Every frame and panel pads evenly on all four sides, so pills, buttons and
+ * glyphs sit concentric in the corners. Text would read top-heavy with even
+ * padding (line height adds space above and below the glyphs), so text adds
+ * --inset on the left and right with px-inset. --inset is a fraction of the
+ * padding of the nearest frame or panel, so it shrinks inside smaller or
+ * nested containers on its own.
+ *
+ * The frame and panel utilities publish these values for their children.
+ * Set --frame-pad or --panel-pad on the element to resize one; the values do
+ * not inherit, so a nested container never picks up its parent's size.
  */
+@property --frame-pad {
+  syntax: "*";
+  inherits: false;
+}
+@property --panel-pad {
+  syntax: "*";
+  inherits: false;
+}
+
 :root {
   --radius: 0.5rem;
   --pad: 1rem;
-  --inset: 0.25rem;
+  --panel-pad-base: 0.5rem;
+  --inset-ratio: 0.4;
+  --inset: calc(var(--pad) * var(--inset-ratio));
+  --frame-radius: calc(var(--radius) + var(--pad));
+  --inner-radius: max(2px, calc(var(--radius) - var(--panel-pad-base)));
   --control-h: 2rem;
   --font-ui: ui-sans-serif, system-ui, sans-serif;
   --font-code: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -104,9 +125,45 @@
   --ring: oklch(0.556 0 0);
 }
 
-/* Extra inline padding for text inside a frame. See --inset above. */
+/* A frame: the outer padded surface. Its radius is --radius plus its padding. */
+@utility frame {
+  --frame-space: var(--frame-pad, var(--pad));
+  --frame-radius: calc(var(--radius) + var(--frame-space));
+  --inset: calc(var(--frame-space) * var(--inset-ratio));
+  border-radius: var(--frame-radius);
+}
+
+/* Even padding for a frame that lays out its own content. */
+@utility p-frame {
+  padding: var(--frame-space, var(--pad));
+}
+
+/* A panel: a surface inside a frame. Its radius is the frame's inner radius. */
+@utility panel {
+  --panel-space: var(--panel-pad, var(--panel-pad-base));
+  --inner-radius: max(2px, calc(var(--radius) - var(--panel-space)));
+  --inset: calc(var(--panel-space) * var(--inset-ratio));
+  border-radius: var(--radius);
+  padding: var(--panel-space);
+}
+
+/* Extra inline padding for text inside a frame or panel. See --inset above. */
 @utility px-inset {
   padding-inline: var(--inset);
+}
+@utility ps-inset {
+  padding-inline-start: var(--inset);
+}
+@utility pe-inset {
+  padding-inline-end: var(--inset);
+}
+
+/*
+ * Trims the line-height space above the cap height and below the baseline,
+ * so a single line centres optically in a fixed-height control.
+ */
+@utility text-trim {
+  text-box: trim-both cap alphabetic;
 }
 
 @theme inline {
@@ -134,7 +191,8 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --radius-frame: calc(var(--radius) + var(--pad));
+  --radius-frame: var(--frame-radius);
+  --radius-inner: var(--inner-radius);
   --font-sans: var(--font-ui);
   --font-mono: var(--font-code);
 }
