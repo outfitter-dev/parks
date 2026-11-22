@@ -63,15 +63,17 @@ import { Textarea } from "@workspace/ui/components/textarea";
 import { Toggle } from "@workspace/ui/components/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@workspace/ui/components/tooltip";
-import { AddCircleIcon } from "@solar-icons/react/linear/add-circle";
+import { AddCircleIcon } from "@solar-icons/react/bold/add-circle";
 import { BellOffIcon } from "@solar-icons/react/linear/bell-off";
 import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
 import { DangerCircleIcon } from "@solar-icons/react/linear/danger-circle";
 import { DangerTriangleIcon } from "@solar-icons/react/linear/danger-triangle";
 import { InfoCircleIcon } from "@solar-icons/react/linear/info-circle";
-import { MenuDotsIcon } from "@solar-icons/react/linear/menu-dots";
+import { MenuDotsIcon } from "@solar-icons/react/bold/menu-dots";
 import { PenIcon } from "@solar-icons/react/linear/pen";
 import { RefreshIcon } from "@solar-icons/react/linear/refresh";
+import { RefreshIcon as RefreshBoldIcon } from "@solar-icons/react/bold/refresh";
+import { PenIcon as PenBoldIcon } from "@solar-icons/react/bold/pen";
 import { TrashBinMinimalisticIcon } from "@solar-icons/react/linear/trash-bin-minimalistic";
 import { agents } from "#lib/fixtures";
 import { Signal, Specimen } from "./kit";
@@ -93,7 +95,7 @@ export function ButtonDemo() {
         <Button>Default</Button>
         <Button size="lg">Large</Button>
       </Specimen>
-      <Specimen title="With icons">
+      <Specimen title="With icons" note="Glyph-only buttons and filled buttons use solid glyphs; text buttons on light fills keep the outline.">
         <Button>
           <AddCircleIcon data-icon="inline-start" />
           New agent
@@ -106,7 +108,7 @@ export function ButtonDemo() {
           <MenuDotsIcon />
         </Button>
         <Button variant="outline" size="icon-sm" aria-label="Edit">
-          <PenIcon />
+          <PenBoldIcon />
         </Button>
       </Specimen>
       <Specimen title="States">
@@ -349,7 +351,7 @@ export function MenusDemo() {
       <Specimen title="Tooltip">
         <Tooltip>
           <TooltipTrigger render={<Button variant="ghost" size="icon" aria-label="Re-run" />}>
-            <RefreshIcon />
+            <RefreshBoldIcon />
           </TooltipTrigger>
           <TooltipContent>Re-run the last delivery</TooltipContent>
         </Tooltip>
