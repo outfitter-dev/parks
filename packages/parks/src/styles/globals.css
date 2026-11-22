@@ -54,6 +54,10 @@
   --radius-step: 2px;
   --radius-floor: var(--radius-step);
   --field-radius: 0.5rem;
+  /* Corner curve as a superellipse exponent: 1 is a circular arc, 2 is the
+     iOS-style continuous "squircle". Browsers without corner-shape draw
+     ordinary round corners at the same radius. */
+  --corner-smoothing: 2;
   --pad: 1rem;
   --panel-pad-base: 0.5rem;
   --inset-ratio: 0.4;
@@ -319,6 +323,20 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+  /* Smooth corners everywhere a radius is set. Full pills and dots stay
+     true capsules and circles. */
+  @supports (corner-shape: superellipse(2)) {
+    *,
+    ::before,
+    ::after {
+      corner-shape: superellipse(var(--corner-smoothing));
+    }
+    [class*="rounded-full"],
+    [class*="rounded-full"]::before,
+    [class*="rounded-full"]::after {
+      corner-shape: round;
+    }
   }
   /* Colour tokens use light-dark(), so color-scheme picks the mode. A
      .light or .dark element switches its own subtree. */
