@@ -148,7 +148,7 @@ export function CardDemo() {
     <>
       <Specimen
         title="Concentric corners"
-        note="The card's radius is the inner radius plus its padding, so the row inside sits on a matching curve."
+        note="Pieces at a corner share its centre. A single row in the middle takes the flatter field radius."
         className="block"
       >
         <Card className="max-w-md">
