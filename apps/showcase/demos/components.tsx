@@ -362,6 +362,7 @@ export function MenusDemo() {
 
 export function TableDemo() {
   return (
+    <>
     <Specimen title="Agents" className="block">
       <Table>
         <TableHeader>
@@ -388,8 +389,46 @@ export function TableDemo() {
         </TableBody>
       </Table>
     </Specimen>
+    <Specimen
+      title="Two-line rows"
+      note="An alternative for narrow cards: each row stacks a secondary line under the name and the status over its time, so more fits without more columns."
+      className="block"
+    >
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="pl-(--pad)">Agent</TableHead>
+            <TableHead className="pr-(--pad) text-right">Status</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {agents.map((agent) => (
+            <TableRow key={agent.name}>
+              <TableCell className="py-2.5 pl-(--pad)">
+                <span className="block font-medium">{agent.name}</span>
+                <span className="block text-xs text-muted-foreground">
+                  {agent.runtime} · <span className="font-mono">{agent.destination}</span>
+                </span>
+              </TableCell>
+              <TableCell className="py-2.5 pr-(--pad) text-right">
+                <Badge variant={modeBadge[agent.tone]}>{agent.mode}</Badge>
+                <span className="block pt-0.5 text-xs text-muted-foreground">{agent.seen}</span>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Specimen>
+    </>
   );
 }
+
+const modeBadge = {
+  live: "success",
+  wait: "warning",
+  alert: "destructive",
+  off: "secondary",
+} as const;
 
 export function FeedbackDemo() {
   return (

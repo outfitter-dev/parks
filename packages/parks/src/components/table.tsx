@@ -11,7 +11,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
     >
       <table
         data-slot="table"
-        className={cnState("w-full caption-bottom text-sm", className)}
+        className={cnState("w-full caption-bottom border-separate border-spacing-0 text-sm", className)}
         {...props}
       />
     </div>
@@ -22,7 +22,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cnState("[&_tr]:border-b", className)}
+      className={cnState(className)}
       {...props}
     />
   )
@@ -32,7 +32,7 @@ function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
   return (
     <tbody
       data-slot="table-body"
-      className={cnState("[&_tr:last-child]:border-0", className)}
+      className={cnState("[&>tr:last-child>td]:border-b-transparent", className)}
       {...props}
     />
   )
@@ -43,7 +43,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
     <tfoot
       data-slot="table-footer"
       className={cnState(
-        "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
+        "bg-muted/50 font-medium [&>tr:first-child>td]:border-t [&>tr>td]:border-b-0",
         className
       )}
       {...props}
@@ -56,7 +56,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cnState(
-        "border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted",
+        "group/row [&:has(+tr:hover)>td]:border-b-transparent [&:has(+tr[data-state=selected])>td]:border-b-transparent",
         className
       )}
       {...props}
@@ -69,7 +69,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cnState(
-        "h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pr-0",
+        "h-10 border-b px-2 text-left align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}
@@ -82,7 +82,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="table-cell"
       className={cnState(
-        "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0",
+        "border-b p-2 align-middle whitespace-nowrap transition-colors [&:has([role=checkbox])]:pr-0 in-data-[slot=table-body]:group-hover/row:border-b-transparent in-data-[slot=table-body]:group-hover/row:bg-muted/50 in-data-[slot=table-body]:group-hover/row:first:rounded-s-(--field-radius) in-data-[slot=table-body]:group-hover/row:last:rounded-e-(--field-radius) in-data-[slot=table-body]:group-data-[state=selected]/row:first:rounded-s-(--field-radius) in-data-[slot=table-body]:group-data-[state=selected]/row:last:rounded-e-(--field-radius) in-data-[slot=table-body]:group-has-aria-expanded/row:bg-muted/50 in-data-[slot=table-body]:group-data-[state=selected]/row:border-b-transparent in-data-[slot=table-body]:group-data-[state=selected]/row:bg-muted",
         className
       )}
       {...props}
