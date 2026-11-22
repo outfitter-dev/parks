@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, type ComponentProps, type ReactNode } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
 import { cn } from "@workspace/ui/lib/utils";
 
@@ -97,5 +97,55 @@ export function Signal({ tone }: { tone: "live" | "wait" | "off" | "alert" }) {
         tone === "alert" && "bg-destructive",
       )}
     />
+  );
+}
+
+const haloTones = {
+  live: "text-success",
+  wait: "text-brand",
+  off: "text-muted-foreground",
+  alert: "text-destructive",
+} as const;
+
+/**
+ * A Signal dot inside a faint halo with an arc travelling around it: the
+ * same state colour, now saying "this is in progress". At 20px the dot is
+ * the same 8px as a plain Signal, so the two line up in a list.
+ */
+export function HaloSignal({
+  tone,
+  size = 20,
+  label,
+  className,
+  ...props
+}: Omit<ComponentProps<"svg">, "children"> & {
+  tone: keyof typeof haloTones;
+  size?: number;
+  label: string;
+}) {
+  return (
+    <svg
+      {...props}
+      role="img"
+      aria-label={label}
+      width={size}
+      height={size}
+      viewBox="0 0 20 20"
+      className={cn("shrink-0", haloTones[tone], className)}
+    >
+      <circle cx="10" cy="10" r="4" fill="currentColor" />
+      <circle cx="10" cy="10" r="8.25" fill="none" stroke="currentColor" strokeOpacity="0.18" strokeWidth="1.5" />
+      <circle
+        cx="10"
+        cy="10"
+        r="8.25"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeDasharray="13 39"
+        className="origin-center animate-spin [animation-duration:1.2s] [transform-box:fill-box] motion-reduce:animate-none"
+      />
+    </svg>
   );
 }

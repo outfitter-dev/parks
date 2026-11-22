@@ -14,7 +14,7 @@ import { InboxIcon } from "@solar-icons/react/linear/inbox";
 import { RoutingIcon } from "@solar-icons/react/linear/routing";
 import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
 import { Widget2Icon } from "@solar-icons/react/linear/widget-2";
-import { Signal, Viewport } from "../kit";
+import { HaloSignal, Signal, Viewport } from "../kit";
 import { Frame, FrameHeader, FramePanel, FrameTitle, FrameDescription } from "../reui/frame";
 import {
   Timeline,
@@ -93,7 +93,8 @@ function TaskCard({ task }: { task: Task }) {
       <span className="flex h-6 items-center gap-2">
         <span className="min-w-0 flex-1 truncate font-medium">{task.agent}</span>
         {task.lane === "working" ? (
-          <span className="grid size-6 place-items-center rounded-full bg-muted text-brand-600 dark:text-brand-400">
+          <span className="grid size-6 place-items-center">
+            <HaloSignal tone="wait" label={`${task.agent} is working`} />
           </span>
         ) : (
           <span className="grid size-6 place-items-center">
