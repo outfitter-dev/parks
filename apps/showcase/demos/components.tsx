@@ -215,18 +215,18 @@ const destinations = [
 export function InputsDemo() {
   return (
     <>
-      <Specimen title="Text fields" className="grid max-w-md grid-cols-1 items-stretch">
+      <Specimen title="Text fields" note="Labels and hints start where the input text starts." className="grid max-w-md grid-cols-1 items-stretch">
         <div className="grid gap-1.5">
-          <Label htmlFor="agent-name">Agent name</Label>
+          <Label htmlFor="agent-name" className="ps-field">Agent name</Label>
           <Input id="agent-name" placeholder="donna" />
         </div>
         <div className="grid gap-1.5">
-          <Label htmlFor="agent-url">Webhook URL</Label>
+          <Label htmlFor="agent-url" className="ps-field">Webhook URL</Label>
           <Input id="agent-url" aria-invalid defaultValue="http://not-https.example" />
-          <p className="text-destructive">Use an https URL.</p>
+          <p className="field-hint text-destructive">Use an https URL.</p>
         </div>
         <div className="grid gap-1.5">
-          <Label htmlFor="agent-note">Note</Label>
+          <Label htmlFor="agent-note" className="ps-field">Note</Label>
           <Textarea id="agent-note" placeholder="What this agent is for" />
         </div>
       </Specimen>
