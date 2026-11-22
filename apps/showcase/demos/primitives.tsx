@@ -27,6 +27,9 @@ const swatches = [
   ["primary", "bg-primary"],
   ["brand", "bg-brand"],
   ["destructive", "bg-destructive"],
+  ["warning", "bg-warning"],
+  ["success", "bg-success"],
+  ["info", "bg-info"],
 ] as const;
 
 function SwatchRow() {
@@ -42,6 +45,68 @@ function SwatchRow() {
   );
 }
 
+const tones = ["destructive", "warning", "success", "info"] as const;
+const roles = ["", "strong", "foreground", "fill", "border"] as const;
+const scales = ["neutral", "brand", ...tones] as const;
+const steps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] as const;
+
+function token(tone: string, role: string) {
+  return role ? `--${tone}-${role}` : `--${tone}`;
+}
+
+/** Each tone's roles, picked from its scale per mode. */
+function RoleGrid() {
+  return (
+    <div className="grid w-full gap-3">
+      {tones.map((tone) => (
+        <div key={tone} className="grid grid-cols-[6rem_repeat(5,minmax(0,1fr))] items-end gap-2">
+          <p className="pb-1 font-mono text-muted-foreground">{tone}</p>
+          {roles.map((role) => (
+            <div key={role}>
+              <div
+                className="flex h-10 items-center rounded-md px-2 ring-1 ring-foreground/10"
+                style={{ background: role === "strong" || role === "foreground" ? `var(--${tone}-fill)` : `var(${token(tone, role)})` }}
+              >
+                {role === "strong" || role === "foreground" ? (
+                  <span className="font-medium" style={{ color: `var(${token(tone, role)})` }}>Aa</span>
+                ) : null}
+              </div>
+              <p className="mt-1 font-mono text-xs text-muted-foreground">{role || "base"}</p>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** 50 to 950 for every scale. Scales don't change with the mode. */
+function ScaleGrid() {
+  return (
+    <div className="grid w-full gap-2">
+      <div className="grid grid-cols-[6rem_repeat(11,minmax(0,1fr))] gap-1">
+        <span />
+        {steps.map((step) => (
+          <p key={step} className="text-center font-mono text-xs text-muted-foreground">{step}</p>
+        ))}
+      </div>
+      {scales.map((scale) => (
+        <div key={scale} className="grid grid-cols-[6rem_repeat(11,minmax(0,1fr))] items-center gap-1">
+          <p className="font-mono text-muted-foreground">{scale}</p>
+          {steps.map((step) => (
+            <div
+              key={step}
+              className="h-9 rounded-md ring-1 ring-foreground/10"
+              style={{ background: `var(--${scale}-${step})` }}
+              title={`${scale}-${step}`}
+            />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function ColorDemo() {
   return (
     <>
@@ -50,6 +115,23 @@ export function ColorDemo() {
       </Specimen>
       <Specimen title="Dark" className="dark block bg-background text-foreground">
         <SwatchRow />
+      </Specimen>
+      <Specimen
+        title="Semantic roles, light"
+        note="Base marks dots and solid fills. Strong is for titles and glyphs, foreground for tinted text."
+        className="light block bg-background text-foreground"
+      >
+        <RoleGrid />
+      </Specimen>
+      <Specimen title="Semantic roles, dark" className="dark block bg-background text-foreground">
+        <RoleGrid />
+      </Specimen>
+      <Specimen
+        title="Scales"
+        note="Use as bg-success-100, text-warning-700 and so on. Each scale derives from its seeds."
+        className="block"
+      >
+        <ScaleGrid />
       </Specimen>
     </>
   );
