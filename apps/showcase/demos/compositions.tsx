@@ -280,14 +280,16 @@ export function AdminComposition() {
               <CardTitle>Routing versions</CardTitle>
               <CardDescription>Each save makes a new version. Older ones stay here.</CardDescription>
             </CardHeader>
-            <CardContent className="grid gap-1.5">
+            <CardContent>
+              <div className="concentric divide-y overflow-hidden rounded-lg bg-muted">
               {versions.map((item, index) => (
-                <div key={item.version} className="panel flex items-center gap-3 bg-muted">
+                <div key={item.version} className="flex h-(--control-h) items-center gap-3 px-(--panel-pad-base)">
                   <span className="ps-inset font-mono text-muted-foreground">v{item.version}</span>
                   <span className="min-w-0 flex-1 truncate">{item.change}</span>
                   {index === 0 ? <Badge>Live</Badge> : <span className="pe-inset text-muted-foreground">{item.when}</span>}
                 </div>
               ))}
+              </div>
             </CardContent>
             <CardFooter>
               <Button variant="ghost">Compare</Button>
