@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { TooltipProvider } from "@workspace/ui/components/tooltip";
+import { Annotations } from "./annotations";
 import { Shell } from "./shell";
 import { ThemeController } from "./theme-controller";
 import "./globals.css";
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <TooltipProvider>
           <Shell>{children}</Shell>
         </TooltipProvider>
+        <Annotations />
       </body>
     </html>
   );
