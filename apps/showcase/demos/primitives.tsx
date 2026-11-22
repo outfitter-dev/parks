@@ -14,6 +14,8 @@ import { ShieldKeyholeIcon } from "@solar-icons/react/linear/shield-keyhole";
 import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
 import { BellIcon as BellBold } from "@solar-icons/react/bold/bell";
 import { InboxIcon as InboxDuo } from "@solar-icons/react/bold-duotone/inbox";
+import { Badge } from "@workspace/ui/components/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card";
 import { Specimen } from "./kit";
 
 const swatches = [
@@ -203,7 +205,7 @@ export function ShapeDemo() {
         note="Each level pads evenly and its text inset is a share of that padding, so smaller and deeper containers get a smaller inset. Corners stay concentric all the way down."
         className="block"
       >
-        <div className="grid max-w-2xl gap-4 sm:grid-cols-2">
+        <div className="grid max-w-2xl items-start gap-4 sm:grid-cols-2">
           {[
             ["Frame", ""],
             ["Small frame", "[--frame-pad:var(--frame-pad-sm)]"],
@@ -223,6 +225,33 @@ export function ShapeDemo() {
             </div>
           ))}
         </div>
+      </Specimen>
+      <Specimen
+        title="Grouped rows"
+        note="Several rows that belong together share one contained surface. The container spans the card content and takes the concentric radius (frame radius minus the corner gap); rows are --control-h tall, divided by hairlines, and their text lines up with the card title."
+        className="block"
+      >
+        <Card className="max-w-md">
+          <CardHeader>
+            <CardTitle>Routing history</CardTitle>
+            <CardDescription>Every saved version, newest first.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="concentric divide-y overflow-hidden rounded-lg bg-muted">
+              {[
+                ["14", "Donna → webhook · devin", "Live"],
+                ["13", "Quiet hours 10 PM to 8 AM", "2 days ago"],
+                ["12", "Rex moved to dry run", "Nov 18"],
+              ].map(([version, change, when], index) => (
+                <div key={version} className="flex h-(--control-h) items-center gap-3 px-text">
+                  <span className="font-mono text-muted-foreground">v{version}</span>
+                  <span className="min-w-0 flex-1 truncate">{change}</span>
+                  {index === 0 ? <Badge variant="success">{when}</Badge> : <span className="text-muted-foreground">{when}</span>}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </Specimen>
       <Specimen title="Radius steps">
         {[

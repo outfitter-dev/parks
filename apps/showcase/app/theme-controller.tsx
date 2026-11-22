@@ -19,6 +19,7 @@ const config = {
     control: [start.shape.control, 24, 44, 1],
     field: [start.shape.field, 0, 24, 1],
     smooth: [start.shape.smooth, 1, 4, 0.1],
+    stroke: [start.shape.stroke, 1, 2.5, 0.25],
   },
   type: {
     font: {
