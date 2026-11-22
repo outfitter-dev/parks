@@ -283,10 +283,10 @@ export function AdminComposition() {
             <CardContent>
               <div className="concentric divide-y overflow-hidden rounded-lg bg-muted">
               {versions.map((item, index) => (
-                <div key={item.version} className="flex h-(--control-h) items-center gap-3 px-(--panel-pad-base)">
-                  <span className="ps-inset font-mono text-muted-foreground">v{item.version}</span>
+                <div key={item.version} className="flex h-(--control-h) items-center gap-3 px-text">
+                  <span className="font-mono text-muted-foreground">v{item.version}</span>
                   <span className="min-w-0 flex-1 truncate">{item.change}</span>
-                  {index === 0 ? <Badge>Live</Badge> : <span className="pe-inset text-muted-foreground">{item.when}</span>}
+                  {index === 0 ? <Badge>Live</Badge> : <span className="text-muted-foreground">{item.when}</span>}
                 </div>
               ))}
               </div>
@@ -303,7 +303,7 @@ export function AdminComposition() {
             </CardHeader>
             <CardContent className="grid gap-3">
               <Progress value={78} aria-label="Time left" />
-              <div className="panel flex items-center gap-2 bg-muted">
+              <div className="panel flex items-center gap-2 bg-muted px-text">
                 <KeyIcon className="size-4 text-muted-foreground" />
                 Passkey confirmed at 9:38 PM
               </div>
