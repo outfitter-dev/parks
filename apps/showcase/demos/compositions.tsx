@@ -268,11 +268,18 @@ function AskOptions({ ask, look }: { ask: Ask; look: OptionLook }) {
                   : "frame bg-card p-frame shadow-(--shadow-frame) ring-1 ring-foreground/10 hover:ring-foreground/25",
                 stacked && isPicked && "bg-brand-50 hover:bg-brand-50 dark:bg-brand-950/50 dark:hover:bg-brand-950/50",
                 !stacked && isPicked && "ring-2 ring-brand hover:ring-brand",
-                mark === null && "px-inset",
               )}
             >
-              {mark === null ? null : <OptionTile picked={isPicked}>{mark}</OptionTile>}
-              <OptionText option={option} />
+              {mark === null ? (
+                <span className="px-inset">
+                  <OptionText option={option} />
+                </span>
+              ) : (
+                <>
+                  <OptionTile picked={isPicked}>{mark}</OptionTile>
+                  <OptionText option={option} />
+                </>
+              )}
             </button>
           );
         })}
