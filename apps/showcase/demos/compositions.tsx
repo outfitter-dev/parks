@@ -744,11 +744,11 @@ export function NeedsYouComposition() {
                     Previous
                   </Button>
                   {last ? (
-                    <Button className="ml-auto" variant={answered ? "default" : "outline"} onClick={() => setScreen("list")}>
+                    <Button className="ml-auto" variant={answered ? "default" : "secondary"} onClick={() => setScreen("list")}>
                       {done === asks.length ? "Done" : "Back to list"}
                     </Button>
                   ) : (
-                    <Button className="ml-auto" variant={answered ? "default" : "outline"} onClick={() => open(index + 1)}>
+                    <Button className="ml-auto" variant={answered ? "default" : "secondary"} onClick={() => open(index + 1)}>
                       {answered ? "Next" : "Skip"}
                       <AltArrowRightIcon data-icon="inline-end" />
                     </Button>
@@ -818,9 +818,16 @@ function VersionsBounded() {
     <div className="concentric divide-y overflow-hidden rounded-lg bg-muted">
       {versions.map((item, index) => (
         <div key={item.version} className="flex h-(--control-h) items-center gap-3 px-text">
-          <span className="font-mono text-muted-foreground">v{item.version}</span>
+          <span className="w-8 shrink-0 font-mono text-muted-foreground tabular-nums">v{item.version}</span>
           <span className="min-w-0 flex-1 truncate">{item.change}</span>
-          {index === 0 ? <Badge variant="success">Live</Badge> : <span className="text-muted-foreground">{item.when}</span>}
+          {index === 0 ? (
+            <span className="flex items-center gap-2 font-medium text-success-strong">
+              <Signal tone="live" />
+              Live
+            </span>
+          ) : (
+            <span className="text-muted-foreground">{item.when}</span>
+          )}
         </div>
       ))}
     </div>
@@ -830,7 +837,7 @@ function VersionsBounded() {
 /** The open list: no container, more air, and the live version marked with a signal instead of a pill. */
 function VersionsOpen() {
   return (
-    <ol className="grid">
+    <ol className="grid px-text">
       {versions.map((item, index) => (
         <li key={item.version} className="flex items-baseline gap-4 border-b border-foreground/6 py-3 last:border-b-0">
           <span className="w-8 shrink-0 font-mono text-muted-foreground">v{item.version}</span>
@@ -879,12 +886,12 @@ export function AdminComposition() {
               <CardTitle>Routing versions</CardTitle>
               <CardDescription>Each save makes a new version. Older ones stay here.</CardDescription>
             </CardHeader>
-            <CardContent className={cn(list === "open" && "px-inset")}>
+            <CardContent>
               {list === "open" ? <VersionsOpen /> : <VersionsBounded />}
             </CardContent>
             <CardFooter>
               <Button variant="ghost">Compare</Button>
-              <Button variant="outline">Roll back to v13</Button>
+              <Button variant="secondary">Roll back to v13</Button>
             </CardFooter>
           </Card>
           <Card>
@@ -900,7 +907,7 @@ export function AdminComposition() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button variant="outline" className="w-full">
+              <Button variant="secondary" className="w-full">
                 End admin now
               </Button>
             </CardFooter>
