@@ -58,6 +58,9 @@
      iOS-style continuous "squircle". Browsers without corner-shape draw
      ordinary round corners at the same radius. */
   --corner-smoothing: 2;
+  /* Radii are authored as round-corner radii. --corner-scale (below) grows
+     the drawn radius so a smoothed corner cuts as deep as the round one. */
+  --corner-scale: 1;
   --pad: 1rem;
   --panel-pad-base: 0.5rem;
   --inset-ratio: 0.4;
@@ -184,7 +187,7 @@
   --frame-space: var(--frame-pad, var(--pad));
   --frame-radius: calc(var(--radius) + var(--frame-space));
   --inset: calc(var(--frame-space) * var(--inset-ratio));
-  border-radius: var(--frame-radius);
+  border-radius: calc(var(--frame-radius) * var(--corner-scale));
 }
 
 /* A tray of controls along a frame's bottom edge. A control in a corner
@@ -239,7 +242,7 @@
   --panel-space: var(--panel-pad, var(--panel-pad-base));
   --inner-radius: max(var(--radius-floor), calc(var(--radius) - var(--panel-space)));
   --inset: calc(var(--panel-space) * var(--inset-ratio));
-  border-radius: var(--radius);
+  border-radius: calc(var(--radius) * var(--corner-scale));
   padding: var(--panel-space);
 }
 
@@ -308,16 +311,25 @@
   --color-tab-active-border: var(--tab-active-border);
   --color-kbd-on-inverse: var(--kbd-on-inverse);
   --color-overlay: var(--overlay);
-  --radius-2xs: var(--radius-step);
-  --radius-xs: calc(var(--radius-step) * 2);
-  --radius-sm: calc(var(--radius) - var(--radius-step) * 2);
-  --radius-md: calc(var(--radius) - var(--radius-step));
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + var(--radius-step) * 2);
-  --radius-frame: var(--frame-radius);
-  --radius-inner: var(--inner-radius);
+  --radius-2xs: calc(var(--radius-step) * var(--corner-scale));
+  --radius-xs: calc(calc(var(--radius-step) * 2) * var(--corner-scale));
+  --radius-sm: calc(calc(var(--radius) - var(--radius-step) * 2) * var(--corner-scale));
+  --radius-md: calc(calc(var(--radius) - var(--radius-step)) * var(--corner-scale));
+  --radius-lg: calc(var(--radius) * var(--corner-scale));
+  --radius-xl: calc(calc(var(--radius) + var(--radius-step) * 2) * var(--corner-scale));
+  --radius-frame: calc(var(--frame-radius) * var(--corner-scale));
+  --radius-inner: calc(var(--inner-radius) * var(--corner-scale));
   --font-sans: var(--font-ui);
   --font-mono: var(--font-code);
+}
+
+/* A round corner of radius r dips (sqrt(2) - 1) * r from the corner along
+   the diagonal; superellipse(n) of radius R dips sqrt(2) * (1 - 2^(-1/2^n)) * R.
+   Equal dips give the scale. Unlayered so it beats the seed default. */
+@supports (corner-shape: superellipse(2)) {
+  :root {
+    --corner-scale: calc((sqrt(2) - 1) / (sqrt(2) * (1 - pow(2, -1 / pow(2, var(--corner-smoothing))))));
+  }
 }
 
 @layer base {

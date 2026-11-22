@@ -442,7 +442,7 @@ export function LayoutDemo() {
         </div>
       </Specimen>
       <Specimen title="Scroll area" note="A bounded list with an overlay scrollbar.">
-        <ScrollArea className="h-56 w-full max-w-sm rounded-(--radius) border">
+        <ScrollArea className="h-56 w-full max-w-sm rounded-lg border">
           <div className="p-(--pad)">
             {Array.from({ length: 24 }, (_, index) => (
               <div key={index} className="flex justify-between border-b py-2 last:border-b-0">
