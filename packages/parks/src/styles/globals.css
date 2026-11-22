@@ -24,10 +24,16 @@
  * Structural tokens. --radius is the radius of inner surfaces (rows, inputs,
  * controls). A frame such as a card adds its padding to that radius, so nested
  * corners stay concentric: --radius-frame = --radius + --pad.
+ *
+ * --pad is the same on every side, so corner pieces (pills, buttons, glyphs)
+ * sit concentric in a frame's corners. Text reads as top-heavy with equal
+ * padding, so text blocks add --inset on the left and right instead of the
+ * frame padding them unevenly: use the px-inset utility on text.
  */
 :root {
   --radius: 0.5rem;
   --pad: 1rem;
+  --inset: 0.25rem;
   --control-h: 2rem;
   --font-ui: ui-sans-serif, system-ui, sans-serif;
   --font-code: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -96,6 +102,11 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
+}
+
+/* Extra inline padding for text inside a frame. See --inset above. */
+@utility px-inset {
+  padding-inline: var(--inset);
 }
 
 @theme inline {

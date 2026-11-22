@@ -154,7 +154,7 @@ function AskDetail({ ask }: { ask: Ask }) {
                 choice === option.label && "ring-2 ring-brand",
               )}
             >
-              <span className="grid gap-0.5">
+              <span className="grid gap-0.5 px-inset">
                 <span className="flex items-center gap-2 font-medium">
                   {option.label}
                   {option.recommended ? <Badge variant="secondary">Recommended</Badge> : null}
