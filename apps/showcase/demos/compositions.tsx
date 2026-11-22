@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import {
@@ -32,6 +32,13 @@ import { ChatRoundDotsIcon } from "@solar-icons/react/linear/chat-round-dots";
 import { HistoryIcon } from "@solar-icons/react/linear/history";
 import { InboxIcon } from "@solar-icons/react/linear/inbox";
 import { KeyIcon } from "@solar-icons/react/linear/key";
+import { HamburgerMenuIcon } from "@solar-icons/react/linear/hamburger-menu";
+import { SidebarMinimalisticIcon } from "@solar-icons/react/linear/sidebar-minimalistic";
+import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
+import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
+import { CheckCircleIcon as CheckCircleBold } from "@solar-icons/react/bold/check-circle";
+import { SettingsIcon } from "@solar-icons/react/linear/settings";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
 import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
 import { RoutingIcon } from "@solar-icons/react/linear/routing";
 import { ShieldKeyholeIcon } from "@solar-icons/react/linear/shield-keyhole";
@@ -83,7 +90,123 @@ function NavDot() {
   );
 }
 
-/** The app frame: a quiet sidebar, a top bar and the page. */
+/** Opens the overlay sidebar. Headers below the docked width render a menu button with it. */
+const FrameMenu = createContext<(() => void) | null>(null);
+
+/** The menu button that opens the sidebar when it is not docked. Renders nothing outside a frame. */
+function MenuButton({ className }: { className?: string }) {
+  const open = useContext(FrameMenu);
+  if (!open) return null;
+  return (
+    <Button variant="ghost" size="icon-sm" aria-label="Open navigation" onClick={open} className={className}>
+      <HamburgerMenuIcon />
+    </Button>
+  );
+}
+
+function Brand() {
+  return (
+    <span className="grid size-6 shrink-0 place-items-center rounded-md bg-brand text-xs text-brand-foreground">O</span>
+  );
+}
+
+/** The full sidebar: brand, search, places and the account. Docked or as an overlay. */
+function SidebarPanel({ place, onClose }: { place: Place; onClose?: () => void }) {
+  return (
+    <>
+      <div className="flex items-center gap-2 px-2 py-2 font-semibold">
+        <Brand />
+        Outpost
+        {onClose ? (
+          <Button variant="ghost" size="icon-sm" aria-label="Close navigation" onClick={onClose} className="ml-auto -my-1">
+            <SidebarMinimalisticIcon />
+          </Button>
+        ) : null}
+      </div>
+      <button
+        type="button"
+        className="mt-1 mb-2 flex h-(--control-h) items-center gap-2 rounded-lg border bg-background px-2 text-muted-foreground"
+      >
+        <MagnifierIcon className="size-4" />
+        Search
+        <Kbd className="ml-auto">⌘K</Kbd>
+      </button>
+      <nav aria-label="Outpost">
+        {places.map(({ id, label, icon: Line, solid: Solid, count, dot }) => {
+          const Icon = id === place ? Solid : Line;
+          return (
+            <a
+              key={id}
+              href="#"
+              aria-current={id === place ? "page" : undefined}
+              className={cn(
+                "flex items-center gap-2 rounded-lg px-2 py-1.5 font-semibold text-muted-foreground hover:bg-accent hover:text-foreground",
+                id === place && "bg-accent text-foreground",
+              )}
+            >
+              <Icon className="size-4" />
+              {label}
+              {count ? <NavCount value={count} /> : dot ? <NavDot /> : null}
+            </a>
+          );
+        })}
+      </nav>
+      <button
+        type="button"
+        className="mt-auto flex h-(--control-h) items-center gap-2 rounded-lg px-2 font-semibold text-muted-foreground hover:bg-accent hover:text-foreground"
+      >
+        <SettingsIcon className="size-4" />
+        Matt
+        <AltArrowDownIcon className="ml-auto size-3.5" />
+      </button>
+    </>
+  );
+}
+
+/**
+ * The collapsed sidebar on a tablet: glyphs only, so the list and the page keep
+ * the width. A place with a count or a dot shows a dot on its glyph.
+ */
+function SidebarRail({ place, onOpen }: { place: Place; onOpen: () => void }) {
+  return (
+    <aside className="hidden w-14 shrink-0 flex-col items-center gap-1 border-r bg-muted/40 py-2 @3xl:flex @5xl:hidden">
+      <Button variant="ghost" size="icon" aria-label="Open navigation" onClick={onOpen}>
+        <SidebarMinimalisticIcon />
+      </Button>
+      <nav aria-label="Outpost" className="mt-1 flex flex-col gap-1">
+        {places.map(({ id, label, icon: Line, solid: Solid, count, dot }) => {
+          const Icon = id === place ? Solid : Line;
+          return (
+            <a
+              key={id}
+              href="#"
+              aria-label={count ? `${label}, ${count}` : label}
+              aria-current={id === place ? "page" : undefined}
+              className={cn(
+                "relative grid size-(--control-h) place-items-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground",
+                id === place && "bg-accent text-foreground",
+              )}
+            >
+              <Icon className="size-4" />
+              {count || dot ? (
+                <span aria-hidden className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-foreground" />
+              ) : null}
+            </a>
+          );
+        })}
+      </nav>
+      <Button variant="ghost" size="icon" aria-label="Account and settings" className="mt-auto text-muted-foreground">
+        <SettingsIcon />
+      </Button>
+    </aside>
+  );
+}
+
+/**
+ * The app frame: a sidebar, a top bar and the page. The sidebar docks on wide
+ * screens, collapses to a rail on a tablet and hides on a phone; below the
+ * docked width, opening it lays it over the page instead of taking width.
+ */
 function AppFrame({
   place,
   title,
@@ -98,60 +221,58 @@ function AppFrame({
   bare?: boolean;
   children: ReactNode;
 }) {
+  const [open, setOpen] = useState(false);
   return (
-    <div className="flex min-h-160 bg-background text-foreground">
-      <aside className="hidden w-56 shrink-0 flex-col border-r bg-muted/40 p-2 @3xl:flex">
-        <div className="flex items-center gap-2 px-2 py-2 font-semibold">
-          <span className="grid size-6 place-items-center rounded-md bg-brand text-xs text-brand-foreground">O</span>
-          Outpost
-        </div>
-        <button
-          type="button"
-          className="mt-1 mb-2 flex h-(--control-h) items-center gap-2 rounded-lg border bg-background px-2 text-muted-foreground"
-        >
-          <MagnifierIcon className="size-4" />
-          Search
-          <Kbd className="ml-auto">⌘K</Kbd>
-        </button>
-        <nav aria-label="Outpost">
-          {places.map(({ id, label, icon: Line, solid: Solid, count, dot }) => {
-            const Icon = id === place ? Solid : Line;
-            return (
-            <a
-              key={id}
-              href="#"
-              aria-current={id === place ? "page" : undefined}
-              className={cn(
-                "flex items-center gap-2 rounded-lg px-2 py-1.5 text-muted-foreground hover:bg-accent hover:text-foreground",
-                id === place && "bg-accent text-foreground",
-              )}
+    <FrameMenu.Provider value={() => setOpen(true)}>
+      <div className="relative flex min-h-160 overflow-hidden bg-background text-foreground">
+        <aside className="hidden w-56 shrink-0 flex-col border-r bg-muted/40 p-2 @5xl:flex">
+          <SidebarPanel place={place} />
+        </aside>
+        <SidebarRail place={place} onOpen={() => setOpen(true)} />
+        {open ? (
+          <>
+            <button
+              type="button"
+              aria-label="Close navigation"
+              onClick={() => setOpen(false)}
+              className="absolute inset-0 z-20 bg-foreground/20 @5xl:hidden"
+            />
+            <aside
+              className="absolute inset-y-0 start-0 z-30 flex w-64 flex-col border-r bg-background p-2 shadow-xl @5xl:hidden"
+              onKeyDown={(event) => {
+                if (event.key === "Escape") setOpen(false);
+              }}
             >
-              <Icon className="size-4" />
-              {label}
-              {count ? <NavCount value={count} /> : dot ? <NavDot /> : null}
-            </a>
-            );
-          })}
-        </nav>
-        <div className="mt-auto flex items-center gap-2 rounded-lg px-2 py-2 text-muted-foreground">
-          <span className="grid size-6 place-items-center rounded-full bg-muted text-xs">MG</span>
-          Matt
+              <SidebarPanel place={place} onClose={() => setOpen(false)} />
+            </aside>
+          </>
+        ) : null}
+        <div className="flex min-w-0 flex-1 flex-col">
+          {bare ? null : (
+            <header className="flex h-12 items-center gap-3 px-4">
+              <MenuButton className="-ms-2 @3xl:hidden" />
+              <h1 className="font-semibold">{title}</h1>
+              <div className="ml-auto flex items-center gap-2">{actions}</div>
+            </header>
+          )}
+          <div className="min-h-0 flex-1">{children}</div>
         </div>
-      </aside>
-      <div className="flex min-w-0 flex-1 flex-col">
-        {bare ? null : (
-          <header className="flex h-12 items-center gap-3 px-4">
-            <h1 className="font-semibold">{title}</h1>
-            <div className="ml-auto flex items-center gap-2">{actions}</div>
-          </header>
-        )}
-        <div className="min-h-0 flex-1">{children}</div>
       </div>
-    </div>
+    </FrameMenu.Provider>
   );
 }
 
-function AskRow({ ask, active, onSelect }: { ask: Ask; active: boolean; onSelect: () => void }) {
+function AskRow({
+  ask,
+  active,
+  answered,
+  onSelect,
+}: {
+  ask: Ask;
+  active: boolean;
+  answered: boolean;
+  onSelect: () => void;
+}) {
   return (
     <button
       type="button"
@@ -159,57 +280,95 @@ function AskRow({ ask, active, onSelect }: { ask: Ask; active: boolean; onSelect
       aria-pressed={active}
       className={cn(
         "flex w-full flex-col gap-1 rounded-lg px-3 py-2.5 text-left hover:bg-accent",
-        active && "bg-accent",
+        active && "@3xl:bg-accent",
       )}
     >
       <span className="flex items-center gap-2 text-muted-foreground">
-        <Signal tone="wait" />
+        {answered ? <CheckCircleBold className="size-3.5 shrink-0 text-success-strong" /> : <Signal tone="wait" />}
         <span className="font-medium text-foreground">{ask.agent}</span>
-        <span>· {ask.project}</span>
-        <span className="ml-auto text-xs tabular-nums">{ask.age}</span>
+        <span>{ask.project}</span>
+        <span className="ml-auto text-xs tabular-nums">{answered ? "Answered" : ask.age}</span>
       </span>
-      <span className="line-clamp-2">{ask.title}</span>
+      <span className={cn("line-clamp-2", answered && "text-muted-foreground")}>{ask.title}</span>
     </button>
   );
 }
 
-type OptionStyle = "cards" | "stacked";
+type OptionStyle = "cards" | "stacked" | "tray";
 type OptionMark = "none" | "glyph" | "letter" | "number" | "yn";
-type OptionLook = { style: OptionStyle; mark: OptionMark; multi: boolean };
+type OptionTone = "neutral" | "coded";
+type OptionLook = { style: OptionStyle; mark: OptionMark; tone: OptionTone; multi: boolean };
+type MarkTone = "neutral" | "success" | "warning" | "destructive" | "info" | "brand";
 
-/** Glyphs for options whose meaning has a standard sign. Others fall back to a letter. */
-const optionGlyphs: Record<string, typeof CheckBold> = { Approve: CheckBold, Hold: PauseBold };
+/**
+ * Mark glyphs drawn on one stroke so a check and a pause carry the same weight.
+ * Solar's bold check is a thin outline while its bold pause is two solid slabs,
+ * so side by side they read as different families.
+ */
+function MarkGlyph({ kind }: { kind: "check" | "pause" }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden className="size-3.5" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+      {kind === "check" ? <path d="M5 13L9 17L19 7" /> : <path d="M9 6V18M15 6V18" />}
+    </svg>
+  );
+}
 
-/** What sits in an option's corner tile, or null for no tile. */
-function markFor(mark: OptionMark, label: string, index: number, count: number): ReactNode {
+/** Options whose meaning has a standard sign get a glyph and a tone. Others fall back to a letter. */
+const optionSigns: Record<string, { glyph: "check" | "pause"; tone: MarkTone }> = {
+  Approve: { glyph: "check", tone: "success" },
+  Hold: { glyph: "pause", tone: "warning" },
+};
+
+/** Tones that letters and numbers cycle through when marks are colour coded. */
+const cycleTones: readonly MarkTone[] = ["info", "brand", "success", "warning", "destructive"];
+
+/** What sits in an option's corner tile and its tone, or null for no tile. */
+function markFor(mark: OptionMark, label: string, index: number, count: number): { content: ReactNode; tone: MarkTone } | null {
   const letter = String.fromCharCode(65 + index);
+  const cycled = cycleTones[index % cycleTones.length] ?? "neutral";
   switch (mark) {
     case "none":
       return null;
     case "glyph": {
-      const Glyph = optionGlyphs[label];
-      return Glyph ? <Glyph className="size-3.5" /> : letter;
+      const sign = optionSigns[label];
+      return sign ? { content: <MarkGlyph kind={sign.glyph} />, tone: sign.tone } : { content: letter, tone: cycled };
     }
     case "letter":
-      return letter;
+      return { content: letter, tone: cycled };
     case "number":
-      return String(index + 1);
+      return { content: String(index + 1), tone: cycled };
     case "yn":
-      return count === 2 ? (index === 0 ? "Y" : "N") : letter;
+      return count === 2
+        ? index === 0
+          ? { content: "Y", tone: "success" }
+          : { content: "N", tone: "destructive" }
+        : { content: letter, tone: cycled };
   }
 }
 
 /**
- * A bounded tile in the option's top-left corner. Neutral until its option is
- * picked; picked, it turns a dark brand tone with a light tonal mark.
+ * Tile colours per tone. Unpicked is a light fill with a dark mark; picked
+ * inverts to a dark fill with a light 100-level mark. Neutral is used when
+ * marks are not colour coded, and keeps the brand for the picked state.
  */
-function OptionTile({ picked, children }: { picked: boolean; children: ReactNode }) {
+const tileTones: Record<MarkTone, { idle: string; picked: string }> = {
+  neutral: { idle: "bg-foreground/6 text-muted-foreground", picked: "bg-brand-700 text-brand-100" },
+  success: { idle: "bg-success-100 text-success-800", picked: "bg-success-700 text-success-100" },
+  warning: { idle: "bg-warning-100 text-warning-800", picked: "bg-warning-700 text-warning-100" },
+  destructive: { idle: "bg-destructive-100 text-destructive-800", picked: "bg-destructive-700 text-destructive-100" },
+  info: { idle: "bg-info-100 text-info-800", picked: "bg-info-700 text-info-100" },
+  brand: { idle: "bg-brand-100 text-brand-800", picked: "bg-brand-700 text-brand-100" },
+};
+
+/** A bounded tile in the option's top-left corner, light until its option is picked. */
+function OptionTile({ picked, tone, children }: { picked: boolean; tone: MarkTone; children: ReactNode }) {
+  const colours = tileTones[tone];
   return (
     <span
       aria-hidden
       className={cn(
         "grid size-6 shrink-0 place-items-center rounded-md text-xs font-semibold tabular-nums transition-colors",
-        picked ? "bg-brand-700 text-brand-100" : "bg-foreground/6 text-muted-foreground",
+        picked ? colours.picked : colours.idle,
       )}
     >
       {children}
@@ -219,7 +378,10 @@ function OptionTile({ picked, children }: { picked: boolean; children: ReactNode
 
 function OptionText({ option }: { option: Ask["options"][number] }) {
   return (
-    <span className="grid min-w-0 gap-0.5">
+    // The label row is as tall as the corner tile, which adds 2px above the
+    // label's text; pb-0.5 adds the same below the detail so the option looks
+    // evenly padded.
+    <span className="grid min-w-0 gap-0.5 pb-0.5">
       <span className="flex min-h-6 items-center gap-2 font-medium">
         {option.label}
         {option.recommended ? <Badge variant="secondary">Recommended</Badge> : null}
@@ -229,17 +391,27 @@ function OptionText({ option }: { option: Ask["options"][number] }) {
   );
 }
 
-function AskOptions({ ask, look }: { ask: Ask; look: OptionLook }) {
-  const [picked, setPicked] = useState<string[]>([]);
+function AskOptions({
+  ask,
+  look,
+  picked,
+  onPick,
+}: {
+  ask: Ask;
+  look: OptionLook;
+  picked: readonly string[];
+  onPick: (next: string[]) => void;
+}) {
   const toggle = (label: string) =>
-    setPicked((current) =>
+    onPick(
       look.multi
-        ? current.includes(label)
-          ? current.filter((item) => item !== label)
-          : [...current, label]
+        ? picked.includes(label)
+          ? picked.filter((item) => item !== label)
+          : [...picked, label]
         : [label],
     );
   const stacked = look.style === "stacked";
+  const tray = look.style === "tray";
   return (
     <div className="mt-5 grid gap-2">
       <div
@@ -248,7 +420,9 @@ function AskOptions({ ask, look }: { ask: Ask; look: OptionLook }) {
         className={cn(
           stacked
             ? "frame divide-y overflow-hidden bg-card p-0 shadow-(--shadow-frame) ring-1 ring-foreground/10"
-            : "grid gap-2",
+            : tray
+              ? "frame grid gap-1.5 bg-muted p-1.5 [--tray-radius:calc(var(--frame-radius)-var(--spacing)*1.5)]"
+              : "grid gap-2",
         )}
       >
         {ask.options.map((option, index) => {
@@ -265,7 +439,11 @@ function AskOptions({ ask, look }: { ask: Ask; look: OptionLook }) {
                 "flex w-full items-start gap-3 text-left",
                 stacked
                   ? "p-frame hover:bg-muted/60"
-                  : "frame bg-card p-frame shadow-(--shadow-frame) ring-1 ring-foreground/10 hover:ring-foreground/25",
+                  : cn(
+                      "frame bg-card p-frame shadow-(--shadow-frame) ring-1 ring-foreground/10 hover:ring-foreground/25",
+                      // Concentric with the tray: its radius less the tray's padding.
+                      tray && "rounded-[calc(var(--tray-radius)*var(--corner-scale))]",
+                    ),
                 stacked && isPicked && "bg-brand-50 hover:bg-brand-50 dark:bg-brand-950/50 dark:hover:bg-brand-950/50",
                 !stacked && isPicked && "ring-2 ring-brand hover:ring-brand",
               )}
@@ -276,7 +454,9 @@ function AskOptions({ ask, look }: { ask: Ask; look: OptionLook }) {
                 </span>
               ) : (
                 <>
-                  <OptionTile picked={isPicked}>{mark}</OptionTile>
+                  <OptionTile picked={isPicked} tone={look.tone === "coded" ? mark.tone : "neutral"}>
+                    {mark.content}
+                  </OptionTile>
                   <OptionText option={option} />
                 </>
               )}
@@ -295,28 +475,97 @@ function AskOptions({ ask, look }: { ask: Ask; look: OptionLook }) {
   );
 }
 
-function AskDetail({ ask, look }: { ask: Ask; look: OptionLook }) {
+function AskDetail({
+  ask,
+  look,
+  picked,
+  onPick,
+}: {
+  ask: Ask;
+  look: OptionLook;
+  picked: readonly string[];
+  onPick: (next: string[]) => void;
+}) {
+  const [reply, setReply] = useState("");
   return (
     <div className="mx-auto w-full max-w-xl p-(--pad) @3xl:p-6">
-      <p className="flex items-center gap-2 text-muted-foreground">
+      <p className="flex items-start gap-2 text-muted-foreground">
         <Badge variant="outline" className="capitalize">
           {ask.kind}
         </Badge>
-        {ask.agent} asked {ask.age} ago
+        <span className="min-h-5 leading-5">
+          {ask.agent} asked {ask.age} ago
+        </span>
       </p>
       <h2 className="mt-3 text-lg font-semibold tracking-tight">{ask.title}</h2>
       <p className="mt-2 text-muted-foreground">{ask.context}</p>
       {ask.kind === "input" ? (
         <div className="mt-5 grid gap-2">
           <Label htmlFor="reply">Your reply</Label>
-          <Textarea id="reply" placeholder="Use the ubuntu-24 runner image…" />
-          <div className="flex justify-end">
-            <Button>Send reply</Button>
+          <Textarea
+            id="reply"
+            placeholder="Use the ubuntu-24 runner image…"
+            value={reply}
+            onChange={(event) => setReply(event.target.value)}
+          />
+          <div className="flex items-center justify-end gap-3">
+            {picked.length > 0 ? <span className="text-muted-foreground">Sent</span> : null}
+            <Button disabled={reply.trim() === ""} onClick={() => onPick([reply.trim()])}>
+              Send reply
+            </Button>
           </div>
         </div>
       ) : (
-        <AskOptions key={`${look.mark}-${look.multi}`} ask={ask} look={look} />
+        <AskOptions ask={ask} look={look} picked={picked} onPick={onPick} />
       )}
+    </div>
+  );
+}
+
+/**
+ * Progress through the queue on a phone: one segment per ask, filled once it is
+ * answered and ringed where you are. Each segment jumps to its ask.
+ */
+function AskProgress({
+  current,
+  answers,
+  onJump,
+}: {
+  current: number;
+  answers: Readonly<Record<string, readonly string[]>>;
+  onJump: (index: number) => void;
+}) {
+  const done = asks.filter((item) => (answers[item.id] ?? []).length > 0).length;
+  return (
+    <div className="grid gap-2">
+      <div className="flex gap-1">
+        {asks.map((item, index) => {
+          const answered = (answers[item.id] ?? []).length > 0;
+          return (
+            <button
+              key={item.id}
+              type="button"
+              aria-label={`Ask ${index + 1} of ${asks.length}${answered ? ", answered" : ""}`}
+              aria-current={index === current ? "step" : undefined}
+              onClick={() => onJump(index)}
+              className="group flex h-4 flex-1 items-center"
+            >
+              <span
+                className={cn(
+                  "h-1.5 w-full rounded-full transition-all",
+                  answered ? "bg-brand" : "bg-foreground/10 group-hover:bg-foreground/20",
+                  index === current && "h-3",
+                  index === current && !answered && "bg-foreground/30",
+                )}
+              />
+            </button>
+          );
+        })}
+      </div>
+      <p className="flex text-xs text-muted-foreground tabular-nums">
+        <span>{done} answered</span>
+        <span className="ml-auto">{asks.length - done} left</span>
+      </p>
     </div>
   );
 }
@@ -358,8 +607,21 @@ function Choice<T extends string>({
 export function NeedsYouComposition() {
   const [view, setView] = useState<"open" | "answered">("open");
   const [selected, setSelected] = useState(asks[0]?.id);
-  const [look, setLook] = useState<OptionLook>({ style: "cards", mark: "none", multi: false });
-  const ask = asks.find((item) => item.id === selected) ?? asks[0];
+  /** Which of the two phone screens shows. Wider frames show both columns. */
+  const [screen, setScreen] = useState<"list" | "ask">("list");
+  const [answers, setAnswers] = useState<Record<string, string[]>>({});
+  const [look, setLook] = useState<OptionLook>({ style: "cards", mark: "none", tone: "neutral", multi: false });
+  const index = Math.max(0, asks.findIndex((item) => item.id === selected));
+  const ask = asks[index];
+  const done = asks.filter((item) => (answers[item.id] ?? []).length > 0).length;
+  const open = (next: number) => {
+    const target = asks[next];
+    if (!target) return;
+    setSelected(target.id);
+    setScreen("ask");
+  };
+  const answered = ask ? (answers[ask.id] ?? []).length > 0 : false;
+  const last = index === asks.length - 1;
   return (
     <div className="grid gap-4">
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
@@ -369,8 +631,18 @@ export function NeedsYouComposition() {
           options={[
             { value: "cards", label: "Cards" },
             { value: "stacked", label: "Stacked" },
+            { value: "tray", label: "Tray" },
           ]}
           onChange={(style) => setLook({ ...look, style })}
+        />
+        <Choice
+          label="Tone"
+          value={look.tone}
+          options={[
+            { value: "neutral", label: "Neutral" },
+            { value: "coded", label: "Coded" },
+          ]}
+          onChange={(tone) => setLook({ ...look, tone })}
         />
         <Choice
           label="Mark"
@@ -391,14 +663,18 @@ export function NeedsYouComposition() {
             { value: "single", label: "One" },
             { value: "multi", label: "Many" },
           ]}
-          onChange={(next) => setLook({ ...look, multi: next === "multi" })}
+          onChange={(next) => {
+            setLook({ ...look, multi: next === "multi" });
+            setAnswers({});
+          }}
         />
       </div>
       <Viewport>
         <AppFrame place="needs-you" title="Needs you" bare>
           <div className="grid h-full @3xl:grid-cols-[minmax(--spacing(64),--spacing(88))_1fr]">
-            <div className="flex flex-col border-b @3xl:border-r @3xl:border-b-0">
-              <div className="flex h-12 shrink-0 items-center gap-2 ps-4 pe-2">
+            <div className={cn("flex flex-col @3xl:border-r", screen === "ask" && "@max-3xl:hidden")}>
+              <div className="flex h-12 shrink-0 items-center gap-2 ps-2 pe-2 @3xl:ps-4">
+                <MenuButton className="@3xl:hidden" />
                 <h1 className="font-semibold">Needs you</h1>
                 <Tabs
                   value={view}
@@ -419,14 +695,67 @@ export function NeedsYouComposition() {
                   </div>
                 </div>
               ) : (
-                <div className="p-2 pt-0">
-                  {asks.map((item) => (
-                    <AskRow key={item.id} ask={item} active={item.id === ask?.id} onSelect={() => setSelected(item.id)} />
-                  ))}
-                </div>
+                <>
+                  <p className="px-4 pb-2 text-xs text-muted-foreground tabular-nums @3xl:hidden">
+                    {done} of {asks.length} answered
+                  </p>
+                  <div className="p-2 pt-0">
+                    {asks.map((item, itemIndex) => (
+                      <AskRow
+                        key={item.id}
+                        ask={item}
+                        active={item.id === ask?.id}
+                        answered={(answers[item.id] ?? []).length > 0}
+                        onSelect={() => open(itemIndex)}
+                      />
+                    ))}
+                  </div>
+                </>
               )}
             </div>
-            {view === "open" && ask ? <AskDetail key={ask.id} ask={ask} look={look} /> : null}
+            {view === "open" && ask ? (
+              <div className={cn("flex min-h-160 flex-col @3xl:min-h-0", screen === "list" && "@max-3xl:hidden")}>
+                <div className="grid gap-3 border-b px-2 pt-2 pb-3 @3xl:hidden">
+                  <div className="flex items-center gap-1">
+                    <Button variant="ghost" size="sm" onClick={() => setScreen("list")}>
+                      <AltArrowLeftIcon data-icon="inline-start" />
+                      All asks
+                    </Button>
+                    <span className="ml-auto pe-2 text-muted-foreground tabular-nums">
+                      {index + 1} of {asks.length}
+                    </span>
+                  </div>
+                  <div className="px-2">
+                    <AskProgress current={index} answers={answers} onJump={open} />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <AskDetail
+                    key={`${ask.id}-${look.mark}-${look.multi}`}
+                    ask={ask}
+                    look={look}
+                    picked={answers[ask.id] ?? []}
+                    onPick={(next) => setAnswers({ ...answers, [ask.id]: next })}
+                  />
+                </div>
+                <div className="sticky bottom-0 flex items-center gap-2 border-t bg-background p-2 @3xl:hidden">
+                  <Button variant="ghost" disabled={index === 0} onClick={() => open(index - 1)}>
+                    <AltArrowLeftIcon data-icon="inline-start" />
+                    Previous
+                  </Button>
+                  {last ? (
+                    <Button className="ml-auto" variant={answered ? "default" : "outline"} onClick={() => setScreen("list")}>
+                      {done === asks.length ? "Done" : "Back to list"}
+                    </Button>
+                  ) : (
+                    <Button className="ml-auto" variant={answered ? "default" : "outline"} onClick={() => open(index + 1)}>
+                      {answered ? "Next" : "Skip"}
+                      <AltArrowRightIcon data-icon="inline-end" />
+                    </Button>
+                  )}
+                </div>
+              </div>
+            ) : null}
           </div>
         </AppFrame>
       </Viewport>
