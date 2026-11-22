@@ -393,6 +393,14 @@
   text-box: trim-both cap alphabetic;
 }
 
+/*
+ * Trims only the space above the cap height. Use it on text that clips
+ * (truncate, overflow-hidden), where trimming the bottom would cut descenders.
+ */
+@utility text-trim-start {
+  text-box: trim-start cap alphabetic;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
