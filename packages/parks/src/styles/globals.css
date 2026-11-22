@@ -57,6 +57,7 @@
   --inner-radius: max(2px, calc(var(--radius) - var(--panel-pad-base)));
   --control-h: 2rem;
   --corner-gap: 0.5rem;
+  --field-radius: 0.5rem;
   --font-ui: ui-sans-serif, system-ui, sans-serif;
   --font-code: ui-monospace, SFMono-Regular, Menlo, monospace;
   --shadow-frame: 0 0 #0000;
@@ -142,11 +143,18 @@
   padding: 0 var(--corner-gap) var(--corner-gap);
 }
 
-/* Card content sits one --corner-gap in, flush with the footer's pills, and
-   its containers take the concentric radius (frame radius − gap). Bare text
-   in that content uses ps-text to stay aligned with the card title. */
+/* Card content sits one --corner-gap in, flush with the footer's pills. Its
+   single-line pieces (inputs, rows) are not near a corner, so they take the
+   flatter --field-radius. Bare text uses ps-text to stay aligned with the
+   card title. */
 @utility ps-text {
   padding-inline-start: var(--text-offset, 0);
+}
+
+/* A container that groups several pieces inside card content and spans its
+   width takes the concentric radius (frame radius − corner gap). */
+@utility concentric {
+  --radius: calc(var(--frame-radius) - var(--corner-gap));
 }
 
 /* Even padding for a frame that lays out its own content. */

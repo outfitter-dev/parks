@@ -17,6 +17,7 @@ const config = {
     panelPad: [start.shape.panelPad, 2, 24, 1],
     textInset: [start.shape.textInset, 0, 1, 0.05],
     control: [start.shape.control, 24, 44, 1],
+    field: [start.shape.field, 0, 24, 1],
   },
   type: {
     font: {
