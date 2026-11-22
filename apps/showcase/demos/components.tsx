@@ -65,7 +65,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@workspace/ui/component
 import { AddCircleIcon } from "@solar-icons/react/linear/add-circle";
 import { BellOffIcon } from "@solar-icons/react/linear/bell-off";
 import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
+import { DangerCircleIcon } from "@solar-icons/react/linear/danger-circle";
 import { DangerTriangleIcon } from "@solar-icons/react/linear/danger-triangle";
+import { InfoCircleIcon } from "@solar-icons/react/linear/info-circle";
 import { MenuDotsIcon } from "@solar-icons/react/linear/menu-dots";
 import { PenIcon } from "@solar-icons/react/linear/pen";
 import { RefreshIcon } from "@solar-icons/react/linear/refresh";
@@ -124,6 +126,8 @@ export function BadgeDemo() {
         <Badge variant="secondary">Dry run</Badge>
         <Badge variant="outline">Muted</Badge>
         <Badge variant="success">Live</Badge>
+        <Badge variant="warning">Waiting</Badge>
+        <Badge variant="info">Queued</Badge>
         <Badge variant="destructive">Failed</Badge>
       </Specimen>
       <Specimen
@@ -397,6 +401,16 @@ export function FeedbackDemo() {
           <DangerTriangleIcon />
           <AlertTitle>Delivery failing</AlertTitle>
           <AlertDescription>Donna&rsquo;s webhook has returned 502 three times since 9:10 PM.</AlertDescription>
+        </Alert>
+        <Alert variant="warning">
+          <DangerCircleIcon />
+          <AlertTitle>Approval waiting</AlertTitle>
+          <AlertDescription>Rex has asked to merge outpost#47. The request expires in 40 minutes.</AlertDescription>
+        </Alert>
+        <Alert variant="info">
+          <InfoCircleIcon />
+          <AlertTitle>Quiet hours on</AlertTitle>
+          <AlertDescription>Notices queue until 8:00 AM and arrive as one digest.</AlertDescription>
         </Alert>
       </Specimen>
       <Specimen title="Progress" className="block max-w-sm">
