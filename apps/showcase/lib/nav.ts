@@ -1,4 +1,4 @@
-export type Section = "primitives" | "components" | "compositions";
+export type Section = "primitives" | "components" | "compositions" | "surfaces";
 
 export type Entry = {
   section: Section;
@@ -9,6 +9,7 @@ export type Entry = {
 
 export const sections: { id: Section; title: string }[] = [
   { id: "compositions", title: "Compositions" },
+  { id: "surfaces", title: "Surfaces" },
   { id: "components", title: "Components" },
   { id: "primitives", title: "Primitives" },
 ];
@@ -18,6 +19,13 @@ export const entries: Entry[] = [
   { section: "compositions", slug: "agents", title: "Agents", summary: "Every agent with its mode, destination and last activity." },
   { section: "compositions", slug: "admin", title: "Admin", summary: "Elevated admin with its timer, routing versions and the audit log." },
   { section: "compositions", slug: "sign-in", title: "Sign in", summary: "The sign-in card and the device approval prompt." },
+
+  { section: "surfaces", slug: "board", title: "Mission control", summary: "The fleet at a glance, work by Board state, and one run card in detail." },
+  { section: "surfaces", slug: "assistant", title: "Assistant", summary: "A thread with a tool trace, a diff, an inline ask and a composer with context." },
+  { section: "surfaces", slug: "skillset", title: "Skillset", summary: "The source tree and one skill with its rendered outputs, drift and change ledger." },
+  { section: "surfaces", slug: "trails", title: "Trails", summary: "A topo explorer: trails by group and one contract rendered on each surface." },
+  { section: "surfaces", slug: "docs", title: "Docs", summary: "Section nav, a readable article with steps and an on-this-page rail." },
+  { section: "surfaces", slug: "blog", title: "Blog", summary: "An index with a featured post, and the reading view." },
 
   { section: "components", slug: "button", title: "Button", summary: "Variants, sizes, icons and states." },
   { section: "components", slug: "badge", title: "Badge", summary: "Short status labels." },
