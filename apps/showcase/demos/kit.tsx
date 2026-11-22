@@ -114,7 +114,7 @@ const haloTones = {
  */
 export function HaloSignal({
   tone,
-  size = 20,
+  size = 16,
   label,
   className,
   ...props
@@ -130,20 +130,20 @@ export function HaloSignal({
       aria-label={label}
       width={size}
       height={size}
-      viewBox="0 0 20 20"
+      viewBox="0 0 16 16"
       className={cn("shrink-0", haloTones[tone], className)}
     >
-      <circle cx="10" cy="10" r="4" fill="currentColor" />
-      <circle cx="10" cy="10" r="8.25" fill="none" stroke="currentColor" strokeOpacity="0.18" strokeWidth="1.5" />
+      <circle cx="8" cy="8" r="4" fill="currentColor" />
+      <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" strokeOpacity="0.18" strokeWidth="1.5" />
       <circle
-        cx="10"
-        cy="10"
-        r="8.25"
+        cx="8"
+        cy="8"
+        r="7"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
-        strokeDasharray="13 39"
+        strokeDasharray="11 33"
         className="origin-center animate-spin [animation-duration:1.2s] [transform-box:fill-box] motion-reduce:animate-none"
       />
     </svg>
