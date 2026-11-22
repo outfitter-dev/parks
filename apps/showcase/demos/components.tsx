@@ -48,6 +48,7 @@ import {
   SelectValue,
 } from "@workspace/ui/components/select";
 import { Skeleton } from "@workspace/ui/components/skeleton";
+import { Spinner } from "@workspace/ui/components/spinner";
 import { Switch } from "@workspace/ui/components/switch";
 import {
   Table,
@@ -412,6 +413,18 @@ export function FeedbackDemo() {
           <AlertTitle>Quiet hours on</AlertTitle>
           <AlertDescription>Notices queue until 8:00 AM and arrive as one digest.</AlertDescription>
         </Alert>
+      </Specimen>
+      <Specimen title="Spinner" className="flex flex-wrap items-center gap-4">
+        <Spinner />
+        <Spinner className="size-6" />
+        <Button disabled>
+          <Spinner data-icon="inline-start" aria-label="Approving" />
+          Approving
+        </Button>
+        <span className="inline-flex items-center gap-2 text-muted-foreground">
+          <Spinner aria-label="Delivering" />
+          Delivering to Donna
+        </span>
       </Specimen>
       <Specimen title="Progress" className="block max-w-sm">
         <Progress value={64} />

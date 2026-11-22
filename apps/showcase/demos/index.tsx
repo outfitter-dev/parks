@@ -16,7 +16,6 @@ import {
   NeedsYouComposition,
   SignInComposition,
 } from "./compositions";
-import { LoadersDemo } from "./loaders";
 import { ColorDemo, IconsDemo, ShapeDemo, TypeDemo } from "./primitives";
 
 /** Keyed by `section/slug` from lib/nav.ts. */
@@ -34,7 +33,6 @@ export const demos: Record<string, ComponentType> = {
   "components/table": TableDemo,
   "components/feedback": FeedbackDemo,
   "components/layout": LayoutDemo,
-  "components/loaders": LoadersDemo,
   "primitives/color": ColorDemo,
   "primitives/type": TypeDemo,
   "primitives/shape": ShapeDemo,
