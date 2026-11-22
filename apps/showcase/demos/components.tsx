@@ -123,7 +123,21 @@ export function BadgeDemo() {
         <Badge>Live</Badge>
         <Badge variant="secondary">Dry run</Badge>
         <Badge variant="outline">Muted</Badge>
+        <Badge variant="success">Live</Badge>
         <Badge variant="destructive">Failed</Badge>
+      </Specimen>
+      <Specimen
+        title="On a surface"
+        note="Fills are translucent and each badge carries a soft tonal ring, so it separates from whatever sits behind it."
+      >
+        <div className="flex flex-wrap items-center gap-2 rounded-lg bg-muted p-3">
+          <Badge variant="secondary">Dry run</Badge>
+          <Badge variant="outline">
+            <span className="lead"><Signal tone="live" /></span>Live
+          </Badge>
+          <Badge variant="success">Live</Badge>
+          <Badge variant="destructive">Failed</Badge>
+        </div>
       </Specimen>
       <Specimen title="With a signal dot" note="The dot carries the state; the label stays neutral.">
         <Badge variant="outline">
