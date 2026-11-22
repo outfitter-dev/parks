@@ -99,11 +99,11 @@ function TaskCard({ task }: { task: Task }) {
           <Signal tone={task.lane === "asking" ? "wait" : task.lane === "done" ? "live" : "off"} />
         )}
       </span>
-      <span className="text-trim-start truncate pe-4 font-medium">{task.agent}</span>
-      <span className="flex flex-col">
-        <span className="leading-snug">{task.title}</span>
-        <span className="text-xs text-muted-foreground">{task.project}</span>
+      <span className="flex flex-col pe-4">
+        <span className="text-trim-start truncate font-medium">{task.agent}</span>
+        <span className="truncate text-xs text-muted-foreground">{task.project}</span>
       </span>
+      <span className="leading-snug">{task.title}</span>
       <Meter task={task} />
       {task.note ? <span className="text-xs text-muted-foreground">{task.note}</span> : null}
     </article>
