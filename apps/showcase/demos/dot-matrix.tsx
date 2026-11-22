@@ -157,12 +157,13 @@ export function DotMatrixDemo() {
     <>
       <Specimen
         title="Halo signal"
-        note="The Signal dot with a halo and a travelling arc, in the signal's own colour. At 20px the dot matches a plain 8px Signal."
+        note="The Signal dot with a halo and a travelling arc, in the signal's own colour. At 16px the dot matches a plain 8px Signal."
         className="flex flex-col gap-5"
       >
         <span className="flex flex-wrap items-center gap-6">
           {(["wait", "live", "off", "alert"] as const).map((tone) => (
             <span key={tone} className="flex items-center gap-3">
+              <HaloSignal tone={tone} size={12} label={tone} />
               <HaloSignal tone={tone} size={16} label={tone} />
               <HaloSignal tone={tone} size={20} label={tone} />
               <HaloSignal tone={tone} size={28} label={tone} />
@@ -172,11 +173,11 @@ export function DotMatrixDemo() {
         </span>
         <span className="flex flex-wrap items-center gap-4">
           <Badge variant="outline">
-            <span className="lead"><HaloSignal tone="wait" size={16} label="Working" /></span>
+            <span className="lead"><HaloSignal tone="wait" size={12} label="Working" /></span>
             Working
           </Badge>
           <Button variant="secondary" disabled>
-            <HaloSignal tone="live" size={16} label="Deploying" data-icon="inline-start" />
+            <HaloSignal tone="live" size={14} label="Deploying" data-icon="inline-start" />
             Deploying
           </Button>
           <span className="inline-flex items-center gap-2">

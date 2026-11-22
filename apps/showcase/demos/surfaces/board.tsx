@@ -91,19 +91,15 @@ function Meter({ task }: { task: Task }) {
 
 function TaskCard({ task }: { task: Task }) {
   return (
-    <article className="flex flex-col gap-2 rounded-lg border bg-background p-3 shadow-xs">
-      <span className="flex h-6 items-center gap-2">
-        <span className="min-w-0 flex-1 truncate font-medium">{task.agent}</span>
+    <article className="relative flex flex-col gap-2 rounded-lg border bg-background p-3 shadow-xs">
+      <span className="absolute top-2 right-2 grid size-4 place-items-center">
         {task.lane === "working" ? (
-          <span className="grid size-6 place-items-center">
-            <HaloSignal tone="wait" label={`${task.agent} is working`} />
-          </span>
+          <HaloSignal tone="wait" label={`${task.agent} is working`} />
         ) : (
-          <span className="grid size-6 place-items-center">
-            <Signal tone={task.lane === "asking" ? "wait" : task.lane === "done" ? "live" : "off"} />
-          </span>
+          <Signal tone={task.lane === "asking" ? "wait" : task.lane === "done" ? "live" : "off"} />
         )}
       </span>
+      <span className="text-trim truncate pe-4 font-medium">{task.agent}</span>
       <span className="flex flex-col">
         <span className="leading-snug">{task.title}</span>
         <span className="text-xs text-muted-foreground">{task.project}</span>
