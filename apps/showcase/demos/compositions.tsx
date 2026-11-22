@@ -150,7 +150,7 @@ function AskDetail({ ask }: { ask: Ask }) {
               onClick={() => setChoice(option.label)}
               aria-pressed={choice === option.label}
               className={cn(
-                "flex items-start gap-3 rounded-frame bg-card p-(--pad) text-left shadow-(--shadow-frame) ring-1 ring-foreground/10 hover:ring-foreground/25",
+                "flex items-start gap-3 frame p-frame bg-card text-left shadow-(--shadow-frame) ring-1 ring-foreground/10 hover:ring-foreground/25",
                 choice === option.label && "ring-2 ring-brand",
               )}
             >
@@ -282,10 +282,10 @@ export function AdminComposition() {
             </CardHeader>
             <CardContent className="grid gap-1.5">
               {versions.map((item, index) => (
-                <div key={item.version} className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2">
-                  <span className="font-mono text-muted-foreground">v{item.version}</span>
+                <div key={item.version} className="panel flex items-center gap-3 bg-muted">
+                  <span className="ps-inset font-mono text-muted-foreground">v{item.version}</span>
                   <span className="min-w-0 flex-1 truncate">{item.change}</span>
-                  {index === 0 ? <Badge>Live</Badge> : <span className="text-muted-foreground">{item.when}</span>}
+                  {index === 0 ? <Badge>Live</Badge> : <span className="pe-inset text-muted-foreground">{item.when}</span>}
                 </div>
               ))}
             </CardContent>
@@ -305,7 +305,7 @@ export function AdminComposition() {
             </CardHeader>
             <CardContent className="grid gap-3">
               <Progress value={78} aria-label="Time left" />
-              <div className="flex items-center gap-2 rounded-lg bg-muted px-3 py-2">
+              <div className="panel flex items-center gap-2 bg-muted">
                 <KeyIcon className="size-4 text-muted-foreground" />
                 Passkey confirmed at 9:38 PM
               </div>
