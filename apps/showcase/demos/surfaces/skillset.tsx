@@ -171,7 +171,7 @@ export function SkillsetSurface() {
                     {target.state === "drift" ? (
                       <>
                         <Badge variant="warning">Hand-edited</Badge>
-                        <Button variant="outline" size="sm">Repair</Button>
+                        <Button variant="secondary" size="sm">Repair</Button>
                       </>
                     ) : (
                       <Badge variant="success">In sync</Badge>
