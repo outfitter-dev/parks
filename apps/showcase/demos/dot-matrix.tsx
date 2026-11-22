@@ -53,7 +53,7 @@ import { DotmSquare17 } from "./dotmatrix/dotm-square-17";
 import { DotmSquare18 } from "./dotmatrix/dotm-square-18";
 import { DotmSquare19 } from "./dotmatrix/dotm-square-19";
 import { DotmSquare20 } from "./dotmatrix/dotm-square-20";
-import { Specimen } from "./kit";
+import { HaloSignal, Specimen } from "./kit";
 
 type Loader = ComponentType<{ size?: number; dotSize?: number; ariaLabel?: string; className?: string }>;
 type Entry = { name: string; id: string; Loader: Loader };
@@ -155,6 +155,37 @@ function Round({ children, className }: { children: ReactNode; className?: strin
 export function DotMatrixDemo() {
   return (
     <>
+      <Specimen
+        title="Halo signal"
+        note="The Signal dot with a halo and a travelling arc, in the signal's own colour. At 20px the dot matches a plain 8px Signal."
+        className="flex flex-col gap-5"
+      >
+        <span className="flex flex-wrap items-center gap-6">
+          {(["wait", "live", "off", "alert"] as const).map((tone) => (
+            <span key={tone} className="flex items-center gap-3">
+              <HaloSignal tone={tone} size={16} label={tone} />
+              <HaloSignal tone={tone} size={20} label={tone} />
+              <HaloSignal tone={tone} size={28} label={tone} />
+              <HaloSignal tone={tone} size={40} label={tone} />
+            </span>
+          ))}
+        </span>
+        <span className="flex flex-wrap items-center gap-4">
+          <Badge variant="outline">
+            <span className="lead"><HaloSignal tone="wait" size={16} label="Working" /></span>
+            Working
+          </Badge>
+          <Button variant="secondary" disabled>
+            <HaloSignal tone="live" size={16} label="Deploying" data-icon="inline-start" />
+            Deploying
+          </Button>
+          <span className="inline-flex items-center gap-2">
+            <HaloSignal tone="wait" label="Climb lead is working" />
+            Climb lead is working
+          </span>
+        </span>
+      </Specimen>
+
       <Specimen
         title="In rounded containers"
         note="Radar (circular 4) inside round and pill-shaped bounds, where the circular mask follows the container."
