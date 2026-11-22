@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cnState } from "#lib/utils"
 
 const buttonVariants = cva(
-  "group/button text-trim inline-flex shrink-0 items-center justify-center rounded-full border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-invalid-border aria-invalid:ring-3 aria-invalid:ring-invalid-ring [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button text-trim inline-flex shrink-0 items-center justify-center rounded-full border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-invalid-border aria-invalid:ring-3 aria-invalid:ring-invalid-ring [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-(--glyph) h-(--button-h) [--glyph:var(--icon-size,calc(var(--spacing)*4))] has-data-[icon=inline-start]:ps-(--icon-inset) has-data-[icon=inline-end]:pe-(--icon-inset) [--icon-inset:calc((var(--button-h)-var(--glyph))/2-1px)]",
   {
     variants: {
       variant: {
@@ -19,17 +19,19 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default:
-          "h-(--control-h) gap-1.5 px-3.5 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3",
-        xs: "h-6 gap-1 px-2.5 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7 gap-1 px-3 text-(length:--text-control-small) in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "h-9 gap-1.5 px-4 has-data-[icon=inline-end]:pr-3.5 has-data-[icon=inline-start]:pl-3.5",
-        icon: "size-(--control-h)",
+        // A leading or trailing glyph sits on the centre of the pill's end
+        // radius: --icon-inset is half the height left over around the glyph,
+        // less the 1px transparent border.
+        default: "[--button-h:var(--control-h)] gap-1.5 px-3.5",
+        xs: "[--button-h:calc(var(--spacing)*6)] [--icon-size:calc(var(--spacing)*3)] gap-1 px-2.5 text-xs in-data-[slot=button-group]:rounded-lg",
+        sm: "[--button-h:calc(var(--spacing)*7)] [--icon-size:calc(var(--spacing)*3.5)] gap-1 px-3 text-(length:--text-control-small) in-data-[slot=button-group]:rounded-lg",
+        lg: "[--button-h:calc(var(--spacing)*9)] gap-1.5 px-4",
+        icon: "[--button-h:var(--control-h)] w-(--button-h)",
         "icon-xs":
-          "size-6 in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
+          "[--button-h:calc(var(--spacing)*6)] [--icon-size:calc(var(--spacing)*3)] w-(--button-h) in-data-[slot=button-group]:rounded-lg",
         "icon-sm":
-          "size-7 in-data-[slot=button-group]:rounded-lg",
-        "icon-lg": "size-9",
+          "[--button-h:calc(var(--spacing)*7)] w-(--button-h) in-data-[slot=button-group]:rounded-lg",
+        "icon-lg": "[--button-h:calc(var(--spacing)*9)] w-(--button-h)",
       },
     },
     defaultVariants: {
