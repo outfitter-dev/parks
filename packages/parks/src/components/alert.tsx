@@ -45,7 +45,7 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="alert-title"
       className={cnState(
-        "font-medium group-has-[>svg]/alert:col-start-2 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground",
+        "font-medium group-has-[>svg]/alert:col-start-2 group-has-data-[slot=alert-meta]/alert:pe-16 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground",
         className
       )}
       {...props}
@@ -69,6 +69,26 @@ function AlertDescription({
   )
 }
 
+/**
+ * A timestamp or other short meta in the alert's top-right corner, on the
+ * title's line. The title leaves room for it.
+ *
+ * @example
+ * <AlertMeta><time dateTime="2026-11-22T21:10Z">2 min ago</time></AlertMeta>
+ */
+function AlertMeta({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="alert-meta"
+      className={cnState(
+        "absolute top-2 right-2.5 text-xs leading-5 whitespace-nowrap text-muted-foreground tabular-nums",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
 function AlertAction({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -79,4 +99,4 @@ function AlertAction({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-export { Alert, AlertTitle, AlertDescription, AlertAction }
+export { Alert, AlertTitle, AlertDescription, AlertAction, AlertMeta }

@@ -12,7 +12,7 @@ export type PrimaryStyle = "ink" | "brand";
 
 export type ThemeTokens = {
   mode: Mode;
-  shape: { radius: number; pad: number; panelPad: number; textInset: number; control: number; field: number; smooth: number };
+  shape: { radius: number; pad: number; panelPad: number; textInset: number; control: number; field: number; smooth: number; stroke: number };
   type: { font: UiFont; size: number; rond: number; mono: MonoFont };
   color: {
     brand: string;
@@ -30,7 +30,7 @@ export const presets: Record<PresetId, { label: string; values: PresetValues }> 
   luma: {
     label: "Luma tuned",
     values: {
-      shape: { radius: 13, pad: 12, panelPad: 8, textInset: 0.4, control: 34, field: 8, smooth: 2 },
+      shape: { radius: 13, pad: 12, panelPad: 8, textInset: 0.4, control: 34, field: 8, smooth: 2, stroke: 1.5 },
       type: { font: "allo", size: 14, rond: 50, mono: "jetbrains" },
       color: {
         brand: "oklch(0.76 0.15 70)",
@@ -45,7 +45,7 @@ export const presets: Record<PresetId, { label: string; values: PresetValues }> 
   linear: {
     label: "Linear-like",
     values: {
-      shape: { radius: 6, pad: 8, panelPad: 6, textInset: 0.4, control: 28, field: 6, smooth: 2 },
+      shape: { radius: 6, pad: 8, panelPad: 6, textInset: 0.4, control: 28, field: 6, smooth: 2, stroke: 1.5 },
       type: { font: "inter", size: 13, rond: 0, mono: "jetbrains" },
       color: {
         brand: "oklch(0.6 0.17 277)",
@@ -84,6 +84,8 @@ export function compileTheme(tokens: PresetValues): string {
     "--control-h": `${shape.control}px`,
     "--field-radius": `${shape.field}px`,
     "--corner-smoothing": `${shape.smooth}`,
+    // Older saved settings predate the stroke dial.
+    "--icon-stroke": `${shape.stroke ?? 1.5}px`,
     "--font-ui": uiFonts[type.font],
     "--font-code": mono.stack,
     "--text-ui": `${type.size}px`,
