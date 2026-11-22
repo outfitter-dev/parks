@@ -323,6 +323,18 @@
 @utility ps-text {
   padding-inline-start: var(--text-offset, 0);
 }
+/* A field's label and hint start where the input's text starts: the input's
+   inline padding plus its 1px border. */
+@utility ps-field {
+  padding-inline-start: calc(var(--spacing) * 2.5 + 1px);
+}
+/* A hint under a field: a step smaller than body text, tucked close. */
+@utility field-hint {
+  font-size: var(--text-control-small);
+  margin-top: calc(var(--spacing) * -0.5);
+  padding-inline-start: calc(var(--spacing) * 2.5 + 1px);
+}
+
 /* A row or panel inside card content: its text lines up with the card title
    on the left and the same distance in on the right. */
 @utility px-text {
