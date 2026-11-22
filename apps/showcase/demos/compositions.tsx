@@ -591,7 +591,7 @@ export function SignInComposition() {
       <div className="grid min-h-160 place-items-center gap-(--pad) bg-muted/40 p-(--pad) @3xl:grid-cols-2">
         <Card className="w-full max-w-sm">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold">Sign in to Outpost</CardTitle>
+            <CardTitle className="text-lg">Sign in to Outpost</CardTitle>
             <CardDescription>Use your Vercel account. Outpost only reads who you are.</CardDescription>
             <CardAction>
               <TonalMark>
@@ -605,7 +605,7 @@ export function SignInComposition() {
         </Card>
         <Card className="w-full max-w-sm">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold">Approve this device?</CardTitle>
+            <CardTitle className="text-lg">Approve this device?</CardTitle>
             <CardDescription>A CLI on another computer asked to act as you.</CardDescription>
             <CardAction>
               <TonalMark>
