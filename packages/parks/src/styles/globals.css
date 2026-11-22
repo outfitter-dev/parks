@@ -132,6 +132,33 @@
   --success: light-dark(oklch(0.63 0.15 155), oklch(0.74 0.15 155));
   --success-foreground: light-dark(oklch(0.46 0.11 155), oklch(0.84 0.12 155));
 
+  /* State fills. Each pairs a light and a dark strength, so components
+     never restate a colour under dark:. */
+  --invalid-ring: light-dark(color-mix(in oklch, var(--destructive) 20%, transparent), color-mix(in oklch, var(--destructive) 40%, transparent));
+  --invalid-border: light-dark(var(--destructive), color-mix(in oklch, var(--destructive) 50%, transparent));
+  --destructive-fill: light-dark(color-mix(in oklch, var(--destructive) 10%, transparent), color-mix(in oklch, var(--destructive) 20%, transparent));
+  --destructive-fill-hover: light-dark(color-mix(in oklch, var(--destructive) 20%, transparent), color-mix(in oklch, var(--destructive) 30%, transparent));
+  --success-fill: light-dark(color-mix(in oklch, var(--success) 12%, transparent), color-mix(in oklch, var(--success) 18%, transparent));
+  --ghost-hover: light-dark(var(--muted), color-mix(in oklch, var(--muted) 50%, transparent));
+  --secondary-hover: color-mix(in oklch, var(--secondary), var(--foreground) 5%);
+  --chip: light-dark(color-mix(in oklch, var(--background) 70%, transparent), color-mix(in oklch, var(--foreground) 8%, transparent));
+  --chip-ring: light-dark(color-mix(in oklch, var(--foreground) 10%, transparent), color-mix(in oklch, var(--foreground) 12%, transparent));
+
+  /* Control fills: fields, outline buttons, switches, tabs. */
+  --field: light-dark(transparent, color-mix(in oklch, var(--input) 30%, transparent));
+  --field-hover: light-dark(transparent, color-mix(in oklch, var(--input) 50%, transparent));
+  --field-disabled: light-dark(color-mix(in oklch, var(--input) 50%, transparent), color-mix(in oklch, var(--input) 80%, transparent));
+  --control-outline: light-dark(var(--background), color-mix(in oklch, var(--input) 30%, transparent));
+  --control-outline-hover: light-dark(var(--muted), color-mix(in oklch, var(--input) 50%, transparent));
+  --control-outline-border: light-dark(var(--border), var(--input));
+  --switch-track: light-dark(var(--input), color-mix(in oklch, var(--input) 80%, transparent));
+  --switch-thumb: light-dark(var(--background), var(--foreground));
+  --switch-thumb-on: light-dark(var(--background), var(--primary-foreground));
+  --tab-text: light-dark(color-mix(in oklch, var(--foreground) 60%, transparent), var(--muted-foreground));
+  --tab-active: light-dark(var(--background), color-mix(in oklch, var(--input) 30%, transparent));
+  --tab-active-border: light-dark(transparent, var(--input));
+  --kbd-on-inverse: light-dark(color-mix(in oklch, var(--background) 20%, transparent), color-mix(in oklch, var(--background) 10%, transparent));
+
   /* Lift grows with --shadow-level; dark surfaces add a top highlight. */
   --shadow-color: light-dark(
     oklch(0 0 0 / calc(0.035 * var(--shadow-level))),
@@ -254,6 +281,28 @@
   --color-ring: var(--ring);
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
+  --color-invalid-ring: var(--invalid-ring);
+  --color-invalid-border: var(--invalid-border);
+  --color-destructive-fill: var(--destructive-fill);
+  --color-destructive-fill-hover: var(--destructive-fill-hover);
+  --color-success-fill: var(--success-fill);
+  --color-ghost-hover: var(--ghost-hover);
+  --color-chip: var(--chip);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-chip-ring: var(--chip-ring);
+  --color-field: var(--field);
+  --color-field-hover: var(--field-hover);
+  --color-field-disabled: var(--field-disabled);
+  --color-control-outline: var(--control-outline);
+  --color-control-outline-hover: var(--control-outline-hover);
+  --color-control-outline-border: var(--control-outline-border);
+  --color-switch-track: var(--switch-track);
+  --color-switch-thumb: var(--switch-thumb);
+  --color-switch-thumb-on: var(--switch-thumb-on);
+  --color-tab-text: var(--tab-text);
+  --color-tab-active: var(--tab-active);
+  --color-tab-active-border: var(--tab-active-border);
+  --color-kbd-on-inverse: var(--kbd-on-inverse);
   --color-overlay: var(--overlay);
   --radius-2xs: var(--radius-step);
   --radius-xs: calc(var(--radius-step) * 2);
@@ -281,6 +330,12 @@
   }
   .dark {
     color-scheme: dark;
+  }
+  /* A mode subtree also resets its text colour, which it would otherwise
+     inherit from the other mode. */
+  .light,
+  .dark {
+    color: var(--foreground);
   }
   body {
     @apply bg-background text-foreground antialiased;

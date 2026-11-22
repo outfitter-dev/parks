@@ -355,7 +355,7 @@ export function MenusDemo() {
 
 export function TableDemo() {
   return (
-    <Specimen title="Agents" className="block p-0">
+    <Specimen title="Agents" className="block">
       <Table>
         <TableHeader>
           <TableRow>
