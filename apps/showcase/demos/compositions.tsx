@@ -289,13 +289,9 @@ export function AdminComposition() {
                 </div>
               ))}
             </CardContent>
-            <CardFooter className="gap-2 border-t pt-(--pad)">
-              <Button size="sm" variant="outline">
-                Compare
-              </Button>
-              <Button size="sm" variant="ghost">
-                Roll back to v13
-              </Button>
+            <CardFooter>
+              <Button variant="ghost">Compare</Button>
+              <Button variant="outline">Roll back to v13</Button>
             </CardFooter>
           </Card>
           <Card>
@@ -310,8 +306,8 @@ export function AdminComposition() {
                 Passkey confirmed at 9:38 PM
               </div>
             </CardContent>
-            <CardFooter className="border-t pt-(--pad)">
-              <Button size="sm" variant="outline" className="w-full">
+            <CardFooter>
+              <Button variant="outline" className="w-full">
                 End admin now
               </Button>
             </CardFooter>
@@ -347,7 +343,7 @@ export function SignInComposition() {
             <Label htmlFor="code">Code shown on that device</Label>
             <Input id="code" defaultValue="KXQM-7TRD" className="font-mono tracking-widest" />
           </CardContent>
-          <CardFooter className="gap-2">
+          <CardFooter>
             <Button className="flex-1">Approve</Button>
             <Button variant="outline" className="flex-1">
               Deny
