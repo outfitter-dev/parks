@@ -340,7 +340,7 @@ export function SignInComposition() {
             <CardDescription>A CLI on another computer asked to act as you.</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-2">
-            <Label htmlFor="code">Code shown on that device</Label>
+            <Label htmlFor="code" className="ps-text">Code shown on that device</Label>
             <Input id="code" defaultValue="KXQM-7TRD" className="font-mono tracking-widest" />
           </CardContent>
           <CardFooter>
