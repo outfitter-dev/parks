@@ -5,7 +5,7 @@ import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 import { cnState } from "#lib/utils"
 
 import { Button } from "#components/button"
-import { CloseIcon } from "@solar-icons/react/linear/close"
+import { CloseIcon } from "@solar-icons/react/bold/close"
 
 function Dialog({ ...props }: DialogPrimitive.Root.Props) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />

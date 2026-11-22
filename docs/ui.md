@@ -29,7 +29,7 @@ Solar (`@solar-icons/react`) is the only icon library. Import each icon on its o
 import { BellIcon } from "@solar-icons/react/linear/bell";
 ```
 
-Use `linear` by default, `bold` for selected states and `bold-duotone` for empty states. Icons take their colour from `currentColor` and their size from the component (usually `size-4`). `test/icons.test.ts` fails on any other icon library or a root import.
+Use `linear` by default, `bold` for selected states and `bold-duotone` for empty states. Buttons that hold only a glyph, and glyphs on a filled or dark background (a primary button, for example), use `bold`. A leading or trailing glyph in a button sits on the centre of the pill's end radius; the button computes that inset from its height, so mark the glyph with `data-icon="inline-start"` or `"inline-end"`. Icons take their colour from `currentColor` and their size from the component (usually `size-4`). `test/icons.test.ts` fails on any other icon library or a root import.
 
 ## Theme
 
