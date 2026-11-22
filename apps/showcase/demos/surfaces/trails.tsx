@@ -102,7 +102,7 @@ export function TrailsSurface() {
           { label: "Warden", icon: ShieldCheckIcon, count: 1 },
         ]}
         title={<Crumbs items={["outpost", "ask", "ask.create"]} />}
-        actions={<Button variant="outline" size="sm">Open lock</Button>}
+        actions={<Button variant="secondary" size="sm">Open lock</Button>}
       >
         <div className="grid min-h-full @3xl:grid-cols-[14rem_1fr]">
           <nav aria-label="Trails" className="flex flex-col gap-3 border-b p-3 @3xl:border-r @3xl:border-b-0">
