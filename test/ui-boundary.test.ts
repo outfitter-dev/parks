@@ -82,6 +82,20 @@ describe("packages/ui boundary", () => {
           expect(lengths.every((length) => length === "1px" || length === "2px"), `${name}: ${value}`).toBe(true);
         }
       });
+
+      // Light and dark values live in one token via light-dark(), so a
+      // component never restates a colour under dark:. Blend modes can't go
+      // through light-dark(), which is why avatar's edge keeps one override.
+      it(`${name} has no dark: overrides`, () => {
+        const overrides = text.match(/\bdark:[^\s"'`]+/g) ?? [];
+        const allowed = name.endsWith("avatar.tsx") ? ["dark:after:mix-blend-lighten"] : [];
+        expect(overrides.filter((cls) => !allowed.includes(cls)), name).toEqual([]);
+      });
+
+      // Base UI passes className as a function of state; cn() would drop it.
+      it(`${name} merges className with cnState`, () => {
+        expect(text, name).not.toMatch(/\bcn\([^;]*\bclassName\s*\)/);
+      });
     }
   }
 });
