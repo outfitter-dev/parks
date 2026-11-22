@@ -8,14 +8,8 @@ import { compileTheme, presets, type Mode, type PresetId, type PresetValues } fr
 const start = presets.luma.values;
 
 const config = {
-  preset: {
-    type: "select",
-    options: [
-      { value: "luma", label: presets.luma.label },
-      { value: "linear", label: presets.linear.label },
-    ],
-    default: "luma",
-  },
+  loadLuma: { type: "action", label: `Load ${presets.luma.label}` },
+  loadLinear: { type: "action", label: `Load ${presets.linear.label}` },
   mode: { type: "select", options: ["system", "light", "dark"], default: "system" },
   shape: {
     radius: [start.shape.radius, 0, 24, 1],
@@ -59,9 +53,10 @@ const config = {
   copy: { type: "action", label: "Copy tokens" },
 } satisfies DialConfig;
 
-function isPreset(value: string): value is PresetId {
-  return value === "luma" || value === "linear";
-}
+const presetActions: Record<string, PresetId> = {
+  loadLuma: "luma",
+  loadLinear: "linear",
+};
 
 function isMode(value: string): value is Mode {
   return value === "system" || value === "light" || value === "dark";
@@ -69,24 +64,22 @@ function isMode(value: string): value is Mode {
 
 export function ThemeController() {
   const cssRef = useRef("");
+  const setValuesRef = useRef<((next: PresetValues) => void) | null>(null);
+  // Presets load only from an explicit click. Watching a select value would
+  // also fire when DialKit restores saved values on reload and wipe edits.
   const dial = useDialKitController("Theme", config, {
     persist: { key: "outpost-workbench-theme" },
     onAction: (action) => {
       if (action === "copy") {
         void navigator.clipboard.writeText(cssRef.current);
+        return;
       }
+      const preset = presetActions[action];
+      if (preset) setValuesRef.current?.(presets[preset].values);
     },
   });
   const { values, setValues } = dial;
-
-  const lastPreset = useRef(values.preset);
-  useEffect(() => {
-    if (values.preset === lastPreset.current) return;
-    lastPreset.current = values.preset;
-    if (isPreset(values.preset)) {
-      setValues(presets[values.preset].values);
-    }
-  }, [values.preset, setValues]);
+  setValuesRef.current = setValues;
 
   const tokens: PresetValues = {
     shape: values.shape,

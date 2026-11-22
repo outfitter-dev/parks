@@ -27,6 +27,7 @@ export const entries: Entry[] = [
   { section: "components", slug: "menus", title: "Menus and overlays", summary: "Dropdown menu, dialog and tooltip." },
   { section: "components", slug: "table", title: "Table", summary: "Dense rows for lists of agents, deliveries and versions." },
   { section: "components", slug: "feedback", title: "Feedback", summary: "Alert, progress, skeleton, avatar and kbd." },
+  { section: "components", slug: "layout", title: "Layout", summary: "Separator and scroll area." },
 
   { section: "primitives", slug: "color", title: "Color", summary: "Surface, text, border and brand tokens in light and dark." },
   { section: "primitives", slug: "type", title: "Type", summary: "The UI face, the mono face and the type scale." },

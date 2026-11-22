@@ -53,7 +53,7 @@ const places: { id: Place; label: string; icon: typeof InboxIcon; count?: number
 function AppFrame({ place, title, actions, children }: { place: Place; title: string; actions?: ReactNode; children: ReactNode }) {
   return (
     <div className="flex min-h-[640px] bg-background text-foreground">
-      <aside className="hidden w-56 shrink-0 flex-col border-r bg-muted/40 p-2 md:flex">
+      <aside className="hidden w-56 shrink-0 flex-col border-r bg-muted/40 p-2 @3xl:flex">
         <div className="flex items-center gap-2 px-2 py-2 font-semibold">
           <span className="grid size-6 place-items-center rounded-md bg-brand text-xs text-brand-foreground">O</span>
           Outpost
@@ -124,7 +124,7 @@ function AskRow({ ask, active, onSelect }: { ask: Ask; active: boolean; onSelect
 function AskDetail({ ask }: { ask: Ask }) {
   const [choice, setChoice] = useState<string | null>(null);
   return (
-    <div className="mx-auto w-full max-w-xl p-(--pad) md:p-6">
+    <div className="mx-auto w-full max-w-xl p-(--pad) @3xl:p-6">
       <p className="flex items-center gap-2 text-muted-foreground">
         <Badge variant="outline" className="capitalize">
           {ask.kind}
@@ -173,6 +173,7 @@ function AskDetail({ ask }: { ask: Ask }) {
 }
 
 export function NeedsYouComposition() {
+  const [view, setView] = useState<"open" | "answered">("open");
   const [selected, setSelected] = useState(asks[0]?.id);
   const ask = asks.find((item) => item.id === selected) ?? asks[0];
   return (
@@ -181,7 +182,7 @@ export function NeedsYouComposition() {
         place="needs-you"
         title="Needs you"
         actions={
-          <Tabs defaultValue="open">
+          <Tabs value={view} onValueChange={(next) => setView(next === "answered" ? "answered" : "open")}>
             <TabsList>
               <TabsTrigger value="open">Open</TabsTrigger>
               <TabsTrigger value="answered">Answered</TabsTrigger>
@@ -189,14 +190,23 @@ export function NeedsYouComposition() {
           </Tabs>
         }
       >
-        <div className="grid h-full md:grid-cols-[minmax(16rem,22rem)_1fr]">
-          <div className="border-b p-2 md:border-r md:border-b-0">
+        {view === "answered" ? (
+          <div className="grid h-full place-items-center p-(--pad) text-center">
+            <div>
+              <p className="font-medium">Nothing answered yet today</p>
+              <p className="mt-1 text-muted-foreground">Asks you reply to move here, with the reply attached.</p>
+            </div>
+          </div>
+        ) : (
+        <div className="grid h-full @3xl:grid-cols-[minmax(16rem,22rem)_1fr]">
+          <div className="border-b p-2 @3xl:border-r @3xl:border-b-0">
             {asks.map((item) => (
               <AskRow key={item.id} ask={item} active={item.id === ask?.id} onSelect={() => setSelected(item.id)} />
             ))}
           </div>
           {ask ? <AskDetail key={ask.id} ask={ask} /> : null}
         </div>
+        )}
       </AppFrame>
     </Viewport>
   );
@@ -206,7 +216,7 @@ export function AgentsComposition() {
   return (
     <Viewport>
       <AppFrame place="agents" title="Agents" actions={<Button size="sm">New agent</Button>}>
-        <div className="grid gap-3 p-(--pad) sm:grid-cols-3">
+        <div className="grid gap-3 p-(--pad) @2xl:grid-cols-3">
           {[
             ["Live", "3"],
             ["Dry run", "1"],
@@ -226,7 +236,7 @@ export function AgentsComposition() {
               <TableHead className="pl-(--pad)">Agent</TableHead>
               <TableHead>Runtime</TableHead>
               <TableHead>Mode</TableHead>
-              <TableHead className="hidden sm:table-cell">Destination</TableHead>
+              <TableHead className="hidden @2xl:table-cell">Destination</TableHead>
               <TableHead className="pr-(--pad) text-right">Last seen</TableHead>
             </TableRow>
           </TableHeader>
@@ -241,7 +251,7 @@ export function AgentsComposition() {
                     {agent.mode}
                   </span>
                 </TableCell>
-                <TableCell className="hidden font-mono text-muted-foreground sm:table-cell">{agent.destination}</TableCell>
+                <TableCell className="hidden font-mono text-muted-foreground @2xl:table-cell">{agent.destination}</TableCell>
                 <TableCell className="pr-(--pad) text-right text-muted-foreground">{agent.seen}</TableCell>
               </TableRow>
             ))}
@@ -264,7 +274,7 @@ export function AdminComposition() {
           </Badge>
         }
       >
-        <div className="grid gap-(--pad) p-(--pad) lg:grid-cols-[1fr_20rem]">
+        <div className="grid gap-(--pad) p-(--pad) @5xl:grid-cols-[1fr_20rem]">
           <Card>
             <CardHeader>
               <CardTitle>Routing versions</CardTitle>
@@ -315,7 +325,7 @@ export function AdminComposition() {
 export function SignInComposition() {
   return (
     <Viewport>
-      <div className="grid min-h-[640px] place-items-center gap-(--pad) bg-muted/40 p-(--pad) md:grid-cols-2">
+      <div className="grid min-h-[640px] place-items-center gap-(--pad) bg-muted/40 p-(--pad) @3xl:grid-cols-2">
         <Card className="w-full max-w-sm">
           <CardHeader>
             <span className="mb-2 grid size-8 place-items-center rounded-lg bg-brand text-brand-foreground">
