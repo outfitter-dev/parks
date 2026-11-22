@@ -30,7 +30,7 @@ export const presets: Record<PresetId, { label: string; values: PresetValues }> 
   luma: {
     label: "Luma tuned",
     values: {
-      shape: { radius: 8, pad: 12, panelPad: 8, textInset: 0.4, control: 34 },
+      shape: { radius: 13, pad: 12, panelPad: 8, textInset: 0.4, control: 34 },
       type: { font: "allo", size: 14, rond: 50, mono: "plex" },
       color: {
         brand: "oklch(0.76 0.15 70)",

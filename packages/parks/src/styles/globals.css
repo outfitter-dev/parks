@@ -142,6 +142,13 @@
   padding: 0 var(--corner-gap) var(--corner-gap);
 }
 
+/* Card content sits one --corner-gap in, flush with the footer's pills, and
+   its containers take the concentric radius (frame radius − gap). Bare text
+   in that content uses ps-text to stay aligned with the card title. */
+@utility ps-text {
+  padding-inline-start: var(--text-offset, 0);
+}
+
 /* Even padding for a frame that lays out its own content. */
 @utility p-frame {
   padding: var(--frame-space, var(--pad));
