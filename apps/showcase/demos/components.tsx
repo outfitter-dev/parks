@@ -162,9 +162,9 @@ export function CardDemo() {
             </CardAction>
           </CardHeader>
           <CardContent>
-            <div className="panel flex items-center justify-between bg-muted">
-              <span className="ps-inset">Destination</span>
-              <span className="pe-inset font-mono text-muted-foreground">webhook · devin</span>
+            <div className="panel flex items-center justify-between bg-muted px-text">
+              <span>Destination</span>
+              <span className="font-mono text-muted-foreground">webhook · devin</span>
             </div>
           </CardContent>
           <CardFooter>
