@@ -10,6 +10,7 @@ import {
   TableDemo,
   TabsDemo,
 } from "./components";
+import { DotMatrixDemo } from "./dot-matrix";
 import {
   AdminComposition,
   AgentsComposition,
@@ -32,6 +33,7 @@ export const demos: Record<string, ComponentType> = {
   "components/menus": MenusDemo,
   "components/table": TableDemo,
   "components/feedback": FeedbackDemo,
+  "components/dot-matrix": DotMatrixDemo,
   "components/layout": LayoutDemo,
   "primitives/color": ColorDemo,
   "primitives/type": TypeDemo,

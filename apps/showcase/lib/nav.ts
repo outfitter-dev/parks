@@ -27,6 +27,7 @@ export const entries: Entry[] = [
   { section: "components", slug: "menus", title: "Menus and overlays", summary: "Dropdown menu, dialog and tooltip." },
   { section: "components", slug: "table", title: "Table", summary: "Dense rows for lists of agents, deliveries and versions." },
   { section: "components", slug: "feedback", title: "Feedback", summary: "Alert, spinner, progress, skeleton, avatar and kbd." },
+  { section: "components", slug: "dot-matrix", title: "Dot Matrix loaders", summary: "Circular, hexagonal and square loaders from Dot Matrix, in place and in full." },
   { section: "components", slug: "layout", title: "Layout", summary: "Separator and scroll area." },
 
   { section: "primitives", slug: "color", title: "Color", summary: "Surface, text, border and brand tokens in light and dark." },
