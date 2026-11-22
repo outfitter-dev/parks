@@ -14,7 +14,8 @@ const config = {
   shape: {
     radius: [start.shape.radius, 0, 24, 1],
     pad: [start.shape.pad, 4, 32, 1],
-    inset: [start.shape.inset, 0, 16, 1],
+    panelPad: [start.shape.panelPad, 2, 24, 1],
+    textInset: [start.shape.textInset, 0, 1, 0.05],
     control: [start.shape.control, 24, 44, 1],
   },
   type: {
