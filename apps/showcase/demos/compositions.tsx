@@ -286,7 +286,7 @@ export function AdminComposition() {
                 <div key={item.version} className="flex h-(--control-h) items-center gap-3 px-text">
                   <span className="font-mono text-muted-foreground">v{item.version}</span>
                   <span className="min-w-0 flex-1 truncate">{item.change}</span>
-                  {index === 0 ? <Badge>Live</Badge> : <span className="text-muted-foreground">{item.when}</span>}
+                  {index === 0 ? <Badge variant="outline">Live</Badge> : <span className="text-muted-foreground">{item.when}</span>}
                 </div>
               ))}
               </div>
