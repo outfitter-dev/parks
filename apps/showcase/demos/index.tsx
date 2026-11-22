@@ -16,6 +16,12 @@ import {
   NeedsYouComposition,
   SignInComposition,
 } from "./compositions";
+import { AssistantSurface } from "./surfaces/assistant";
+import { BlogSurface } from "./surfaces/blog";
+import { BoardSurface } from "./surfaces/board";
+import { DocsSurface } from "./surfaces/docs";
+import { SkillsetSurface } from "./surfaces/skillset";
+import { TrailsSurface } from "./surfaces/trails";
 import { ColorDemo, IconsDemo, ShapeDemo, TypeDemo } from "./primitives";
 
 /** Keyed by `section/slug` from lib/nav.ts. */
@@ -24,6 +30,12 @@ export const demos: Record<string, ComponentType> = {
   "compositions/agents": AgentsComposition,
   "compositions/admin": AdminComposition,
   "compositions/sign-in": SignInComposition,
+  "surfaces/board": BoardSurface,
+  "surfaces/assistant": AssistantSurface,
+  "surfaces/skillset": SkillsetSurface,
+  "surfaces/trails": TrailsSurface,
+  "surfaces/docs": DocsSurface,
+  "surfaces/blog": BlogSurface,
   "components/button": ButtonDemo,
   "components/badge": BadgeDemo,
   "components/card": CardDemo,

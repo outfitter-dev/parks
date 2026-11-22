@@ -1,0 +1,158 @@
+"use client";
+
+import { useState } from "react";
+import { Badge } from "@workspace/ui/components/badge";
+import { Button } from "@workspace/ui/components/button";
+import { cn } from "@workspace/ui/lib/utils";
+import { ArrowUpIcon } from "@solar-icons/react/linear/arrow-up";
+import { ChatRoundDotsIcon } from "@solar-icons/react/linear/chat-round-dots";
+import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
+import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
+import { PaperclipIcon } from "@solar-icons/react/linear/paperclip";
+import { PenIcon } from "@solar-icons/react/linear/pen";
+import { PenNewSquareIcon } from "@solar-icons/react/linear/pen-new-square";
+import { StarsIcon } from "@solar-icons/react/linear/stars";
+import { Viewport } from "../kit";
+import { FileType } from "../reui/file-type";
+import { CodeBlock, Shell, Trace, TraceLine, Turn } from "./parts";
+
+const patch = `export const routes = {
+  ask: "/v1/ask",
+  ask: "/v1/asks",
+  answer: "/v1/asks/:id/answer",
+}`;
+
+const options = [
+  { label: "Ship as /v1/asks", detail: "Plural, matches threads and agents. Keep /v1/ask as an alias for two weeks.", recommended: true },
+  { label: "Keep /v1/ask", detail: "No migration. The odd one out among the routes." },
+  { label: "Both, no deadline", detail: "Least churn, but two names forever." },
+];
+
+function AskCard() {
+  const [picked, setPicked] = useState<string | null>(null);
+  return (
+    <div className="flex flex-col gap-2 rounded-xl border bg-background p-3 shadow-xs">
+      <span className="flex items-center gap-2">
+        <ChatRoundDotsIcon className="size-4 text-brand-600 dark:text-brand-400" />
+        <span className="font-medium">Which route name should ship?</span>
+        <span className="ml-auto text-xs text-muted-foreground">ask.choice@1</span>
+      </span>
+      <div className="grid gap-2 @3xl:grid-cols-3">
+        {options.map((option) => (
+          <button
+            key={option.label}
+            type="button"
+            aria-pressed={picked === option.label}
+            onClick={() => setPicked(option.label)}
+            className={cn(
+              "flex flex-col gap-1 rounded-lg border p-2.5 text-left hover:bg-accent/60",
+              picked === option.label && "border-foreground/30 bg-accent ring-2 ring-foreground/6",
+            )}
+          >
+            <span className="flex items-center gap-2 font-medium">
+              {option.label}
+              {option.recommended ? <Badge variant="secondary" className="ml-auto">Recommended</Badge> : null}
+            </span>
+            <span className="text-muted-foreground">{option.detail}</span>
+          </button>
+        ))}
+      </div>
+      {picked ? <p className="text-xs text-muted-foreground">Posts an answer@1 reply as you and wakes the agent.</p> : null}
+    </div>
+  );
+}
+
+function Composer() {
+  return (
+    <div className="rounded-2xl border bg-background p-2 shadow-xs focus-within:ring-2 focus-within:ring-ring/40">
+      <div className="flex flex-wrap gap-1.5 px-1 pb-2">
+        <span className="flex items-center gap-1.5 rounded-md bg-foreground/6 py-0.5 ps-0.5 pe-2 text-xs ring-1 ring-foreground/6">
+          <FileType type="ts" size="mini" />
+          routes.ts
+        </span>
+        <span className="flex items-center gap-1.5 rounded-md bg-foreground/6 py-0.5 ps-0.5 pe-2 text-xs ring-1 ring-foreground/6">
+          <FileType type="md" size="mini" />
+          
+        </span>
+      </div>
+      <textarea
+        rows={2}
+        aria-label="Message"
+        placeholder="Reply, or ask Donna to do something"
+        className="w-full resize-none bg-transparent px-2 outline-none placeholder:text-muted-foreground"
+      />
+      <div className="flex items-center gap-1">
+        <Button variant="ghost" size="icon-sm" aria-label="Attach">
+          <PaperclipIcon />
+        </Button>
+        <Button variant="ghost" size="sm">
+          <StarsIcon data-icon="inline-start" />
+          Donna · Devin
+        </Button>
+        <Button size="icon-sm" className="ml-auto rounded-full" aria-label="Send">
+          <ArrowUpIcon />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+/** A modern assistant thread: tool trace, diffs, an inline ask and a composer with context. */
+export function AssistantSurface() {
+  return (
+    <Viewport>
+      <Shell
+        mark="O"
+        name="Outpost"
+        active="Rename the ask route"
+        nav={[
+          { label: "Rename the ask route", icon: ChatRoundDotsIcon },
+          { label: "Fleet digest, Friday", icon: ChatRoundDotsIcon },
+          { label: "Permit for overnight merges", icon: ChatRoundDotsIcon },
+          { label: "Why did Rex go quiet?", icon: ChatRoundDotsIcon },
+        ]}
+        title="Rename the ask route"
+        actions={
+          <Button variant="ghost" size="icon-sm" aria-label="New chat">
+            <PenNewSquareIcon />
+          </Button>
+        }
+      >
+        <div className="mx-auto flex min-h-full max-w-3xl flex-col gap-6 px-4 py-6">
+          <Turn from="you">Can you make the ask route plural like the others, and check nothing else calls it?</Turn>
+
+          <Turn from="agent" name="Donna">
+            <Trace>
+              <TraceLine icon={MagnifierIcon} title="Searched for /v1/ask" detail="3 results" />
+              <TraceLine icon={PenIcon} title="Edited src/http/routes.ts" detail="+2 −1" defaultOpen>
+                <CodeBlock code={patch} label="src/http/routes.ts" added={[3, 4]} removed={[2]} />
+              </TraceLine>
+              <TraceLine icon={CodeSquareIcon} title="Ran bun run test routes" detail="18 passed" tone="ok">
+                <CodeBlock code={"✓ test/http/routes.test.ts (18)\nTests  18 passed"} label="Output" />
+              </TraceLine>
+            </Trace>
+            <p>
+              The route is now <code className="rounded bg-foreground/6 px-1 font-mono text-xs">/v1/asks</code>. Two callers used the old name: the
+              CLI and the iOS share extension. The CLI is updated. The extension ships separately, so the old name has to keep working for a while.
+            </p>
+            <AskCard />
+          </Turn>
+
+          <Turn from="you">Go with the recommendation.</Turn>
+
+          <Turn from="agent" name="Donna">
+            <span className="flex items-center gap-2 text-muted-foreground">
+              <span className="grid size-7 place-items-center rounded-full bg-muted text-brand-600 dark:text-brand-400">
+              </span>
+              Adding the alias and a deprecation header
+            </span>
+          </Turn>
+
+          <div className="sticky bottom-0 mt-auto bg-background pt-2">
+            <Composer />
+          </div>
+        </div>
+      </Shell>
+    </Viewport>
+  );
+}
