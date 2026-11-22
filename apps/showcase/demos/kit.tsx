@@ -45,7 +45,11 @@ function isWidth(value: unknown): value is Width {
   return typeof value === "string" && value in widths;
 }
 
-/** A resizable stage for full screens. */
+/**
+ * A resizable stage for full screens. The stage is a size container, so
+ * compositions use container breakpoints (`@3xl:`) and reflow with the
+ * preset width rather than the browser width.
+ */
 export function Viewport({ children }: { children: ReactNode }) {
   const [width, setWidth] = useState<Width>("fill");
   return (
@@ -70,7 +74,7 @@ export function Viewport({ children }: { children: ReactNode }) {
       </div>
       <div className="overflow-x-auto rounded-frame border bg-muted/30 p-2">
         <div
-          className="mx-auto overflow-hidden rounded-[calc(var(--radius)+4px)] bg-background ring-1 ring-foreground/10 transition-[max-width] duration-300"
+          className="@container mx-auto overflow-hidden rounded-[calc(var(--radius)+4px)] bg-background ring-1 ring-foreground/10 transition-[max-width] duration-300"
           style={{ maxWidth: widths[width] }}
         >
           {children}

@@ -3,6 +3,8 @@
 import { Alert, AlertDescription, AlertTitle } from "@workspace/ui/components/alert";
 import { Avatar, AvatarFallback, AvatarGroup } from "@workspace/ui/components/avatar";
 import { Badge } from "@workspace/ui/components/badge";
+import { ScrollArea } from "@workspace/ui/components/scroll-area";
+import { Separator } from "@workspace/ui/components/separator";
 import { Button } from "@workspace/ui/components/button";
 import {
   Card,
@@ -405,6 +407,39 @@ export function FeedbackDemo() {
           <Kbd>⌘</Kbd>
           <Kbd>K</Kbd>
         </KbdGroup>
+      </Specimen>
+    </>
+  );
+}
+
+export function LayoutDemo() {
+  return (
+    <>
+      <Specimen title="Separator" note="Horizontal between groups, vertical between inline items.">
+        <div className="w-full max-w-sm">
+          <p className="font-medium">Routing</p>
+          <p className="text-muted-foreground">Version 14, saved by Matt</p>
+          <Separator className="my-(--pad)" />
+          <div className="flex h-5 items-center gap-3 text-muted-foreground">
+            <span>History</span>
+            <Separator orientation="vertical" />
+            <span>Dry run</span>
+            <Separator orientation="vertical" />
+            <span>Export</span>
+          </div>
+        </div>
+      </Specimen>
+      <Specimen title="Scroll area" note="A bounded list with an overlay scrollbar.">
+        <ScrollArea className="h-56 w-full max-w-sm rounded-(--radius) border">
+          <div className="p-(--pad)">
+            {Array.from({ length: 24 }, (_, index) => (
+              <div key={index} className="flex justify-between border-b py-2 last:border-b-0">
+                <span>Delivery {String(index + 1).padStart(3, "0")}</span>
+                <span className="font-mono text-muted-foreground">200</span>
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
       </Specimen>
     </>
   );
