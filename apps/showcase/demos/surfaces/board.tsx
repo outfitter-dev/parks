@@ -123,12 +123,14 @@ function RunTimeline() {
       {steps.map((step, index) => (
         <TimelineItem key={step.title} step={index + 1} className="pb-5 last:pb-0">
           <TimelineHeader>
-            <TimelineDate>{step.date}</TimelineDate>
             <TimelineTitle>{step.title}</TimelineTitle>
           </TimelineHeader>
-          <TimelineIndicator className={cn(index === 3 && "border-brand bg-brand/20")} />
-          <TimelineSeparator />
-          <TimelineContent>{step.body}</TimelineContent>
+          <TimelineIndicator className={cn("top-0.5", index === 3 && "border-brand bg-brand/20")} />
+          <TimelineSeparator className="top-0.5" />
+          <TimelineContent className="flex items-baseline gap-2">
+            <TimelineDate className="mb-0 w-9 shrink-0 tabular-nums">{step.date}</TimelineDate>
+            <span>{step.body}</span>
+          </TimelineContent>
         </TimelineItem>
       ))}
     </Timeline>
