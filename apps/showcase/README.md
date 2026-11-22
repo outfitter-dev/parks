@@ -23,7 +23,7 @@ Fixtures in `lib/fixtures.ts` are made up. Never load live Board or Outpost data
 
 ## Tokens
 
-`lib/theme.ts` holds the presets and compiles them to the CSS variables that `packages/ui` reads. "Copy tokens" in the panel copies that CSS. The corner model: `--radius` is the inner radius, `--pad` is a frame's padding, and a frame's radius is their sum (`rounded-frame`).
+`lib/theme.ts` holds the presets and compiles them to the CSS variables that `packages/ui` reads. "Copy tokens" in the panel copies that CSS. The corner model: `--radius` is the inner radius, `--pad` is a frame's padding, and a frame's radius is their sum (`rounded-frame`). Frame padding is even on every side so pills, buttons and glyphs sit concentric in the corners; text blocks add `--inset` on the left and right with the `px-inset` utility so they don't read top-heavy.
 
 ## Icons and components
 

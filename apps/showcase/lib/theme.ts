@@ -12,7 +12,7 @@ export type PrimaryStyle = "ink" | "brand";
 
 export type ThemeTokens = {
   mode: Mode;
-  shape: { radius: number; pad: number; control: number };
+  shape: { radius: number; pad: number; inset: number; control: number };
   type: { font: UiFont; size: number; rond: number; mono: MonoFont };
   color: {
     brand: string;
@@ -30,7 +30,7 @@ export const presets: Record<PresetId, { label: string; values: PresetValues }> 
   luma: {
     label: "Luma tuned",
     values: {
-      shape: { radius: 8, pad: 12, control: 34 },
+      shape: { radius: 8, pad: 12, inset: 4, control: 34 },
       type: { font: "allo", size: 14, rond: 50, mono: "jetbrains" },
       color: {
         brand: "oklch(0.76 0.15 70)",
@@ -45,7 +45,7 @@ export const presets: Record<PresetId, { label: string; values: PresetValues }> 
   linear: {
     label: "Linear-like",
     values: {
-      shape: { radius: 6, pad: 8, control: 28 },
+      shape: { radius: 6, pad: 8, inset: 4, control: 28 },
       type: { font: "inter", size: 13, rond: 0, mono: "jetbrains" },
       color: {
         brand: "oklch(0.6 0.17 277)",
@@ -144,6 +144,7 @@ export function compileTheme(tokens: PresetValues): string {
   const common = {
     "--radius": `${tokens.shape.radius}px`,
     "--pad": `${tokens.shape.pad}px`,
+    "--inset": `${tokens.shape.inset}px`,
     "--control-h": `${tokens.shape.control}px`,
     "--font-ui": uiFonts[tokens.type.font],
     "--font-code": mono.stack,
