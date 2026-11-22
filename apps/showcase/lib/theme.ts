@@ -68,104 +68,38 @@ const monoFonts: Record<MonoFont, { stack: string; scale: number }> = {
   jetbrains: { stack: `"JetBrains Mono Variable", ui-monospace, monospace`, scale: 0.88 },
 };
 
-const round = (value: number, places = 4) => Number(value.toFixed(places));
-
-function tone(lightness: number, chroma: number, hue: number, alpha?: number) {
-  const base = `${round(lightness)} ${round(chroma)} ${round(hue, 1)}`;
-  return alpha === undefined ? `oklch(${base})` : `oklch(${base} / ${round(alpha, 3)})`;
-}
-
-function lightPalette({ color }: PresetValues) {
-  const { hue: h, tint: c, border: b, primary } = color;
-  return {
-    "--background": tone(0.992, c * 0.6, h),
-    "--foreground": tone(0.18, c * 2, h),
-    "--card": tone(1, c * 0.2, h),
-    "--card-foreground": tone(0.18, c * 2, h),
-    "--popover": tone(1, c * 0.2, h),
-    "--popover-foreground": tone(0.18, c * 2, h),
-    "--primary": primary === "ink" ? tone(0.21, c * 2, h) : "var(--brand)",
-    "--primary-foreground": primary === "ink" ? tone(0.985, c * 0.3, h) : "var(--brand-foreground)",
-    "--secondary": tone(0.962, c * 1.2, h),
-    "--secondary-foreground": tone(0.21, c * 2, h),
-    "--muted": tone(0.962, c * 1.2, h),
-    "--muted-foreground": tone(0.5, c * 2.5, h),
-    "--accent": tone(0.952, c * 1.4, h),
-    "--accent-foreground": tone(0.21, c * 2, h),
-    "--destructive": "oklch(0.577 0.245 27.325)",
-    "--success": "oklch(0.63 0.15 155)",
-    "--success-foreground": "oklch(0.46 0.11 155)",
-    "--border": tone(0.94 - b * 0.08, c * 1.5, h),
-    "--input": tone(0.93 - b * 0.08, c * 1.5, h),
-    "--ring": "color-mix(in oklch, var(--brand) 70%, transparent)",
+/**
+ * The theme only sets seeds. packages/ui derives every colour, radius and
+ * shadow from them, in light and dark, so the workbench never restates a
+ * derived value.
+ */
+export function compileTheme(tokens: PresetValues): string {
+  const { shape, type, color } = tokens;
+  const mono = monoFonts[type.mono];
+  const seeds: Record<string, string> = {
+    "--radius": `${shape.radius}px`,
+    "--pad": `${shape.pad}px`,
+    "--panel-pad-base": `${shape.panelPad}px`,
+    "--inset-ratio": `${shape.textInset}`,
+    "--control-h": `${shape.control}px`,
+    "--field-radius": `${shape.field}px`,
+    "--font-ui": uiFonts[type.font],
+    "--font-code": mono.stack,
+    "--text-ui": `${type.size}px`,
+    "--rond": `${type.rond}`,
+    "--mono-scale": `${mono.scale}`,
+    "--brand": color.brand,
+    "--neutral-hue": `${color.hue}`,
+    "--neutral-tint": `${color.tint}`,
+    "--border-strength": `${color.border}`,
+    "--shadow-level": `${color.shadow}`,
   };
-}
-
-function darkPalette({ color }: PresetValues) {
-  const { hue: h, tint: c, border: b, primary } = color;
-  return {
-    "--background": tone(0.165, c * 1.5, h),
-    "--foreground": tone(0.965, c * 0.6, h),
-    "--card": tone(0.2, c * 1.6, h),
-    "--card-foreground": tone(0.965, c * 0.6, h),
-    "--popover": tone(0.22, c * 1.6, h),
-    "--popover-foreground": tone(0.965, c * 0.6, h),
-    "--primary": primary === "ink" ? tone(0.94, c, h) : "var(--brand)",
-    "--primary-foreground": primary === "ink" ? tone(0.2, c * 2, h) : "var(--brand-foreground)",
-    "--secondary": tone(0.255, c * 1.8, h),
-    "--secondary-foreground": tone(0.965, c * 0.6, h),
-    "--muted": tone(0.255, c * 1.8, h),
-    "--muted-foreground": tone(0.7, c * 2, h),
-    "--accent": tone(0.27, c * 2, h),
-    "--accent-foreground": tone(0.965, c * 0.6, h),
-    "--destructive": "oklch(0.704 0.191 22.216)",
-    "--success": "oklch(0.74 0.15 155)",
-    "--success-foreground": "oklch(0.84 0.12 155)",
-    "--border": tone(1, 0, 0, 0.06 + b * 0.08),
-    "--input": tone(1, 0, 0, 0.1 + b * 0.08),
-    "--ring": "color-mix(in oklch, var(--brand) 70%, transparent)",
-  };
-}
-
-function shadow(level: number, dark: boolean) {
-  if (level <= 0) {
-    return dark ? "inset 0 1px 0 oklch(1 0 0 / 0.04)" : "0 0 #0000";
+  if (color.primary === "brand") {
+    seeds["--primary-seed"] = "var(--brand)";
+    seeds["--primary-foreground-seed"] = "var(--brand-foreground)";
   }
-  const a = dark ? 0.22 : 0.035;
-  const lift = `0 1px 2px oklch(0 0 0 / ${round(a * level, 3)}), 0 ${level * 2}px ${level * 6}px oklch(0 0 0 / ${round(a * level * 0.8, 3)})`;
-  return dark ? `${lift}, inset 0 1px 0 oklch(1 0 0 / 0.05)` : lift;
-}
-
-function block(selector: string, vars: Record<string, string>) {
-  const body = Object.entries(vars)
+  const body = Object.entries(seeds)
     .map(([key, value]) => `  ${key}: ${value};`)
     .join("\n");
-  return `${selector} {\n${body}\n}`;
-}
-
-export function compileTheme(tokens: PresetValues): string {
-  const mono = monoFonts[tokens.type.mono];
-  const common = {
-    "--radius": `${tokens.shape.radius}px`,
-    "--pad": `${tokens.shape.pad}px`,
-    "--panel-pad-base": `${tokens.shape.panelPad}px`,
-    "--inset-ratio": `${tokens.shape.textInset}`,
-    "--control-h": `${tokens.shape.control}px`,
-    "--field-radius": `${tokens.shape.field}px`,
-    "--font-ui": uiFonts[tokens.type.font],
-    "--font-code": mono.stack,
-    "--text-ui": `${tokens.type.size}px`,
-    "--rond": `${tokens.type.rond}`,
-    "--mono-scale": `${mono.scale}`,
-    "--brand": tokens.color.brand,
-    "--brand-foreground": "oklch(from var(--brand) clamp(0.16, (0.7 - l) * 1000, 0.99) 0.01 h)",
-  };
-  const light = { ...lightPalette(tokens), "--shadow-frame": shadow(tokens.color.shadow, false) };
-  const dark = { ...darkPalette(tokens), "--shadow-frame": shadow(tokens.color.shadow, true) };
-  return [
-    block(":root", common),
-    block(":root, .light", light),
-    `@media (prefers-color-scheme: dark) {\n${block(":root:not(.light)", dark)}\n}`,
-    block(":root.dark, .dark", dark),
-  ].join("\n\n");
+  return `:root {\n${body}\n}`;
 }
