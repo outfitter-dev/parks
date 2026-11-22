@@ -8,8 +8,15 @@ const alertVariants = cva(
     variants: {
       variant: {
         default: "bg-card text-card-foreground",
+        // Tones colour only the glyph and title. The description stays muted,
+        // so a red or amber alert reads at a glance without shouting.
         destructive:
-          "bg-card text-destructive *:data-[slot=alert-description]:text-destructive/90 *:[svg]:text-current",
+          "bg-card text-card-foreground *:data-[slot=alert-title]:text-destructive-strong *:[svg]:text-destructive-strong",
+        warning:
+          "bg-card text-card-foreground *:data-[slot=alert-title]:text-warning-strong *:[svg]:text-warning-strong",
+        success:
+          "bg-card text-card-foreground *:data-[slot=alert-title]:text-success-strong *:[svg]:text-success-strong",
+        info: "bg-card text-card-foreground *:data-[slot=alert-title]:text-info-strong *:[svg]:text-info-strong",
       },
     },
     defaultVariants: {
