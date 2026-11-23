@@ -650,7 +650,7 @@ function OptionText({ option }: { option: Ask["options"][number] }) {
     <span className="grid min-w-0 gap-0.5 pb-0.5">
       <span className="flex min-h-6 items-center gap-2 font-medium">
         {option.label}
-        {option.recommended ? <Badge variant="secondary">Recommended</Badge> : null}
+        {option.recommended ? <Badge>Recommended</Badge> : null}
       </span>
       <span className="text-muted-foreground">{option.detail}</span>
     </span>
@@ -1141,9 +1141,7 @@ export function AdminComposition() {
         place="admin"
         title="Admin"
         actions={
-          <Badge variant="outline">
-            <span className="lead"><Signal tone="wait" /></span>Elevated · 11:42 left
-          </Badge>
+          <Badge variant="warning" dot>Elevated · 11:42 left</Badge>
         }
       >
         <div className="grid gap-(--pad) p-(--pad) @5xl:grid-cols-[1fr_--spacing(80)]">

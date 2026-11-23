@@ -134,7 +134,7 @@ export function TrailsSurface() {
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="font-mono text-lg font-semibold">ask.create</h2>
                 <IntentMark intent="write" />
-                <Badge variant="secondary">v2</Badge>
+                <Badge>v2</Badge>
               </div>
               <p className="mt-1 text-muted-foreground">Ask Matt a question with up to four options. Posts an ask.choice@1 block to the thread.</p>
             </div>

@@ -152,7 +152,6 @@ export function BoardSurface() {
         title="Overview"
         actions={
           <>
-            <Badge variant="outline">
               Board synced
             </Badge>
             <Button size="sm">New task</Button>
@@ -214,19 +213,22 @@ export function BoardSurface() {
                 <span className="flex items-center gap-2">
                   <GitBranchIcon className="size-4 text-muted-foreground" />
                   climb#91
-                  <Badge variant="warning" className="ml-auto">Changes requested</Badge>
+                  <Badge variant="warning" dot className="ml-auto">Changes requested</Badge>
                 </span>
                 <span className="flex items-center gap-2">
                   <CodeSquareIcon className="size-4 text-muted-foreground" />
                   CI · check
-                  <Badge variant="outline" className="ml-auto">
+                  <Badge
+                    variant="info"
+                    className="ml-auto"
+                  >
                     2 of 4
                   </Badge>
                 </span>
                 <span className="flex items-center gap-2">
                   <CheckCircleIcon className="size-4 text-muted-foreground" />
                   DENA-44
-                  <Badge variant="secondary" className="ml-auto">In progress</Badge>
+                  <Badge variant="info" live className="ml-auto">In progress</Badge>
                 </span>
               </FramePanel>
             </Frame>
