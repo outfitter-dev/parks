@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { cn } from "@workspace/ui/lib/utils";
-import { Widget2Icon } from "@solar-icons/react/linear/widget-2";
+import { Widget2Icon } from "@solar-icons/react/outline/widget-2";
 import { entries, sections } from "#lib/nav";
 
 export function Shell({ children }: { children: ReactNode }) {

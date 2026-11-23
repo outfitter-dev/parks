@@ -172,13 +172,13 @@ export function DotMatrixDemo() {
           ))}
         </span>
         <span className="flex flex-wrap items-center gap-4">
-          <Badge icon={<HaloSignal tone="wait" label="Working" />}>Working</Badge>
+          <Badge icon={<HaloSignal label="Working" />}>Working</Badge>
           <Button variant="secondary" disabled>
             <HaloSignal tone="live" size={14} label="Deploying" data-icon="inline-start" />
             Deploying
           </Button>
           <span className="inline-flex items-center gap-2">
-            <HaloSignal tone="wait" label="Climb lead is working" />
+            <HaloSignal label="Climb lead is working" />
             Climb lead is working
           </span>
         </span>

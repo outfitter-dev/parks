@@ -1,7 +1,7 @@
+import { ButtonDemo } from "./button";
 import type { ComponentType } from "react";
 import {
   BadgeDemo,
-  ButtonDemo,
   CardDemo,
   FeedbackDemo,
   InputsDemo,
@@ -10,6 +10,7 @@ import {
   TableDemo,
   TabsDemo,
 } from "./components";
+import { BreadcrumbDemo } from "./breadcrumb";
 import { DotMatrixDemo } from "./dot-matrix";
 import {
   AdminComposition,
@@ -23,7 +24,8 @@ import { BoardSurface } from "./surfaces/board";
 import { DocsSurface } from "./surfaces/docs";
 import { SkillsetSurface } from "./surfaces/skillset";
 import { TrailsSurface } from "./surfaces/trails";
-import { ColorDemo, IconsDemo, ShapeDemo, TypeDemo } from "./primitives";
+import { IconsDemo } from "./icons";
+import { ColorDemo, ShapeDemo, TypeDemo } from "./primitives";
 
 /** Keyed by `section/slug` from lib/nav.ts. */
 export const demos: Record<string, ComponentType> = {
@@ -39,6 +41,7 @@ export const demos: Record<string, ComponentType> = {
   "surfaces/blog": BlogSurface,
   "components/button": ButtonDemo,
   "components/badge": BadgeDemo,
+  "components/breadcrumb": BreadcrumbDemo,
   "components/card": CardDemo,
   "components/inputs": InputsDemo,
   "components/tabs": TabsDemo,

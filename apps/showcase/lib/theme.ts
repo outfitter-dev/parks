@@ -31,9 +31,9 @@ export const presets: Record<PresetId, { label: string; values: PresetValues }> 
     label: "Luma tuned",
     values: {
       shape: { radius: 13, pad: 12, panelPad: 8, textInset: 0.4, control: 34, field: 8, smooth: 2, stroke: 1.5 },
-      type: { font: "allo", size: 14, rond: 50, mono: "plex" },
+      type: { font: "allo", size: 14, rond: 50, mono: "jetbrains" },
       color: {
-        brand: "oklch(0.76 0.15 70)",
+        brand: "oklch(0.705 0.213 47.604)",
         primary: "ink",
         hue: 70,
         tint: 0.0015,
@@ -91,7 +91,8 @@ export function compileTheme(tokens: PresetValues): string {
     "--font-code": mono.stack,
     "--text-ui": `${type.size}px`,
     "--rond": `${type.rond}`,
-    "--mono-scale": `${mono.scale}`,
+    // At equal sizes, JetBrains Mono and Allo have nearly identical x- and cap heights.
+    "--mono-scale": type.font === "allo" && type.mono === "jetbrains" ? "1" : `${mono.scale}`,
     "--brand": color.brand,
     "--neutral-hue": `${color.hue}`,
     "--neutral-tint": `${color.tint}`,

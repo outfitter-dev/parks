@@ -3,8 +3,9 @@ import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 
 // Solar is the one icon library. Every icon is imported on its own from a
-// style subpath, such as @solar-icons/react/linear/bell, so bundles stay small.
+// style subpath, such as @solar-icons/react/outline/bell, so bundles stay small.
 const repo = join(import.meta.dirname, "..");
+const gallery = join(repo, "apps/workbench/demos/icons.tsx");
 const scanned = ["app", "apps", "cli", "lib", "packages", "plugins"];
 const skip = new Set(["node_modules", ".next", ".turbo", "dist"]);
 
@@ -31,6 +32,18 @@ const solarStyles = ["linear", "bold", "bold-duotone", "broken", "line-duotone",
 describe("icons", () => {
   it("has sources to check", () => {
     expect(sources.length).toBeGreaterThan(0);
+  });
+
+  it("lists every Solar glyph used in the UI in alphabetical order", () => {
+    const glyphImport = /^@solar-icons\/react\/[^/]+\/([^/]+)$/;
+    const used = sources.filter((path) => path !== gallery).flatMap((path) =>
+      Array.from(readFileSync(path, "utf8").matchAll(specifier)).flatMap(([, target]) => {
+        const glyph = glyphImport.exec(target)?.[1];
+        return glyph ? [glyph] : [];
+      }),
+    );
+    const listed = Array.from(readFileSync(gallery, "utf8").matchAll(/\{ name: "([^"]+)", outline:/g), ([, name]) => name);
+    expect(listed).toEqual([...new Set(used)].sort());
   });
 
   for (const path of sources) {
