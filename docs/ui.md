@@ -59,6 +59,14 @@ Controls share one size scale, `xs`, `sm`, `default` and `lg` (`packages/ui/src/
 
 There is one segmented control (`packages/ui/src/lib/segment.ts`): a muted track whose selected segment is raised. `ToggleGroup` draws it by default, and Tabs' default `TabsList` draws the same thing. Use Tabs when each choice shows its own panel; use `ToggleGroup` to switch a filter or a view with no panel. `ToggleGroup variant="ghost" | "outline" | "secondary"` is a row of separate, spaced Toggles for a toolbar.
 
+## Empty states, progress and chips
+
+`Empty` is shadcn's empty state: `EmptyHeader` (with `EmptyMedia`, `EmptyTitle`, `EmptyDescription`) and `EmptyContent` for actions. Put a `Mark` in `EmptyMedia`, with a `bold-duotone` icon. `EmptyHeader` is also the centred header of the sign-in and device cards; `EmptyTitle` takes `render={<h2 />}` when it titles a card.
+
+`Progress` adds `segments` (counted steps drawn as separate segments: `true` for one per step, or a number), `showValue` (the percentage, or `done/max` for segments, at the end of the bar's line) and `tone` for the fill.
+
+A chip is a `Badge`: `size` (`xs`, `sm`, `default`, `lg`) and `mono` for code, paths and identifiers, with `icon` for a file type or graph glyph. File chips in the composer and nodes in the Trails graph use `variant="outline" size="lg" mono`.
+
 ## Icons
 
 Solar (`@solar-icons/react`) is the only icon library. Import each icon on its own from a style subpath, never from the package root:

@@ -15,7 +15,6 @@ import {
   TableRow,
 } from "@workspace/ui/components/table";
 import type { Tone } from "@workspace/ui/lib/tone";
-import { cn } from "@workspace/ui/lib/utils";
 import { ArrowRightIcon } from "@solar-icons/react/outline/arrow-right";
 import { BoltIcon } from "@solar-icons/react/outline/bolt";
 import { BoltIcon as BoltBold } from "@solar-icons/react/bold/bolt";
@@ -68,7 +67,7 @@ const topo: { group: string; trails: { id: string; intent: Intent }[] }[] = [
 const intentTones = { read: "neutral", write: "info", destroy: "destructive" } as const satisfies Record<string, Tone>;
 
 function IntentMark({ intent, className }: { intent: Intent; className?: string }) {
-  return <Badge tone={intentTones[intent]} className={cn("font-mono", className)}>{intent}</Badge>;
+  return <Badge tone={intentTones[intent]} mono className={className}>{intent}</Badge>;
 }
 
 const input = `z.object({
@@ -88,15 +87,16 @@ const output = `z.object({
 function Node({ label, kind, current }: { label: string; kind: "trail" | "resource" | "signal"; current?: boolean }) {
   const Icon = kind === "resource" ? DatabaseIcon : kind === "signal" ? BoltIcon : StructureIcon;
   return (
-    <span
-      className={cn(
-        "flex items-center gap-1.5 rounded-lg border bg-background px-2.5 py-1.5 font-mono text-xs shadow-xs",
-        current && "border-border-strong ring-2 ring-border-muted",
-      )}
+    <Badge
+      variant="outline"
+      size="lg"
+      mono
+      icon={<Icon className="text-muted-foreground" />}
+      data-current={current ? "" : undefined}
+      className="data-current:ring-2 data-current:ring-border-strong"
     >
-      <Icon className="size-3.5 text-muted-foreground" />
       {label}
-    </span>
+    </Badge>
   );
 }
 

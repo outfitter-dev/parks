@@ -12,6 +12,7 @@ import { tones } from "@workspace/ui/lib/tone";
 import { ScrollArea } from "@workspace/ui/components/scroll-area";
 import { Separator } from "@workspace/ui/components/separator";
 import { Button } from "@workspace/ui/components/button";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@workspace/ui/components/empty";
 import {
   Card,
   CardAction,
@@ -72,6 +73,7 @@ import { Toggle } from "@workspace/ui/components/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@workspace/ui/components/tooltip";
 import { BellOffIcon } from "@solar-icons/react/outline/bell-off";
+import { InboxIcon as InboxDuotone } from "@solar-icons/react/bold-duotone/inbox";
 import { CheckCircleIcon } from "@solar-icons/react/outline/check-circle";
 import { DangerCircleIcon } from "@solar-icons/react/outline/danger-circle";
 import { DangerTriangleIcon } from "@solar-icons/react/outline/danger-triangle";
@@ -148,6 +150,14 @@ export function BadgeDemo() {
         <Badge tone="success" live>Live</Badge>
         <Badge tone="info" live>Deploying</Badge>
         <Badge tone="destructive" live>Recording</Badge>
+      </Specimen>
+      <Specimen title="Sizes and chips" note="xs, sm, default and lg. `mono` sets code type for tags, file chips and graph nodes.">
+        <Badge size="xs">xs</Badge>
+        <Badge size="sm">sm</Badge>
+        <Badge>default</Badge>
+        <Badge size="lg">lg</Badge>
+        <Badge variant="outline" size="lg" mono icon={<InfoCircleIcon />}>ask.create</Badge>
+        <Badge mono>.md</Badge>
       </Specimen>
       <Specimen title="Counts" note="Plain and filled counts share the same sizing. Above the cap, the count reads 99+.">
         <Badge count={3} />
@@ -595,8 +605,24 @@ export function FeedbackDemo() {
           Delivering to Donna
         </span>
       </Specimen>
-      <Specimen title="Progress" className="block max-w-sm">
-        <Progress value={64} />
+      <Specimen title="Progress" note="`segments` draws counted steps; `showValue` puts the value at the end of the line; `tone` colours the fill." className="grid max-w-sm grid-cols-1">
+        <Progress value={64} aria-label="Upload" />
+        <Progress value={35} showValue tone="brand" aria-label="Tests" />
+        <Progress value={3} max={5} segments showValue tone="brand" aria-label="Step 3 of 5" />
+      </Specimen>
+      <Specimen title="Empty" note="shadcn's Empty. Its header is also the centred header of the sign-in card." className="block">
+        <Empty className="border">
+          <EmptyHeader>
+            <EmptyMedia>
+              <Mark size="lg"><InboxDuotone /></Mark>
+            </EmptyMedia>
+            <EmptyTitle>No asks waiting</EmptyTitle>
+            <EmptyDescription>When an agent asks you something, it shows up here.</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button variant="outline" size="sm">Open the Board</Button>
+          </EmptyContent>
+        </Empty>
       </Specimen>
       <Specimen title="Skeleton" className="grid max-w-sm grid-cols-1">
         <Skeleton className="h-4 w-2/3" />

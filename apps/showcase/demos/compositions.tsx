@@ -3,6 +3,7 @@
 import { useState, type ReactNode } from "react";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemHeader, ItemMedia, ItemMeta, ItemTitle } from "@workspace/ui/components/item";
 import { Badge } from "@workspace/ui/components/badge";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@workspace/ui/components/empty";
 import { Mark } from "@workspace/ui/components/mark";
 import { Button } from "@workspace/ui/components/button";
 import {
@@ -24,6 +25,7 @@ import { KeyIcon } from "@solar-icons/react/outline/key";
 import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left";
 import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
 import { InboxIcon as InboxBold } from "@solar-icons/react/bold/inbox";
+import { InboxIcon as InboxDuotone } from "@solar-icons/react/bold-duotone/inbox";
 import { ShieldKeyholeIcon as ShieldKeyholeBold } from "@solar-icons/react/bold/shield-keyhole";
 import { CheckCircleIcon as CheckCircleBold } from "@solar-icons/react/bold/check-circle";
 import { CheckIcon as CheckBold } from "@solar-icons/react/bold/check";
@@ -478,12 +480,15 @@ export function NeedsYouComposition() {
                 </ToggleGroup>
               </PageBar>
               {view === "answered" ? (
-                <div className="grid flex-1 place-items-center p-(--pad) text-center">
-                  <div>
-                    <p className="font-medium">Nothing answered yet today</p>
-                    <p className="mt-1 text-muted-foreground">Asks you reply to move here, with the reply attached.</p>
-                  </div>
-                </div>
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyMedia>
+                      <Mark size="lg"><InboxDuotone /></Mark>
+                    </EmptyMedia>
+                    <EmptyTitle>Nothing answered yet today</EmptyTitle>
+                    <EmptyDescription>Asks you reply to move here, with the reply attached.</EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
               ) : (
                 <>
                   <p className="px-4 pb-2 text-xs text-muted-foreground tabular-nums @3xl:hidden">
@@ -682,11 +687,13 @@ function AuthCard({
 }) {
   return (
     <Card className="w-full max-w-sm gap-6 py-8">
-      <div className="flex flex-col items-center px-8 text-center">
-        <TonalMark>{mark}</TonalMark>
-        <h2 className="mt-5 text-xl font-semibold tracking-tight text-balance">{title}</h2>
-        <p className="mt-2 max-w-64 text-pretty text-muted-foreground">{description}</p>
-      </div>
+      <EmptyHeader className="mx-auto px-8">
+        <EmptyMedia className="mb-3">
+          <TonalMark>{mark}</TonalMark>
+        </EmptyMedia>
+        <EmptyTitle render={<h2 />} className="text-xl font-semibold text-balance">{title}</EmptyTitle>
+        <EmptyDescription className="max-w-64 leading-normal">{description}</EmptyDescription>
+      </EmptyHeader>
       <div className="grid gap-3 px-8">{children}</div>
     </Card>
   );
