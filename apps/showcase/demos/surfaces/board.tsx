@@ -71,29 +71,10 @@ const navigation = {
 function Meter({ task }: { task: Task }) {
   if (task.steps) {
     const { done, total } = task.steps;
-    return (
-      <span className="flex items-center gap-2" role="img" aria-label={`Step ${done} of ${total}`}>
-        <span className="flex flex-1 gap-0.5">
-          {Array.from({ length: total }, (_, index) => (
-            <span
-              key={index}
-              className={cn("h-1 flex-1 rounded-full", index < done ? "bg-brand" : "bg-fill-strong")}
-            />
-          ))}
-        </span>
-        <span className="text-xs text-muted-foreground tabular-nums">
-          {done}/{total}
-        </span>
-      </span>
-    );
+    return <Progress tone="brand" value={done} max={total} segments showValue aria-label={`Step ${done} of ${total}`} />;
   }
   if (task.progress === undefined) return null;
-  return (
-    <span className="flex items-center gap-2">
-      <Progress value={task.progress} aria-label="Progress" className="flex-1" />
-      <span className="text-xs text-muted-foreground tabular-nums">{task.progress}%</span>
-    </span>
-  );
+  return <Progress tone="brand" value={task.progress} showValue aria-label="Progress" />;
 }
 
 function TaskCard({ task }: { task: Task }) {

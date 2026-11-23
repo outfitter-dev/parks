@@ -98,14 +98,8 @@ function Composer() {
   return (
     <div className="rounded-2xl border bg-background p-2 shadow-xs focus-within:ring-2 focus-within:ring-focus-ring">
       <div className="flex flex-wrap gap-1.5 px-1 pb-2">
-        <span className="flex items-center gap-1.5 rounded-md bg-fill-subtle py-0.5 ps-0.5 pe-2 text-xs ring-1 ring-border-muted">
-          <FileType type="ts" size="mini" />
-          routes.ts
-        </span>
-        <span className="flex items-center gap-1.5 rounded-md bg-fill-subtle py-0.5 ps-0.5 pe-2 text-xs ring-1 ring-border-muted">
-          <FileType type="md" size="mini" />
-          
-        </span>
+        <Badge variant="outline" size="lg" mono icon={<FileType type="ts" size="mini" />}>routes.ts</Badge>
+        <Badge variant="outline" size="lg" mono icon={<FileType type="md" size="mini" />}></Badge>
       </div>
       <Textarea
         rows={2}
