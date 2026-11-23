@@ -51,7 +51,7 @@ function AskCard() {
           >
             <span className="flex items-center gap-2 font-medium">
               {option.label}
-              {option.recommended ? <Badge variant="secondary" className="ml-auto">Recommended</Badge> : null}
+              {option.recommended ? <Badge className="ml-auto">Recommended</Badge> : null}
             </span>
             <span className="text-muted-foreground">{option.detail}</span>
           </button>
