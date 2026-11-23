@@ -3,7 +3,7 @@
 import { Badge } from "@workspace/ui/components/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card";
 import { paletteNames, steps } from "@workspace/ui/lib/palette";
-import { Specimen } from "./kit";
+import { Specimen, VersionRows } from "./kit";
 
 const swatches = [
   ["background", "bg-background"],
@@ -225,7 +225,7 @@ export function ShapeDemo() {
       </Specimen>
       <Specimen
         title="Grouped rows"
-        note="The row stack uses the same inset on the sides and bottom. Hairline gaps reveal the card’s background."
+        note="The row stack uses the same inset on the sides and bottom. Rows are a bounded ItemGroup with hairline dividers."
         className="block"
       >
         <Card className="max-w-md pb-(--corner-gap)">
@@ -234,19 +234,7 @@ export function ShapeDemo() {
             <CardDescription>Every saved version, newest first.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="concentric grid gap-px overflow-hidden rounded-lg">
-              {[
-                ["14", "Donna → webhook · devin", "Live"],
-                ["13", "Quiet hours 10 PM to 8 AM", "2 days ago"],
-                ["12", "Rex moved to dry run", "Nov 18"],
-              ].map(([version, change, when], index) => (
-                <div key={version} className="flex h-(--control-h) items-center gap-3 bg-panel-fill px-text">
-                  <span className="font-mono text-muted-foreground">v{version}</span>
-                  <span className="min-w-0 flex-1 truncate">{change}</span>
-                  {index === 0 ? <Badge tone="success" dot>{when}</Badge> : <span className="text-muted-foreground">{when}</span>}
-                </div>
-              ))}
-            </div>
+            <VersionRows variant="bounded" />
           </CardContent>
         </Card>
       </Specimen>

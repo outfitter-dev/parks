@@ -1,5 +1,6 @@
 "use client";
 
+import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia, ItemTitle } from "@workspace/ui/components/item";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Progress } from "@workspace/ui/components/progress";
@@ -211,28 +212,26 @@ export function BoardSurface() {
                 <FrameTitle>Linked</FrameTitle>
                 <FrameDescription>Objects this run touches</FrameDescription>
               </FrameHeader>
-              <FramePanel className="flex flex-col gap-3">
-                <span className="flex items-center gap-2">
-                  <GitBranchIcon className="size-4 text-muted-foreground" />
-                  climb#91
-                  <Badge tone="warning" dot className="ml-auto">Changes requested</Badge>
-                </span>
-                <span className="flex items-center gap-2">
-                  <CodeSquareIcon className="size-4 text-muted-foreground" />
-                  CI · check
-                  <Badge
-                    tone="info"
-                    className="ml-auto"
-                    icon={<DotmCircular4 size={12} dotSize={2} ariaLabel="Running" />}
-                  >
-                    2 of 4
-                  </Badge>
-                </span>
-                <span className="flex items-center gap-2">
-                  <CheckCircleIcon className="size-4 text-muted-foreground" />
-                  CLI-44
-                  <Badge tone="info" live className="ml-auto">In progress</Badge>
-                </span>
+              <FramePanel>
+                <ItemGroup variant="open" className="gap-1">
+                  <Item size="xs" className="px-0">
+                    <ItemMedia variant="icon"><GitBranchIcon className="text-muted-foreground" /></ItemMedia>
+                    <ItemContent><ItemTitle className="font-normal">climb#91</ItemTitle></ItemContent>
+                    <ItemActions><Badge tone="warning" dot>Changes requested</Badge></ItemActions>
+                  </Item>
+                  <Item size="xs" className="px-0">
+                    <ItemMedia variant="icon"><CodeSquareIcon className="text-muted-foreground" /></ItemMedia>
+                    <ItemContent><ItemTitle className="font-normal">CI · check</ItemTitle></ItemContent>
+                    <ItemActions>
+                      <Badge tone="info" icon={<DotmCircular4 size={12} dotSize={2} ariaLabel="Running" />}>2 of 4</Badge>
+                    </ItemActions>
+                  </Item>
+                  <Item size="xs" className="px-0">
+                    <ItemMedia variant="icon"><CheckCircleIcon className="text-muted-foreground" /></ItemMedia>
+                    <ItemContent><ItemTitle className="font-normal">CLI-44</ItemTitle></ItemContent>
+                    <ItemActions><Badge tone="info" live>In progress</Badge></ItemActions>
+                  </Item>
+                </ItemGroup>
               </FramePanel>
             </Frame>
           </div>

@@ -35,6 +35,14 @@ A component sets `data-tone` and its classes read the `--tone-*` roles from `glo
 
 shadcn's values and the older tone-as-variant values still work as aliases: Button `default` is `solid`, `destructive` is a destructive `tint`; Badge `success`, `warning`, `info`, `destructive` and `neutral` are that tone as a `tint`; Alert `destructive`, `warning`, `success` and `info` set the tone. Prefer `tone=` in new code. Map domain states to a `Tone` in one table (see `agentModeTones` in the workbench kit), not to class strings.
 
+## Rows
+
+Build any row of label, meta and trailing action with `Item` (`packages/ui/src/components/item.tsx`, from shadcn's Item). Slots: `ItemMedia` (icon, dot or mark), `ItemContent` with `ItemTitle` and `ItemDescription`, `ItemMeta` (muted, tabular, never wraps), and `ItemActions` (badges and buttons). `ItemHeader` and `ItemFooter` span the full width when a row needs a second line.
+
+`Item` takes `variant` (`default`, `outline`, `muted`), `size` (`default`, `sm`, `xs`; `xs` is one control high) and `selected`. Render it as a link or button with `render` to get hover and focus states. Wrap rows in `ItemGroup`: `open` spaces them apart, `list` divides them with rules, and `bounded` also puts them in one rounded panel. Neither component sets a list role; add `role="list"` and `role="listitem"` yourself when the rows are a real list rather than buttons or links.
+
+Disclosure rows that open in place, such as `TraceLine` in the workbench, stay on Collapsible.
+
 ## Icons
 
 Solar (`@solar-icons/react`) is the only icon library. Import each icon on its own from a style subpath, never from the package root:
