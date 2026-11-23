@@ -4,6 +4,7 @@ import * as React from "react"
 import { Select as SelectPrimitive } from "@base-ui/react/select"
 import { groupLabel } from "#lib/header"
 import { menuRow, menuRowFocusChildren, menuRowIndicator, menuRowIndicatorSlot } from "#lib/row"
+import { type ControlSize } from "#lib/size"
 import { cnState } from "#lib/utils"
 import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down"
 import { CheckIcon } from "@solar-icons/react/outline/check"
@@ -37,14 +38,15 @@ function SelectTrigger({
   children,
   ...props
 }: SelectPrimitive.Trigger.Props & {
-  size?: "sm" | "default"
+  /** The control scale: xs, sm, default or lg (see #lib/size). */
+  size?: ControlSize
 }) {
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
       data-size={size}
       className={cnState(
-        "flex w-fit items-center justify-between gap-1.5 rounded-lg border border-input bg-field py-2 pr-2 pl-2.5 text-sm whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-focus-ring disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-invalid-border aria-invalid:ring-3 aria-invalid:ring-invalid-ring data-placeholder:text-muted-foreground data-[size=default]:h-(--control-h) data-[size=sm]:h-7 data-[size=sm]:rounded-md *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 hover:bg-field-hover [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "flex w-fit items-center justify-between gap-1.5 rounded-lg border border-input bg-field py-2 pr-2 pl-2.5 text-sm whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-focus-ring disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-invalid-border aria-invalid:ring-3 aria-invalid:ring-invalid-ring data-placeholder:text-muted-foreground h-(--size-h) [--size-h:var(--control-h)] data-[size=xs]:[--size-h:--spacing(6)] data-[size=xs]:rounded-md data-[size=xs]:text-xs data-[size=sm]:[--size-h:--spacing(7)] data-[size=sm]:rounded-md data-[size=lg]:[--size-h:--spacing(9)] *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 hover:bg-field-hover [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}

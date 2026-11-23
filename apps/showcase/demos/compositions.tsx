@@ -16,7 +16,6 @@ import {
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { Progress } from "@workspace/ui/components/progress";
-import { Tabs, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
 import { Textarea } from "@workspace/ui/components/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
 import type { Tone } from "@workspace/ui/lib/tone";
@@ -379,8 +378,8 @@ function Choice<T extends string>({
     <div className="flex items-center gap-2">
       <span className="text-muted-foreground">{label}</span>
       <ToggleGroup
-        variant="outline"
         size="sm"
+        aria-label={label}
         value={[value]}
         onValueChange={(next) => {
           const found = options.find((option) => option.value === next[0]);
@@ -467,15 +466,16 @@ export function NeedsYouComposition() {
           <div className="grid h-full @3xl:grid-cols-[minmax(--spacing(64),--spacing(88))_1fr]">
             <div className={cn("flex flex-col @3xl:border-r", screen === "ask" && "@max-3xl:hidden")}>
               <PageBar title="Needs you" className="pe-2">
-                <Tabs
-                  value={view}
-                  onValueChange={(next) => setView(next === "answered" ? "answered" : "open")}
+                <ToggleGroup
+                  aria-label="Show"
+                  value={[view]}
+                  onValueChange={(next) => {
+                    if (next[0] === "open" || next[0] === "answered") setView(next[0]);
+                  }}
                 >
-                  <TabsList>
-                    <TabsTrigger value="open">Open</TabsTrigger>
-                    <TabsTrigger value="answered">Answered</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                  <ToggleGroupItem value="open">Open</ToggleGroupItem>
+                  <ToggleGroupItem value="answered">Answered</ToggleGroupItem>
+                </ToggleGroup>
               </PageBar>
               {view === "answered" ? (
                 <div className="grid flex-1 place-items-center p-(--pad) text-center">

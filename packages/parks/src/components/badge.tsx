@@ -27,7 +27,7 @@ import { cnState } from "#lib/utils"
  * - Counts default to a pill and show "99+" above `max`.
  */
 const badgeVariants = cva(
-  "group/badge text-trim relative inline-flex [--badge-h:--spacing(5)] h-(--badge-h) w-fit max-w-full shrink-0 items-center justify-center gap-1 overflow-hidden border border-transparent px-1.5 text-xs font-medium whitespace-nowrap transition-all focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-focus-ring data-lead:ps-[calc((var(--badge-h)-var(--badge-mark))/2)] data-lead:pe-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-invalid-border aria-invalid:ring-invalid-ring [&>svg]:pointer-events-none [&>svg]:size-3! in-data-[slot=card-action]:rounded-full in-data-[slot=card-action]:[--corner-nudge:calc(var(--frame-space)-var(--frame-radius)+var(--badge-h)/2)] in-data-[slot=card-action]:-mt-(--corner-nudge) in-data-[slot=card-action]:-me-(--corner-nudge) data-count:min-w-(--badge-h) data-count:px-1",
+  "group/badge text-trim relative inline-flex h-(--badge-h) w-fit max-w-full shrink-0 items-center justify-center gap-1 overflow-hidden border border-transparent px-1.5 text-xs font-medium whitespace-nowrap transition-all focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-focus-ring data-lead:ps-[calc((var(--badge-h)-var(--badge-mark))/2)] data-lead:pe-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-invalid-border aria-invalid:ring-invalid-ring [&>svg]:pointer-events-none [&>svg]:size-3! in-data-[slot=card-action]:rounded-full in-data-[slot=card-action]:[--corner-nudge:calc(var(--frame-space)-var(--frame-radius)+var(--badge-h)/2)] in-data-[slot=card-action]:-mt-(--corner-nudge) in-data-[slot=card-action]:-me-(--corner-nudge) data-count:min-w-(--badge-h) data-count:px-1",
   {
     variants: {
       variant: {
@@ -48,9 +48,17 @@ const badgeVariants = cva(
         true: "ring-1 ring-tone-border",
         false: "",
       },
+      // The control scale's names (#lib/size), at badge heights.
+      size: {
+        xs: "[--badge-h:--spacing(4)] gap-0.5 px-1",
+        sm: "[--badge-h:--spacing(4.5)]",
+        default: "[--badge-h:--spacing(5)]",
+        lg: "[--badge-h:--spacing(6)] px-2",
+      },
     },
     defaultVariants: {
       variant: "tint",
+      size: "default",
       shape: "rect",
       ring: false,
     },
@@ -125,6 +133,7 @@ function Badge({
   variant: variantProp,
   tone: toneProp,
   shape,
+  size,
   ring = false,
   dot,
   live,
@@ -180,7 +189,7 @@ function Badge({
     props: mergeProps<"span">(
       {
         className: cnState(
-          badgeVariants({ variant, shape: isCount && shape !== "rect" ? "pill" : shape, ring }),
+          badgeVariants({ variant, size, shape: isCount && shape !== "rect" ? "pill" : shape, ring }),
           "data-[tone=destructive]:focus-visible:ring-invalid-ring",
           lead === "dot" && "[--badge-mark:--spacing(1.5)]",
           lead === "icon" && "[--badge-mark:--spacing(3)]",
