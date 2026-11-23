@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { SidebarToggle } from "../app-frame";
-import { Breadcrumb } from "@workspace/ui/components/breadcrumb";
+import { BreadcrumbPath } from "@workspace/ui/components/breadcrumb";
 
 /** The browser pane owns navigation. The detail pane owns the selected item's path and actions. */
 export function ExplorerLayout({
@@ -28,7 +28,7 @@ export function ExplorerLayout({
 
       <div className="min-w-0">
         <header className="flex min-h-14 items-center gap-3 px-4">
-          <Breadcrumb className="min-w-0 flex-1" items={path.map((label) => ({ label }))} />
+          <BreadcrumbPath className="min-w-0 flex-1" items={path.map((label) => ({ label }))} />
           <div className="flex shrink-0 items-center gap-2">{actions}</div>
         </header>
         <div className="flex min-w-0 flex-col gap-6 px-4 pb-4">{children}</div>
