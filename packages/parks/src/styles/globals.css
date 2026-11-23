@@ -201,10 +201,17 @@
   /* Merged work (pull requests, stacks) reads purple. */
   --merged: light-dark(var(--color-purple-600), var(--color-purple-400));
   --merged-strong: light-dark(var(--color-purple-700), var(--color-purple-300));
+  --merged-foreground: light-dark(var(--color-purple-800), var(--color-purple-200));
+  --merged-contrast: light-dark(var(--color-purple-50), var(--color-purple-950));
   --merged-fill: light-dark(color-mix(in oklch, var(--merged) 10%, transparent), color-mix(in oklch, var(--merged) 20%, transparent));
-  /* The brand as a tone: strong for brand-coloured glyphs and text, fill for a tinted chip. */
-  --brand-strong: light-dark(var(--color-brand-600), var(--color-brand-400));
+  --merged-fill-hover: light-dark(color-mix(in oklch, var(--merged) 20%, transparent), color-mix(in oklch, var(--merged) 30%, transparent));
+  --merged-border: light-dark(color-mix(in oklch, var(--merged) 30%, transparent), color-mix(in oklch, var(--merged) 35%, transparent));
+  /* The brand as a tone, from the brand palette like the others. */
+  --brand-strong: light-dark(var(--color-brand-700), var(--color-brand-300));
+  --brand-on-tint: light-dark(var(--color-brand-800), var(--color-brand-200));
   --brand-fill: light-dark(color-mix(in oklch, var(--brand) 12%, transparent), color-mix(in oklch, var(--brand) 22%, transparent));
+  --brand-fill-hover: light-dark(color-mix(in oklch, var(--brand) 22%, transparent), color-mix(in oklch, var(--brand) 32%, transparent));
+  --brand-border: light-dark(color-mix(in oklch, var(--brand) 30%, transparent), color-mix(in oklch, var(--brand) 35%, transparent));
   /* "New" (unread, just arrived) borrows the info tone, so new things read blue. */
   --new: var(--info);
   --new-strong: var(--info-strong);
@@ -248,6 +255,90 @@
     0 1px 2px var(--shadow-color),
     0 calc(var(--shadow-level) * 2px) calc(var(--shadow-level) * 6px) var(--shadow-color-soft),
     inset 0 1px 0 var(--shadow-highlight);
+}
+
+/*
+ * The current tone. A component that takes `tone` sets data-tone, and its
+ * classes read --tone-* (bg-tone-fill, text-tone-foreground, ring-tone-border
+ * and so on), so its `variant` only picks emphasis. Every tone fills the same
+ * roles: base (solid fills), strong (titles, glyphs), foreground (text on a
+ * tint), contrast (text on a solid base), solid-hover, fill, fill-hover,
+ * border, and mark (status dots; quieter than the text for neutral).
+ */
+[data-tone="neutral"] {
+  --tone: var(--primary);
+  --tone-strong: var(--foreground);
+  --tone-foreground: var(--muted-foreground);
+  --tone-contrast: var(--primary-foreground);
+  --tone-solid-hover: var(--primary-hover);
+  --tone-fill: var(--fill);
+  --tone-fill-hover: var(--fill-strong);
+  --tone-border: var(--border-muted);
+  --tone-mark: var(--fg-subtle);
+}
+[data-tone="info"],
+[data-tone="success"],
+[data-tone="warning"],
+[data-tone="destructive"],
+[data-tone="merged"] {
+  --tone-solid-hover: color-mix(in oklch, var(--tone) 85%, var(--background));
+  --tone-mark: var(--tone);
+}
+[data-tone="info"] {
+  --tone: var(--info);
+  --tone-strong: var(--info-strong);
+  --tone-foreground: var(--info-foreground);
+  --tone-contrast: var(--info-contrast);
+  --tone-fill: var(--info-fill);
+  --tone-fill-hover: var(--info-fill-hover);
+  --tone-border: var(--info-border);
+}
+[data-tone="success"] {
+  --tone: var(--success);
+  --tone-strong: var(--success-strong);
+  --tone-foreground: var(--success-foreground);
+  --tone-contrast: var(--success-contrast);
+  --tone-fill: var(--success-fill);
+  --tone-fill-hover: var(--success-fill-hover);
+  --tone-border: var(--success-border);
+}
+[data-tone="warning"] {
+  --tone: var(--warning);
+  --tone-strong: var(--warning-strong);
+  --tone-foreground: var(--warning-foreground);
+  --tone-contrast: var(--warning-contrast);
+  --tone-fill: var(--warning-fill);
+  --tone-fill-hover: var(--warning-fill-hover);
+  --tone-border: var(--warning-border);
+}
+[data-tone="destructive"] {
+  --tone: var(--destructive);
+  --tone-strong: var(--destructive-strong);
+  --tone-foreground: var(--destructive-foreground);
+  --tone-contrast: var(--destructive-contrast);
+  --tone-fill: var(--destructive-fill);
+  --tone-fill-hover: var(--destructive-fill-hover);
+  --tone-border: var(--destructive-border);
+}
+[data-tone="merged"] {
+  --tone: var(--merged);
+  --tone-strong: var(--merged-strong);
+  --tone-foreground: var(--merged-foreground);
+  --tone-contrast: var(--merged-contrast);
+  --tone-fill: var(--merged-fill);
+  --tone-fill-hover: var(--merged-fill-hover);
+  --tone-border: var(--merged-border);
+}
+[data-tone="brand"] {
+  --tone: var(--brand);
+  --tone-strong: var(--brand-strong);
+  --tone-foreground: var(--brand-on-tint);
+  --tone-contrast: var(--brand-foreground);
+  --tone-solid-hover: color-mix(in oklch, var(--brand) 85%, var(--background));
+  --tone-fill: var(--brand-fill);
+  --tone-fill-hover: var(--brand-fill-hover);
+  --tone-border: var(--brand-border);
+  --tone-mark: var(--brand);
 }
 
 /* A frame: the outer padded surface. Its radius is --radius plus its padding. */
@@ -438,9 +529,25 @@
   --color-info-border: var(--info-border);
   --color-merged: var(--merged);
   --color-merged-strong: var(--merged-strong);
+  --color-merged-foreground: var(--merged-foreground);
+  --color-merged-contrast: var(--merged-contrast);
   --color-merged-fill: var(--merged-fill);
+  --color-merged-fill-hover: var(--merged-fill-hover);
+  --color-merged-border: var(--merged-border);
   --color-brand-strong: var(--brand-strong);
+  --color-brand-on-tint: var(--brand-on-tint);
   --color-brand-fill: var(--brand-fill);
+  --color-brand-fill-hover: var(--brand-fill-hover);
+  --color-brand-border: var(--brand-border);
+  --color-tone: var(--tone);
+  --color-tone-strong: var(--tone-strong);
+  --color-tone-foreground: var(--tone-foreground);
+  --color-tone-contrast: var(--tone-contrast);
+  --color-tone-solid-hover: var(--tone-solid-hover);
+  --color-tone-fill: var(--tone-fill);
+  --color-tone-fill-hover: var(--tone-fill-hover);
+  --color-tone-border: var(--tone-border);
+  --color-tone-mark: var(--tone-mark);
   --color-fg-subtle: var(--fg-subtle);
   --color-fill-subtle: var(--fill-subtle);
   --color-fill: var(--fill);

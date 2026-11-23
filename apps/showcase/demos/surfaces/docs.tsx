@@ -113,7 +113,7 @@ export function DocsSurface() {
                   language="bash"
                   numbers
                 />
-                <Alert variant="info">
+                <Alert tone="info">
                   <InfoCircleIcon />
                   <AlertTitle>Keep it to four options</AlertTitle>
                   <AlertDescription>Four is the most an iPhone notification can show as actions.</AlertDescription>

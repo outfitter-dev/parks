@@ -3,7 +3,9 @@
 import { Alert, AlertDescription, AlertMeta, AlertTitle } from "@workspace/ui/components/alert";
 import { CodeRef } from "@workspace/ui/components/code-ref";
 import { Avatar, AvatarFallback, AvatarGroup } from "@workspace/ui/components/avatar";
+import { Fragment } from "react";
 import { Badge } from "@workspace/ui/components/badge";
+import { tones } from "@workspace/ui/lib/tone";
 import { ScrollArea } from "@workspace/ui/components/scroll-area";
 import { Separator } from "@workspace/ui/components/separator";
 import { Button } from "@workspace/ui/components/button";
@@ -75,47 +77,64 @@ import { TrashBinMinimalisticIcon } from "@solar-icons/react/outline/trash-bin-m
 import { agents } from "#lib/fixtures";
 import { AgentModeBadge, HaloSignal, Specimen } from "./kit";
 
+const badgeEmphases = ["tint", "solid", "outline", "plain"] as const;
+
 export function BadgeDemo() {
   return (
     <>
-      <Specimen title="Tones" note="Flat by default: a soft tint with matching text and no edge. Neutral is the default.">
+      <Specimen title="Tones" note="`tone` is the colour; the default emphasis is a soft tint with matching text and no edge. Neutral is the default tone.">
         <Badge>Dry run</Badge>
         <Badge variant="surface" shape="pill">Approval</Badge>
-        <Badge variant="info">Queued</Badge>
-        <Badge variant="success">Live</Badge>
-        <Badge variant="warning">Waiting</Badge>
-        <Badge variant="destructive">Failed</Badge>
-        <Badge variant="info">New</Badge>
+        <Badge tone="info">Queued</Badge>
+        <Badge tone="success">Live</Badge>
+        <Badge tone="warning">Waiting</Badge>
+        <Badge tone="destructive">Failed</Badge>
+        <Badge tone="brand">Outfitter</Badge>
+        <Badge tone="merged">Merged</Badge>
+      </Specimen>
+      <Specimen title="Tone and emphasis" note="`variant` is emphasis only, so every tone takes every variant: tint, solid, outline and plain.">
+        <div className="grid grid-cols-[auto_repeat(4,auto)] items-center justify-start gap-x-3 gap-y-2 text-xs text-muted-foreground">
+          <span />
+          {badgeEmphases.map((variant) => <span key={variant}>{variant}</span>)}
+          {tones.map((tone) => (
+            <Fragment key={tone}>
+              <span>{tone}</span>
+              {badgeEmphases.map((variant) => (
+                <span key={variant}><Badge tone={tone} variant={variant} dot>{tone}</Badge></span>
+              ))}
+            </Fragment>
+          ))}
+        </div>
       </Specimen>
       <Specimen
         title="Status"
         note="Rectangular badges with dots use the same side padding as text-only badges. A neutral dot is lighter than its label."
       >
         <Badge dot>Off</Badge>
-        <Badge variant="info" live>Running</Badge>
-        <Badge variant="success" dot>In sync</Badge>
-        <Badge variant="warning" dot>Needs you</Badge>
-        <Badge variant="destructive" dot>Failing</Badge>
+        <Badge tone="info" live>Running</Badge>
+        <Badge tone="success" dot>In sync</Badge>
+        <Badge tone="warning" dot>Needs you</Badge>
+        <Badge tone="destructive" dot>Failing</Badge>
         <Badge icon={<HaloSignal label="Working" />}>Working</Badge>
       </Specimen>
       <Specimen title="Live" note="The dot gives off a soft halo while something runs. Reduced motion stops it.">
-        <Badge variant="success" live>Live</Badge>
-        <Badge variant="info" live>Deploying</Badge>
-        <Badge variant="destructive" live>Recording</Badge>
+        <Badge tone="success" live>Live</Badge>
+        <Badge tone="info" live>Deploying</Badge>
+        <Badge tone="destructive" live>Recording</Badge>
       </Specimen>
       <Specimen title="Counts" note="Plain and filled counts share the same sizing. Above the cap, the count reads 99+.">
         <Badge count={3} />
-        <Badge variant="info" count={12} />
-        <Badge variant="destructive" count={128} />
+        <Badge tone="info" count={12} />
+        <Badge tone="destructive" count={128} />
         <Badge variant="plain" shape="rect" count={7} />
-        <Badge variant="success" shape="rect" count={7} />
+        <Badge tone="success" shape="rect" count={7} />
       </Specimen>
       <Specimen
         title="Shape"
         note="A rounded rectangle by default, so it sits quietly beside other corners. In a card's corner it becomes a pill that shares the corner's centre."
       >
-        <Badge variant="success" dot>Rectangle</Badge>
-        <Badge variant="success" dot shape="pill">Pill</Badge>
+        <Badge tone="success" dot>Rectangle</Badge>
+        <Badge tone="success" dot shape="pill">Pill</Badge>
       </Specimen>
       <Specimen
         title="With a ring"
@@ -123,15 +142,15 @@ export function BadgeDemo() {
       >
         <div className="flex flex-wrap items-center gap-2 rounded-lg bg-muted p-3">
           <Badge ring>Dry run</Badge>
-          <Badge variant="success" ring live>Live</Badge>
-          <Badge variant="warning" ring dot>Needs you</Badge>
-          <Badge variant="destructive" ring>Failed</Badge>
+          <Badge tone="success" ring live>Live</Badge>
+          <Badge tone="warning" ring dot>Needs you</Badge>
+          <Badge tone="destructive" ring>Failed</Badge>
         </div>
         <div className="flex flex-wrap items-center gap-2 rounded-lg bg-muted p-3">
           <Badge>Dry run</Badge>
-          <Badge variant="success" live>Live</Badge>
-          <Badge variant="warning" dot>Needs you</Badge>
-          <Badge variant="destructive">Failed</Badge>
+          <Badge tone="success" live>Live</Badge>
+          <Badge tone="warning" dot>Needs you</Badge>
+          <Badge tone="destructive">Failed</Badge>
         </div>
       </Specimen>
     </>
@@ -151,7 +170,7 @@ export function CardDemo() {
             <CardTitle>Donna</CardTitle>
             <CardDescription>Devin · overnight PR backlog</CardDescription>
             <CardAction>
-              <Badge variant="success" live>Live</Badge>
+              <Badge tone="success" live>Live</Badge>
             </CardAction>
           </CardHeader>
           <CardContent>
@@ -297,7 +316,7 @@ export function MenusDemo() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive">
+            <DropdownMenuItem tone="destructive">
               <TrashBinMinimalisticIcon /> Remove
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -305,7 +324,7 @@ export function MenusDemo() {
       </Specimen>
       <Specimen title="Dialog">
         <Dialog>
-          <DialogTrigger render={<Button variant="destructive" />}>Revoke credential</DialogTrigger>
+          <DialogTrigger render={<Button tone="destructive" variant="tint" />}>Revoke credential</DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Revoke Donna&rsquo;s credential?</DialogTitle>
@@ -315,7 +334,7 @@ export function MenusDemo() {
             </DialogHeader>
             <DialogFooter>
               <DialogClose render={<Button variant="outline" />}>Keep it</DialogClose>
-              <Button variant="destructive">Revoke</Button>
+              <Button tone="destructive" variant="tint">Revoke</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -402,19 +421,19 @@ export function FeedbackDemo() {
           <AlertTitle>Routing saved</AlertTitle>
           <AlertDescription>Version 14 is live. The previous version stays in history.</AlertDescription>
         </Alert>
-        <Alert variant="destructive">
+        <Alert tone="destructive">
           <DangerTriangleIcon />
           <AlertTitle>Delivery failing</AlertTitle>
           <AlertDescription>Donna&rsquo;s webhook has returned 502 three times since 9:10 PM.</AlertDescription>
         </Alert>
-        <Alert variant="warning">
+        <Alert tone="warning">
           <DangerCircleIcon />
           <AlertTitle>Approval waiting</AlertTitle>
           <AlertDescription>
             Rex has asked to merge <CodeRef kind="pr" state="open">outpost#47</CodeRef>. The request expires in 40 minutes.
           </AlertDescription>
         </Alert>
-        <Alert variant="info">
+        <Alert tone="info">
           <InfoCircleIcon />
           <AlertTitle>Quiet hours on</AlertTitle>
           <AlertDescription>Notices queue until 8:00 AM and arrive as one digest.</AlertDescription>
@@ -425,7 +444,7 @@ export function FeedbackDemo() {
         note="The time sits on the title's line in the top-right corner. Use relative time for recent events and a clock time once it is older than a day."
         className="grid max-w-lg grid-cols-1"
       >
-        <Alert variant="destructive">
+        <Alert tone="destructive">
           <DangerTriangleIcon />
           <AlertTitle>Checks failing</AlertTitle>
           <AlertMeta>
@@ -435,7 +454,7 @@ export function FeedbackDemo() {
             <CodeRef kind="pr" state="failing">climb#91</CodeRef> failed 2 of 4 jobs. Climb lead is looking at it.
           </AlertDescription>
         </Alert>
-        <Alert variant="success">
+        <Alert tone="success">
           <CheckCircleIcon />
           <AlertTitle>Merged</AlertTitle>
           <AlertMeta>
