@@ -290,7 +290,7 @@ function SidebarRail({
             width: SIDEBAR_WIDTH,
           }}
           // Inherit the page type, not the popover's text-sm, so rows keep the docked line height.
-          className="gap-0 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] bg-popover px-2 text-[length:inherit] leading-[inherit] shadow-(--shadow-frame) data-[side=right]:slide-in-from-left-0"
+          className="gap-0 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] bg-popover px-2 text-[length:inherit] leading-[inherit] shadow-(--shadow-frame) data-open:zoom-in-100 data-closed:zoom-out-100 data-closed:slide-out-to-left-2"
         >
           <SidebarPanel
             place={place}
