@@ -29,7 +29,7 @@ Re-adding a component that already exists overwrites the file. Badge, Button, Al
 
 ## Tone and emphasis
 
-Colour and emphasis are separate props. `tone` is the colour role: `neutral`, `info`, `success`, `warning`, `destructive`, `brand` or `merged` (`packages/ui/src/lib/tone.ts`). `variant` is emphasis only: Badge takes `tint` (default), `solid`, `outline`, `plain`; Button takes `solid` (default), `tint`, `secondary`, `outline`, `ghost`, `link`. Any tone works with any variant.
+Colour and emphasis are separate props. `tone` is the colour role: `neutral`, `info`, `success`, `warning`, `destructive`, `brand` or `merged` (`packages/ui/src/lib/tone.ts`). `variant` is emphasis only: Badge takes `tint` (default), `solid`, `outline`, `plain`; Button takes `solid` (default), `tint`, `secondary`, `outline`, `ghost`, `link`. Any tone works with any variant. Never leave an `outline` button on its own: a lone secondary action is `secondary` (grey); outline pairs with a solid button.
 
 A component sets `data-tone` and its classes read the `--tone-*` roles from `globals.css` (`bg-tone-fill`, `text-tone-foreground`, `ring-tone-border`, `bg-tone-mark` and so on), so there is no compound class per tone and variant. Use the same utilities to give a custom element a tone: set `data-tone` on it.
 
@@ -49,7 +49,7 @@ Menu, select and nav rows share one recipe in `packages/ui/src/lib/row.ts`, so w
 
 Every card-like box is a `Card`. `variant` sets the look: `raised` (the default), `outline` (an edge, no shadow, for dense cards in a list), `filled` (a panel fill, for stat tiles) and `tray` (a muted well that holds other cards, which take its concentric radius). `size` is `sm`, `default` or `lg`, and the radius follows the padding. `selected` is the one selected look, a brand ring; rendering a card as a link or button (`render`) makes it `interactive`. A card with no header, content or footer pads evenly, so a bare card needs no padding classes.
 
-Card, Dialog and Popover headers share one grid (`packages/ui/src/lib/header.ts`): lead, title, description, meta, then actions. `CardLead` takes an icon, Mark or Avatar; `CardMeta` a time or count; `CardAction` any number of buttons. Titles are `font-semibold` on frames (Card, Dialog) and `font-medium` on rows and popovers (Item, Popover, Alert). `GroupLabel` is the one overline style for a group of rows; menu and select labels use the same style.
+Card, Dialog, Popover and Alert headers share one grid (`packages/ui/src/lib/header.ts`): lead, title, description, meta, then actions. Meta and actions take their own columns, so an Alert with both a time and an action does not overlap. `CardLead` takes an icon, Mark or Avatar; `CardMeta` a time or count; `CardAction` any number of buttons. Titles are `font-semibold` on frames (Card, Dialog) and `font-medium` on rows and popovers (Item, Popover, Alert). `GroupLabel` is the one overline style for a group of rows; menu and select labels use the same style.
 
 ## Sizes, toggles and segmented controls
 

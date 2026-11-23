@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert, AlertDescription, AlertMeta, AlertTitle } from "@workspace/ui/components/alert";
+import { Alert, AlertAction, AlertDescription, AlertMeta, AlertTitle } from "@workspace/ui/components/alert";
 import { CodeRef } from "@workspace/ui/components/code-ref";
 import { Avatar, AvatarFallback, AvatarGroup } from "@workspace/ui/components/avatar";
 import { Fragment } from "react";
@@ -416,7 +416,7 @@ export function MenusDemo() {
     <>
       <Specimen title="Dropdown menu">
         <DropdownMenu>
-          <DropdownMenuTrigger render={<Button variant="outline" />}>Agent actions</DropdownMenuTrigger>
+          <DropdownMenuTrigger render={<Button variant="secondary" />}>Agent actions</DropdownMenuTrigger>
           <DropdownMenuContent className="w-52">
             <DropdownMenuGroup>
               <DropdownMenuLabel>Donna</DropdownMenuLabel>
@@ -555,7 +555,7 @@ export function FeedbackDemo() {
       </Specimen>
       <Specimen
         title="Alert with time"
-        note="The time sits on the title's line in the top-right corner. Use relative time for recent events and a clock time once it is older than a day."
+        note="The time sits at the end of the title's line, before any action. Use relative time for recent events and a clock time once it is older than a day."
         className="grid max-w-lg grid-cols-1"
       >
         <Alert tone="destructive">
@@ -578,6 +578,17 @@ export function FeedbackDemo() {
             <CodeRef kind="pr" state="merged">forge#52</CodeRef> landed on main from{" "}
             <CodeRef kind="branch">gate-policy</CodeRef>.
           </AlertDescription>
+        </Alert>
+        <Alert tone="warning">
+          <DangerCircleIcon />
+          <AlertTitle>Rex went quiet</AlertTitle>
+          <AlertMeta>
+            <time dateTime="2026-11-22T19:40:00Z">2 hr ago</time>
+          </AlertMeta>
+          <AlertDescription>No heartbeat since the review on ropes#18 started.</AlertDescription>
+          <AlertAction>
+            <Button variant="secondary" size="xs">Ping</Button>
+          </AlertAction>
         </Alert>
       </Specimen>
       <Specimen
@@ -620,7 +631,7 @@ export function FeedbackDemo() {
             <EmptyDescription>When an agent asks you something, it shows up here.</EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Button variant="outline" size="sm">Open the Board</Button>
+            <Button variant="secondary" size="sm">Open the Board</Button>
           </EmptyContent>
         </Empty>
       </Specimen>
