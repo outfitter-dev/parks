@@ -20,7 +20,7 @@ describe("ui:add icon rewrite", () => {
     const { code, missing } = rewrite(source);
     expect(missing).toEqual([]);
     expect(code).toContain('import { cn } from "#lib/utils"');
-    expect(code).toContain('import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down"');
+    expect(code).toContain('import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down"');
     expect(code).toContain('<AltArrowDownIcon className="size-4" />');
     expect(code).not.toContain("IconPlaceholder");
   });

@@ -69,7 +69,7 @@
 
   /* Type */
   --text-control-small: 0.8rem;
-  /* Line glyphs draw at this weight on screen at every size. */
+  /* On-screen stroke width for a 20px line icon. */
   --icon-stroke: 1.5px;
   --font-ui: ui-sans-serif, system-ui, sans-serif;
   --font-code: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -80,14 +80,10 @@
   --border-strength: 0.5;
   --shadow-level: 0;
   --brand: oklch(0.21 0.003 70);
-  /* Semantic hues. Each tone is a hue, a peak chroma and a lightness lift;
-     its 50-950 scale and its roles derive from these three. */
+  /* Seeds for the custom semantic scales. Warning uses the amber palette. */
   --destructive-hue: 27;
   --destructive-chroma: 0.235;
   --destructive-lift: 0;
-  --warning-hue: 70;
-  --warning-chroma: 0.17;
-  --warning-lift: 0.08;
   --success-hue: 155;
   --success-chroma: 0.16;
   --success-lift: 0.05;
@@ -109,7 +105,7 @@
  * Colour scales, 50 (lightest) to 950 (darkest), on Tailwind's steps. They
  * do not change with the mode: roles below pick a step for light and dark.
  * neutral follows --neutral-hue/--neutral-tint, brand follows --brand, and
- * each tone follows its hue, chroma and lift seeds.
+ * custom tones follow their hue, chroma and lift seeds.
  */
 :root {
   --neutral-50: oklch(0.985 calc(var(--neutral-tint) * 0.5) var(--neutral-hue));
@@ -145,17 +141,17 @@
   --destructive-800: oklch(calc(0.44 + var(--destructive-lift) * 0.8) calc(var(--destructive-chroma) * 0.75) var(--destructive-hue));
   --destructive-900: oklch(calc(0.385 + var(--destructive-lift) * 0.7) calc(var(--destructive-chroma) * 0.6) var(--destructive-hue));
   --destructive-950: oklch(calc(0.275 + var(--destructive-lift) * 0.5) calc(var(--destructive-chroma) * 0.42) var(--destructive-hue));
-  --warning-50: oklch(calc(0.975 + var(--warning-lift) * 0.15) calc(var(--warning-chroma) * 0.06) var(--warning-hue));
-  --warning-100: oklch(calc(0.945 + var(--warning-lift) * 0.3) calc(var(--warning-chroma) * 0.13) var(--warning-hue));
-  --warning-200: oklch(calc(0.89 + var(--warning-lift) * 0.5) calc(var(--warning-chroma) * 0.26) var(--warning-hue));
-  --warning-300: oklch(calc(0.82 + var(--warning-lift) * 0.7) calc(var(--warning-chroma) * 0.45) var(--warning-hue));
-  --warning-400: oklch(calc(0.72 + var(--warning-lift) * 0.9) calc(var(--warning-chroma) * 0.78) var(--warning-hue));
-  --warning-500: oklch(calc(0.645 + var(--warning-lift) * 1) calc(var(--warning-chroma) * 1) var(--warning-hue));
-  --warning-600: oklch(calc(0.575 + var(--warning-lift) * 1) calc(var(--warning-chroma) * 1.03) var(--warning-hue));
-  --warning-700: oklch(calc(0.505 + var(--warning-lift) * 0.9) calc(var(--warning-chroma) * 0.9) var(--warning-hue));
-  --warning-800: oklch(calc(0.44 + var(--warning-lift) * 0.8) calc(var(--warning-chroma) * 0.75) var(--warning-hue));
-  --warning-900: oklch(calc(0.385 + var(--warning-lift) * 0.7) calc(var(--warning-chroma) * 0.6) var(--warning-hue));
-  --warning-950: oklch(calc(0.275 + var(--warning-lift) * 0.5) calc(var(--warning-chroma) * 0.42) var(--warning-hue));
+  --warning-50: var(--color-amber-50);
+  --warning-100: var(--color-amber-100);
+  --warning-200: var(--color-amber-200);
+  --warning-300: var(--color-amber-300);
+  --warning-400: var(--color-amber-400);
+  --warning-500: var(--color-amber-500);
+  --warning-600: var(--color-amber-600);
+  --warning-700: var(--color-amber-700);
+  --warning-800: var(--color-amber-800);
+  --warning-900: var(--color-amber-900);
+  --warning-950: var(--color-amber-950);
   --success-50: oklch(calc(0.975 + var(--success-lift) * 0.15) calc(var(--success-chroma) * 0.06) var(--success-hue));
   --success-100: oklch(calc(0.945 + var(--success-lift) * 0.3) calc(var(--success-chroma) * 0.13) var(--success-hue));
   --success-200: oklch(calc(0.89 + var(--success-lift) * 0.5) calc(var(--success-chroma) * 0.26) var(--success-hue));
@@ -204,6 +200,7 @@
   --muted: light-dark(oklch(0.962 calc(var(--neutral-tint) * 1.2) var(--neutral-hue)), oklch(0.255 calc(var(--neutral-tint) * 1.8) var(--neutral-hue)));
   --muted-foreground: light-dark(oklch(0.5 calc(var(--neutral-tint) * 2.5) var(--neutral-hue)), oklch(0.7 calc(var(--neutral-tint) * 2) var(--neutral-hue)));
 
+  --panel-fill: color-mix(in oklch, var(--muted) 60%, var(--card));
   --card-foreground: var(--foreground);
   --popover-foreground: var(--foreground);
   --secondary-foreground: var(--ink);
@@ -238,10 +235,10 @@
   --destructive-fill: light-dark(color-mix(in oklch, var(--destructive) 10%, transparent), color-mix(in oklch, var(--destructive) 20%, transparent));
   --destructive-fill-hover: light-dark(color-mix(in oklch, var(--destructive) 20%, transparent), color-mix(in oklch, var(--destructive) 30%, transparent));
   --destructive-border: light-dark(color-mix(in oklch, var(--destructive) 30%, transparent), color-mix(in oklch, var(--destructive) 35%, transparent));
-  --warning: light-dark(var(--warning-600), var(--warning-400));
+  --warning: light-dark(var(--warning-500), var(--warning-400));
   --warning-strong: light-dark(var(--warning-700), var(--warning-300));
   --warning-foreground: light-dark(var(--warning-800), var(--warning-200));
-  --warning-contrast: light-dark(var(--warning-50), var(--warning-950));
+  --warning-contrast: var(--warning-950);
   --warning-fill: light-dark(color-mix(in oklch, var(--warning) 10%, transparent), color-mix(in oklch, var(--warning) 20%, transparent));
   --warning-fill-hover: light-dark(color-mix(in oklch, var(--warning) 20%, transparent), color-mix(in oklch, var(--warning) 30%, transparent));
   --warning-border: light-dark(color-mix(in oklch, var(--warning) 30%, transparent), color-mix(in oklch, var(--warning) 35%, transparent));
@@ -259,6 +256,7 @@
   --info-fill: light-dark(color-mix(in oklch, var(--info) 10%, transparent), color-mix(in oklch, var(--info) 20%, transparent));
   --info-fill-hover: light-dark(color-mix(in oklch, var(--info) 20%, transparent), color-mix(in oklch, var(--info) 30%, transparent));
   --info-border: light-dark(color-mix(in oklch, var(--info) 30%, transparent), color-mix(in oklch, var(--info) 35%, transparent));
+  --merged-strong: light-dark(var(--color-purple-700), var(--color-purple-300));
   /* "New" (unread, just arrived) borrows the info tone, so new things read blue. */
   --new: var(--info);
   --new-strong: var(--info-strong);
@@ -277,6 +275,7 @@
   --field: light-dark(transparent, color-mix(in oklch, var(--input) 30%, transparent));
   --field-hover: light-dark(transparent, color-mix(in oklch, var(--input) 50%, transparent));
   --field-disabled: light-dark(color-mix(in oklch, var(--input) 50%, transparent), color-mix(in oklch, var(--input) 80%, transparent));
+  --button-foreground: light-dark(var(--neutral-700), var(--neutral-200));
   --control-outline: light-dark(var(--background), color-mix(in oklch, var(--input) 30%, transparent));
   --control-outline-hover: light-dark(var(--muted), color-mix(in oklch, var(--input) 50%, transparent));
   --control-outline-border: light-dark(var(--border), var(--input));
@@ -391,6 +390,14 @@
   padding-inline-end: var(--inset);
 }
 
+@utility text-ui-label {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-ui-label);
+  text-transform: uppercase;
+}
+
 /*
  * Trims the line-height space above the cap height and below the baseline,
  * so a single line centres optically in a fixed-height control.
@@ -407,11 +414,14 @@
   text-box: trim-start cap alphabetic;
 }
 
-/*
- * Live: a soft halo grows out of a status dot and fades, over and over.
- * Used by Badge's `live` dot; reduced motion turns it off.
- */
 @theme {
+  --tracking-ui-title: -0.025em;
+  --tracking-ui-heading: -0.012em;
+  --tracking-ui-body: 0em;
+  --tracking-ui-small: 0.02em;
+  --tracking-ui-label: 0.075em;
+
+  /* Live badge dots expand and fade. Reduced motion disables the animation. */
   --animate-live: live 1.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 
   @keyframes live {
@@ -421,7 +431,7 @@
     }
     70%,
     100% {
-      transform: scale(2.6);
+      transform: scale(2);
       opacity: 0;
     }
   }
@@ -442,6 +452,7 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
+  --color-panel-fill: var(--panel-fill);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-strong: var(--destructive-strong);
@@ -466,6 +477,7 @@
   --color-success-border: var(--success-border);
   --color-info: var(--info);
   --color-info-strong: var(--info-strong);
+  --color-merged-strong: var(--merged-strong);
   --color-info-foreground: var(--info-foreground);
   --color-info-contrast: var(--info-contrast);
   --color-info-fill: var(--info-fill);
@@ -554,6 +566,7 @@
   --color-field: var(--field);
   --color-field-hover: var(--field-hover);
   --color-field-disabled: var(--field-disabled);
+  --color-button-foreground: var(--button-foreground);
   --color-control-outline: var(--control-outline);
   --color-control-outline-hover: var(--control-outline-hover);
   --color-control-outline-border: var(--control-outline-border);
@@ -590,14 +603,9 @@
   * {
     @apply border-border outline-ring/50;
   }
-  /* Solar draws a 1.5 stroke on a 24 grid, which thins to 1px at 16px.
-     A non-scaling stroke holds every line glyph at --icon-stroke on screen,
-     whatever size it renders at. Filled (bold) glyphs are unaffected. */
+  /* Convert the 20px reference stroke to Solar's 24-unit viewBox. */
   svg.solar {
-    stroke-width: var(--icon-stroke);
-  }
-  svg.solar :is(path, circle, ellipse, line, polyline, polygon, rect) {
-    vector-effect: non-scaling-stroke;
+    stroke-width: calc(var(--icon-stroke) * 24 / 20);
   }
   /* Smooth corners everywhere a radius is set. Full pills and dots stay
      true capsules and circles. */

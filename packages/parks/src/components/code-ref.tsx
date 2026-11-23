@@ -1,7 +1,7 @@
 import * as React from "react"
-import { GitBranchIcon } from "@solar-icons/react/linear/git-branch"
-import { GitCommitIcon } from "@solar-icons/react/linear/git-commit"
-import { GitPullRequestIcon } from "@solar-icons/react/linear/git-pull-request"
+import { GitBranchIcon } from "@solar-icons/react/outline/git-branch"
+import { GitCommitIcon } from "@solar-icons/react/outline/git-commit"
+import { GitPullRequestIcon } from "@solar-icons/react/outline/git-pull-request"
 import { cnState } from "#lib/utils"
 
 const glyphs = {
@@ -16,14 +16,14 @@ type CodeRefState = "open" | "draft" | "merged" | "closed" | "failing"
 const stateColor: Record<CodeRefState, string> = {
   open: "text-success-strong",
   draft: "text-muted-foreground",
-  merged: "text-info-strong",
+  merged: "text-merged-strong",
   closed: "text-muted-foreground",
   failing: "text-destructive-strong",
 }
 
 /**
  * An inline reference to a pull request, branch or commit, such as `repo#47`:
- * semibold text with a leading glyph that shows its state.
+ * medium-weight text with a leading glyph that shows its state.
  *
  * @example
  * <CodeRef kind="pr" state="open">repo#47</CodeRef>
@@ -44,7 +44,7 @@ function CodeRef({
       data-slot="code-ref"
       data-state={state}
       className={cnState(
-        "inline-flex items-baseline gap-1 font-semibold whitespace-nowrap text-foreground",
+        "inline-flex items-baseline gap-1 font-medium whitespace-nowrap text-muted-foreground",
         className
       )}
       {...props}
