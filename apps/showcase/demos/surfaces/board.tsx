@@ -4,16 +4,14 @@ import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Progress } from "@workspace/ui/components/progress";
 import { cn } from "@workspace/ui/lib/utils";
-import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
-import { ChatRoundDotsIcon } from "@solar-icons/react/linear/chat-round-dots";
-import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
-import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
-import { GitBranchIcon } from "@solar-icons/react/linear/git-branch";
-import { HistoryIcon } from "@solar-icons/react/linear/history";
-import { InboxIcon } from "@solar-icons/react/linear/inbox";
-import { RoutingIcon } from "@solar-icons/react/linear/routing";
-import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
-import { Widget2Icon } from "@solar-icons/react/linear/widget-2";
+import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
+import { CheckCircleIcon } from "@solar-icons/react/outline/check-circle";
+import { CodeSquareIcon } from "@solar-icons/react/outline/code-square";
+import { GitBranchIcon } from "@solar-icons/react/outline/git-branch";
+import { Widget2Icon } from "@solar-icons/react/outline/widget-2";
+import { Widget2Icon as Widget2Bold } from "@solar-icons/react/bold/widget-2";
+import { AppFrame } from "../app-frame";
+import { outpostNavigation } from "../outpost-navigation";
 import { DotmCircular4 } from "../dotmatrix/dotm-circular-4";
 import { DotmHex4 } from "../dotmatrix/dotm-hex-4";
 import { HaloSignal, Signal, Viewport } from "../kit";
@@ -28,7 +26,7 @@ import {
   TimelineSeparator,
   TimelineTitle,
 } from "../reui/timeline";
-import { Shell, Stat, Heading } from "./parts";
+import { Stat, Heading } from "./parts";
 
 type Lane = "asking" | "working" | "review" | "done";
 
@@ -59,6 +57,16 @@ const tasks: Task[] = [
   { lane: "done", title: "Gate policy", agent: "Forge lead", project: "forge", note: "Merged forge#52" },
   { lane: "done", title: "RNG-43 eval harness", agent: "Ranger lead", project: "ranger", note: "Merged #56" },
 ];
+
+const asksCount = tasks.filter((task) => task.lane === "asking").length;
+
+const navigation = {
+  ...outpostNavigation,
+  items: [
+    { id: "overview", label: "Overview", icon: Widget2Icon, solid: Widget2Bold },
+    ...outpostNavigation.items.map((item) => item.id === "needs-you" ? { ...item, count: asksCount } : item),
+  ],
+};
 
 /** Progress and its label on one line: segments for counted steps, a bar for a percentage. */
 function Meter({ task }: { task: Task }) {
@@ -94,7 +102,7 @@ function TaskCard({ task }: { task: Task }) {
     <article className="relative flex flex-col gap-2 rounded-lg border bg-background p-3 shadow-xs">
       <span className="absolute top-2 right-2 grid size-4 place-items-center">
         {task.lane === "working" ? (
-          <HaloSignal tone="wait" label={`${task.agent} is working`} />
+          <HaloSignal label={`${task.agent} is working`} />
         ) : (
           <Signal tone={task.lane === "asking" ? "wait" : task.lane === "done" ? "live" : "off"} />
         )}
@@ -139,18 +147,9 @@ function RunTimeline() {
 export function BoardSurface() {
   return (
     <Viewport>
-      <Shell
-        mark="O"
-        name="Outpost"
-        active="Overview"
-        nav={[
-          { label: "Overview", icon: Widget2Icon },
-          { label: "Needs you", icon: ChatRoundDotsIcon, count: 2 },
-          { label: "Inbox", icon: InboxIcon },
-          { label: "Agents", icon: UsersGroupRoundedIcon, count: 5 },
-          { label: "Routing", icon: RoutingIcon },
-          { label: "History", icon: HistoryIcon },
-        ]}
+      <AppFrame
+        navigation={navigation}
+        place="overview"
         title="Overview"
         actions={
           <>
@@ -163,7 +162,7 @@ export function BoardSurface() {
       >
         <div className="flex flex-col gap-6 p-4">
           <div className="grid grid-cols-2 gap-3 @3xl:grid-cols-4">
-            <Stat label="Asking you" value="2" note="Oldest 1 hr" />
+            <Stat label="Asking you" value={String(asksCount)} note="Oldest 1 hr" />
             <Stat label="Working" value="2" note="Across 2 projects" />
             <Stat label="In review" value="1" note="Waiting on reviewers" />
             <Stat label="Done today" value="2" note="Both merged" />
@@ -185,7 +184,7 @@ export function BoardSurface() {
                 <div key={lane.id} className="flex flex-col gap-2">
                   <span className="flex items-center gap-2 px-1 text-muted-foreground">
                     {lane.title}
-                    <span className="ml-auto text-xs tabular-nums">{tasks.filter((task) => task.lane === lane.id).length}</span>
+                    <Badge count={tasks.filter((task) => task.lane === lane.id).length} className="ms-auto" />
                   </span>
                   {tasks
                     .filter((task) => task.lane === lane.id)
@@ -238,7 +237,7 @@ export function BoardSurface() {
             </Frame>
           </div>
         </div>
-      </Shell>
+      </AppFrame>
     </Viewport>
   );
 }

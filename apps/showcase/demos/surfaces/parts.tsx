@@ -1,161 +1,76 @@
 "use client";
 
-import { useState, type ComponentType, type ReactNode } from "react";
-import { Kbd } from "@workspace/ui/components/kbd";
+import { useMemo, useState, type ComponentType, type ReactNode } from "react";
+import type { FileContents } from "@pierre/diffs";
+import { File } from "@pierre/diffs/react";
+import { Button } from "@workspace/ui/components/button";
 import { cn } from "@workspace/ui/lib/utils";
-import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
-import { CopyIcon } from "@solar-icons/react/linear/copy";
-import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
+import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
+import { CheckIcon } from "@solar-icons/react/outline/check";
+import { CopyIcon } from "@solar-icons/react/outline/copy";
+
+
 
 /**
  * Shared pieces for the surface compositions. These are recreations of
- * ReUI's licensed message, trace and code-block patterns, built on our tokens.
+ * ReUI's licensed message and trace patterns, built on our tokens.
  */
 
 type Icon = ComponentType<{ className?: string }>;
 
-/** App chrome shared by the product surfaces: a quiet sidebar and a top bar. */
-export function Shell({
-  mark,
-  name,
-  nav,
-  active,
-  title,
-  actions,
-  footer,
-  children,
-}: {
-  mark: string;
-  name: string;
-  nav: { label: string; icon: Icon; count?: number | string }[];
-  active: string;
-  title: ReactNode;
-  actions?: ReactNode;
-  footer?: ReactNode;
+/** The shared header and frame for code snippets and diffs. */
+export function CodeFrame({ label, copyText, className, children }: {
+  label?: string;
+  copyText?: string;
+  className?: string;
   children: ReactNode;
 }) {
+  const [copyStatus, setCopyStatus] = useState("");
+  const copy = async () => {
+    if (copyText === undefined) return;
+    try {
+      await navigator.clipboard.writeText(copyText);
+      setCopyStatus("Code copied");
+    } catch {
+      setCopyStatus("Could not copy code");
+    }
+  };
+
   return (
-    <div className="flex min-h-160 bg-background text-foreground">
-      <aside className="hidden w-56 shrink-0 flex-col border-r bg-muted/40 p-2 @3xl:flex">
-        <div className="flex items-center gap-2 px-2 py-2 font-semibold">
-          <span className="grid size-6 place-items-center rounded-md bg-foreground text-xs text-background">{mark}</span>
-          {name}
-        </div>
-        <button
-          type="button"
-          className="mt-1 mb-2 flex h-(--control-h) items-center gap-2 rounded-lg border bg-background px-2 text-muted-foreground"
-        >
-          <MagnifierIcon className="size-4" />
-          Search
-          <Kbd className="ml-auto">⌘K</Kbd>
-        </button>
-        <nav aria-label={name}>
-          {nav.map(({ label, icon: NavIcon, count }) => (
-            <a
-              key={label}
-              href="#"
-              aria-current={label === active ? "page" : undefined}
-              className={cn(
-                "flex items-center gap-2 rounded-lg px-2 py-1.5 text-muted-foreground hover:bg-accent hover:text-foreground",
-                label === active && "bg-accent text-foreground",
-              )}
-            >
-              <NavIcon className="size-4" />
-              {label}
-              {count !== undefined ? <span className="ml-auto text-xs tabular-nums">{count}</span> : null}
-            </a>
-          ))}
-        </nav>
-        {footer ? <div className="mt-auto">{footer}</div> : null}
-      </aside>
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-12 items-center gap-3 px-4">
-          <div className="flex min-w-0 items-center gap-2 font-medium">{title}</div>
-          <div className="ml-auto flex items-center gap-2">{actions}</div>
-        </header>
-        <div className="min-h-0 flex-1">{children}</div>
-      </div>
-    </div>
+    <figure className={cn("workbench-code-frame min-w-0 overflow-hidden border", className)}>
+      {label || copyText !== undefined ? (
+        <figcaption className="flex min-h-8 items-center gap-2 border-b bg-muted/40 py-1 ps-3 pe-1 font-mono text-xs text-muted-foreground">
+          {label}
+          {copyText !== undefined ? (
+            <>
+              <Button variant="ghost" shape="rect" size="icon-sm" aria-label="Copy code" className="ms-auto" onClick={copy}>
+                {copyStatus === "Code copied" ? <CheckIcon /> : <CopyIcon />}
+              </Button>
+              <span role="status" className="sr-only">{copyStatus}</span>
+            </>
+          ) : null}
+        </figcaption>
+      ) : null}
+      {children}
+    </figure>
   );
 }
 
-/** Breadcrumb segments for a top bar. The last one is the page. */
-export function Crumbs({ items }: { items: string[] }) {
-  return (
-    <span className="flex min-w-0 items-center gap-1.5">
-      {items.map((item, index) => (
-        <span key={item} className="flex min-w-0 items-center gap-1.5">
-          {index > 0 ? <AltArrowRightIcon className="size-3.5 shrink-0 text-muted-foreground" /> : null}
-          <span className={cn("truncate", index < items.length - 1 && "text-muted-foreground")}>{item}</span>
-        </span>
-      ))}
-    </span>
-  );
-}
+const fileOptions = { disableFileHeader: true, disableLineNumbers: true } as const;
+const numberedFileOptions = { ...fileOptions, disableLineNumbers: false } as const;
 
-type LineMark = "add" | "remove" | undefined;
-
-/** A code block with an optional file label, line numbers and diff marks. */
-export function CodeBlock({
-  code,
-  label,
-  added = [],
-  removed = [],
-  numbers = false,
-  className,
-}: {
+export function CodeBlock({ code, label, language = "text", numbers = false, className }: {
   code: string;
   label?: string;
-  added?: number[];
-  removed?: number[];
+  language?: FileContents["lang"];
   numbers?: boolean;
   className?: string;
 }) {
-  const lines = code.split("\n");
-  const mark = (line: number): LineMark =>
-    added.includes(line) ? "add" : removed.includes(line) ? "remove" : undefined;
+  const file = useMemo(() => ({ name: label ?? "snippet", contents: code, lang: language }), [code, label, language]);
   return (
-    <figure className={cn("overflow-hidden rounded-lg border bg-muted/40", className)}>
-      {label ? (
-        <figcaption className="flex h-8 items-center gap-2 px-3 font-mono text-xs text-muted-foreground">
-          {label}
-          <button type="button" aria-label="Copy" className="ml-auto rounded p-1 hover:bg-accent hover:text-foreground">
-            <CopyIcon className="size-3.5" />
-          </button>
-        </figcaption>
-      ) : null}
-      <pre className="overflow-x-auto py-2 font-mono text-xs leading-5">
-        {lines.map((text, index) => {
-          const line = index + 1;
-          const kind = mark(line);
-          return (
-            <div
-              key={line}
-              className={cn(
-                "flex px-3",
-                kind === "add" && "bg-success-fill",
-                kind === "remove" && "bg-destructive-fill",
-              )}
-            >
-              {numbers ? <span className="w-7 shrink-0 select-none text-muted-foreground/60 tabular-nums">{line}</span> : null}
-              {added.length || removed.length ? (
-                <span
-                  aria-hidden
-                  className={cn(
-                    "w-4 shrink-0 select-none text-muted-foreground/60",
-                    kind === "add" && "text-success-strong",
-                    kind === "remove" && "text-destructive-strong",
-                  )}
-                >
-                  {kind === "add" ? "+" : kind === "remove" ? "−" : " "}
-                </span>
-              ) : null}
-              <code className="whitespace-pre">{text || " "}</code>
-            </div>
-          );
-        })}
-      </pre>
-    </figure>
+    <CodeFrame label={label} copyText={code} className={className}>
+      <File file={file} options={numbers ? numberedFileOptions : fileOptions} className="workbench-code" />
+    </CodeFrame>
   );
 }
 

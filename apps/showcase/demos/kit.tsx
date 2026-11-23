@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, type ComponentProps, type ReactNode } from "react";
+import { Badge } from "@workspace/ui/components/badge";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
 import { cn } from "@workspace/ui/lib/utils";
+import type { Tone } from "#lib/fixtures";
 
 /** A titled example on a plain canvas. */
 export function Specimen({
@@ -92,7 +94,7 @@ export function Signal({ tone }: { tone: "live" | "wait" | "off" | "alert" | "ne
       className={cn(
         "inline-block size-2 shrink-0 rounded-full",
         tone === "live" && "bg-success",
-        tone === "wait" && "bg-brand",
+        tone === "wait" && "bg-warning",
         tone === "off" && "bg-muted-foreground/40",
         tone === "alert" && "bg-destructive",
         tone === "new" && "bg-new",
@@ -101,17 +103,29 @@ export function Signal({ tone }: { tone: "live" | "wait" | "off" | "alert" | "ne
   );
 }
 
+const agentModeTones = {
+  live: "success",
+  wait: "warning",
+  alert: "destructive",
+  off: "neutral",
+} as const;
+
+export function AgentModeBadge({ tone, mode, className }: { tone: Tone; mode: string; className?: string }) {
+  return <Badge variant={agentModeTones[tone]} dot className={className}>{mode}</Badge>;
+}
+
 const haloTones = {
   live: "text-success",
-  wait: "text-brand",
+  wait: "text-warning",
   off: "text-muted-foreground",
   alert: "text-destructive",
 } as const;
 
 /**
  * A Signal dot inside a faint halo with an arc travelling around it: the
- * same state colour, now saying "this is in progress". At 20px the dot is
- * the same 8px as a plain Signal, so the two line up in a list.
+ * ring uses the same colour as the dot. At 16px the dot is
+ * the same 8px as a plain Signal. Inside a 12px badge icon, the dot shrinks
+ * to 5px to give it more room inside the halo.
  */
 export function HaloSignal({
   tone,
@@ -120,7 +134,7 @@ export function HaloSignal({
   className,
   ...props
 }: Omit<ComponentProps<"svg">, "children"> & {
-  tone: keyof typeof haloTones;
+  tone?: keyof typeof haloTones;
   size?: number;
   label: string;
 }) {
@@ -132,9 +146,15 @@ export function HaloSignal({
       width={size}
       height={size}
       viewBox="0 0 16 16"
-      className={cn("shrink-0", haloTones[tone], className)}
+      className={cn("shrink-0", tone ? haloTones[tone] : "text-muted-foreground", className)}
     >
-      <circle cx="8" cy="8" r="4" fill="currentColor" />
+      <circle
+        cx="8"
+        cy="8"
+        r="4"
+        fill="currentColor"
+        className="in-data-[slot=badge-icon]:[r:calc(10px/3)]"
+      />
       <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" strokeOpacity="0.18" strokeWidth="1.5" />
       <circle
         cx="8"
