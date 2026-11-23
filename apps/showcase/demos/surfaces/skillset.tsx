@@ -4,7 +4,7 @@ import { FileTree, useFileTree, useFileTreeSelection } from "@pierre/trees/react
 import { Item, ItemGroup, ItemMeta } from "@workspace/ui/components/item";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
-import { Tabs, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
+import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@workspace/ui/components/tooltip";
 import { BoxIcon } from "@solar-icons/react/outline/box";
 import { BoxIcon as BoxBold } from "@solar-icons/react/bold/box";
@@ -165,13 +165,11 @@ function LandingDetails() {
         <Badge tone="warning">1 output drifted</Badge>
       </div>
 
-      <Tabs defaultValue="outputs">
-        <TabsList>
-          <TabsTrigger value="outputs">Outputs</TabsTrigger>
-          <TabsTrigger value="source">Source</TabsTrigger>
-          <TabsTrigger value="changes">Changes</TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <ToggleGroup aria-label="Show" defaultValue={["outputs"]}>
+        <ToggleGroupItem value="outputs">Outputs</ToggleGroupItem>
+        <ToggleGroupItem value="source">Source</ToggleGroupItem>
+        <ToggleGroupItem value="changes">Changes</ToggleGroupItem>
+      </ToggleGroup>
 
       <section>
         <Heading>Rendered for each target</Heading>

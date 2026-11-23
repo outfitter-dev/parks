@@ -350,14 +350,51 @@ export function TabsDemo() {
           </TabsList>
         </Tabs>
       </Specimen>
-      <Specimen title="Toggle and toggle group">
-        <Toggle aria-label="Mute">
-          <BellOffIcon />
-        </Toggle>
-        <ToggleGroup variant="outline" defaultValue={["all"]}>
+      <Specimen title="Segmented control" note="ToggleGroup's default look, drawn the same as TabsList. Use it to switch a filter or view; use Tabs when each choice has a panel.">
+        <ToggleGroup aria-label="Show" defaultValue={["all"]}>
           <ToggleGroupItem value="all">All</ToggleGroupItem>
           <ToggleGroupItem value="mine">Mine</ToggleGroupItem>
           <ToggleGroupItem value="agents">Agents</ToggleGroupItem>
+        </ToggleGroup>
+        <ToggleGroup aria-label="Show" size="sm" defaultValue={["open"]}>
+          <ToggleGroupItem value="open">Open</ToggleGroupItem>
+          <ToggleGroupItem value="answered">Answered</ToggleGroupItem>
+        </ToggleGroup>
+      </Specimen>
+      <Specimen title="Toggle beside Button" note="A Toggle is a Button that stays pressed: same sizes, shapes and emphasis, plus the pressed fill.">
+        <Button variant="ghost" size="sm">
+          <PenIcon data-icon="inline-start" />
+          Button
+        </Button>
+        <Toggle size="sm">
+          <PenIcon data-icon="inline-start" />
+          Toggle
+        </Toggle>
+        <Toggle size="sm" defaultPressed>
+          <PenIcon data-icon="inline-start" />
+          Pressed
+        </Toggle>
+        <Button variant="outline" size="sm">Button</Button>
+        <Toggle variant="outline" size="sm">Toggle</Toggle>
+        <Toggle variant="outline" size="sm" defaultPressed>Pressed</Toggle>
+        <Toggle size="icon-sm" aria-label="Mute">
+          <BellOffIcon />
+        </Toggle>
+        <Toggle size="icon-sm" aria-label="Mute" defaultPressed>
+          <BellOffIcon />
+        </Toggle>
+      </Specimen>
+      <Specimen title="Toolbar toggles" note="ghost, outline or secondary: separate toggles, spaced, for a toolbar.">
+        <ToggleGroup variant="outline" size="icon-sm" shape="rect" multiple defaultValue={["pen"]} aria-label="Tools">
+          <ToggleGroupItem value="pen" aria-label="Edit">
+            <PenIcon />
+          </ToggleGroupItem>
+          <ToggleGroupItem value="mute" aria-label="Mute">
+            <BellOffIcon />
+          </ToggleGroupItem>
+          <ToggleGroupItem value="info" aria-label="Info">
+            <InfoCircleIcon />
+          </ToggleGroupItem>
         </ToggleGroup>
       </Specimen>
     </>
