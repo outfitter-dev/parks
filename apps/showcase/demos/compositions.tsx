@@ -43,6 +43,7 @@ import { RoutingIcon as RoutingBold } from "@solar-icons/react/bold/routing";
 import { ShieldKeyholeIcon as ShieldKeyholeBold } from "@solar-icons/react/bold/shield-keyhole";
 import { UsersGroupRoundedIcon as UsersGroupRoundedBold } from "@solar-icons/react/bold/users-group-rounded";
 import { agents, asks, versions, type Ask } from "#lib/fixtures";
+import { useShell, type ShellStyle } from "#lib/shell";
 import { Signal, Viewport } from "./kit";
 
 type Place = "needs-you" | "inbox" | "agents" | "routing" | "history" | "admin";
@@ -93,7 +94,20 @@ function Brand() {
  * the sidebar. Opened over the page (`hideAt: "start"`), it sits before the
  * brand, exactly on the header toggle it covers.
  */
-function SidebarPanel({ place, onHide, hideAt }: { place: Place; onHide: () => void; hideAt: "start" | "end" }) {
+function SidebarPanel({
+  place,
+  shell,
+  onHide,
+  hideAt,
+}: {
+  place: Place;
+  shell: ShellStyle;
+  onHide: () => void;
+  hideAt: "start" | "end";
+}) {
+  // On the bare canvas, solid accents vanish; translucent ink reads on any surface.
+  const hover = shell === "inset" ? "hover:bg-foreground/5" : "hover:bg-accent";
+  const current = shell === "inset" ? "bg-foreground/7" : "bg-accent";
   const hide = (
     <Button
       variant="ghost"
@@ -131,8 +145,9 @@ function SidebarPanel({ place, onHide, hideAt }: { place: Place; onHide: () => v
               href="#"
               aria-current={id === place ? "page" : undefined}
               className={cn(
-                "flex items-center gap-2 rounded-lg px-2 py-1.5 font-semibold text-muted-foreground hover:bg-accent hover:text-foreground",
-                id === place && "bg-accent text-foreground",
+                "flex items-center gap-2 rounded-lg px-2 py-1.5 font-semibold text-muted-foreground hover:text-foreground",
+                hover,
+                id === place && cn(current, "text-foreground"),
               )}
             >
               <Icon className="size-4" />
@@ -144,7 +159,10 @@ function SidebarPanel({ place, onHide, hideAt }: { place: Place; onHide: () => v
       </nav>
       <button
         type="button"
-        className="mt-auto flex h-(--control-h) items-center gap-2 rounded-lg px-2 font-semibold text-muted-foreground hover:bg-accent hover:text-foreground"
+        className={cn(
+          "mt-auto flex h-(--control-h) items-center gap-2 rounded-lg px-2 font-semibold text-muted-foreground hover:text-foreground",
+          hover,
+        )}
       >
         <SettingsIcon className="size-4" />
         Matt
@@ -197,13 +215,17 @@ function SidebarToggle() {
 }
 
 /**
- * The app frame: an inset sidebar and the page. The sidebar floats inside the
- * window with a gap on every side, the way macOS 26 draws it, and slides out
- * of the frame when hidden. Its toggle sits before the title in each page
- * header, so it never moves and the headers need no room for a collapsed control.
+ * The app frame: the sidebar and the page. Wide frames dock the expanded
+ * sidebar beside the page; narrow ones start collapsed and open it over the
+ * page. The toggle sits before the title in each page header, so it never
+ * moves and the headers need no room for a collapsed control.
  *
- * Wide frames dock the expanded sidebar beside the page; narrow ones start
- * collapsed and open it over the page.
+ * Two shell styles share everything inside the page (see `#lib/shell`):
+ * - inset (web): the sidebar sits flush on the canvas and the page is a
+ *   rounded, lifted container held `--g` off the window's top, right and
+ *   bottom. At a gutter of 0 its right corners square off against the edge.
+ * - floating (Apple): the sidebar floats inside the window with a gap on
+ *   every side, the way macOS 26 draws it, over one continuous page.
  */
 function AppFrame({
   place,
@@ -220,6 +242,9 @@ function AppFrame({
   children: ReactNode;
 }) {
   const frameRef = useRef<HTMLDivElement>(null);
+  const shell = useShell();
+  const inset = shell.style === "inset";
+  const flush = shell.gutter === 0;
   const [wide, setWide] = useState(true);
   const [expanded, setExpanded] = useState(true);
   // Transitions start after the first measurement, so a narrow frame doesn't animate closed on load.
@@ -249,50 +274,91 @@ function AppFrame({
   const docked = wide && expanded;
   const overlay = !wide && expanded;
   const motion = ready ? sidebarMotion : "transition-none";
+  const hide = () => setExpanded(false);
+
+  const backdrop = overlay ? (
+    <button
+      type="button"
+      aria-label="Hide sidebar"
+      onClick={hide}
+      className="absolute inset-0 z-20 bg-foreground/20 animate-in fade-in-0 duration-300"
+    />
+  ) : null;
+
+  const header = bare ? null : (
+    <header className="flex h-14 items-center gap-1.5 ps-3 pe-4">
+      <SidebarToggle />
+      <h1 className="font-semibold">{title}</h1>
+      <div className="ml-auto flex items-center gap-2">{actions}</div>
+    </header>
+  );
 
   return (
     <SidebarContext.Provider value={{ expanded, docked, ready, toggle: () => setExpanded(!expanded) }}>
-    <div ref={frameRef} className="relative flex min-h-160 overflow-hidden bg-background text-foreground">
-      {/* Holds the docked sidebar's width in the page flow, and gives it up as the sidebar shrinks. */}
       <div
-        aria-hidden
-        className={cn("shrink-0 transition-[width]", motion, docked ? "w-[calc(--spacing(56)+--spacing(2))]" : "w-0")}
-      />
-      {overlay ? (
-        <button
-          type="button"
-          aria-label="Hide sidebar"
-          onClick={() => setExpanded(false)}
-          className="absolute inset-0 z-20 bg-foreground/20 animate-in fade-in-0 duration-300"
-        />
-      ) : null}
-      <aside
-        aria-label="Sidebar"
-        inert={!expanded}
+        ref={frameRef}
+        data-shell={shell.style}
         className={cn(
-          "absolute inset-y-2 start-2 z-30 flex w-56 flex-col rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] bg-muted/85 p-2 shadow-(--shadow-frame) ring-1 ring-foreground/8 backdrop-blur-xl",
-          "transition-[translate,opacity,box-shadow]",
-          motion,
-          expanded ? "translate-x-0 opacity-100" : "-translate-x-[calc(100%+--spacing(4))] opacity-0",
-          overlay && "bg-muted shadow-xl",
+          "relative flex min-h-160 overflow-hidden text-foreground",
+          // --g is the container's gutter: the theme's value, or nothing on a phone.
+          inset ? "bg-canvas [--g:var(--shell-gutter,--spacing(2))] @max-md:[--g:0px]" : "bg-background",
         )}
-        onKeyDown={(event) => {
-          if (event.key === "Escape" && overlay) setExpanded(false);
-        }}
       >
-        <SidebarPanel place={place} onHide={() => setExpanded(false)} hideAt={wide ? "end" : "start"} />
-      </aside>
-      <div className="flex min-w-0 flex-1 flex-col">
-        {bare ? null : (
-          <header className="flex h-14 items-center gap-1.5 ps-3 pe-4">
-            <SidebarToggle />
-            <h1 className="font-semibold">{title}</h1>
-            <div className="ml-auto flex items-center gap-2">{actions}</div>
-          </header>
-        )}
-        <div className="min-h-0 flex-1">{children}</div>
+        {/* Holds the docked sidebar's width in the page flow, and gives it up as the sidebar shrinks. */}
+        <div
+          aria-hidden
+          className={cn(
+            "shrink-0 transition-[width]",
+            motion,
+            docked ? (inset ? "w-56" : "w-[calc(--spacing(56)+--spacing(2))]") : "w-0",
+          )}
+        />
+        {backdrop}
+        <aside
+          aria-label="Sidebar"
+          inert={!expanded}
+          className={cn(
+            "absolute z-30 flex w-56 flex-col transition-[translate,opacity,box-shadow]",
+            motion,
+            expanded ? "translate-x-0 opacity-100" : "-translate-x-[calc(100%+--spacing(4))] opacity-0",
+            inset
+              ? // Flush on the canvas. The brand row lines up with the page header,
+                // and opened over the page its hide button lands on the header toggle.
+                cn(
+                  "inset-y-0 start-0 pe-2 pt-[calc(var(--g)+--spacing(4))] pb-[calc(var(--g)+--spacing(2))]",
+                  overlay ? "w-64 bg-canvas ps-[calc(var(--g)+--spacing(4))] shadow-xl" : "ps-2",
+                )
+              : cn(
+                  "inset-y-2 start-2 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] bg-muted/85 p-2 shadow-(--shadow-frame) ring-1 ring-foreground/8 backdrop-blur-xl",
+                  overlay && "bg-muted shadow-xl",
+                ),
+          )}
+          onKeyDown={(event) => {
+            if (event.key === "Escape" && overlay) hide();
+          }}
+        >
+          <SidebarPanel place={place} shell={shell.style} onHide={hide} hideAt={wide ? "end" : "start"} />
+        </aside>
+        <div
+          className={cn(
+            "flex min-w-0 flex-1 flex-col",
+            inset &&
+              cn(
+                "my-(--g) me-(--g) overflow-hidden bg-background shadow-(--shadow-frame) ring-1 ring-foreground/8 transition-[margin,border-radius]",
+                motion,
+                // With the sidebar docked the container meets it; otherwise it holds the gutter on the left too.
+                docked ? "ms-0" : "ms-(--g)",
+                "rounded-[calc(var(--radius)*var(--corner-scale))] @max-md:rounded-none @max-md:ring-0 @max-md:shadow-none",
+                // At a gutter of 0 the container meets the window's edges and squares off there.
+                flush && "rounded-e-none",
+                flush && !docked && "rounded-s-none",
+              ),
+          )}
+        >
+          {header}
+          <div className="min-h-0 flex-1">{children}</div>
+        </div>
       </div>
-    </div>
     </SidebarContext.Provider>
   );
 }
