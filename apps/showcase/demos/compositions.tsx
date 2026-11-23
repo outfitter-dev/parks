@@ -268,7 +268,7 @@ function SidebarRail({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger
           openOnHover
-          delay={80}
+          delay={0}
           closeDelay={200}
           aria-label="Show sidebar"
           className="grid size-9 place-items-center rounded-lg hover:bg-foreground/5 data-popup-open:bg-foreground/5"
