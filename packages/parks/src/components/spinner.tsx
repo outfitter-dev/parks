@@ -1,5 +1,5 @@
 import { cnState } from "#lib/utils"
-import { RefreshIcon } from "@solar-icons/react/linear/refresh"
+import { RefreshIcon } from "@solar-icons/react/outline/refresh"
 
 function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
   return (

@@ -3,9 +3,11 @@
 import * as React from "react"
 import { Select as SelectPrimitive } from "@base-ui/react/select"
 import { cnState } from "#lib/utils"
-import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down"
-import { CheckIcon } from "@solar-icons/react/linear/check"
-import { AltArrowUpIcon } from "@solar-icons/react/linear/alt-arrow-up"
+import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down"
+import { CheckIcon } from "@solar-icons/react/outline/check"
+import { AltArrowUpIcon } from "@solar-icons/react/outline/alt-arrow-up"
+
+
 
 const Select = SelectPrimitive.Root
 
