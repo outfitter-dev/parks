@@ -2,6 +2,7 @@
 
 import { Badge } from "@workspace/ui/components/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card";
+import { paletteNames, steps } from "@workspace/ui/lib/palette";
 import { Specimen } from "./kit";
 
 const swatches = [
@@ -23,7 +24,7 @@ function FoundationSwatches() {
       <div className="grid grid-cols-5 gap-2">
         {swatches.map(([name, className]) => (
           <div key={name}>
-            <div className={`h-10 rounded-md ring-1 ring-foreground/10 ${className}`} />
+            <div className={`h-10 rounded-md ring-1 ring-border-muted ${className}`} />
             <p className="mt-1 font-mono text-xs wrap-anywhere text-muted-foreground">{name}</p>
           </div>
         ))}
@@ -34,8 +35,8 @@ function FoundationSwatches() {
 
 const tones = ["destructive", "warning", "success", "info"] as const;
 const roles = ["", "strong", "foreground", "fill", "border"] as const;
-const palette = ["neutral", "red", "orange", "amber", "yellow", "lime", "emerald", "blue", "indigo", "purple"] as const;
-const steps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] as const;
+// Every Tailwind palette name, plus the brand, which is derived from one of them.
+const palette = ["brand", ...paletteNames] as const;
 
 function token(tone: string, role: string) {
   return role ? `--${tone}-${role}` : `--${tone}`;
@@ -52,7 +53,7 @@ function RoleGrid() {
             {roles.map((role) => (
               <div key={role}>
                 <div
-                  className="flex h-10 items-center rounded-md px-2 ring-1 ring-foreground/10"
+                  className="flex h-10 items-center rounded-md px-2 ring-1 ring-border-muted"
                   style={{ background: role === "strong" || role === "foreground" ? `var(--${tone}-fill)` : `var(${token(tone, role)})` }}
                 >
                   {role === "strong" || role === "foreground" ? (
@@ -69,7 +70,7 @@ function RoleGrid() {
   );
 }
 
-/** 50 to 950 for every scale. Scales don't change with the mode. */
+/** 50 to 950 for every palette. Palettes don't change with the mode; roles pick per mode. */
 function ScaleGrid() {
   return (
     <div className="grid w-full min-w-lg gap-2">
@@ -85,7 +86,7 @@ function ScaleGrid() {
           {steps.map((step) => (
             <div
               key={step}
-              className={`h-9 rounded-md ring-1 ring-foreground/10 bg-${scale}-${step}`}
+              className={`h-9 rounded-md ring-1 ring-border-muted bg-${scale}-${step}`}
               title={`${scale}-${step}`}
             />
           ))}
@@ -176,7 +177,7 @@ export function ShapeDemo() {
         note="The frame radius adds the inset to the control radius. The control radius is capped at half its height."
         className="block"
       >
-        <div className="max-w-sm frame p-frame rounded-[calc(var(--control-radius)_+_var(--frame-space))] bg-card shadow-(--shadow-frame) ring-1 ring-foreground/10 [--control-radius:min(var(--radius-lg),calc(var(--control-h)/2))]">
+        <div className="max-w-sm frame p-frame rounded-[calc(var(--control-radius)_+_var(--frame-space))] bg-card shadow-(--shadow-frame) ring-1 ring-border-muted [--control-radius:min(var(--radius-lg),calc(var(--control-h)/2))]">
           <div className="panel rounded-(--control-radius) bg-panel-fill"><span className="px-inset">Panel</span></div>
           <div className="mt-2 flex h-(--control-h) items-center rounded-(--control-radius) border px-[calc(var(--panel-pad-base)*(1_+_var(--inset-ratio))_-_1px)]">
             Control · --control-h
@@ -188,7 +189,7 @@ export function ShapeDemo() {
         note="Text adds --inset on the left and right. Cards that end in text get a little more room below the last line."
         className="block"
       >
-        <div className="max-w-sm frame p-frame bg-card shadow-(--shadow-frame) ring-1 ring-foreground/10">
+        <div className="max-w-sm frame p-frame bg-card shadow-(--shadow-frame) ring-1 ring-border-muted">
           <div className="flex items-start justify-between gap-3">
             <p className="px-inset font-medium">Merge once CI is green?</p>
             <Badge variant="surface" shape="pill">Approval</Badge>
@@ -206,7 +207,7 @@ export function ShapeDemo() {
             ["Frame", ""],
             ["Small frame", "[--frame-pad:var(--frame-pad-sm)]"],
           ].map(([label, size]) => (
-            <div key={label} className={`frame p-frame bg-card shadow-(--shadow-frame) ring-1 ring-foreground/10 ${size}`}>
+            <div key={label} className={`frame p-frame bg-card shadow-(--shadow-frame) ring-1 ring-border-muted ${size}`}>
               <div className="flex items-start justify-between gap-3">
                 <p className="px-inset font-medium">{label}</p>
                 <Badge variant="surface" shape="pill">Corner</Badge>
@@ -214,7 +215,7 @@ export function ShapeDemo() {
               <div className="panel mt-2 bg-panel-fill">
                 <div className="flex items-center justify-between gap-3">
                   <span className="ps-inset">Panel</span>
-                  <span className="rounded-inner bg-background px-1.5 py-0.5 font-mono text-xs ring-1 ring-foreground/10">piece</span>
+                  <span className="rounded-inner bg-background px-1.5 py-0.5 font-mono text-xs ring-1 ring-border-muted">piece</span>
                 </div>
                 <p className="px-inset text-muted-foreground">Text inset follows the panel.</p>
               </div>
@@ -259,7 +260,7 @@ export function ShapeDemo() {
           ["inner", "rounded-inner"],
         ].map(([name, className]) => (
           <div key={name} className="text-center">
-            <div className={`size-16 bg-muted ring-1 ring-foreground/10 ${className}`} />
+            <div className={`size-16 bg-muted ring-1 ring-border-muted ${className}`} />
             <p className="mt-1 font-mono text-muted-foreground">{name}</p>
           </div>
         ))}

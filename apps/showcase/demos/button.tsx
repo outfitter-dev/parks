@@ -166,7 +166,7 @@ function EmbeddedActions() {
           <div key={size} className="flex min-w-0 flex-col gap-2">
             <h3 className="text-xs font-medium text-muted-foreground">{label} button · {glyph}px icon</h3>
             <div className="workbench-code-frame overflow-hidden border">
-              <div className="flex items-center justify-between bg-muted/40 py-1 ps-3 pe-1 font-mono text-xs text-muted-foreground">
+              <div className="flex items-center justify-between bg-fill-subtle py-1 ps-3 pe-1 font-mono text-xs text-muted-foreground">
                 SKILL.md
                 <Button variant="ghost" size={size} className={iconClass} aria-label={`Copy code, ${glyph}px icon`}>
                   <CopyIcon />
@@ -180,7 +180,7 @@ function EmbeddedActions() {
                 variant="ghost"
                 size={size}
                 className={cn(
-                  "rounded-[calc(max(var(--radius-floor),var(--radius)_-_var(--row-action-inset)_-_1px)*var(--corner-scale))]",
+                  "rounded-inset-action",
                   iconClass,
                 )}
                 aria-label={`Repair output, ${glyph}px icon`}

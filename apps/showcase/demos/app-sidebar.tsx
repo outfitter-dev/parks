@@ -69,8 +69,8 @@ export function SidebarPanel({
 }) {
   // On the bare canvas, solid accents vanish; translucent ink reads on any surface.
   const { name, mark, items, account } = navigation;
-  const hover = shell === "inset" ? "hover:bg-foreground/5" : "hover:bg-accent";
-  const current = shell === "inset" ? "bg-foreground/7" : "bg-accent";
+  const hover = shell === "inset" ? "hover:bg-fill-subtle" : "hover:bg-accent";
+  const current = shell === "inset" ? "bg-fill" : "bg-accent";
   const hide = onDock ? (
     <Button variant="ghost" size="icon-sm" aria-label="Dock sidebar" onClick={onDock} className="-me-1 ml-auto">
       <PanelLeftOpenIcon />
@@ -180,7 +180,7 @@ export function SidebarRail({
   const { name, mark, items, account } = navigation;
   const [open, setOpen] = useState(false);
   const margin = Math.max(gutter, POPOVER_MARGIN);
-  const item = "relative grid size-9 place-items-center rounded-lg text-muted-foreground hover:bg-foreground/5 hover:text-foreground";
+  const item = "relative grid size-9 place-items-center rounded-lg text-muted-foreground hover:bg-fill-subtle hover:text-foreground";
   return (
     <>
       <Popover open={open} onOpenChange={setOpen}>
@@ -189,7 +189,7 @@ export function SidebarRail({
           delay={0}
           closeDelay={200}
           aria-label="Show sidebar"
-          className="grid size-9 place-items-center rounded-lg hover:bg-foreground/5 data-popup-open:bg-foreground/5"
+          className="grid size-9 place-items-center rounded-lg hover:bg-fill-subtle data-popup-open:bg-fill-subtle"
         >
           <Brand mark={mark} />
         </PopoverTrigger>
@@ -229,7 +229,7 @@ export function SidebarRail({
         </TooltipTrigger>
         <TooltipContent side="right">
           Search
-          <span className="text-background/60">⌘K</span>
+          <span className="text-inverse-muted">⌘K</span>
         </TooltipContent>
       </Tooltip>
       <nav aria-label={name} className="mt-2 flex flex-col items-center gap-1">
@@ -244,7 +244,7 @@ export function SidebarRail({
                     href="#"
                     aria-label={label}
                     aria-current={current ? "page" : undefined}
-                    className={cn(item, current && "bg-foreground/7 text-foreground")}
+                    className={cn(item, current && "bg-fill text-foreground")}
                   />
                 }
               >
@@ -255,7 +255,7 @@ export function SidebarRail({
               </TooltipTrigger>
               <TooltipContent side="right">
                 {label}
-                {count ? <span className="text-background/60">{count}</span> : null}
+                {count ? <span className="text-inverse-muted">{count}</span> : null}
               </TooltipContent>
             </Tooltip>
           );

@@ -13,30 +13,31 @@ import { cn, cnState } from "#lib/utils"
  * - Shape is a rounded rectangle, except inside a card's action slot, where
  *   it becomes a pill that shares the card corner's centre. `shape="pill"`
  *   forces the pill anywhere.
- * - A leading mark is concentric with a pill's end cap. Rectangular badges
- *   with dots use the same inline padding as text-only badges.
+ * - A leading mark (`dot`, `live` or `icon`) sits as far in from the start
+ *   edge as from the top and bottom, so on a pill it is concentric with the
+ *   end cap and on a rectangle it is evenly inset.
  * - Counts default to a pill and show "99+" above `max`.
  */
 const badgeVariants = cva(
-  "group/badge text-trim relative inline-flex [--badge-h:--spacing(5)] h-(--badge-h) w-fit max-w-full shrink-0 items-center justify-center gap-1 overflow-hidden border border-transparent px-1.5 text-xs font-medium whitespace-nowrap transition-all focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 data-lead:ps-[var(--badge-rect-dot-pad,calc((var(--badge-h)-var(--badge-mark))/2))] data-lead:pe-[var(--badge-rect-dot-pad,--spacing(2))] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-invalid-border aria-invalid:ring-invalid-ring [&>svg]:pointer-events-none [&>svg]:size-3! in-data-[slot=card-action]:rounded-full in-data-[slot=card-action]:[--corner-nudge:calc(var(--frame-space)-var(--frame-radius)+var(--badge-h)/2)] in-data-[slot=card-action]:-mt-(--corner-nudge) in-data-[slot=card-action]:-me-(--corner-nudge) data-count:min-w-(--badge-h) data-count:px-1",
+  "group/badge text-trim relative inline-flex [--badge-h:--spacing(5)] h-(--badge-h) w-fit max-w-full shrink-0 items-center justify-center gap-1 overflow-hidden border border-transparent px-1.5 text-xs font-medium whitespace-nowrap transition-all focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-focus-ring data-lead:ps-[calc((var(--badge-h)-var(--badge-mark))/2)] data-lead:pe-2 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-invalid-border aria-invalid:ring-invalid-ring [&>svg]:pointer-events-none [&>svg]:size-3! in-data-[slot=card-action]:rounded-full in-data-[slot=card-action]:[--corner-nudge:calc(var(--frame-space)-var(--frame-radius)+var(--badge-h)/2)] in-data-[slot=card-action]:-mt-(--corner-nudge) in-data-[slot=card-action]:-me-(--corner-nudge) data-count:min-w-(--badge-h) data-count:px-1",
   {
     variants: {
       variant: {
-        neutral: "bg-foreground/6 text-muted-foreground [a]:hover:bg-foreground/10",
+        neutral: "bg-fill text-muted-foreground [a]:hover:bg-fill-strong",
         surface: "bg-panel-fill text-muted-foreground [a]:hover:bg-muted",
         plain: "bg-transparent text-muted-foreground",
-        primary: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
+        primary: "bg-primary text-primary-foreground [a]:hover:bg-primary-hover",
         success: "bg-success-fill text-success-foreground [a]:hover:bg-success-fill-hover",
         warning: "bg-warning-fill text-warning-foreground [a]:hover:bg-warning-fill-hover",
         info: "bg-info-fill text-info-foreground [a]:hover:bg-info-fill-hover",
         destructive:
           "bg-destructive-fill text-destructive-foreground focus-visible:ring-invalid-ring [a]:hover:bg-destructive-fill-hover",
-        outline: "bg-chip text-foreground shadow-xs ring-1 ring-chip-ring [a]:hover:bg-foreground/6",
+        outline: "bg-chip text-foreground shadow-xs ring-1 ring-chip-ring [a]:hover:bg-fill",
         ghost: "hover:bg-ghost-hover hover:text-muted-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
       shape: {
-        rect: "rounded-xs data-[lead=dot]:not-in-data-[slot=card-action]:[--badge-rect-dot-pad:--spacing(1.5)]",
+        rect: "rounded-xs",
         pill: "rounded-full",
       },
       ring: {
@@ -45,7 +46,7 @@ const badgeVariants = cva(
       },
     },
     compoundVariants: [
-      { variant: ["neutral", "surface"], ring: true, class: "ring-foreground/8" },
+      { variant: ["neutral", "surface"], ring: true, class: "ring-border-muted" },
       { variant: "success", ring: true, class: "ring-success-border" },
       { variant: "warning", ring: true, class: "ring-warning-border" },
       { variant: "info", ring: true, class: "ring-info-border" },
@@ -115,7 +116,7 @@ function Badge({
 
   const dotClass = cn(
     "relative size-(--badge-mark) shrink-0 rounded-full",
-    quietDot.has(variant ?? "neutral") ? "bg-foreground/30" : "bg-current",
+    quietDot.has(variant ?? "neutral") ? "bg-fg-subtle" : "bg-current",
     live &&
       "after:absolute after:inset-0 after:animate-live after:rounded-full after:bg-inherit motion-reduce:after:hidden"
   );

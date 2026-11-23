@@ -74,9 +74,9 @@ export function Viewport({ children }: { children: ReactNode }) {
           ))}
         </ToggleGroup>
       </div>
-      <div className="overflow-x-auto rounded-frame border bg-muted/30 p-2">
+      <div className="overflow-x-auto rounded-frame border bg-fill-subtle p-2">
         <div
-          className="@container mx-auto overflow-hidden rounded-xl bg-background ring-1 ring-foreground/10 transition-[max-width] duration-300"
+          className="@container mx-auto overflow-hidden rounded-xl bg-background ring-1 ring-border-muted transition-[max-width] duration-300"
           style={{ maxWidth: widths[width] }}
         >
           {children}
@@ -95,7 +95,7 @@ export function Signal({ tone }: { tone: "live" | "wait" | "off" | "alert" | "ne
         "inline-block size-2 shrink-0 rounded-full",
         tone === "live" && "bg-success",
         tone === "wait" && "bg-warning",
-        tone === "off" && "bg-muted-foreground/40",
+        tone === "off" && "bg-fg-subtle",
         tone === "alert" && "bg-destructive",
         tone === "new" && "bg-new",
       )}

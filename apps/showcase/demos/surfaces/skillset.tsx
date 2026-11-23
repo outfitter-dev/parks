@@ -195,7 +195,7 @@ function LandingDetails() {
                       shape="rect"
                       size="icon-sm"
                       aria-label={`Repair ${target.name} output`}
-                      className="rounded-[calc(max(var(--radius-floor),var(--radius)_-_var(--row-action-inset)_-_1px)*var(--corner-scale))]"
+                      className="rounded-inset-action"
                     />}>
                       <WrenchIcon />
                     </TooltipTrigger>
