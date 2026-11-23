@@ -25,6 +25,38 @@ const SidebarContext = createContext<{
 } | null>(null);
 
 /**
+ * The bar at the top of a page or pane: the sidebar toggle, a title, then
+ * actions at the end. One height and padding for every pane.
+ */
+export function PageBar({
+  title,
+  start,
+  as: Title = "h1",
+  toggle = true,
+  className,
+  children,
+}: {
+  title?: ReactNode;
+  /** In place of a title, such as a breadcrumb path. */
+  start?: ReactNode;
+  /** The title element. Panes inside a page use "h2" or "span". */
+  as?: "h1" | "h2" | "span";
+  toggle?: boolean;
+  className?: string;
+  /** Actions, placed at the end. */
+  children?: ReactNode;
+}) {
+  return (
+    <header className={cn("flex min-h-14 shrink-0 items-center gap-1.5 ps-3 pe-4", className)}>
+      {toggle ? <SidebarToggle /> : null}
+      {title == null ? null : <Title className="min-w-0 truncate font-semibold">{title}</Title>}
+      {start == null ? null : <div className="min-w-0 flex-1">{start}</div>}
+      {children ? <div className="ms-auto flex shrink-0 items-center gap-2">{children}</div> : null}
+    </header>
+  );
+}
+
+/**
  * Shows the sidebar from the page header, just before the title. While the
  * sidebar is docked it carries its own hide button, so this one folds away to
  * nothing; when the sidebar leaves, it grows back in and pushes the title over.
@@ -131,11 +163,7 @@ export function AppFrame({
   ) : null;
 
   const header = title == null ? null : (
-    <header className="flex h-14 items-center gap-1.5 ps-3 pe-4">
-      <SidebarToggle />
-      <h1 className="min-w-0 font-semibold">{title}</h1>
-      <div className="ml-auto flex shrink-0 items-center gap-2">{actions}</div>
-    </header>
+    <PageBar title={title}>{actions}</PageBar>
   );
 
   return (
