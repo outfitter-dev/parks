@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Menu as MenuPrimitive } from "@base-ui/react/menu"
 import { isTone, type Tone } from "#lib/tone"
+import { menuRow, menuRowFocusChildren, menuRowIndicator, menuRowIndicatorSlot } from "#lib/row"
 import { cnState } from "#lib/utils"
 import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right"
 import { CheckIcon } from "@solar-icons/react/outline/check"
@@ -56,17 +57,21 @@ function DropdownMenuGroup({ ...props }: MenuPrimitive.Group.Props) {
 
 function DropdownMenuLabel({
   className,
+  indent,
   inset,
   ...props
 }: MenuPrimitive.GroupLabel.Props & {
+  /** Line the label up with items that have a leading icon. */
+  indent?: boolean
+  /** shadcn's name for `indent`. */
   inset?: boolean
 }) {
   return (
     <MenuPrimitive.GroupLabel
       data-slot="dropdown-menu-label"
-      data-inset={inset}
+      data-indent={indent ?? inset}
       className={cnState(
-        "px-1.5 py-1 text-xs font-medium text-muted-foreground data-inset:pl-7",
+        "px-1.5 py-1 text-xs font-medium text-muted-foreground data-indent:ps-7",
         className
       )}
       {...props}
@@ -76,11 +81,15 @@ function DropdownMenuLabel({
 
 function DropdownMenuItem({
   className,
+  indent,
   inset,
   variant = "default",
   tone: toneProp,
   ...props
 }: MenuPrimitive.Item.Props & {
+  /** Indent past the icon column of items with a leading icon. */
+  indent?: boolean
+  /** shadcn's name for `indent`. */
   inset?: boolean
   /** shadcn's name for a destructive item: an alias for `tone="destructive"`. */
   variant?: "default" | "destructive"
@@ -91,11 +100,12 @@ function DropdownMenuItem({
   return (
     <MenuPrimitive.Item
       data-slot="dropdown-menu-item"
-      data-inset={inset}
+      data-indent={indent ?? inset}
       data-variant={tone === "destructive" ? "destructive" : variant}
       data-tone={tone}
       className={cnState(
-        "group/dropdown-menu-item relative flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[tone=neutral]:focus:**:text-accent-foreground data-inset:pl-7 not-data-[tone=neutral]:text-tone-strong not-data-[tone=neutral]:focus:bg-tone-fill not-data-[tone=neutral]:focus:text-tone-strong data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 not-data-[tone=neutral]:*:[svg]:text-tone-strong",
+        menuRow,
+        "group/dropdown-menu-item data-[tone=neutral]:focus:**:text-accent-foreground not-data-[tone=neutral]:text-tone-strong not-data-[tone=neutral]:focus:bg-tone-fill not-data-[tone=neutral]:focus:text-tone-strong not-data-[tone=neutral]:*:[svg]:text-tone-strong",
         className
       )}
       {...props}
@@ -109,18 +119,24 @@ function DropdownMenuSub({ ...props }: MenuPrimitive.SubmenuRoot.Props) {
 
 function DropdownMenuSubTrigger({
   className,
+  indent,
   inset,
   children,
   ...props
 }: MenuPrimitive.SubmenuTrigger.Props & {
+  /** Indent past the icon column of items with a leading icon. */
+  indent?: boolean
+  /** shadcn's name for `indent`. */
   inset?: boolean
 }) {
   return (
     <MenuPrimitive.SubmenuTrigger
       data-slot="dropdown-menu-sub-trigger"
-      data-inset={inset}
+      data-indent={indent ?? inset}
       className={cnState(
-        "flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:pl-7 data-popup-open:bg-accent data-popup-open:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        menuRow,
+        menuRowFocusChildren,
+        "data-popup-open:bg-accent data-popup-open:text-accent-foreground",
         className
       )}
       {...props}
@@ -156,24 +172,30 @@ function DropdownMenuCheckboxItem({
   className,
   children,
   checked,
+  indent,
   inset,
   ...props
 }: MenuPrimitive.CheckboxItem.Props & {
+  /** Indent past the icon column of items with a leading icon. */
+  indent?: boolean
+  /** shadcn's name for `indent`. */
   inset?: boolean
 }) {
   return (
     <MenuPrimitive.CheckboxItem
       data-slot="dropdown-menu-checkbox-item"
-      data-inset={inset}
+      data-indent={indent ?? inset}
       className={cnState(
-        "relative flex cursor-default items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-7 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        menuRow,
+        menuRowFocusChildren,
+        menuRowIndicator,
         className
       )}
       checked={checked}
       {...props}
     >
       <span
-        className="pointer-events-none absolute right-2 flex items-center justify-center"
+        className={menuRowIndicatorSlot}
         data-slot="dropdown-menu-checkbox-item-indicator"
       >
         <MenuPrimitive.CheckboxItemIndicator>
@@ -198,23 +220,29 @@ function DropdownMenuRadioGroup({ ...props }: MenuPrimitive.RadioGroup.Props) {
 function DropdownMenuRadioItem({
   className,
   children,
+  indent,
   inset,
   ...props
 }: MenuPrimitive.RadioItem.Props & {
+  /** Indent past the icon column of items with a leading icon. */
+  indent?: boolean
+  /** shadcn's name for `indent`. */
   inset?: boolean
 }) {
   return (
     <MenuPrimitive.RadioItem
       data-slot="dropdown-menu-radio-item"
-      data-inset={inset}
+      data-indent={indent ?? inset}
       className={cnState(
-        "relative flex cursor-default items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-7 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        menuRow,
+        menuRowFocusChildren,
+        menuRowIndicator,
         className
       )}
       {...props}
     >
       <span
-        className="pointer-events-none absolute right-2 flex items-center justify-center"
+        className={menuRowIndicatorSlot}
         data-slot="dropdown-menu-radio-item-indicator"
       >
         <MenuPrimitive.RadioItemIndicator>

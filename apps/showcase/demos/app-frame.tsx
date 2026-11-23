@@ -195,7 +195,7 @@ export function AppFrame({
             if (event.key === "Escape" && overlay) hide();
           }}
         >
-          <SidebarPanel navigation={navigation} place={place} shell={shell.style} onHide={hide} hideAt={wide ? "end" : "start"} />
+          <SidebarPanel navigation={navigation} place={place} onHide={hide} hideAt={wide ? "end" : "start"} />
         </aside>
         <div
           className={cn(

@@ -2,6 +2,7 @@
 
 import { useState, type ComponentType, type RefObject } from "react";
 import { Mark } from "@workspace/ui/components/mark";
+import { NavItem } from "@workspace/ui/components/nav-item";
 import { StatusDot } from "@workspace/ui/components/status-dot";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
@@ -14,7 +15,6 @@ import { MagnifierIcon } from "@solar-icons/react/outline/magnifier";
 import { PanelLeftCloseIcon } from "@solar-icons/react/outline/panel-left-close";
 import { PanelLeftOpenIcon } from "@solar-icons/react/outline/panel-left-open";
 import { SettingsIcon } from "@solar-icons/react/outline/settings";
-import type { ShellStyle } from "#lib/shell";
 
 type NavIcon = ComponentType<{ className?: string }>;
 
@@ -56,23 +56,18 @@ function Brand({ mark }: { mark: string }) {
 export function SidebarPanel({
   navigation,
   place,
-  shell,
   onHide,
   hideAt,
   onDock,
 }: {
   navigation: AppNavigation;
   place: string;
-  shell: ShellStyle;
   onHide: () => void;
   hideAt: "start" | "end";
   /** Shown from the rail: the end button docks the sidebar instead of hiding it. */
   onDock?: () => void;
 }) {
-  // On the bare canvas, solid accents vanish; translucent ink reads on any surface.
   const { name, mark, items, account } = navigation;
-  const hover = shell === "inset" ? "hover:bg-fill-subtle" : "hover:bg-accent";
-  const current = shell === "inset" ? "bg-fill" : "bg-accent";
   const hide = onDock ? (
     <Button variant="ghost" size="icon-sm" aria-label="Dock sidebar" onClick={onDock} className="-me-1 ml-auto">
       <PanelLeftOpenIcon />
@@ -111,35 +106,20 @@ export function SidebarPanel({
         {items.map(({ id, label, icon: Line, solid: Solid, count, dot }) => {
           const Icon = id === place ? Solid : Line;
           return (
-            <a
-              key={id}
-              href="#"
-              aria-current={id === place ? "page" : undefined}
-              className={cn(
-                "flex items-center gap-2 rounded-lg px-2 py-1.5 font-normal text-muted-foreground hover:text-foreground",
-                hover,
-                id === place && cn(current, "font-medium text-foreground"),
-              )}
-            >
-              <Icon className="size-4 shrink-0" />
+            <NavItem key={id} href="#" current={id === place} className="rounded-lg">
+              <Icon />
               <span className="truncate">{label}</span>
               {count ? <Badge count={count} shape="rect" variant="plain" className="ms-auto" /> : dot ? <NavDot /> : null}
-            </a>
+            </NavItem>
           );
         })}
       </nav>
       {account ? (
-        <button
-          type="button"
-          className={cn(
-            "mt-auto flex h-(--control-h) items-center gap-2 rounded-lg px-2 font-semibold text-muted-foreground hover:text-foreground",
-            hover,
-          )}
-        >
-          <SettingsIcon className="size-4 shrink-0" />
-          {account}
-          <AltArrowDownIcon className="ml-auto size-4 shrink-0" />
-        </button>
+        <NavItem render={<button type="button" />} className="mt-auto rounded-lg">
+          <SettingsIcon />
+          <span className="truncate">{account}</span>
+          <AltArrowDownIcon className="ms-auto" />
+        </NavItem>
       ) : null}
     </>
   );
@@ -215,7 +195,6 @@ export function SidebarRail({
           <SidebarPanel
             navigation={navigation}
             place={place}
-            shell="inset"
             onHide={() => setOpen(false)}
             hideAt="end"
             onDock={() => {

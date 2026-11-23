@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";
+import { NavItem } from "@workspace/ui/components/nav-item";
 import { Button } from "@workspace/ui/components/button";
 import { InlineCode } from "@workspace/ui/components/inline-code";
 import {
@@ -113,18 +114,10 @@ export function TrailsSurface() {
                 <div key={group.group}>
                   <p className="px-2 pb-1 text-xs text-muted-foreground">{group.group}</p>
                   {group.trails.map((trail) => (
-                    <a
-                      key={trail.id}
-                      href="#"
-                      aria-current={trail.id === "ask.create" ? "page" : undefined}
-                      className={cn(
-                        "flex h-7 items-center gap-2 rounded-md ps-2 pe-1 font-mono text-xs hover:bg-accent",
-                        trail.id === "ask.create" && "bg-accent",
-                      )}
-                    >
+                    <NavItem key={trail.id} href="#" current={trail.id === "ask.create"} size="sm" className="pe-1 font-mono">
                       {trail.id}
                       <IntentMark intent={trail.intent} className="ms-auto" />
-                    </a>
+                    </NavItem>
                   ))}
                 </div>
               ))}
