@@ -5,7 +5,6 @@ import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -16,14 +15,6 @@ import { Input } from "@workspace/ui/components/input";
 import { Kbd } from "@workspace/ui/components/kbd";
 import { Label } from "@workspace/ui/components/label";
 import { Progress } from "@workspace/ui/components/progress";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@workspace/ui/components/table";
 import { Tabs, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
 import { Textarea } from "@workspace/ui/components/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
@@ -32,7 +23,6 @@ import { ChatRoundDotsIcon } from "@solar-icons/react/linear/chat-round-dots";
 import { HistoryIcon } from "@solar-icons/react/linear/history";
 import { InboxIcon } from "@solar-icons/react/linear/inbox";
 import { KeyIcon } from "@solar-icons/react/linear/key";
-import { HamburgerMenuIcon } from "@solar-icons/react/linear/hamburger-menu";
 import { SidebarMinimalisticIcon } from "@solar-icons/react/linear/sidebar-minimalistic";
 import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
 import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
@@ -90,16 +80,25 @@ function NavDot() {
   );
 }
 
-/** Opens the overlay sidebar. Headers below the docked width render a menu button with it. */
-const FrameMenu = createContext<(() => void) | null>(null);
+/**
+ * Opens the sidebar. `collapsed` is true when a wide frame has its sidebar
+ * tucked away, so the button shows there too, not only below the docked width.
+ */
+const FrameMenu = createContext<{ open: () => void; collapsed: boolean } | null>(null);
 
-/** The menu button that opens the sidebar when it is not docked. Renders nothing outside a frame. */
+/** The small button that brings the sidebar back. Renders nothing outside a frame. */
 function MenuButton({ className }: { className?: string }) {
-  const open = useContext(FrameMenu);
-  if (!open) return null;
+  const frame = useContext(FrameMenu);
+  if (!frame) return null;
   return (
-    <Button variant="ghost" size="icon-sm" aria-label="Open navigation" onClick={open} className={className}>
-      <HamburgerMenuIcon />
+    <Button
+      variant="ghost"
+      size="icon-sm"
+      aria-label="Show sidebar"
+      onClick={frame.open}
+      className={cn(!frame.collapsed && "@5xl:hidden", className)}
+    >
+      <SidebarMinimalisticIcon />
     </Button>
   );
 }
@@ -111,17 +110,15 @@ function Brand() {
 }
 
 /** The full sidebar: brand, search, places and the account. Docked or as an overlay. */
-function SidebarPanel({ place, onClose }: { place: Place; onClose?: () => void }) {
+function SidebarPanel({ place, onClose }: { place: Place; onClose: () => void }) {
   return (
     <>
       <div className="flex items-center gap-2 px-2 py-2 font-semibold">
         <Brand />
         Outpost
-        {onClose ? (
-          <Button variant="ghost" size="icon-sm" aria-label="Close navigation" onClick={onClose} className="ml-auto -my-1">
-            <SidebarMinimalisticIcon />
-          </Button>
-        ) : null}
+        <Button variant="ghost" size="icon-sm" aria-label="Hide sidebar" onClick={onClose} className="ml-auto -my-1">
+          <SidebarMinimalisticIcon />
+        </Button>
       </div>
       <button
         type="button"
@@ -164,48 +161,10 @@ function SidebarPanel({ place, onClose }: { place: Place; onClose?: () => void }
 }
 
 /**
- * The collapsed sidebar on a tablet: glyphs only, so the list and the page keep
- * the width. A place with a count or a dot shows a dot on its glyph.
- */
-function SidebarRail({ place, onOpen }: { place: Place; onOpen: () => void }) {
-  return (
-    <aside className="hidden w-14 shrink-0 flex-col items-center gap-1 border-r bg-muted/40 py-2 @3xl:flex @5xl:hidden">
-      <Button variant="ghost" size="icon" aria-label="Open navigation" onClick={onOpen}>
-        <SidebarMinimalisticIcon />
-      </Button>
-      <nav aria-label="Outpost" className="mt-1 flex flex-col gap-1">
-        {places.map(({ id, label, icon: Line, solid: Solid, count, dot }) => {
-          const Icon = id === place ? Solid : Line;
-          return (
-            <a
-              key={id}
-              href="#"
-              aria-label={count ? `${label}, ${count}` : label}
-              aria-current={id === place ? "page" : undefined}
-              className={cn(
-                "relative grid size-(--control-h) place-items-center rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground",
-                id === place && "bg-accent text-foreground",
-              )}
-            >
-              <Icon className="size-4" />
-              {count || dot ? (
-                <span aria-hidden className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-foreground" />
-              ) : null}
-            </a>
-          );
-        })}
-      </nav>
-      <Button variant="ghost" size="icon" aria-label="Account and settings" className="mt-auto text-muted-foreground">
-        <SettingsIcon />
-      </Button>
-    </aside>
-  );
-}
-
-/**
- * The app frame: a sidebar, a top bar and the page. The sidebar docks on wide
- * screens, collapses to a rail on a tablet and hides on a phone; below the
- * docked width, opening it lays it over the page instead of taking width.
+ * The app frame: an inset sidebar and the page. The sidebar floats inside the
+ * window with a gap on every side, the way macOS 26 draws it, and tucks away
+ * into one small button. It docks on wide screens; below that it starts
+ * tucked away and opens over the page instead of taking width.
  */
 function AppFrame({
   place,
@@ -221,24 +180,33 @@ function AppFrame({
   bare?: boolean;
   children: ReactNode;
 }) {
+  const [collapsed, setCollapsed] = useState(false);
   const [open, setOpen] = useState(false);
+  const menu = {
+    collapsed,
+    open: () => {
+      setCollapsed(false);
+      setOpen(true);
+    },
+  };
   return (
-    <FrameMenu.Provider value={() => setOpen(true)}>
+    <FrameMenu.Provider value={menu}>
       <div className="relative flex min-h-160 overflow-hidden bg-background text-foreground">
-        <aside className="hidden w-56 shrink-0 flex-col border-r bg-muted/40 p-2 @5xl:flex">
-          <SidebarPanel place={place} />
-        </aside>
-        <SidebarRail place={place} onOpen={() => setOpen(true)} />
+        {collapsed ? null : (
+          <aside className="frame m-2 me-0 hidden w-56 shrink-0 flex-col bg-muted/70 p-2 shadow-(--shadow-frame) ring-1 ring-foreground/8 @5xl:flex">
+            <SidebarPanel place={place} onClose={() => setCollapsed(true)} />
+          </aside>
+        )}
         {open ? (
           <>
             <button
               type="button"
-              aria-label="Close navigation"
+              aria-label="Hide sidebar"
               onClick={() => setOpen(false)}
               className="absolute inset-0 z-20 bg-foreground/20 @5xl:hidden"
             />
             <aside
-              className="absolute inset-y-0 start-0 z-30 flex w-64 flex-col border-r bg-background p-2 shadow-xl @5xl:hidden"
+              className="frame absolute inset-y-2 start-2 z-30 flex w-64 flex-col bg-background p-2 shadow-xl ring-1 ring-foreground/10 @5xl:hidden"
               onKeyDown={(event) => {
                 if (event.key === "Escape") setOpen(false);
               }}
@@ -250,7 +218,7 @@ function AppFrame({
         <div className="flex min-w-0 flex-1 flex-col">
           {bare ? null : (
             <header className="flex h-12 items-center gap-3 px-4">
-              <MenuButton className="-ms-2 @3xl:hidden" />
+              <MenuButton className="-ms-2" />
               <h1 className="font-semibold">{title}</h1>
               <div className="ml-auto flex items-center gap-2">{actions}</div>
             </header>
@@ -284,10 +252,16 @@ function AskRow({
       )}
     >
       <span className="flex items-center gap-2 text-muted-foreground">
-        {answered ? <CheckCircleBold className="size-3.5 shrink-0 text-success-strong" /> : <Signal tone="wait" />}
         <span className="font-medium text-foreground">{ask.agent}</span>
         <span>{ask.project}</span>
         <span className="ml-auto text-xs tabular-nums">{answered ? "Answered" : ask.age}</span>
+        {answered ? (
+          <CheckCircleBold className="size-3.5 shrink-0 text-success-strong" />
+        ) : (
+          <span className="grid size-3.5 shrink-0 place-items-center" aria-label="Unread">
+            <Signal tone="new" />
+          </span>
+        )}
       </span>
       <span className={cn("line-clamp-2", answered && "text-muted-foreground")}>{ask.title}</span>
     </button>
@@ -350,14 +324,19 @@ function markFor(mark: OptionMark, label: string, index: number, count: number):
  * Tile colours per tone. Unpicked is a light fill with a dark mark; picked
  * inverts to a dark fill with a light 100-level mark. Neutral is used when
  * marks are not colour coded, and keeps the brand for the picked state.
+ * In dark mode the unpicked fill drops to the 950 step so it sits in the
+ * dark surface instead of glowing.
  */
 const tileTones: Record<MarkTone, { idle: string; picked: string }> = {
   neutral: { idle: "bg-foreground/6 text-muted-foreground", picked: "bg-brand-700 text-brand-100" },
-  success: { idle: "bg-success-100 text-success-800", picked: "bg-success-700 text-success-100" },
-  warning: { idle: "bg-warning-100 text-warning-800", picked: "bg-warning-700 text-warning-100" },
-  destructive: { idle: "bg-destructive-100 text-destructive-800", picked: "bg-destructive-700 text-destructive-100" },
-  info: { idle: "bg-info-100 text-info-800", picked: "bg-info-700 text-info-100" },
-  brand: { idle: "bg-brand-100 text-brand-800", picked: "bg-brand-700 text-brand-100" },
+  success: { idle: "bg-success-100 text-success-800 dark:bg-success-950 dark:text-success-300", picked: "bg-success-700 text-success-100" },
+  warning: { idle: "bg-warning-100 text-warning-800 dark:bg-warning-950 dark:text-warning-300", picked: "bg-warning-700 text-warning-100" },
+  destructive: {
+    idle: "bg-destructive-100 text-destructive-800 dark:bg-destructive-950 dark:text-destructive-300",
+    picked: "bg-destructive-700 text-destructive-100",
+  },
+  info: { idle: "bg-info-100 text-info-800 dark:bg-info-950 dark:text-info-300", picked: "bg-info-700 text-info-100" },
+  brand: { idle: "bg-brand-100 text-brand-800 dark:bg-brand-950 dark:text-brand-300", picked: "bg-brand-700 text-brand-100" },
 };
 
 /** A bounded tile in the option's top-left corner, light until its option is picked. */
@@ -674,7 +653,7 @@ export function NeedsYouComposition() {
           <div className="grid h-full @3xl:grid-cols-[minmax(--spacing(64),--spacing(88))_1fr]">
             <div className={cn("flex flex-col @3xl:border-r", screen === "ask" && "@max-3xl:hidden")}>
               <div className="flex h-12 shrink-0 items-center gap-2 ps-2 pe-2 @3xl:ps-4">
-                <MenuButton className="@3xl:hidden" />
+                <MenuButton />
                 <h1 className="font-semibold">Needs you</h1>
                 <Tabs
                   value={view}
@@ -715,7 +694,7 @@ export function NeedsYouComposition() {
             </div>
             {view === "open" && ask ? (
               <div className={cn("flex min-h-160 flex-col @3xl:min-h-0", screen === "list" && "@max-3xl:hidden")}>
-                <div className="grid gap-3 border-b px-2 pt-2 pb-3 @3xl:hidden">
+                <div className="grid gap-3 px-2 pt-2 pb-3 @3xl:hidden">
                   <div className="flex items-center gap-1">
                     <Button variant="ghost" size="sm" onClick={() => setScreen("list")}>
                       <AltArrowLeftIcon data-icon="inline-start" />
@@ -763,51 +742,51 @@ export function NeedsYouComposition() {
   );
 }
 
+/**
+ * The fleet on a constrained page: a readable column instead of a full-width
+ * table, with each agent as a stacked row (name and mode, then runtime and
+ * destination) and dividers between rows.
+ */
 export function AgentsComposition() {
   return (
     <Viewport>
       <AppFrame place="agents" title="Agents" actions={<Button size="sm">New agent</Button>}>
-        <div className="grid gap-3 p-(--pad) @2xl:grid-cols-3">
-          {[
-            ["Live", "3"],
-            ["Dry run", "1"],
-            ["Failing", "1"],
-          ].map(([label, value]) => (
-            <Card key={label} size="sm">
-              <CardHeader>
-                <CardDescription>{label}</CardDescription>
-                <CardTitle className="text-2xl tabular-nums">{value}</CardTitle>
-              </CardHeader>
-            </Card>
-          ))}
-        </div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="pl-(--pad)">Agent</TableHead>
-              <TableHead>Runtime</TableHead>
-              <TableHead>Mode</TableHead>
-              <TableHead className="hidden @2xl:table-cell">Destination</TableHead>
-              <TableHead className="pr-(--pad) text-right">Last seen</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {agents.map((agent) => (
-              <TableRow key={agent.name}>
-                <TableCell className="pl-(--pad) font-medium">{agent.name}</TableCell>
-                <TableCell className="text-muted-foreground">{agent.runtime}</TableCell>
-                <TableCell>
-                  <span className="inline-flex items-center gap-2">
-                    <Signal tone={agent.tone} />
-                    {agent.mode}
-                  </span>
-                </TableCell>
-                <TableCell className="hidden font-mono text-muted-foreground @2xl:table-cell">{agent.destination}</TableCell>
-                <TableCell className="pr-(--pad) text-right text-muted-foreground">{agent.seen}</TableCell>
-              </TableRow>
+        <div className="mx-auto w-full max-w-2xl px-(--pad) pt-2 pb-(--pad)">
+          <dl className="grid grid-cols-3 gap-3">
+            {[
+              ["Live", "3"],
+              ["Dry run", "1"],
+              ["Failing", "1"],
+            ].map(([label, value]) => (
+              <div key={label} className="frame bg-muted/60 p-frame">
+                <dt className="px-inset text-muted-foreground">{label}</dt>
+                <dd className="px-inset text-2xl font-semibold tabular-nums">{value}</dd>
+              </div>
             ))}
-          </TableBody>
-        </Table>
+          </dl>
+          <ul className="mt-6 grid">
+            {agents.map((agent) => (
+              <li
+                key={agent.name}
+                className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-0.5 border-b border-foreground/6 px-text py-3 last:border-b-0"
+              >
+                <span className="font-medium">{agent.name}</span>
+                <span className="inline-flex items-center gap-2 justify-self-end">
+                  <Signal tone={agent.tone} />
+                  {agent.mode}
+                </span>
+                <span className="min-w-0 truncate text-muted-foreground">
+                  {agent.runtime}
+                  <span className="hidden @2xl:inline">
+                    {" · "}
+                    <span className="font-mono">{agent.destination}</span>
+                  </span>
+                </span>
+                <span className="justify-self-end text-muted-foreground tabular-nums">{agent.seen}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </AppFrame>
     </Viewport>
   );
@@ -839,8 +818,8 @@ function VersionsOpen() {
   return (
     <ol className="grid px-text">
       {versions.map((item, index) => (
-        <li key={item.version} className="flex items-baseline gap-4 border-b border-foreground/6 py-3 last:border-b-0">
-          <span className="w-8 shrink-0 font-mono text-muted-foreground">v{item.version}</span>
+        <li key={item.version} className="flex items-baseline gap-2.5 border-b border-foreground/6 py-3 last:border-b-0">
+          <span className="shrink-0 font-mono text-muted-foreground tabular-nums">v{item.version}</span>
           <span className="min-w-0 flex-1">
             <span className="block truncate">{item.change}</span>
             <span className="text-muted-foreground">{item.when}</span>
@@ -890,8 +869,8 @@ export function AdminComposition() {
               {list === "open" ? <VersionsOpen /> : <VersionsBounded />}
             </CardContent>
             <CardFooter>
-              <Button variant="ghost">Compare</Button>
-              <Button variant="secondary">Roll back to v13</Button>
+              <Button variant="secondary">Compare</Button>
+              <Button>Roll back to v13</Button>
             </CardFooter>
           </Card>
           <Card>
@@ -907,9 +886,7 @@ export function AdminComposition() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button variant="secondary" className="w-full">
-                End admin now
-              </Button>
+              <Button className="w-full">End admin now</Button>
             </CardFooter>
           </Card>
         </div>
@@ -922,9 +899,37 @@ export function AdminComposition() {
 /** A circular tonal mark: the glyph and its ground come from the same brand ramp. */
 function TonalMark({ children }: { children: ReactNode }) {
   return (
-    <span className="grid size-9 place-items-center rounded-full bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300">
+    <span className="grid size-12 place-items-center rounded-full bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300">
       {children}
     </span>
+  );
+}
+
+/**
+ * A centred auth card: the mark on top, then the title and a short line held
+ * to a narrow measure, then the actions at full width. Roomier than an app
+ * card because it is the only thing on the page.
+ */
+function AuthCard({
+  mark,
+  title,
+  description,
+  children,
+}: {
+  mark: ReactNode;
+  title: string;
+  description: string;
+  children: ReactNode;
+}) {
+  return (
+    <Card className="w-full max-w-sm gap-6 py-8">
+      <div className="flex flex-col items-center px-8 text-center">
+        <TonalMark>{mark}</TonalMark>
+        <h2 className="mt-5 text-xl font-semibold tracking-tight text-balance">{title}</h2>
+        <p className="mt-2 max-w-64 text-pretty text-muted-foreground">{description}</p>
+      </div>
+      <div className="grid gap-3 px-8">{children}</div>
+    </Card>
   );
 }
 
@@ -932,41 +937,35 @@ export function SignInComposition() {
   return (
     <Viewport>
       <div className="grid min-h-160 place-items-center gap-(--pad) bg-muted/40 p-(--pad) @3xl:grid-cols-2">
-        <Card className="w-full max-w-sm">
-          <CardHeader>
-            <CardTitle className="text-lg">Sign in to Outpost</CardTitle>
-            <CardDescription>Use your Vercel account. Outpost only reads who you are.</CardDescription>
-            <CardAction>
-              <TonalMark>
-                <InboxBold className="size-4.5" />
-              </TonalMark>
-            </CardAction>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Continue with Vercel</Button>
-          </CardContent>
-        </Card>
-        <Card className="w-full max-w-sm">
-          <CardHeader>
-            <CardTitle className="text-lg">Approve this device?</CardTitle>
-            <CardDescription>A CLI on another computer asked to act as you.</CardDescription>
-            <CardAction>
-              <TonalMark>
-                <ShieldKeyholeBold className="size-4.5" />
-              </TonalMark>
-            </CardAction>
-          </CardHeader>
-          <CardContent className="grid gap-2">
-            <Label htmlFor="code" className="ps-text">Code shown on that device</Label>
-            <Input id="code" defaultValue="KXQM-7TRD" className="font-mono tracking-widest" />
-          </CardContent>
-          <CardFooter>
-            <Button className="flex-1">Approve</Button>
-            <Button variant="secondary" className="flex-1">
+        <AuthCard
+          mark={<InboxBold className="size-6" />}
+          title="Sign in to Outpost"
+          description="Use your Vercel account. Outpost only reads who you are."
+        >
+          <Button size="lg" className="w-full">
+            Continue with Vercel
+          </Button>
+        </AuthCard>
+        <AuthCard
+          mark={<ShieldKeyholeBold className="size-6" />}
+          title="Approve this device?"
+          description="A CLI on another computer asked to act as you."
+        >
+          <div className="grid gap-2">
+            <Label htmlFor="code" className="justify-center">
+              Code shown on that device
+            </Label>
+            <Input id="code" defaultValue="KXQM-7TRD" className="h-(--button-h) text-center font-mono tracking-widest [--button-h:calc(var(--spacing)*9)]" />
+          </div>
+          <div className="mt-1 grid gap-2">
+            <Button size="lg" className="w-full">
+              Approve
+            </Button>
+            <Button size="lg" variant="ghost" className="w-full">
               Deny
             </Button>
-          </CardFooter>
-        </Card>
+          </div>
+        </AuthCard>
       </div>
     </Viewport>
   );
