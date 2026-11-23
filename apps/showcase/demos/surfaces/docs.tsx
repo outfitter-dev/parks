@@ -53,7 +53,7 @@ export function DocsSurface() {
             <Mark variant="solid" className="font-normal">O</Mark>
             Outpost <span className="font-normal text-muted-foreground">Docs</span>
           </span>
-          <Button variant="outline" className="ms-auto w-64 min-w-0 shrink justify-start gap-2 rounded-lg text-muted-foreground">
+          <Button variant="secondary" className="ms-auto w-64 min-w-0 shrink justify-start gap-2 rounded-lg text-muted-foreground">
             <MagnifierIcon className="size-4" />
             Search docs
             <Kbd className="ms-auto">/</Kbd>
