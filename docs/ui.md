@@ -51,6 +51,14 @@ Every card-like box is a `Card`. `variant` sets the look: `raised` (the default)
 
 Card, Dialog and Popover headers share one grid (`packages/ui/src/lib/header.ts`): lead, title, description, meta, then actions. `CardLead` takes an icon, Mark or Avatar; `CardMeta` a time or count; `CardAction` any number of buttons. Titles are `font-semibold` on frames (Card, Dialog) and `font-medium` on rows and popovers (Item, Popover, Alert). `GroupLabel` is the one overline style for a group of rows; menu and select labels use the same style.
 
+## Sizes, toggles and segmented controls
+
+Controls share one size scale, `xs`, `sm`, `default` and `lg` (`packages/ui/src/lib/size.ts`): 24, 28, `--control-h` and 36px. Button, Toggle, Input, Select and the segmented control draw at those heights, so same-size controls line up in a row. Badge, Avatar and Item use the same names for their own steps. Icon-only is a size where a component takes one: `icon`, `icon-xs`, `icon-sm`, `icon-lg`.
+
+`Toggle` is a Button that stays pressed. It takes Button's sizes, `shape` and the `ghost` (default), `outline` and `secondary` emphasis, and adds one pressed look: the `fill` background and full-strength text.
+
+There is one segmented control (`packages/ui/src/lib/segment.ts`): a muted track whose selected segment is raised. `ToggleGroup` draws it by default, and Tabs' default `TabsList` draws the same thing. Use Tabs when each choice shows its own panel; use `ToggleGroup` to switch a filter or a view with no panel. `ToggleGroup variant="ghost" | "outline" | "secondary"` is a row of separate, spaced Toggles for a toolbar.
+
 ## Icons
 
 Solar (`@solar-icons/react`) is the only icon library. Import each icon on its own from a style subpath, never from the package root:

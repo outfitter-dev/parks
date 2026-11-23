@@ -62,8 +62,8 @@ export function Viewport({ children }: { children: ReactNode }) {
       <div className="mb-3 flex items-center justify-between gap-3">
         <p className="text-muted-foreground">Viewport</p>
         <ToggleGroup
-          variant="outline"
           size="sm"
+          aria-label="Viewport width"
           value={[width]}
           onValueChange={(value) => {
             const next = value[0];

@@ -1,44 +1,64 @@
 "use client"
 
 import { Toggle as TogglePrimitive } from "@base-ui/react/toggle"
-import { cva, type VariantProps } from "class-variance-authority"
+import { type VariantProps } from "class-variance-authority"
+import { buttonVariants } from "#components/button"
 import { cnState } from "#lib/utils"
 
-const toggleVariants = cva(
-  "group/toggle inline-flex items-center justify-center gap-1 rounded-lg text-sm font-medium whitespace-nowrap transition-all outline-none hover:bg-muted hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-focus-ring disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-invalid-border aria-invalid:ring-invalid-ring aria-pressed:bg-muted data-[state=on]:bg-muted [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-  {
-    variants: {
-      variant: {
-        default: "bg-transparent",
-        outline: "border border-input bg-transparent hover:bg-muted",
-      },
-      size: {
-        default:
-          "h-(--control-h) min-w-(--control-h) px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        sm: "h-7 min-w-7 rounded-md px-2.5 text-(length:--text-control-small) has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "h-9 min-w-9 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
-    },
-  }
-)
+/*
+ * A Toggle is a Button that stays pressed. It takes Button's sizes
+ * (including the icon sizes), `shape` and neutral emphasis variants, and
+ * adds one pressed look: a filled background and full-strength text, the
+ * same fill a selected row uses. Base UI marks the pressed state with
+ * `data-pressed` and `aria-pressed`.
+ *
+ * `ghost` is the default, as shadcn's `default` toggle is; `default` stays
+ * an alias for it.
+ */
+type ToggleEmphasis = "ghost" | "outline" | "secondary"
 
-function Toggle({
-  className,
-  variant = "default",
-  size = "default",
-  ...props
-}: TogglePrimitive.Props & VariantProps<typeof toggleVariants>) {
+const toggleAliases = { default: "ghost" } as const satisfies Record<string, ToggleEmphasis>
+
+type ToggleVariant = ToggleEmphasis | keyof typeof toggleAliases
+
+const pressed =
+  "data-pressed:bg-fill data-pressed:text-foreground data-pressed:hover:bg-fill-strong data-[variant=outline]:data-pressed:border-border-strong"
+
+function toggleVariants({
+  variant,
+  size,
+  shape,
+}: {
+  variant?: ToggleVariant | null
+  size?: VariantProps<typeof buttonVariants>["size"]
+  shape?: VariantProps<typeof buttonVariants>["shape"]
+} = {}) {
+  const emphasis = resolveToggle(variant)
+  return cnState(buttonVariants({ variant: emphasis, size, shape }), pressed, undefined)
+}
+
+function resolveToggle(variant: ToggleVariant | null | undefined): ToggleEmphasis {
+  const value = variant ?? "ghost"
+  return value in toggleAliases ? toggleAliases[value as keyof typeof toggleAliases] : (value as ToggleEmphasis)
+}
+
+type ToggleProps = TogglePrimitive.Props &
+  Omit<VariantProps<typeof buttonVariants>, "variant"> & {
+    /** Emphasis: ghost (default), outline or secondary. */
+    variant?: ToggleVariant | null
+  }
+
+function Toggle({ className, variant, size = "default", shape = "pill", ...props }: ToggleProps) {
   return (
     <TogglePrimitive
       data-slot="toggle"
-      className={cnState(toggleVariants({ variant, size }), className)}
+      data-tone="neutral"
+      data-variant={resolveToggle(variant)}
+      className={cnState(toggleVariants({ variant, size, shape }), className)}
       {...props}
     />
   )
 }
 
 export { Toggle, toggleVariants }
+export type { ToggleProps, ToggleVariant }
