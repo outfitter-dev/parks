@@ -257,6 +257,10 @@
   --info-fill: light-dark(color-mix(in oklch, var(--info) 10%, transparent), color-mix(in oklch, var(--info) 20%, transparent));
   --info-fill-hover: light-dark(color-mix(in oklch, var(--info) 20%, transparent), color-mix(in oklch, var(--info) 30%, transparent));
   --info-border: light-dark(color-mix(in oklch, var(--info) 30%, transparent), color-mix(in oklch, var(--info) 35%, transparent));
+  /* "New" (unread, just arrived) borrows the info tone, so new things read blue. */
+  --new: var(--info);
+  --new-strong: var(--info-strong);
+  --new-fill: var(--info-fill);
 
   /* State fills. Each pairs a light and a dark strength, so components
      never restate a colour under dark:. */
@@ -444,6 +448,9 @@
   --color-info-fill: var(--info-fill);
   --color-info-fill-hover: var(--info-fill-hover);
   --color-info-border: var(--info-border);
+  --color-new: var(--new);
+  --color-new-strong: var(--new-strong);
+  --color-new-fill: var(--new-fill);
   --color-neutral-50: var(--neutral-50);
   --color-neutral-100: var(--neutral-100);
   --color-neutral-200: var(--neutral-200);

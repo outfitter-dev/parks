@@ -43,7 +43,7 @@ export function DocsSurface() {
   return (
     <Viewport>
       <div className="min-h-160 bg-background text-foreground">
-        <header className="flex h-12 items-center gap-4 border-b px-4">
+        <header className="flex h-12 items-center gap-4 px-4">
           <span className="flex items-center gap-2 font-semibold">
             <span className="grid size-6 place-items-center rounded-md bg-foreground text-xs text-background">O</span>
             Outpost <span className="font-normal text-muted-foreground">Docs</span>

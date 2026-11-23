@@ -85,7 +85,7 @@ export function Viewport({ children }: { children: ReactNode }) {
 }
 
 /** A small dot that signals state, used in place of colored badges. */
-export function Signal({ tone }: { tone: "live" | "wait" | "off" | "alert" }) {
+export function Signal({ tone }: { tone: "live" | "wait" | "off" | "alert" | "new" }) {
   return (
     <span
       aria-hidden
@@ -95,6 +95,7 @@ export function Signal({ tone }: { tone: "live" | "wait" | "off" | "alert" }) {
         tone === "wait" && "bg-brand",
         tone === "off" && "bg-muted-foreground/40",
         tone === "alert" && "bg-destructive",
+        tone === "new" && "bg-new",
       )}
     />
   );
