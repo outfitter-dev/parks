@@ -69,7 +69,7 @@ export function Shell({
         {footer ? <div className="mt-auto">{footer}</div> : null}
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-12 items-center gap-3 border-b px-4">
+        <header className="flex h-12 items-center gap-3 px-4">
           <div className="flex min-w-0 items-center gap-2 font-medium">{title}</div>
           <div className="ml-auto flex items-center gap-2">{actions}</div>
         </header>
@@ -117,7 +117,7 @@ export function CodeBlock({
   return (
     <figure className={cn("overflow-hidden rounded-lg border bg-muted/40", className)}>
       {label ? (
-        <figcaption className="flex h-8 items-center gap-2 border-b px-3 font-mono text-xs text-muted-foreground">
+        <figcaption className="flex h-8 items-center gap-2 px-3 font-mono text-xs text-muted-foreground">
           {label}
           <button type="button" aria-label="Copy" className="ml-auto rounded p-1 hover:bg-accent hover:text-foreground">
             <CopyIcon className="size-3.5" />
