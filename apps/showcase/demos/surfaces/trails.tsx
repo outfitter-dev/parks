@@ -1,6 +1,8 @@
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";
+import { GroupLabel } from "@workspace/ui/components/group-label";
+import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card";
 import { NavItem } from "@workspace/ui/components/nav-item";
 import { Button } from "@workspace/ui/components/button";
 import { InlineCode } from "@workspace/ui/components/inline-code";
@@ -27,7 +29,6 @@ import { StructureIcon as StructureBold } from "@solar-icons/react/bold/structur
 import { AppFrame } from "../app-frame";
 import type { AppNavigation } from "../app-sidebar";
 import { Viewport } from "../kit";
-import { Frame, FrameHeader, FramePanel, FrameTitle } from "../reui/frame";
 import { ExplorerLayout } from "./explorer-layout";
 import { CodeBlock, Heading } from "./parts";
 
@@ -112,7 +113,7 @@ export function TrailsSurface() {
             <nav aria-label="Trail contracts" className="flex flex-col gap-3 px-2 pb-2">
               {topo.map((group) => (
                 <div key={group.group}>
-                  <p className="px-2 pb-1 text-xs text-muted-foreground">{group.group}</p>
+                  <GroupLabel className="px-2 pb-1">{group.group}</GroupLabel>
                   {group.trails.map((trail) => (
                     <NavItem key={trail.id} href="#" current={trail.id === "ask.create"} size="sm" className="pe-1 font-mono">
                       {trail.id}
@@ -166,11 +167,11 @@ export function TrailsSurface() {
           </div>
 
           <div className="grid gap-4 @6xl:grid-cols-[1fr_18rem]">
-            <Frame>
-              <FrameHeader>
-                <FrameTitle>Composes and fires</FrameTitle>
-              </FrameHeader>
-              <FramePanel className="flex flex-wrap items-center gap-2">
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>Composes and fires</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-wrap items-center gap-2 px-(--frame-space)">
                 <Node label="agent.get" kind="trail" />
                 <ArrowRightIcon className="size-4 text-muted-foreground" />
                 <Node label="ask.create" kind="trail" current />
@@ -178,20 +179,20 @@ export function TrailsSurface() {
                 <Node label="board" kind="resource" />
                 <ArrowRightIcon className="size-4 text-muted-foreground" />
                 <Node label="ask.opened" kind="signal" />
-              </FramePanel>
-            </Frame>
-            <Frame>
-              <FrameHeader>
-                <FrameTitle>Warden</FrameTitle>
-              </FrameHeader>
-              <FramePanel className="flex items-start gap-2">
+              </CardContent>
+            </Card>
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>Warden</CardTitle>
+              </CardHeader>
+              <CardContent className="flex items-start gap-2 px-(--frame-space)">
                 <DangerTriangleIcon className="mt-0.5 size-4 shrink-0 text-warning-strong" />
                 <span>
                   <span className="font-mono text-xs">version-without-examples</span>
                   <span className="block text-muted-foreground">v1 has no examples. Add one or mark it retired.</span>
                 </span>
-              </FramePanel>
-            </Frame>
+              </CardContent>
+            </Card>
           </div>
         </ExplorerLayout>
       </AppFrame>

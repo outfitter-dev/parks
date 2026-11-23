@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { MultiFileDiff } from "@pierre/diffs/react";
 import { Mark } from "@workspace/ui/components/mark";
+import { Card, CardHeader, CardLead, CardMeta, CardTitle } from "@workspace/ui/components/card";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { InlineCode } from "@workspace/ui/components/inline-code";
 import { Textarea } from "@workspace/ui/components/textarea";
-import { cn } from "@workspace/ui/lib/utils";
 import { ArrowUpIcon } from "@solar-icons/react/bold/arrow-up";
 import { ChatRoundDotsIcon } from "@solar-icons/react/outline/chat-round-dots";
 import { ChatRoundDotsIcon as ChatRoundDotsBold } from "@solar-icons/react/bold/chat-round-dots";
@@ -64,34 +64,34 @@ const options = [
 function AskCard() {
   const [picked, setPicked] = useState<string | null>(null);
   return (
-    <div className="flex flex-col gap-2 rounded-xl border bg-background p-3 shadow-xs">
-      <span className="flex items-center gap-2">
-        <ChatRoundDotsIcon className="size-4 text-brand-strong" />
-        <span className="font-medium">Which route name should ship?</span>
-        <span className="ml-auto text-xs text-muted-foreground">ask.choice@1</span>
-      </span>
-      <div className="grid gap-2 @3xl:grid-cols-3">
+    <Card variant="tray" className="gap-2">
+      <CardHeader className="pt-1">
+        <CardLead><ChatRoundDotsIcon className="size-4 text-brand-strong" /></CardLead>
+        <CardTitle className="font-medium">Which route name should ship?</CardTitle>
+        <CardMeta>ask.choice@1</CardMeta>
+      </CardHeader>
+      <div className="grid gap-2 px-(--frame-space) @3xl:grid-cols-3">
         {options.map((option) => (
-          <button
+          <Card
             key={option.label}
-            type="button"
+            variant="outline"
+            size="sm"
+            render={<button type="button" />}
             aria-pressed={picked === option.label}
             onClick={() => setPicked(option.label)}
-            className={cn(
-              "flex flex-col gap-1 rounded-lg border p-2.5 text-left hover:bg-ghost-hover",
-              picked === option.label && "border-border-strong bg-accent ring-2 ring-border-muted",
-            )}
+            selected={picked === option.label}
+            className="gap-1 *:px-inset"
           >
             <span className="flex items-center gap-2 font-medium">
               {option.label}
               {option.recommended ? <Badge className="ml-auto">Recommended</Badge> : null}
             </span>
             <span className="text-muted-foreground">{option.detail}</span>
-          </button>
+          </Card>
         ))}
       </div>
-      {picked ? <p className="text-xs text-muted-foreground">Posts an answer@1 reply as you and wakes the agent.</p> : null}
-    </div>
+      {picked ? <p className="px-(--frame-space) text-xs text-muted-foreground *:px-inset"><span>Posts an answer@1 reply as you and wakes the agent.</span></p> : null}
+    </Card>
   );
 }
 

@@ -1,22 +1,88 @@
 import * as React from "react"
+import { mergeProps } from "@base-ui/react/merge-props"
+import { useRender } from "@base-ui/react/use-render"
+import { cva, type VariantProps } from "class-variance-authority"
+import { header, headerAction, headerDescription, headerLead, headerMeta, headerTitle } from "#lib/header"
 import { cnState } from "#lib/utils"
 
+/*
+ * Started from shadcn's Card (base flavour). Additions:
+ *
+ * - `variant`: `raised` (shadcn's look), `outline` (an edge, no shadow),
+ *   `filled` (a panel fill, no edge) and `tray` (a muted well that holds
+ *   other cards; cards inside it keep concentric corners).
+ * - `size`: `sm`, `default`, `lg`. Every size goes through `frame`, so the
+ *   radius follows the padding.
+ * - `selected` (one brand ring) and `interactive` (hover ring, implied by
+ *   rendering a link or button), read as data attributes.
+ * - A card with no header, content or footer pads evenly on all sides.
+ * - Header slots `CardLead` and `CardMeta`; `CardAction` takes several
+ *   children. The header layout is shared with Dialog and Popover
+ *   (#lib/header).
+ */
+const cardVariants = cva(
+  "group/card frame flex flex-col gap-(--frame-space) overflow-hidden py-(--frame-space) text-sm text-card-foreground outline-none not-has-[>[data-slot^=card-]]:px-(--frame-space) has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 focus-visible:ring-2 focus-visible:ring-focus-ring data-[size=lg]:[--frame-pad:calc(var(--pad)*1.5)] data-[size=sm]:[--frame-pad:var(--frame-pad-sm)] data-disabled:pointer-events-none data-disabled:opacity-50 data-interactive:cursor-pointer data-interactive:text-start data-selected:ring-2 data-selected:ring-brand data-selected:hover:ring-brand *:[img:first-child]:rounded-t-frame *:[img:last-child]:rounded-b-frame",
+  {
+    variants: {
+      variant: {
+        raised: "bg-card shadow-(--shadow-frame) ring-1 ring-border-muted data-interactive:hover:ring-border-strong",
+        outline: "bg-card ring-1 ring-border data-interactive:hover:ring-border-strong",
+        filled: "bg-panel-fill data-interactive:hover:bg-fill",
+        tray: "gap-(--frame-space) bg-muted [--frame-pad:--spacing(1.5)] [--tray-radius:calc(var(--frame-radius)-var(--frame-space))] **:data-[slot=card]:rounded-[calc(var(--tray-radius)*var(--corner-scale))]",
+      },
+    },
+    defaultVariants: {
+      variant: "raised",
+    },
+  }
+)
+
+type CardProps = useRender.ComponentProps<"div"> &
+  VariantProps<typeof cardVariants> & {
+    size?: "sm" | "default" | "lg"
+    /** The one selected look: a brand ring. */
+    selected?: boolean
+    /** Hover feedback for a card that is a link or button. */
+    interactive?: boolean
+    disabled?: boolean
+  }
+
+/**
+ * @example
+ * <Card variant="outline" size="sm" render={<button type="button" />} selected>
+ *   <CardHeader>
+ *     <CardTitle>Webhook</CardTitle>
+ *     <CardDescription>Posts each event to a URL.</CardDescription>
+ *   </CardHeader>
+ * </Card>
+ */
 function Card({
   className,
+  variant = "raised",
   size = "default",
+  selected = false,
+  interactive,
+  disabled = false,
+  render,
   ...props
-}: React.ComponentProps<"div"> & { size?: "default" | "sm" }) {
-  return (
-    <div
-      data-slot="card"
-      data-size={size}
-      className={cnState(
-        "group/card frame flex flex-col gap-(--frame-space) overflow-hidden bg-card py-(--frame-space) text-sm text-card-foreground shadow-(--shadow-frame) ring-1 ring-border-muted has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--frame-pad:var(--frame-pad-sm)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-frame *:[img:last-child]:rounded-b-frame",
-        className
-      )}
-      {...props}
-    />
-  )
+}: CardProps) {
+  const isInteractive = interactive ?? Boolean(render)
+  return useRender({
+    defaultTagName: "div",
+    props: mergeProps<"div">(
+      { className: cnState(cardVariants({ variant }), className) },
+      props
+    ),
+    render,
+    state: {
+      slot: "card",
+      variant,
+      size,
+      selected,
+      interactive: isInteractive,
+      disabled,
+    },
+  })
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
@@ -24,9 +90,20 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-header"
       className={cnState(
-        "group/card-header @container/card-header grid auto-rows-min items-start gap-1 rounded-t-frame px-(--frame-space) has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] [.border-b]:pb-(--frame-space)",
+        header,
+        "group/card-header @container/card-header rounded-t-frame px-(--frame-space) [.border-b]:pb-(--frame-space)",
         className
       )}
+      {...props}
+    />
+  )
+}
+
+function CardLead({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-lead"
+      className={cnState(headerLead, "ps-inset", className)}
       {...props}
     />
   )
@@ -37,7 +114,8 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-title"
       className={cnState(
-        "px-inset text-base leading-snug font-semibold group-data-[size=sm]/card:text-sm",
+        headerTitle,
+        "px-inset text-base font-semibold group-data-[size=sm]/card:text-sm",
         className
       )}
       {...props}
@@ -49,7 +127,17 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-description"
-      className={cnState("px-inset text-sm text-muted-foreground", className)}
+      className={cnState(headerDescription, "px-inset text-sm", className)}
+      {...props}
+    />
+  )
+}
+
+function CardMeta({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-meta"
+      className={cnState(headerMeta, "pe-inset", className)}
       {...props}
     />
   )
@@ -59,10 +147,7 @@ function CardAction({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-action"
-      className={cnState(
-        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
-        className
-      )}
+      className={cnState(headerAction, className)}
       {...props}
     />
   )
@@ -98,8 +183,12 @@ export {
   Card,
   CardHeader,
   CardFooter,
+  CardLead,
   CardTitle,
+  CardMeta,
   CardAction,
   CardDescription,
   CardContent,
+  cardVariants,
+  type CardProps,
 }

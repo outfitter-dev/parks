@@ -19,6 +19,8 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
+  CardLead,
+  CardMeta,
   CardTitle,
 } from "@workspace/ui/components/card";
 import { Checkbox } from "@workspace/ui/components/checkbox";
@@ -212,13 +214,51 @@ export function CardDemo() {
           </CardFooter>
         </Card>
       </Specimen>
-      <Specimen title="Small size" className="block">
-        <Card size="sm" className="max-w-xs">
+      <Specimen title="Header slots" note="Lead, title, description, meta and actions, in one grid shared with Dialog and Popover. Empty slots take no room." className="block">
+        <Card className="max-w-md">
           <CardHeader>
-            <CardTitle>3 asks waiting</CardTitle>
-            <CardDescription>Oldest from 2 hours ago</CardDescription>
+            <CardLead><Mark size="lg">D</Mark></CardLead>
+            <CardTitle>Donna</CardTitle>
+            <CardDescription>Devin · overnight PR backlog</CardDescription>
+            <CardMeta>2 min ago</CardMeta>
+            <CardAction>
+              <Button variant="ghost" size="sm">Mute</Button>
+              <Button size="sm">Open</Button>
+            </CardAction>
           </CardHeader>
         </Card>
+      </Specimen>
+      <Specimen title="Variants" note="Raised by default; outline for dense cards in a list; filled for stat tiles; tray to hold other cards with concentric corners." className="block">
+        <div className="grid max-w-3xl gap-4 sm:grid-cols-3">
+          <Card size="sm">
+            <CardHeader><CardTitle>Raised</CardTitle><CardDescription>The default.</CardDescription></CardHeader>
+          </Card>
+          <Card variant="outline" size="sm">
+            <CardHeader><CardTitle>Outline</CardTitle><CardDescription>An edge, no shadow.</CardDescription></CardHeader>
+          </Card>
+          <Card variant="filled" size="sm">
+            <CardHeader><CardTitle>Filled</CardTitle><CardDescription>A panel fill, no edge.</CardDescription></CardHeader>
+          </Card>
+        </div>
+        <Card variant="tray" className="mt-4 grid max-w-3xl gap-1.5 sm:grid-cols-3">
+          {["Webhook", "Board thread", "MCP inbox"].map((label, index) => (
+            <Card key={label} size="sm" render={<button type="button" />} selected={index === 0}>
+              <CardHeader><CardTitle>{label}</CardTitle><CardDescription>{index === 0 ? "Selected" : "Interactive"}</CardDescription></CardHeader>
+            </Card>
+          ))}
+        </Card>
+      </Specimen>
+      <Specimen title="Sizes" note="Small, default and large pad differently; the radius follows the padding." className="block">
+        <div className="grid max-w-3xl items-start gap-4 sm:grid-cols-3">
+          {(["sm", "default", "lg"] as const).map((size) => (
+            <Card key={size} size={size}>
+              <CardHeader>
+                <CardTitle>3 asks waiting</CardTitle>
+                <CardDescription>{size === "default" ? "Default" : size === "sm" ? "Small" : "Large"}</CardDescription>
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
       </Specimen>
     </>
   );

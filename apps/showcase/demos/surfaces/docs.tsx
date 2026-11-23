@@ -2,6 +2,8 @@
 
 import type { ReactNode } from "react";
 import { Mark } from "@workspace/ui/components/mark";
+import { GroupLabel } from "@workspace/ui/components/group-label";
+import { Card } from "@workspace/ui/components/card";
 import { NavItem } from "@workspace/ui/components/nav-item";
 import { Alert, AlertDescription, AlertTitle } from "@workspace/ui/components/alert";
 import { Button } from "@workspace/ui/components/button";
@@ -61,7 +63,7 @@ export function DocsSurface() {
           <nav aria-label="Docs" className="hidden flex-col gap-5 p-4 @3xl:flex">
             {sections.map((section) => (
               <div key={section.title}>
-                <p className="mb-1 px-2 text-xs font-medium text-muted-foreground">{section.title}</p>
+                <GroupLabel className="mb-1 px-2">{section.title}</GroupLabel>
                 {section.pages.map((page) => (
                   <NavItem key={page} href="#" current={page === "Quickstart"} size="sm" className="text-sm">
                     {page}
@@ -119,19 +121,19 @@ export function DocsSurface() {
             </div>
 
             <nav aria-label="Pages" className="mt-12 grid max-w-prose grid-cols-2 gap-3">
-              <a href="#" className="flex flex-col gap-0.5 rounded-lg border p-3 hover:bg-ghost-hover">
+              <Card variant="outline" size="sm" render={<a href="#" />} className="gap-0.5 *:px-inset">
                 <span className="flex items-center gap-1 text-xs text-muted-foreground"><AltArrowLeftIcon className="size-3" />Previous</span>
                 Introduction
-              </a>
-              <a href="#" className="flex flex-col items-end gap-0.5 rounded-lg border p-3 hover:bg-ghost-hover">
+              </Card>
+              <Card variant="outline" size="sm" render={<a href="#" />} className="items-end gap-0.5 *:px-inset">
                 <span className="flex items-center gap-1 text-xs text-muted-foreground">Next<AltArrowRightIcon className="size-3" /></span>
                 Concepts
-              </a>
+              </Card>
             </nav>
           </article>
 
           <aside className="hidden py-8 pe-4 @5xl:block">
-            <p className="mb-2 text-xs font-medium text-muted-foreground">On this page</p>
+            <GroupLabel className="mb-2">On this page</GroupLabel>
             <ul className="border-s">
               {onPage.map((item, index) => (
                 <li key={item}>

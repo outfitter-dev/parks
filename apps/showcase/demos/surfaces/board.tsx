@@ -1,6 +1,7 @@
 "use client";
 
 import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia, ItemTitle } from "@workspace/ui/components/item";
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Progress } from "@workspace/ui/components/progress";
@@ -16,7 +17,6 @@ import { outpostNavigation } from "../outpost-navigation";
 import { DotmCircular4 } from "../dotmatrix/dotm-circular-4";
 import { DotmHex4 } from "../dotmatrix/dotm-hex-4";
 import { HaloSignal, Signal, Viewport } from "../kit";
-import { Frame, FrameHeader, FramePanel, FrameTitle, FrameDescription } from "../reui/frame";
 import {
   Timeline,
   TimelineContent,
@@ -100,22 +100,24 @@ function Meter({ task }: { task: Task }) {
 
 function TaskCard({ task }: { task: Task }) {
   return (
-    <article className="relative flex flex-col gap-2 rounded-lg border bg-background p-3 shadow-xs">
-      <span className="absolute top-2 right-2 grid size-4 place-items-center">
-        {task.lane === "working" ? (
-          <HaloSignal label={`${task.agent} is working`} />
-        ) : (
-          <Signal tone={task.lane === "asking" ? "wait" : task.lane === "done" ? "live" : "off"} />
-        )}
-      </span>
-      <span className="flex flex-col pe-4">
-        <span className="text-trim-start truncate font-medium">{task.agent}</span>
-        <span className="truncate text-xs text-muted-foreground">{task.project}</span>
-      </span>
-      <span className="leading-snug">{task.title}</span>
-      <Meter task={task} />
-      {task.note ? <span className="text-xs text-muted-foreground">{task.note}</span> : null}
-    </article>
+    <Card variant="outline" size="sm" render={<article />} interactive={false} className="gap-2">
+      <CardHeader>
+        <CardTitle className="truncate font-medium">{task.agent}</CardTitle>
+        <CardDescription className="mt-0 truncate text-xs">{task.project}</CardDescription>
+        <CardAction className="size-4 justify-center">
+          {task.lane === "working" ? (
+            <HaloSignal label={`${task.agent} is working`} />
+          ) : (
+            <Signal tone={task.lane === "asking" ? "wait" : task.lane === "done" ? "live" : "off"} />
+          )}
+        </CardAction>
+      </CardHeader>
+      <div className="flex flex-col gap-2 px-(--frame-space) *:px-inset">
+        <span className="leading-snug">{task.title}</span>
+        <Meter task={task} />
+        {task.note ? <span className="text-xs text-muted-foreground">{task.note}</span> : null}
+      </div>
+    </Card>
   );
 }
 
@@ -162,12 +164,12 @@ export function BoardSurface() {
         }
       >
         <div className="flex flex-col gap-6 p-4">
-          <div className="grid grid-cols-2 gap-3 @3xl:grid-cols-4">
+          <dl className="grid grid-cols-2 gap-3 @3xl:grid-cols-4">
             <Stat label="Asking you" value={String(asksCount)} note="Oldest 1 hr" />
             <Stat label="Working" value="2" note="Across 2 projects" />
             <Stat label="In review" value="1" note="Waiting on reviewers" />
             <Stat label="Done today" value="2" note="Both merged" />
-          </div>
+          </dl>
 
           <section>
             <Heading
@@ -180,7 +182,7 @@ export function BoardSurface() {
             >
               Work by state
             </Heading>
-            <div className="grid gap-4 rounded-xl bg-fill-subtle p-2 @3xl:grid-cols-4 @3xl:gap-2">
+            <Card variant="tray" className="grid gap-4 @3xl:grid-cols-4 @3xl:gap-2">
               {lanes.map((lane) => (
                 <div key={lane.id} className="flex flex-col gap-2">
                   <span className="flex items-center gap-2 px-1 text-muted-foreground">
@@ -194,25 +196,25 @@ export function BoardSurface() {
                     ))}
                 </div>
               ))}
-            </div>
+            </Card>
           </section>
 
           <div className="grid gap-4 @3xl:grid-cols-[1fr_20rem]">
-            <Frame>
-              <FrameHeader>
-                <FrameTitle>Climb lead · fix the parent-cycle hang</FrameTitle>
-                <FrameDescription>Run card, edited in place as the run moves</FrameDescription>
-              </FrameHeader>
-              <FramePanel>
+            <Card>
+              <CardHeader>
+                <CardTitle>Climb lead · fix the parent-cycle hang</CardTitle>
+                <CardDescription>Run card, edited in place as the run moves</CardDescription>
+              </CardHeader>
+              <CardContent className="px-(--frame-space) *:px-inset">
                 <RunTimeline />
-              </FramePanel>
-            </Frame>
-            <Frame className="self-start">
-              <FrameHeader>
-                <FrameTitle>Linked</FrameTitle>
-                <FrameDescription>Objects this run touches</FrameDescription>
-              </FrameHeader>
-              <FramePanel>
+              </CardContent>
+            </Card>
+            <Card className="self-start">
+              <CardHeader>
+                <CardTitle>Linked</CardTitle>
+                <CardDescription>Objects this run touches</CardDescription>
+              </CardHeader>
+              <CardContent className="px-(--frame-space)">
                 <ItemGroup variant="open" className="gap-1">
                   <Item size="xs" className="px-0">
                     <ItemMedia variant="icon"><GitBranchIcon className="text-muted-foreground" /></ItemMedia>
@@ -232,8 +234,8 @@ export function BoardSurface() {
                     <ItemActions><Badge tone="info" live>In progress</Badge></ItemActions>
                   </Item>
                 </ItemGroup>
-              </FramePanel>
-            </Frame>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </AppFrame>

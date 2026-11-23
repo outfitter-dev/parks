@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { NavItem } from "@workspace/ui/components/nav-item";
+import { GroupLabel } from "@workspace/ui/components/group-label";
 import { Widget2Icon } from "@solar-icons/react/outline/widget-2";
 import { entries, sections } from "#lib/nav";
 
@@ -19,7 +20,7 @@ export function Shell({ children }: { children: ReactNode }) {
         <nav aria-label="Workbench" className="flex gap-6 overflow-x-auto px-2 pb-4 md:flex-col md:gap-4">
           {sections.map((section) => (
             <div key={section.id} className="min-w-max">
-              <p className="px-2 pb-1 text-xs font-medium text-muted-foreground">{section.title}</p>
+              <GroupLabel className="px-2 pb-1">{section.title}</GroupLabel>
               <ul>
                 {entries
                   .filter((entry) => entry.section === section.id)

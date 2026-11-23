@@ -4,6 +4,7 @@ import { useMemo, useState, type ComponentType, type ReactNode } from "react";
 import type { FileContents } from "@pierre/diffs";
 import { File } from "@pierre/diffs/react";
 import { Button } from "@workspace/ui/components/button";
+import { Card } from "@workspace/ui/components/card";
 import { cn } from "@workspace/ui/lib/utils";
 import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
 import { CheckIcon } from "@solar-icons/react/outline/check";
@@ -147,14 +148,14 @@ export function Turn({ from, name, children }: { from: "you" | "agent"; name?: s
   );
 }
 
-/** A stat with a label, used in summary rows. */
+/** A stat tile: a label over a value, with an optional note. Place inside a `<dl>`. */
 export function Stat({ label, value, note }: { label: string; value: string; note?: ReactNode }) {
   return (
-    <div className="flex flex-col gap-0.5 rounded-lg border bg-background px-3 py-2.5">
-      <span className="text-muted-foreground">{label}</span>
-      <span className="text-xl font-semibold tabular-nums">{value}</span>
-      {note ? <span className="text-xs text-muted-foreground">{note}</span> : null}
-    </div>
+    <Card variant="filled" size="sm" className="gap-0.5 *:px-inset">
+      <dt className="text-muted-foreground">{label}</dt>
+      <dd className="text-2xl font-semibold tabular-nums">{value}</dd>
+      {note ? <dd className="text-xs text-muted-foreground">{note}</dd> : null}
+    </Card>
   );
 }
 
