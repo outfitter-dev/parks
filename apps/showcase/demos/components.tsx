@@ -5,6 +5,8 @@ import { CodeRef } from "@workspace/ui/components/code-ref";
 import { Avatar, AvatarFallback, AvatarGroup } from "@workspace/ui/components/avatar";
 import { Fragment } from "react";
 import { Badge } from "@workspace/ui/components/badge";
+import { Mark } from "@workspace/ui/components/mark";
+import { StatusDot } from "@workspace/ui/components/status-dot";
 import { tones } from "@workspace/ui/lib/tone";
 import { ScrollArea } from "@workspace/ui/components/scroll-area";
 import { Separator } from "@workspace/ui/components/separator";
@@ -104,6 +106,28 @@ export function BadgeDemo() {
               ))}
             </Fragment>
           ))}
+        </div>
+      </Specimen>
+      <Specimen title="Status dot" note="StatusDot is the one status dot: badges, nav rows and lists all draw it. Neutral is quieter than its text; `live` pulses.">
+        {tones.map((tone) => <StatusDot key={tone} tone={tone} label={tone} />)}
+        <StatusDot tone="success" live label="Live" />
+        <StatusDot tone="info" size="xs" />
+        <StatusDot tone="info" size="md" />
+      </Specimen>
+      <Specimen title="Mark" note="Mark is the glyph tile: brand marks, option tiles, step numbers and the icon above an empty state. Tint by default; `selected` turns it solid.">
+        <div className="flex flex-col gap-3">
+          {(["tint", "solid"] as const).map((variant) => (
+            <div key={variant} className="flex flex-wrap items-center gap-2">
+              {tones.map((tone) => <Mark key={tone} tone={tone} variant={variant}>{tone.slice(0, 1).toUpperCase()}</Mark>)}
+            </div>
+          ))}
+          <div className="flex flex-wrap items-center gap-2">
+            <Mark size="sm">1</Mark>
+            <Mark size="md">2</Mark>
+            <Mark size="lg" shape="circle">3</Mark>
+            <Mark tone="brand" size="xl" shape="circle">O</Mark>
+            <Mark tone="success" selected>A</Mark>
+          </div>
         </div>
       </Specimen>
       <Specimen

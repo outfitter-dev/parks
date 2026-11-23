@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
+import { isTone, type Tone } from "#lib/tone"
 import { cnState } from "#lib/utils"
 
 function Avatar({
@@ -53,12 +54,20 @@ function AvatarFallback({
   )
 }
 
-function AvatarBadge({ className, ...props }: React.ComponentProps<"span">) {
+/**
+ * A status mark on an avatar's corner. `tone` colours it like StatusDot and
+ * Badge (see #lib/tone); neutral keeps shadcn's primary fill.
+ *
+ * @example
+ * <AvatarBadge tone="success" />
+ */
+function AvatarBadge({ className, tone, ...props }: React.ComponentProps<"span"> & { tone?: Tone }) {
   return (
     <span
       data-slot="avatar-badge"
+      data-tone={isTone(tone) ? tone : "neutral"}
       className={cnState(
-        "absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground bg-blend-color ring-2 ring-background select-none",
+        "absolute right-0 bottom-0 z-10 inline-flex items-center justify-center rounded-full bg-tone text-tone-contrast bg-blend-color ring-2 ring-background select-none",
         "group-data-[size=sm]/avatar:size-2 group-data-[size=sm]/avatar:[&>svg]:hidden",
         "group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&>svg]:size-2",
         "group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&>svg]:size-2",

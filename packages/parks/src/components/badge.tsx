@@ -2,8 +2,9 @@ import type { ReactNode } from "react"
 import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
+import { StatusDot } from "#components/status-dot"
 import { isTone, type Tone } from "#lib/tone"
-import { cn, cnState } from "#lib/utils"
+import { cnState } from "#lib/utils"
 
 /*
  * A small status label: the one place a status gets its colour.
@@ -139,14 +140,6 @@ function Badge({
   const lead = isCount ? null : dot || live ? "dot" : icon != null && icon !== false ? "icon" : null
   const empty = !isCount && !lead && (children == null || children === false || children === "")
 
-  const dotClass = cn(
-    "relative size-(--badge-mark) shrink-0 rounded-full",
-    // The mark reads the tone: quieter than the text for neutral, the hue
-    // itself otherwise. On a solid fill it takes the text colour instead.
-    variant === "solid" ? "bg-current" : "bg-tone-mark",
-    live &&
-      "after:absolute after:inset-0 after:animate-live after:rounded-full after:bg-inherit motion-reduce:after:hidden"
-  );
 
   let content: ReactNode = children
   if (isCount) {
@@ -161,10 +154,12 @@ function Badge({
     content = (
       <>
         {lead === "dot" ? (
-          <span
+          <StatusDot
             data-slot="badge-dot"
-            aria-hidden
-            className={dotClass}
+            tone={tone}
+            live={Boolean(live)}
+            // On a solid fill the dot takes the text colour, or it would vanish.
+            className={variant === "solid" ? "size-(--badge-mark) bg-current" : "size-(--badge-mark)"}
           />
         ) : (
           <span
