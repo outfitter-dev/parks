@@ -3,6 +3,7 @@
 import { DialRoot, useDialKitController, type DialConfig } from "dialkit";
 import "dialkit/styles.css";
 import { useEffect, useMemo, useRef } from "react";
+import { defaultShell, isShellStyle, setShell } from "#lib/shell";
 import { compileTheme, presets, type Mode, type PresetId, type PresetValues } from "#lib/theme";
 
 const start = presets.luma.values;
@@ -11,6 +12,17 @@ const config = {
   loadLuma: { type: "action", label: `Load ${presets.luma.label}` },
   loadLinear: { type: "action", label: `Load ${presets.linear.label}` },
   mode: { type: "select", options: ["system", "light", "dark"], default: "system" },
+  shell: {
+    style: {
+      type: "select",
+      options: [
+        { value: "inset", label: "Inset (web)" },
+        { value: "floating", label: "Floating (Apple)" },
+      ],
+      default: defaultShell.style,
+    },
+    gutter: [defaultShell.gutter, 0, 16, 1],
+  },
   shape: {
     radius: [start.shape.radius, 0, 24, 1],
     pad: [start.shape.pad, 4, 32, 1],
@@ -101,6 +113,12 @@ export function ThemeController() {
   };
   const css = useMemo(() => compileTheme(tokens), [JSON.stringify(tokens)]);
   cssRef.current = css;
+
+  const shellStyle = isShellStyle(values.shell.style) ? values.shell.style : defaultShell.style;
+  useEffect(() => {
+    setShell({ style: shellStyle, gutter: values.shell.gutter });
+    document.documentElement.style.setProperty("--shell-gutter", `${values.shell.gutter}px`);
+  }, [shellStyle, values.shell.gutter]);
 
   const mode = isMode(values.mode) ? values.mode : "system";
   useEffect(() => {
