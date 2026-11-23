@@ -193,6 +193,8 @@
 .light,
 .dark {
   --background: light-dark(oklch(0.992 calc(var(--neutral-tint) * 0.6) var(--neutral-hue)), oklch(0.165 calc(var(--neutral-tint) * 1.5) var(--neutral-hue)));
+  /* The window behind an app's sidebar and its inset main container: one step below the page surface. */
+  --canvas: light-dark(oklch(0.966 calc(var(--neutral-tint) * 1.2) var(--neutral-hue)), oklch(0.135 calc(var(--neutral-tint) * 1.4) var(--neutral-hue)));
   --foreground: light-dark(oklch(0.18 calc(var(--neutral-tint) * 2) var(--neutral-hue)), oklch(0.965 calc(var(--neutral-tint) * 0.6) var(--neutral-hue)));
   --card: light-dark(oklch(1 calc(var(--neutral-tint) * 0.2) var(--neutral-hue)), oklch(0.2 calc(var(--neutral-tint) * 1.6) var(--neutral-hue)));
   --popover: light-dark(oklch(1 calc(var(--neutral-tint) * 0.2) var(--neutral-hue)), oklch(0.22 calc(var(--neutral-tint) * 1.6) var(--neutral-hue)));
@@ -407,6 +409,7 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-canvas: var(--canvas);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
