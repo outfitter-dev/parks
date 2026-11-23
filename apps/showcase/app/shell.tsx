@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { cn } from "@workspace/ui/lib/utils";
+import { NavItem } from "@workspace/ui/components/nav-item";
 import { Widget2Icon } from "@solar-icons/react/outline/widget-2";
 import { entries, sections } from "#lib/nav";
 
@@ -28,16 +28,9 @@ export function Shell({ children }: { children: ReactNode }) {
                     const active = pathname === href;
                     return (
                       <li key={href}>
-                        <Link
-                          href={href}
-                          aria-current={active ? "page" : undefined}
-                          className={cn(
-                            "block rounded-md px-2 py-1 text-muted-foreground hover:bg-accent hover:text-foreground",
-                            active && "bg-accent font-medium text-foreground",
-                          )}
-                        >
+                        <NavItem render={<Link href={href} />} current={active} size="sm" className="text-sm">
                           {entry.title}
-                        </Link>
+                        </NavItem>
                       </li>
                     );
                   })}
