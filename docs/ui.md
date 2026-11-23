@@ -43,6 +43,8 @@ Build any row of label, meta and trailing action with `Item` (`packages/ui/src/c
 
 Disclosure rows that open in place, such as `TraceLine` in the workbench, stay on Collapsible.
 
+Menu, select and nav rows share one recipe in `packages/ui/src/lib/row.ts`, so weight, padding, icon size and the highlighted state match. Use `NavItem` for a nav link (`current` sets `aria-current="page"` and the same fill as a selected Item; `size="sm"` for dense lists). Menu items, labels and sub-menu triggers take `indent` to line up past an icon column; shadcn's `inset` still works as an alias, but it is not the `--inset` text padding.
+
 ## Icons
 
 Solar (`@solar-icons/react`) is the only icon library. Import each icon on its own from a style subpath, never from the package root:

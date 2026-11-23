@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { Mark } from "@workspace/ui/components/mark";
+import { NavItem } from "@workspace/ui/components/nav-item";
 import { Alert, AlertDescription, AlertTitle } from "@workspace/ui/components/alert";
 import { Button } from "@workspace/ui/components/button";
 import { Kbd } from "@workspace/ui/components/kbd";
@@ -62,17 +63,9 @@ export function DocsSurface() {
               <div key={section.title}>
                 <p className="mb-1 px-2 text-xs font-medium text-muted-foreground">{section.title}</p>
                 {section.pages.map((page) => (
-                  <a
-                    key={page}
-                    href="#"
-                    aria-current={page === "Quickstart" ? "page" : undefined}
-                    className={cn(
-                      "block rounded-md px-2 py-1 text-muted-foreground hover:text-foreground",
-                      page === "Quickstart" && "bg-accent font-medium text-foreground",
-                    )}
-                  >
+                  <NavItem key={page} href="#" current={page === "Quickstart"} size="sm" className="text-sm">
                     {page}
-                  </a>
+                  </NavItem>
                 ))}
               </div>
             ))}
