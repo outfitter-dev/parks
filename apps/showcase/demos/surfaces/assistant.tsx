@@ -64,7 +64,7 @@ function AskCard() {
   return (
     <div className="flex flex-col gap-2 rounded-xl border bg-background p-3 shadow-xs">
       <span className="flex items-center gap-2">
-        <ChatRoundDotsIcon className="size-4 text-brand-600 dark:text-brand-400" />
+        <ChatRoundDotsIcon className="size-4 text-brand-strong" />
         <span className="font-medium">Which route name should ship?</span>
         <span className="ml-auto text-xs text-muted-foreground">ask.choice@1</span>
       </span>
@@ -76,8 +76,8 @@ function AskCard() {
             aria-pressed={picked === option.label}
             onClick={() => setPicked(option.label)}
             className={cn(
-              "flex flex-col gap-1 rounded-lg border p-2.5 text-left hover:bg-accent/60",
-              picked === option.label && "border-foreground/30 bg-accent ring-2 ring-foreground/6",
+              "flex flex-col gap-1 rounded-lg border p-2.5 text-left hover:bg-ghost-hover",
+              picked === option.label && "border-border-strong bg-accent ring-2 ring-border-muted",
             )}
           >
             <span className="flex items-center gap-2 font-medium">
@@ -95,13 +95,13 @@ function AskCard() {
 
 function Composer() {
   return (
-    <div className="rounded-2xl border bg-background p-2 shadow-xs focus-within:ring-2 focus-within:ring-ring/40">
+    <div className="rounded-2xl border bg-background p-2 shadow-xs focus-within:ring-2 focus-within:ring-focus-ring">
       <div className="flex flex-wrap gap-1.5 px-1 pb-2">
-        <span className="flex items-center gap-1.5 rounded-md bg-foreground/6 py-0.5 ps-0.5 pe-2 text-xs ring-1 ring-foreground/6">
+        <span className="flex items-center gap-1.5 rounded-md bg-fill-subtle py-0.5 ps-0.5 pe-2 text-xs ring-1 ring-border-muted">
           <FileType type="ts" size="mini" />
           routes.ts
         </span>
-        <span className="flex items-center gap-1.5 rounded-md bg-foreground/6 py-0.5 ps-0.5 pe-2 text-xs ring-1 ring-foreground/6">
+        <span className="flex items-center gap-1.5 rounded-md bg-fill-subtle py-0.5 ps-0.5 pe-2 text-xs ring-1 ring-border-muted">
           <FileType type="md" size="mini" />
           
         </span>
@@ -168,7 +168,7 @@ export function AssistantSurface() {
 
           <Turn from="agent" name="Donna">
             <span className="flex items-center gap-2 text-muted-foreground">
-              <span className="grid size-7 place-items-center rounded-full bg-muted text-brand-600 dark:text-brand-400">
+              <span className="grid size-7 place-items-center rounded-full bg-muted text-brand-strong">
               </span>
               Adding the alias and a deprecation header
             </span>

@@ -4,7 +4,7 @@
 @import "@fontsource-variable/jetbrains-mono";
 
 @source "../";
-@source inline("bg-{neutral,red,orange,amber,yellow,lime,emerald,blue,indigo,purple}-{50,{100..900..100},950}");
+@source inline("bg-{brand,neutral,slate,gray,zinc,stone,red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose}-{50,{100..900..100},950}");
 
 /* Type seeds the theme panel tunes. */
 :root {
@@ -53,8 +53,7 @@
 
 .workbench-code-frame {
   background-color: var(--background);
-  border-radius: var(--radius);
-  corner-shape: round;
+  border-radius: calc(var(--radius) * var(--corner-scale));
 }
 
 .workbench-code {

@@ -20,7 +20,7 @@ export default function Overview() {
                 <li key={entry.slug}>
                   <Link
                     href={`/${entry.section}/${entry.slug}`}
-                    className="block h-full frame p-frame bg-card shadow-(--shadow-frame) ring-1 ring-foreground/10 hover:ring-foreground/25"
+                    className="block h-full frame p-frame bg-card shadow-(--shadow-frame) ring-1 ring-border-muted hover:ring-border-strong"
                   >
                     <span className="block px-inset font-medium">{entry.title}</span>
                     <span className="mt-1 block px-inset text-muted-foreground">{entry.summary}</span>

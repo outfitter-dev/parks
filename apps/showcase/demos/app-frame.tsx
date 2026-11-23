@@ -126,7 +126,7 @@ export function AppFrame({
       type="button"
       aria-label="Hide sidebar"
       onClick={hide}
-      className="absolute inset-0 z-20 bg-foreground/20 animate-in fade-in-0 duration-300"
+      className="absolute inset-0 z-20 bg-overlay animate-in fade-in-0 duration-300"
     />
   ) : null;
 
@@ -187,7 +187,7 @@ export function AppFrame({
                   overlay ? "w-64 bg-canvas ps-[calc(var(--g)+--spacing(4))] shadow-xl" : "ps-2",
                 )
               : cn(
-                  "inset-y-2 start-2 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] bg-muted/85 p-2 shadow-(--shadow-frame) ring-1 ring-foreground/8 backdrop-blur-xl",
+                  "inset-y-2 start-2 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] bg-glass p-2 shadow-(--shadow-frame) ring-1 ring-border-muted backdrop-blur-xl",
                   overlay && "bg-muted shadow-xl",
                 ),
           )}
@@ -202,7 +202,7 @@ export function AppFrame({
             "flex min-w-0 flex-1 flex-col",
             inset &&
               cn(
-                "my-(--g) me-(--g) overflow-hidden bg-background shadow-(--shadow-frame) ring-1 ring-foreground/8 transition-[margin,border-radius]",
+                "my-(--g) me-(--g) overflow-hidden bg-background shadow-(--shadow-frame) ring-1 ring-border-muted transition-[margin,border-radius]",
                 motion,
                 // Beside the docked sidebar or its rail the container meets it; otherwise it holds the gutter on the left too.
                 docked || rail ? "ms-0" : "ms-(--g)",

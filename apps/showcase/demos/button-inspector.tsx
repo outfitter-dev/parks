@@ -90,10 +90,10 @@ function Overlay({ measurement }: { measurement: Measurement }) {
     <svg aria-hidden="true" className="pointer-events-none fixed inset-0 z-40 size-full">
       <rect x={bounds.x} y={bounds.y} width={bounds.width} height={bounds.height} className="fill-none stroke-foreground" />
       {padding.map(({ x, y, width, height }, index) => (
-        <rect key={index} x={x} y={y} width={width} height={height} className="fill-warning/25" />
+        <rect key={index} x={x} y={y} width={width} height={height} className="fill-warning-fill" />
       ))}
       {glyphs.map(({ x, y, width, height }, index) => (
-        <rect key={index} x={x} y={y} width={width} height={height} className="fill-info/15 stroke-info" />
+        <rect key={index} x={x} y={y} width={width} height={height} className="fill-info-fill stroke-info" />
       ))}
       {text.map(({ x, y, width, height }, index) => (
         <rect key={index} x={x} y={y} width={width} height={height} strokeDasharray="2 2" className="fill-none stroke-success" />
@@ -192,7 +192,7 @@ export function ButtonInspector({ children }: { children: ReactNode }) {
       </div>
       <div
         ref={specimens}
-        className={cn(enabled && "[&_button[data-slot=button]:disabled]:pointer-events-auto [&_button[data-slot=button]_svg]:outline [&_button[data-slot=button]_svg]:outline-info/50")}
+        className={cn(enabled && "[&_button[data-slot=button]:disabled]:pointer-events-auto [&_button[data-slot=button]_svg]:outline [&_button[data-slot=button]_svg]:outline-info-border")}
         onPointerOver={(event) => select(event.target)}
         onFocusCapture={(event) => select(event.target)}
       >

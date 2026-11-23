@@ -30,7 +30,7 @@ const installs: Record<string, string> = {
 function Step({ n, title, children }: { n: number; title: string; children: ReactNode }) {
   return (
     <section className="relative ps-10">
-      <span className="absolute start-0 top-0 grid size-6 place-items-center rounded-full bg-foreground/6 text-xs font-medium tabular-nums ring-1 ring-foreground/10">
+      <span className="absolute start-0 top-0 grid size-6 place-items-center rounded-full bg-fill-subtle text-xs font-medium tabular-nums ring-1 ring-border-muted">
         {n}
       </span>
       <h2 id={title} className="mb-2 font-semibold">{title}</h2>
@@ -125,11 +125,11 @@ export function DocsSurface() {
             </div>
 
             <nav aria-label="Pages" className="mt-12 grid max-w-prose grid-cols-2 gap-3">
-              <a href="#" className="flex flex-col gap-0.5 rounded-lg border p-3 hover:bg-accent/60">
+              <a href="#" className="flex flex-col gap-0.5 rounded-lg border p-3 hover:bg-ghost-hover">
                 <span className="flex items-center gap-1 text-xs text-muted-foreground"><AltArrowLeftIcon className="size-3" />Previous</span>
                 Introduction
               </a>
-              <a href="#" className="flex flex-col items-end gap-0.5 rounded-lg border p-3 hover:bg-accent/60">
+              <a href="#" className="flex flex-col items-end gap-0.5 rounded-lg border p-3 hover:bg-ghost-hover">
                 <span className="flex items-center gap-1 text-xs text-muted-foreground">Next<AltArrowRightIcon className="size-3" /></span>
                 Concepts
               </a>

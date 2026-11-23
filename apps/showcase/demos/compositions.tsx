@@ -122,22 +122,18 @@ function markFor(mark: OptionMark, label: string, index: number, count: number):
 }
 
 /**
- * Tile colours per tone. Unpicked is a light fill with a dark mark; picked
- * inverts to a dark fill with a light 100-level mark. Neutral is used when
- * marks are not colour coded, and keeps the brand for the picked state.
- * In dark mode the unpicked fill drops to the 950 step so it sits in the
- * dark surface instead of glowing.
+ * Tile colours per tone, all roles, so light and dark come from the theme.
+ * Unpicked is the tone's fill with its foreground mark; picked is the strong
+ * tone with its contrast mark. Neutral is used when marks are not colour
+ * coded, and keeps the brand for the picked state.
  */
 const tileTones: Record<MarkTone, { idle: string; picked: string }> = {
-  neutral: { idle: "bg-foreground/6 text-muted-foreground", picked: "bg-brand-700 text-brand-100" },
-  success: { idle: "bg-success-100 text-success-800 dark:bg-success-950 dark:text-success-300", picked: "bg-success-700 text-success-100" },
-  warning: { idle: "bg-warning-100 text-warning-800 dark:bg-warning-950 dark:text-warning-300", picked: "bg-warning-700 text-warning-100" },
-  destructive: {
-    idle: "bg-destructive-100 text-destructive-800 dark:bg-destructive-950 dark:text-destructive-300",
-    picked: "bg-destructive-700 text-destructive-100",
-  },
-  info: { idle: "bg-info-100 text-info-800 dark:bg-info-950 dark:text-info-300", picked: "bg-info-700 text-info-100" },
-  brand: { idle: "bg-brand-100 text-brand-800 dark:bg-brand-950 dark:text-brand-300", picked: "bg-brand-700 text-brand-100" },
+  neutral: { idle: "bg-fill-subtle text-muted-foreground", picked: "bg-brand text-brand-foreground" },
+  success: { idle: "bg-success-fill text-success-foreground", picked: "bg-success-strong text-success-contrast" },
+  warning: { idle: "bg-warning-fill text-warning-foreground", picked: "bg-warning-strong text-warning-contrast" },
+  destructive: { idle: "bg-destructive-fill text-destructive-foreground", picked: "bg-destructive-strong text-destructive-contrast" },
+  info: { idle: "bg-info-fill text-info-foreground", picked: "bg-info-strong text-info-contrast" },
+  brand: { idle: "bg-brand-fill text-brand-strong", picked: "bg-brand text-brand-foreground" },
 };
 
 /** A bounded tile in the option's top-left corner, light until its option is picked. */
@@ -199,7 +195,7 @@ function AskOptions({
         aria-label="Options"
         className={cn(
           stacked
-            ? "frame divide-y overflow-hidden bg-card p-0 shadow-(--shadow-frame) ring-1 ring-foreground/10"
+            ? "frame divide-y overflow-hidden bg-card p-0 shadow-(--shadow-frame) ring-1 ring-border-muted"
             : tray
               ? "frame grid gap-1.5 bg-muted p-1.5 [--tray-radius:calc(var(--frame-radius)-var(--spacing)*1.5)]"
               : "grid gap-2",
@@ -218,13 +214,13 @@ function AskOptions({
               className={cn(
                 "flex w-full items-start gap-3 text-left",
                 stacked
-                  ? "p-frame hover:bg-muted/60"
+                  ? "p-frame hover:bg-ghost-hover"
                   : cn(
-                      "frame bg-card p-frame shadow-(--shadow-frame) ring-1 ring-foreground/10 hover:ring-foreground/25",
+                      "frame bg-card p-frame shadow-(--shadow-frame) ring-1 ring-border-muted hover:ring-border-strong",
                       // Concentric with the tray: its radius less the tray's padding.
                       tray && "rounded-[calc(var(--tray-radius)*var(--corner-scale))]",
                     ),
-                stacked && isPicked && "bg-brand-50 hover:bg-brand-50 dark:bg-brand-950/50 dark:hover:bg-brand-950/50",
+                stacked && isPicked && "bg-brand-fill hover:bg-brand-fill",
                 !stacked && isPicked && "ring-2 ring-brand hover:ring-brand",
               )}
             >
@@ -333,9 +329,9 @@ function AskProgress({
               <span
                 className={cn(
                   "h-1.5 w-full rounded-full transition-all",
-                  answered ? "bg-brand" : "bg-foreground/10 group-hover:bg-foreground/20",
+                  answered ? "bg-brand" : "bg-fill-strong group-hover:bg-border-strong",
                   index === current && "h-3",
-                  index === current && !answered && "bg-foreground/30",
+                  index === current && !answered && "bg-fg-subtle",
                 )}
               />
             </button>
@@ -559,7 +555,7 @@ export function AgentsComposition() {
               ["Dry run", "1"],
               ["Failing", "1"],
             ].map(([label, value]) => (
-              <div key={label} className="frame bg-muted/60 p-frame">
+              <div key={label} className="frame bg-panel-fill p-frame">
                 <dt className="px-inset text-muted-foreground">{label}</dt>
                 <dd className="px-inset text-2xl font-semibold tabular-nums">{value}</dd>
               </div>
@@ -569,7 +565,7 @@ export function AgentsComposition() {
             {agents.map((agent) => (
               <li
                 key={agent.name}
-                className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-0.5 border-b border-foreground/6 px-text py-3 last:border-b-0"
+                className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-0.5 border-b border-border-muted px-text py-3 last:border-b-0"
               >
                 <span className="font-medium">{agent.name}</span>
                 <AgentModeBadge tone={agent.tone} mode={agent.mode} className="justify-self-end" />
@@ -616,7 +612,7 @@ function VersionsOpen() {
   return (
     <ol className="grid px-text">
       {versions.map((item, index) => (
-        <li key={item.version} className="flex items-baseline gap-2.5 border-b border-foreground/6 py-3 last:border-b-0">
+        <li key={item.version} className="flex items-baseline gap-2.5 border-b border-border-muted py-3 last:border-b-0">
           <span className="shrink-0 font-mono text-muted-foreground tabular-nums">v{item.version}</span>
           <span className="min-w-0 flex-1">
             <span className="block truncate">{item.change}</span>
@@ -666,8 +662,8 @@ export function AdminComposition() {
               {list === "open" ? <VersionsOpen /> : <VersionsBounded />}
             </CardContent>
             <CardFooter>
-              <Button shape="pill" variant="secondary">Compare</Button>
-              <Button shape="pill">Roll back to v13</Button>
+              <Button variant="secondary">Compare</Button>
+              <Button>Roll back to v13</Button>
             </CardFooter>
           </Card>
           <Card>
@@ -683,7 +679,7 @@ export function AdminComposition() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button shape="pill" className="w-full">End admin now</Button>
+              <Button className="w-full">End admin now</Button>
             </CardFooter>
           </Card>
         </div>
@@ -696,7 +692,7 @@ export function AdminComposition() {
 /** A circular tonal mark: the glyph and its ground come from the same brand ramp. */
 function TonalMark({ children }: { children: ReactNode }) {
   return (
-    <span className="grid size-12 place-items-center rounded-full bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300">
+    <span className="grid size-12 place-items-center rounded-full bg-brand-fill text-brand-strong">
       {children}
     </span>
   );
@@ -733,13 +729,13 @@ function AuthCard({
 export function SignInComposition() {
   return (
     <Viewport>
-      <div className="grid min-h-160 place-items-center gap-(--pad) bg-muted/40 p-(--pad) @3xl:grid-cols-2">
+      <div className="grid min-h-160 place-items-center gap-(--pad) bg-fill-subtle p-(--pad) @3xl:grid-cols-2">
         <AuthCard
           mark={<InboxBold className="size-6" />}
           title="Sign in to Outpost"
           description="Use your Vercel account. Outpost only reads who you are."
         >
-          <Button shape="pill" size="lg" className="w-full">
+          <Button size="lg" className="w-full">
             Continue with Vercel
           </Button>
         </AuthCard>
@@ -755,10 +751,10 @@ export function SignInComposition() {
             <Input id="code" defaultValue="KXQM-7TRD" className="h-(--button-h) text-center font-mono tracking-widest [--button-h:calc(var(--spacing)*9)]" />
           </div>
           <div className="mt-1 grid gap-2">
-            <Button shape="pill" size="lg" className="w-full">
+            <Button size="lg" className="w-full">
               Approve
             </Button>
-            <Button shape="pill" size="lg" variant="ghost" className="w-full">
+            <Button size="lg" variant="ghost" className="w-full">
               Deny
             </Button>
           </div>
