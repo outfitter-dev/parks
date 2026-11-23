@@ -1,5 +1,6 @@
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
+import { isTone, type Tone } from "#lib/tone"
 import { cnState } from "#lib/utils"
 
 /*
@@ -14,6 +15,13 @@ import { cnState } from "#lib/utils"
  *   and bottom: on a pill that is the centre of the end cap, on a rect it is
  *   an even inset. The 1px is the transparent border.
  *
+ * Colour and emphasis are separate: `tone` picks the colour role (see
+ * #lib/tone) and `variant` the emphasis. `solid` fills with the tone (the
+ * neutral solid is the primary button), `tint` is a soft tonal fill, and
+ * outline, secondary, ghost and link keep their neutral chrome but take the
+ * tone's text colour. shadcn's `default` and `destructive` stay as aliases
+ * for solid and for a destructive tint.
+ *
  * Pill is the default. Rect fits a button embedded in a row or field; see
  * `rounded-inset-action` for one that sits concentric inside its row.
  */
@@ -25,15 +33,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary-hover",
+        solid: "bg-tone text-tone-contrast hover:bg-tone-solid-hover",
+        tint: "bg-tone-fill text-tone-strong hover:bg-tone-fill-hover",
         outline:
           "border-control-outline-border bg-control-outline text-secondary-foreground hover:bg-control-outline-hover hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary-hover hover:text-foreground aria-expanded:bg-secondary aria-expanded:text-foreground",
         ghost:
           "text-secondary-foreground hover:bg-ghost-hover hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground",
-        destructive:
-          "bg-destructive-fill text-destructive hover:bg-destructive-fill-hover focus-visible:border-destructive-border focus-visible:ring-invalid-ring",
         link: "text-primary underline-offset-4 hover:underline",
       },
       shape: {
@@ -54,29 +61,71 @@ const buttonVariants = cva(
     compoundVariants: [
       // Small buttons in a group share the group's corners.
       { size: ["xs", "sm", "icon-xs", "icon-sm"], class: "in-data-[slot=button-group]:rounded-lg" },
+      // Neutral chrome, tonal text: a red ghost or outline button.
+      {
+        variant: ["outline", "secondary", "ghost", "link"],
+        class:
+          "not-data-[tone=neutral]:text-tone-strong not-data-[tone=neutral]:hover:text-tone-strong not-data-[tone=neutral]:aria-expanded:text-tone-strong",
+      },
     ],
     defaultVariants: {
-      variant: "default",
+      variant: "solid",
       shape: "pill",
       size: "default",
     },
   }
 )
 
+type Emphasis = NonNullable<VariantProps<typeof buttonVariants>["variant"]>
+
+/** shadcn's variant names, kept as aliases for a tone plus emphasis. */
+const variantAliases = {
+  default: { tone: "neutral", variant: "solid" },
+  destructive: { tone: "destructive", variant: "tint" },
+} as const satisfies Record<string, { tone: Tone; variant: Emphasis }>
+
+type ButtonVariant = Emphasis | keyof typeof variantAliases
+
+function resolveButton(variant: ButtonVariant | null | undefined, tone: Tone | undefined) {
+  const value = variant ?? "solid"
+  if (value in variantAliases) {
+    const alias = variantAliases[value as keyof typeof variantAliases]
+    return { tone: tone ?? alias.tone, variant: alias.variant as Emphasis }
+  }
+  return { tone: tone ?? "neutral", variant: value as Emphasis }
+}
+
+type ButtonProps = ButtonPrimitive.Props &
+  Omit<VariantProps<typeof buttonVariants>, "variant"> & {
+    /** The colour role. Defaults to neutral, or to the tone an alias names. */
+    tone?: Tone
+    /** Emphasis: solid (default), tint, outline, secondary, ghost, link. */
+    variant?: ButtonVariant | null
+  }
+
 function Button({
   className,
-  variant = "default",
+  variant: variantProp,
+  tone: toneProp,
   size = "default",
   shape = "pill",
   ...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+}: ButtonProps) {
+  const { tone, variant } = resolveButton(variantProp, isTone(toneProp) ? toneProp : undefined)
   return (
     <ButtonPrimitive
       data-slot="button"
-      className={cnState(buttonVariants({ variant, size, shape }), className)}
+      data-tone={tone}
+      data-variant={variant}
+      className={cnState(
+        buttonVariants({ variant, size, shape }),
+        "data-[tone=destructive]:focus-visible:border-destructive-border data-[tone=destructive]:focus-visible:ring-invalid-ring",
+        className
+      )}
       {...props}
     />
   )
 }
 
 export { Button, buttonVariants }
+export type { ButtonProps, ButtonVariant }

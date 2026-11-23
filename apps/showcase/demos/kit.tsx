@@ -3,6 +3,7 @@
 import { useState, type ComponentProps, type ReactNode } from "react";
 import { Badge } from "@workspace/ui/components/badge";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
+import type { Tone as UiTone } from "@workspace/ui/lib/tone";
 import { cn } from "@workspace/ui/lib/utils";
 import type { Tone } from "#lib/fixtures";
 
@@ -103,23 +104,17 @@ export function Signal({ tone }: { tone: "live" | "wait" | "off" | "alert" | "ne
   );
 }
 
+/** Agent modes as UI tones: the one mapping the badge and the halo share. */
 const agentModeTones = {
   live: "success",
   wait: "warning",
   alert: "destructive",
   off: "neutral",
-} as const;
+} as const satisfies Record<Tone, UiTone>;
 
 export function AgentModeBadge({ tone, mode, className }: { tone: Tone; mode: string; className?: string }) {
-  return <Badge variant={agentModeTones[tone]} dot className={className}>{mode}</Badge>;
+  return <Badge tone={agentModeTones[tone]} dot className={className}>{mode}</Badge>;
 }
-
-const haloTones = {
-  live: "text-success",
-  wait: "text-warning",
-  off: "text-muted-foreground",
-  alert: "text-destructive",
-} as const;
 
 /**
  * A Signal dot inside a faint halo with an arc travelling around it: the
@@ -134,7 +129,7 @@ export function HaloSignal({
   className,
   ...props
 }: Omit<ComponentProps<"svg">, "children"> & {
-  tone?: keyof typeof haloTones;
+  tone?: Tone;
   size?: number;
   label: string;
 }) {
@@ -146,7 +141,8 @@ export function HaloSignal({
       width={size}
       height={size}
       viewBox="0 0 16 16"
-      className={cn("shrink-0", tone ? haloTones[tone] : "text-muted-foreground", className)}
+      data-tone={tone ? agentModeTones[tone] : undefined}
+      className={cn("shrink-0", tone ? "text-tone-mark" : "text-muted-foreground", className)}
     >
       <circle
         cx="8"

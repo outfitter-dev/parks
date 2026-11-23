@@ -243,7 +243,7 @@ export function ShapeDemo() {
                 <div key={version} className="flex h-(--control-h) items-center gap-3 bg-panel-fill px-text">
                   <span className="font-mono text-muted-foreground">v{version}</span>
                   <span className="min-w-0 flex-1 truncate">{change}</span>
-                  {index === 0 ? <Badge variant="success" dot>{when}</Badge> : <span className="text-muted-foreground">{when}</span>}
+                  {index === 0 ? <Badge tone="success" dot>{when}</Badge> : <span className="text-muted-foreground">{when}</span>}
                 </div>
               ))}
             </div>

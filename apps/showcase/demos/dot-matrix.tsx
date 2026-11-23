@@ -201,10 +201,10 @@ export function DotMatrixDemo() {
         <Button variant="outline" size="icon" className="rounded-full" disabled>
           <DotmCircular4 size={16} dotSize={2} ariaLabel="Re-running" />
         </Button>
-        <Badge variant="info" icon={<DotmCircular4 size={12} dotSize={1.5} ariaLabel="Delivering" />}>
+        <Badge tone="info" icon={<DotmCircular4 size={12} dotSize={1.5} ariaLabel="Delivering" />}>
           Delivering
         </Badge>
-        <Badge variant="warning" icon={<DotmCircular2 size={12} dotSize={1.5} ariaLabel="Waiting" />}>
+        <Badge tone="warning" icon={<DotmCircular2 size={12} dotSize={1.5} ariaLabel="Waiting" />}>
           Waiting on Rex
         </Badge>
       </Specimen>

@@ -25,6 +25,16 @@ The CLI has no Solar support. Because `components.json` sets `iconLibrary` to `s
 
 The script also fixes a CLI 4.23.0 bug that writes the `#lib/utils` import as `from "cn"` and adds the unrelated npm package `cn`. Review the result before committing: Base UI `className` callbacks still need `cnState`, which `test/ui-boundary.test.ts` checks.
 
+Re-adding a component that already exists overwrites the file. Badge, Button, Alert and DropdownMenuItem carry Outpost's tone model (below), so diff a re-added copy against git and keep the `tone` handling.
+
+## Tone and emphasis
+
+Colour and emphasis are separate props. `tone` is the colour role: `neutral`, `info`, `success`, `warning`, `destructive`, `brand` or `merged` (`packages/ui/src/lib/tone.ts`). `variant` is emphasis only: Badge takes `tint` (default), `solid`, `outline`, `plain`; Button takes `solid` (default), `tint`, `secondary`, `outline`, `ghost`, `link`. Any tone works with any variant.
+
+A component sets `data-tone` and its classes read the `--tone-*` roles from `globals.css` (`bg-tone-fill`, `text-tone-foreground`, `ring-tone-border`, `bg-tone-mark` and so on), so there is no compound class per tone and variant. Use the same utilities to give a custom element a tone: set `data-tone` on it.
+
+shadcn's values and the older tone-as-variant values still work as aliases: Button `default` is `solid`, `destructive` is a destructive `tint`; Badge `success`, `warning`, `info`, `destructive` and `neutral` are that tone as a `tint`; Alert `destructive`, `warning`, `success` and `info` set the tone. Prefer `tone=` in new code. Map domain states to a `Tone` in one table (see `agentModeTones` in the workbench kit), not to class strings.
+
 ## Icons
 
 Solar (`@solar-icons/react`) is the only icon library. Import each icon on its own from a style subpath, never from the package root:

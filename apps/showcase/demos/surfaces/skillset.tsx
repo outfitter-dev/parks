@@ -161,7 +161,7 @@ function LandingDetails() {
             Merge a reviewed, green change or stack under existing authority, bottom-up, and confirm what landed.
           </p>
         </div>
-        <Badge variant="warning">1 output drifted</Badge>
+        <Badge tone="warning">1 output drifted</Badge>
       </div>
 
       <Tabs defaultValue="outputs">
@@ -225,7 +225,7 @@ function LandingDetails() {
                 <TimelineHeader className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <TimelineTitle className="font-medium">{entry.version}</TimelineTitle>
-                    <Badge variant={entry.pending ? "warning" : "neutral"}>
+                    <Badge tone={entry.pending ? "warning" : "neutral"}>
                       {entry.pending ? "Pending" : "Released"}
                     </Badge>
                   </div>

@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Menu as MenuPrimitive } from "@base-ui/react/menu"
+import { isTone, type Tone } from "#lib/tone"
 import { cnState } from "#lib/utils"
 import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right"
 import { CheckIcon } from "@solar-icons/react/outline/check"
@@ -77,18 +78,24 @@ function DropdownMenuItem({
   className,
   inset,
   variant = "default",
+  tone: toneProp,
   ...props
 }: MenuPrimitive.Item.Props & {
   inset?: boolean
+  /** shadcn's name for a destructive item: an alias for `tone="destructive"`. */
   variant?: "default" | "destructive"
+  /** The item's colour role (see #lib/tone). Defaults to neutral. */
+  tone?: Tone
 }) {
+  const tone: Tone = isTone(toneProp) ? toneProp : variant === "destructive" ? "destructive" : "neutral"
   return (
     <MenuPrimitive.Item
       data-slot="dropdown-menu-item"
       data-inset={inset}
-      data-variant={variant}
+      data-variant={tone === "destructive" ? "destructive" : variant}
+      data-tone={tone}
       className={cnState(
-        "group/dropdown-menu-item relative flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:pl-7 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive-fill data-[variant=destructive]:focus:text-destructive data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive",
+        "group/dropdown-menu-item relative flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-[tone=neutral]:focus:**:text-accent-foreground data-inset:pl-7 not-data-[tone=neutral]:text-tone-strong not-data-[tone=neutral]:focus:bg-tone-fill not-data-[tone=neutral]:focus:text-tone-strong data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 not-data-[tone=neutral]:*:[svg]:text-tone-strong",
         className
       )}
       {...props}
