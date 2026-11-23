@@ -30,9 +30,10 @@ import { CheckCircleIcon as CheckCircleBold } from "@solar-icons/react/bold/chec
 import { CheckIcon as CheckBold } from "@solar-icons/react/bold/check";
 import { PauseIcon as PauseBold } from "@solar-icons/react/bold/pause";
 import { agents, asks, versions, type Ask } from "#lib/fixtures";
-import { AppFrame, SidebarToggle } from "./app-frame";
+import { AppFrame, PageBar } from "./app-frame";
 import { AgentModeBadge, Signal, VersionRows, Viewport } from "./kit";
 import { outpostNavigation } from "./outpost-navigation";
+import { Stat } from "./surfaces/parts";
 
 function AskRow({
   ask,
@@ -146,6 +147,51 @@ function OptionTile({ picked, tone, children }: { picked: boolean; tone: MarkTon
   );
 }
 
+/** The options container: a grid of cards, one card of stacked rows, or a tray of cards. */
+function OptionGroup({ style, label, role, children }: { style: OptionStyle; label: string; role: "group" | "radiogroup"; children: ReactNode }) {
+  if (style === "stacked") {
+    return <Card role={role} aria-label={label} className="gap-0 divide-y py-0">{children}</Card>;
+  }
+  if (style === "tray") {
+    return <Card variant="tray" role={role} aria-label={label} className="grid">{children}</Card>;
+  }
+  return <div role={role} aria-label={label} className="grid gap-2">{children}</div>;
+}
+
+/** One option: a selectable Card, or a row inside the stacked card. */
+function OptionButton({
+  stacked,
+  picked,
+  role,
+  onClick,
+  children,
+}: {
+  stacked: boolean;
+  picked: boolean;
+  role: "checkbox" | "radio";
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  if (stacked) {
+    return (
+      <button
+        type="button"
+        role={role}
+        aria-checked={picked}
+        onClick={onClick}
+        className={cn("flex w-full items-start gap-3 p-frame text-left hover:bg-ghost-hover", picked && "bg-brand-fill hover:bg-brand-fill")}
+      >
+        {children}
+      </button>
+    );
+  }
+  return (
+    <Card render={<button type="button" />} role={role} aria-checked={picked} onClick={onClick} selected={picked} className="flex-row items-start gap-3">
+      {children}
+    </Card>
+  );
+}
+
 function OptionText({ option }: { option: Ask["options"][number] }) {
   return (
     // The label row is as tall as the corner tile, which adds 2px above the
@@ -181,42 +227,19 @@ function AskOptions({
         : [label],
     );
   const stacked = look.style === "stacked";
-  const tray = look.style === "tray";
   return (
     <div className="mt-5 grid gap-2">
-      <div
-        role={look.multi ? "group" : "radiogroup"}
-        aria-label="Options"
-        className={cn(
-          stacked
-            ? "frame divide-y overflow-hidden bg-card p-0 shadow-(--shadow-frame) ring-1 ring-border-muted"
-            : tray
-              ? "frame grid gap-1.5 bg-muted p-1.5 [--tray-radius:calc(var(--frame-radius)-var(--spacing)*1.5)]"
-              : "grid gap-2",
-        )}
-      >
+      <OptionGroup style={look.style} label="Options" role={look.multi ? "group" : "radiogroup"}>
         {ask.options.map((option, index) => {
           const isPicked = picked.includes(option.label);
           const mark = markFor(look.mark, option.label, index, ask.options.length);
           return (
-            <button
+            <OptionButton
               key={option.label}
-              type="button"
+              stacked={stacked}
+              picked={isPicked}
               role={look.multi ? "checkbox" : "radio"}
-              aria-checked={isPicked}
               onClick={() => toggle(option.label)}
-              className={cn(
-                "flex w-full items-start gap-3 text-left",
-                stacked
-                  ? "p-frame hover:bg-ghost-hover"
-                  : cn(
-                      "frame bg-card p-frame shadow-(--shadow-frame) ring-1 ring-border-muted hover:ring-border-strong",
-                      // Concentric with the tray: its radius less the tray's padding.
-                      tray && "rounded-[calc(var(--tray-radius)*var(--corner-scale))]",
-                    ),
-                stacked && isPicked && "bg-brand-fill hover:bg-brand-fill",
-                !stacked && isPicked && "ring-2 ring-brand hover:ring-brand",
-              )}
             >
               {mark === null ? (
                 <span className="px-inset">
@@ -230,10 +253,10 @@ function AskOptions({
                   <OptionText option={option} />
                 </>
               )}
-            </button>
+            </OptionButton>
           );
         })}
-      </div>
+      </OptionGroup>
       <p className="mt-1 text-muted-foreground" aria-live="polite">
         {picked.length > 0
           ? `Posts “${picked.join(", ")}” to the thread as you.`
@@ -443,20 +466,17 @@ export function NeedsYouComposition() {
         <AppFrame navigation={outpostNavigation} place="needs-you">
           <div className="grid h-full @3xl:grid-cols-[minmax(--spacing(64),--spacing(88))_1fr]">
             <div className={cn("flex flex-col @3xl:border-r", screen === "ask" && "@max-3xl:hidden")}>
-              <div className="flex h-14 shrink-0 items-center gap-1.5 ps-3 pe-2">
-                <SidebarToggle />
-                <h1 className="font-semibold">Needs you</h1>
+              <PageBar title="Needs you" className="pe-2">
                 <Tabs
                   value={view}
                   onValueChange={(next) => setView(next === "answered" ? "answered" : "open")}
-                  className="ml-auto"
                 >
                   <TabsList>
                     <TabsTrigger value="open">Open</TabsTrigger>
                     <TabsTrigger value="answered">Answered</TabsTrigger>
                   </TabsList>
                 </Tabs>
-              </div>
+              </PageBar>
               {view === "answered" ? (
                 <div className="grid flex-1 place-items-center p-(--pad) text-center">
                   <div>
@@ -544,16 +564,9 @@ export function AgentsComposition() {
       <AppFrame navigation={outpostNavigation} place="agents" title="Agents" actions={<Button size="sm">New agent</Button>}>
         <div className="mx-auto w-full max-w-2xl px-(--pad) pt-2 pb-(--pad)">
           <dl className="grid grid-cols-3 gap-3">
-            {[
-              ["Live", "3"],
-              ["Dry run", "1"],
-              ["Failing", "1"],
-            ].map(([label, value]) => (
-              <div key={label} className="frame bg-panel-fill p-frame">
-                <dt className="px-inset text-muted-foreground">{label}</dt>
-                <dd className="px-inset text-2xl font-semibold tabular-nums">{value}</dd>
-              </div>
-            ))}
+            <Stat label="Live" value="3" />
+            <Stat label="Dry run" value="1" />
+            <Stat label="Failing" value="1" />
           </dl>
           <ItemGroup variant="list" className="mt-6">
             {agents.map((agent) => (

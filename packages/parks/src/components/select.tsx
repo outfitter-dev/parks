@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Select as SelectPrimitive } from "@base-ui/react/select"
+import { groupLabel } from "#lib/header"
 import { menuRow, menuRowFocusChildren, menuRowIndicator, menuRowIndicatorSlot } from "#lib/row"
 import { cnState } from "#lib/utils"
 import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down"
@@ -104,7 +105,7 @@ function SelectLabel({
   return (
     <SelectPrimitive.GroupLabel
       data-slot="select-label"
-      className={cnState("px-1.5 py-1 text-xs text-muted-foreground", className)}
+      className={cnState(groupLabel, "px-1.5 py-1", className)}
       {...props}
     />
   )

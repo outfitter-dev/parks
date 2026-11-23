@@ -45,6 +45,12 @@ Disclosure rows that open in place, such as `TraceLine` in the workbench, stay o
 
 Menu, select and nav rows share one recipe in `packages/ui/src/lib/row.ts`, so weight, padding, icon size and the highlighted state match. Use `NavItem` for a nav link (`current` sets `aria-current="page"` and the same fill as a selected Item; `size="sm"` for dense lists). Menu items, labels and sub-menu triggers take `indent` to line up past an icon column; shadcn's `inset` still works as an alias, but it is not the `--inset` text padding.
 
+## Cards and headers
+
+Every card-like box is a `Card`. `variant` sets the look: `raised` (the default), `outline` (an edge, no shadow, for dense cards in a list), `filled` (a panel fill, for stat tiles) and `tray` (a muted well that holds other cards, which take its concentric radius). `size` is `sm`, `default` or `lg`, and the radius follows the padding. `selected` is the one selected look, a brand ring; rendering a card as a link or button (`render`) makes it `interactive`. A card with no header, content or footer pads evenly, so a bare card needs no padding classes.
+
+Card, Dialog and Popover headers share one grid (`packages/ui/src/lib/header.ts`): lead, title, description, meta, then actions. `CardLead` takes an icon, Mark or Avatar; `CardMeta` a time or count; `CardAction` any number of buttons. Titles are `font-semibold` on frames (Card, Dialog) and `font-medium` on rows and popovers (Item, Popover, Alert). `GroupLabel` is the one overline style for a group of rows; menu and select labels use the same style.
+
 ## Icons
 
 Solar (`@solar-icons/react`) is the only icon library. Import each icon on its own from a style subpath, never from the package root:

@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover"
+import { header, headerDescription, headerTitle } from "#lib/header"
 import { cnState } from "#lib/utils"
 
 function Popover({ ...props }: PopoverPrimitive.Root.Props) {
@@ -52,7 +53,7 @@ function PopoverHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="popover-header"
-      className={cnState("flex flex-col gap-0.5 text-sm", className)}
+      className={cnState(header, "text-sm", className)}
       {...props}
     />
   )
@@ -62,7 +63,7 @@ function PopoverTitle({ className, ...props }: PopoverPrimitive.Title.Props) {
   return (
     <PopoverPrimitive.Title
       data-slot="popover-title"
-      className={cnState("font-medium", className)}
+      className={cnState(headerTitle, "font-medium", className)}
       {...props}
     />
   )
@@ -75,7 +76,7 @@ function PopoverDescription({
   return (
     <PopoverPrimitive.Description
       data-slot="popover-description"
-      className={cnState("text-muted-foreground", className)}
+      className={cnState(headerDescription, "mt-0.5", className)}
       {...props}
     />
   )

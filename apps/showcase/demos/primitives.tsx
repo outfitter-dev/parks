@@ -189,13 +189,13 @@ export function ShapeDemo() {
         note="Text adds --inset on the left and right. Cards that end in text get a little more room below the last line."
         className="block"
       >
-        <div className="max-w-sm frame p-frame bg-card shadow-(--shadow-frame) ring-1 ring-border-muted">
+        <Card className="max-w-sm gap-0">
           <div className="flex items-start justify-between gap-3">
             <p className="px-inset font-medium">Merge once CI is green?</p>
             <Badge variant="surface" shape="pill">Approval</Badge>
           </div>
           <p className="mt-1 px-inset pb-0.5 text-muted-foreground">Text sits at --pad + --inset. The pill sits in the corner at --pad.</p>
-        </div>
+        </Card>
       </Specimen>
       <Specimen
         title="Nesting"
@@ -203,11 +203,11 @@ export function ShapeDemo() {
         className="block"
       >
         <div className="grid max-w-2xl items-start gap-4 sm:grid-cols-2">
-          {[
-            ["Frame", ""],
-            ["Small frame", "[--frame-pad:var(--frame-pad-sm)]"],
-          ].map(([label, size]) => (
-            <div key={label} className={`frame p-frame bg-card shadow-(--shadow-frame) ring-1 ring-border-muted ${size}`}>
+          {([
+            ["Frame", "default"],
+            ["Small frame", "sm"],
+          ] as const).map(([label, size]) => (
+            <Card key={label} size={size} className="gap-0">
               <div className="flex items-start justify-between gap-3">
                 <p className="px-inset font-medium">{label}</p>
                 <Badge variant="surface" shape="pill">Corner</Badge>
@@ -219,7 +219,7 @@ export function ShapeDemo() {
                 </div>
                 <p className="px-inset text-muted-foreground">Text inset follows the panel.</p>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       </Specimen>

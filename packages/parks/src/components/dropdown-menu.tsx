@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Menu as MenuPrimitive } from "@base-ui/react/menu"
 import { isTone, type Tone } from "#lib/tone"
+import { groupLabel } from "#lib/header"
 import { menuRow, menuRowFocusChildren, menuRowIndicator, menuRowIndicatorSlot } from "#lib/row"
 import { cnState } from "#lib/utils"
 import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right"
@@ -71,7 +72,8 @@ function DropdownMenuLabel({
       data-slot="dropdown-menu-label"
       data-indent={indent ?? inset}
       className={cnState(
-        "px-1.5 py-1 text-xs font-medium text-muted-foreground data-indent:ps-7",
+        groupLabel,
+        "px-1.5 py-1 data-indent:ps-7",
         className
       )}
       {...props}

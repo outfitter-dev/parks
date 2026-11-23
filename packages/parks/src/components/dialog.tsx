@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
+import { header, headerDescription, headerTitle } from "#lib/header"
 import { cnState } from "#lib/utils"
 
 import { Button } from "#components/button"
@@ -84,7 +85,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-header"
-      className={cnState("flex flex-col gap-2", className)}
+      className={cnState(header, className)}
       {...props}
     />
   )
@@ -122,7 +123,8 @@ function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
     <DialogPrimitive.Title
       data-slot="dialog-title"
       className={cnState(
-        "text-base leading-none font-medium",
+        headerTitle,
+        "text-base font-semibold",
         className
       )}
       {...props}
@@ -138,7 +140,8 @@ function DialogDescription({
     <DialogPrimitive.Description
       data-slot="dialog-description"
       className={cnState(
-        "text-sm text-muted-foreground *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
+        headerDescription,
+        "text-sm *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
         className
       )}
       {...props}
