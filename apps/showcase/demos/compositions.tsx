@@ -88,12 +88,12 @@ function Brand() {
 
 /**
  * The full sidebar: brand, search, places and the account. The toggle sits
- * outside it (see AppFrame), so the brand row leaves room for it at the start.
+ * outside it (see AppFrame), so the brand row leaves room for it at the end.
  */
 function SidebarPanel({ place }: { place: Place }) {
   return (
     <>
-      <div className="flex h-(--control-h) items-center gap-2 ps-[calc(var(--control-h)+--spacing(2))] font-semibold">
+      <div className="flex h-6 items-center gap-2 ps-2 pe-9 font-semibold">
         <Brand />
         Outpost
       </div>
@@ -145,9 +145,9 @@ const sidebarMotion = "duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-re
 
 /**
  * The app frame: an inset sidebar and the page. The sidebar floats inside the
- * window with a gap on every side, the way macOS 26 draws it. Collapsing
- * shrinks it into a circle in the top corner that holds only its toggle, and
- * the toggle never moves, so expanding grows the sidebar back out of it.
+ * window with a gap on every side, the way macOS 26 draws it. The toggle is
+ * pinned to the sidebar's top end corner, so collapsing carries it along as
+ * the sidebar shrinks into a circle in the top corner that holds only it.
  *
  * Wide frames dock the expanded sidebar beside the page; narrow ones start
  * collapsed and open it over the page. Page headers are as tall as the circle's
@@ -203,7 +203,7 @@ function AppFrame({
       ref={frameRef}
       className={cn(
         "relative flex min-h-160 overflow-hidden bg-background text-foreground",
-        docked ? "[--clear:--spacing(0)]" : "[--clear:calc(var(--control-h)+--spacing(6))]",
+        docked ? "[--clear:--spacing(0)]" : "[--clear:--spacing(11)]",
       )}
     >
       {/* Holds the docked sidebar's width in the page flow, and gives it up as the sidebar shrinks. */}
@@ -227,7 +227,7 @@ function AppFrame({
           motion,
           expanded
             ? "h-[calc(100%-var(--spacing)*4)] w-56 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))]"
-            : "size-[calc(var(--control-h)+--spacing(4))] rounded-[calc(var(--control-h)/2+var(--spacing)*2)] [corner-shape:round]",
+            : "size-10 rounded-[--spacing(5)] [corner-shape:round]",
           overlay && "bg-muted shadow-xl",
         )}
         onKeyDown={(event) => {
@@ -246,11 +246,11 @@ function AppFrame({
         </div>
         <Button
           variant="ghost"
-          size="icon"
+          size="icon-sm"
           aria-label={expanded ? "Hide sidebar" : "Show sidebar"}
           aria-expanded={expanded}
           onClick={() => setExpanded(!expanded)}
-          className="absolute start-2 top-2"
+          className="absolute end-1.5 top-1.5"
         >
           <SidebarMinimalisticIcon />
         </Button>
@@ -259,7 +259,7 @@ function AppFrame({
         {bare ? null : (
           <header
             className={cn(
-              "flex h-[calc(var(--control-h)+--spacing(8))] items-center gap-3 pe-4 ps-[calc(--spacing(4)+var(--clear))] transition-[padding]",
+              "flex h-14 items-center gap-3 pe-4 ps-[calc(--spacing(4)+var(--clear))] transition-[padding]",
               motion,
             )}
           >
@@ -695,7 +695,7 @@ export function NeedsYouComposition() {
         <AppFrame place="needs-you" title="Needs you" bare>
           <div className="grid h-full @3xl:grid-cols-[minmax(--spacing(64),--spacing(88))_1fr]">
             <div className={cn("flex flex-col @3xl:border-r", screen === "ask" && "@max-3xl:hidden")}>
-              <div className="flex h-[calc(var(--control-h)+--spacing(8))] shrink-0 items-center gap-2 pe-2 ps-[calc(--spacing(4)+var(--clear))] transition-[padding] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none">
+              <div className="flex h-14 shrink-0 items-center gap-2 pe-2 ps-[calc(--spacing(4)+var(--clear))] transition-[padding] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none">
                 <h1 className="font-semibold">Needs you</h1>
                 <Tabs
                   value={view}
@@ -737,7 +737,7 @@ export function NeedsYouComposition() {
             {view === "open" && ask ? (
               <div className={cn("flex min-h-160 flex-col @3xl:min-h-0", screen === "list" && "@max-3xl:hidden")}>
                 <div className="grid gap-3 px-2 pb-3 @3xl:hidden">
-                  <div className="flex h-[calc(var(--control-h)+--spacing(8))] items-center gap-1 ps-(--clear) transition-[padding] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none">
+                  <div className="flex h-14 items-center gap-1 ps-(--clear) transition-[padding] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none">
                     <Button variant="ghost" size="sm" onClick={() => setScreen("list")}>
                       <AltArrowLeftIcon data-icon="inline-start" />
                       All asks
