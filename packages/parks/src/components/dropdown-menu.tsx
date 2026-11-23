@@ -3,8 +3,9 @@
 import * as React from "react"
 import { Menu as MenuPrimitive } from "@base-ui/react/menu"
 import { cnState } from "#lib/utils"
-import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right"
-import { CheckIcon } from "@solar-icons/react/linear/check"
+import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right"
+import { CheckIcon } from "@solar-icons/react/outline/check"
+
 
 function DropdownMenu({ ...props }: MenuPrimitive.Root.Props) {
   return <MenuPrimitive.Root data-slot="dropdown-menu" {...props} />
