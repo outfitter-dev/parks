@@ -1,26 +1,57 @@
 "use client";
 
 import { useState } from "react";
+import { MultiFileDiff } from "@pierre/diffs/react";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
+import { InlineCode } from "@workspace/ui/components/inline-code";
+import { Textarea } from "@workspace/ui/components/textarea";
 import { cn } from "@workspace/ui/lib/utils";
 import { ArrowUpIcon } from "@solar-icons/react/bold/arrow-up";
-import { ChatRoundDotsIcon } from "@solar-icons/react/linear/chat-round-dots";
-import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
-import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
+import { ChatRoundDotsIcon } from "@solar-icons/react/outline/chat-round-dots";
+import { ChatRoundDotsIcon as ChatRoundDotsBold } from "@solar-icons/react/bold/chat-round-dots";
+import { CodeSquareIcon } from "@solar-icons/react/outline/code-square";
+import { MagnifierIcon } from "@solar-icons/react/outline/magnifier";
 import { PaperclipIcon } from "@solar-icons/react/bold/paperclip";
-import { PenIcon } from "@solar-icons/react/linear/pen";
+import { PenIcon } from "@solar-icons/react/outline/pen";
 import { PenNewSquareIcon } from "@solar-icons/react/bold/pen-new-square";
-import { StarsIcon } from "@solar-icons/react/linear/stars";
+import { StarsIcon } from "@solar-icons/react/outline/stars";
+import { AppFrame } from "../app-frame";
+import type { AppNavigation } from "../app-sidebar";
 import { Viewport } from "../kit";
 import { FileType } from "../reui/file-type";
-import { CodeBlock, Shell, Trace, TraceLine, Turn } from "./parts";
+import { CodeBlock, CodeFrame, Trace, TraceLine, Turn } from "./parts";
 
-const patch = `export const routes = {
+const navigation = {
+  name: "Outpost",
+  mark: "O",
+  items: [
+    { id: "rename", label: "Rename the ask route", icon: ChatRoundDotsIcon, solid: ChatRoundDotsBold },
+    { id: "fleet", label: "Fleet digest, Friday", icon: ChatRoundDotsIcon, solid: ChatRoundDotsBold },
+    { id: "permit", label: "Permit for overnight merges", icon: ChatRoundDotsIcon, solid: ChatRoundDotsBold },
+    { id: "rex", label: "Why did Rex go quiet?", icon: ChatRoundDotsIcon, solid: ChatRoundDotsBold },
+  ],
+} satisfies AppNavigation;
+
+const routeFile = "src/http/routes.ts";
+const before = {
+  name: routeFile,
+  contents: `export const routes = {
   ask: "/v1/ask",
-  ask: "/v1/asks",
   answer: "/v1/asks/:id/answer",
-}`;
+};
+`,
+};
+const after = {
+  name: routeFile,
+  contents: `export const routes = {
+  ask: "/v1/asks",
+  legacyAsk: "/v1/ask",
+  answer: "/v1/asks/:id/answer",
+};
+`,
+};
+const diffOptions = { diffStyle: "unified", diffIndicators: "classic", disableFileHeader: true } as const;
 
 const options = [
   { label: "Ship as /v1/asks", detail: "Plural, matches threads and agents. Keep /v1/ask as an alias for two weeks.", recommended: true },
@@ -75,11 +106,11 @@ function Composer() {
           
         </span>
       </div>
-      <textarea
+      <Textarea
         rows={2}
         aria-label="Message"
         placeholder="Reply, or ask Donna to do something"
-        className="w-full resize-none bg-transparent px-2 outline-none placeholder:text-muted-foreground"
+        className="field-sizing-fixed min-h-0 resize-none border-0 bg-transparent px-2 py-0 text-[length:inherit] focus-visible:ring-0 md:text-[length:inherit]"
       />
       <div className="flex items-center gap-1">
         <Button variant="ghost" size="icon-sm" aria-label="Attach">
@@ -101,16 +132,9 @@ function Composer() {
 export function AssistantSurface() {
   return (
     <Viewport>
-      <Shell
-        mark="O"
-        name="Outpost"
-        active="Rename the ask route"
-        nav={[
-          { label: "Rename the ask route", icon: ChatRoundDotsIcon },
-          { label: "Fleet digest, Friday", icon: ChatRoundDotsIcon },
-          { label: "Permit for overnight merges", icon: ChatRoundDotsIcon },
-          { label: "Why did Rex go quiet?", icon: ChatRoundDotsIcon },
-        ]}
+      <AppFrame
+        navigation={navigation}
+        place="rename"
         title="Rename the ask route"
         actions={
           <Button variant="ghost" size="icon-sm" aria-label="New chat">
@@ -125,14 +149,16 @@ export function AssistantSurface() {
             <Trace>
               <TraceLine icon={MagnifierIcon} title="Searched for /v1/ask" detail="3 results" />
               <TraceLine icon={PenIcon} title="Edited src/http/routes.ts" detail="+2 −1" defaultOpen>
-                <CodeBlock code={patch} label="src/http/routes.ts" added={[3, 4]} removed={[2]} />
+                <CodeFrame label={routeFile}>
+                  <MultiFileDiff oldFile={before} newFile={after} options={diffOptions} className="workbench-code" />
+                </CodeFrame>
               </TraceLine>
               <TraceLine icon={CodeSquareIcon} title="Ran bun run test routes" detail="18 passed" tone="ok">
                 <CodeBlock code={"✓ test/http/routes.test.ts (18)\nTests  18 passed"} label="Output" />
               </TraceLine>
             </Trace>
             <p>
-              The route is now <code className="rounded bg-foreground/6 px-1 font-mono text-xs">/v1/asks</code>. Two callers used the old name: the
+              The route is now <InlineCode>/v1/asks</InlineCode>. Two callers used the old name: the
               CLI and the iOS share extension. The CLI is updated. The extension ships separately, so the old name has to keep working for a while.
             </p>
             <AskCard />
@@ -152,7 +178,7 @@ export function AssistantSurface() {
             <Composer />
           </div>
         </div>
-      </Shell>
+      </AppFrame>
     </Viewport>
   );
 }

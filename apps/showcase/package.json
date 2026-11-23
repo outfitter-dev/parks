@@ -17,6 +17,8 @@
     "@base-ui/react": "1.9.0",
     "@fontsource-variable/inter": "5.3.0",
     "@fontsource-variable/jetbrains-mono": "5.3.0",
+    "@pierre/diffs": "1.7.1",
+    "@pierre/trees": "1.0.0",
     "@solar-icons/react": "2.7.0",
     "@workspace/ui": "workspace:*",
     "allo-font": "1.0.3",

@@ -1,5 +1,6 @@
 "use client";
 
+import { Avatar, AvatarFallback } from "@workspace/ui/components/avatar";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
@@ -88,7 +89,7 @@ function Article() {
         We almost built an adapter for every agent runtime. Then we noticed every runtime could already post to a thread.
       </p>
       <div className="mt-6 flex items-center gap-3 border-y py-3">
-        <span className="grid size-8 place-items-center rounded-full bg-muted text-xs font-medium">MG</span>
+        <Avatar aria-hidden><AvatarFallback className="text-xs font-medium">MG</AvatarFallback></Avatar>
         <span>
           Matt Galligan
           <span className="block text-xs text-muted-foreground">Outfitter</span>

@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@workspace/ui/components/alert";
+import { Button } from "@workspace/ui/components/button";
 import { Kbd } from "@workspace/ui/components/kbd";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
 import { cn } from "@workspace/ui/lib/utils";
-import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
-import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
-import { InfoCircleIcon } from "@solar-icons/react/linear/info-circle";
-import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
+import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left";
+import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
+import { InfoCircleIcon } from "@solar-icons/react/outline/info-circle";
+import { MagnifierIcon } from "@solar-icons/react/outline/magnifier";
 import { Viewport } from "../kit";
 import { CodeBlock } from "./parts";
 
@@ -39,7 +41,6 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
 
 /** A docs site: section nav, a readable article column and an on-this-page rail. */
 export function DocsSurface() {
-  const [manager, setManager] = useState("bun");
   return (
     <Viewport>
       <div className="min-h-160 bg-background text-foreground">
@@ -48,14 +49,11 @@ export function DocsSurface() {
             <span className="grid size-6 place-items-center rounded-md bg-foreground text-xs text-background">O</span>
             Outpost <span className="font-normal text-muted-foreground">Docs</span>
           </span>
-          <button
-            type="button"
-            className="ml-auto flex h-(--control-h) w-64 max-w-full items-center gap-2 rounded-lg border bg-muted/40 px-2 text-muted-foreground"
-          >
+          <Button variant="outline" className="ms-auto w-64 min-w-0 shrink justify-start gap-2 rounded-lg text-muted-foreground">
             <MagnifierIcon className="size-4" />
             Search docs
-            <Kbd className="ml-auto">/</Kbd>
-          </button>
+            <Kbd className="ms-auto">/</Kbd>
+          </Button>
         </header>
         <div className="mx-auto grid max-w-6xl @3xl:grid-cols-[13rem_1fr] @5xl:grid-cols-[13rem_1fr_12rem]">
           <nav aria-label="Docs" className="hidden flex-col gap-5 p-4 @3xl:flex">
@@ -88,24 +86,20 @@ export function DocsSurface() {
 
             <div className="mt-8 flex max-w-prose flex-col gap-8">
               <Step n={1} title="Install the CLI">
-                <div className="flex gap-1" role="tablist" aria-label="Package manager">
-                  {Object.keys(installs).map((key) => (
-                    <button
-                      key={key}
-                      type="button"
-                      role="tab"
-                      aria-selected={key === manager}
-                      onClick={() => setManager(key)}
-                      className={cn(
-                        "rounded-md px-2 py-0.5 font-mono text-xs hover:text-foreground",
-                        key === manager && "bg-accent text-foreground",
-                      )}
-                    >
-                      {key}
-                    </button>
+                <Tabs defaultValue="bun">
+                  <TabsList aria-label="Package manager">
+                    {Object.keys(installs).map((manager) => (
+                      <TabsTrigger key={manager} value={manager}>
+                        {manager}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                  {Object.entries(installs).map(([manager, command]) => (
+                    <TabsContent key={manager} value={manager}>
+                      <CodeBlock code={command} label="Terminal" language="bash" />
+                    </TabsContent>
                   ))}
-                </div>
-                <CodeBlock code={installs[manager] ?? ""} label="Terminal" />
+                </Tabs>
               </Step>
               <Step n={2} title="Sign in">
                 <p>Run the sign-in command. It opens a device approval page, and the CLI waits until you approve it.</p>
@@ -116,6 +110,8 @@ export function DocsSurface() {
                 <CodeBlock
                   code={`outpost ask create --to matt \\\n  --question "Merge outpost#47 once CI is green?" \\\n  --option Approve --option Hold`}
                   label="Terminal"
+                  language="bash"
+                  numbers
                 />
                 <Alert variant="info">
                   <InfoCircleIcon />

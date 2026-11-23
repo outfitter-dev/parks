@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from "react";
+import { useState, type ReactNode } from "react";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import {
@@ -12,510 +12,24 @@ import {
   CardTitle,
 } from "@workspace/ui/components/card";
 import { Input } from "@workspace/ui/components/input";
-import { Kbd } from "@workspace/ui/components/kbd";
 import { Label } from "@workspace/ui/components/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@workspace/ui/components/popover";
 import { Progress } from "@workspace/ui/components/progress";
 import { Tabs, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
 import { Textarea } from "@workspace/ui/components/textarea";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@workspace/ui/components/tooltip";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
 import { cn } from "@workspace/ui/lib/utils";
-import { ChatRoundDotsIcon } from "@solar-icons/react/linear/chat-round-dots";
-import { HistoryIcon } from "@solar-icons/react/linear/history";
-import { InboxIcon } from "@solar-icons/react/linear/inbox";
-import { KeyIcon } from "@solar-icons/react/linear/key";
-import { PanelLeftCloseIcon } from "@solar-icons/react/linear/panel-left-close";
-import { PanelLeftOpenIcon } from "@solar-icons/react/linear/panel-left-open";
-import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
-import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
-import { CheckCircleIcon as CheckCircleBold } from "@solar-icons/react/bold/check-circle";
-import { SettingsIcon } from "@solar-icons/react/linear/settings";
-import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
-import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
-import { RoutingIcon } from "@solar-icons/react/linear/routing";
-import { ShieldKeyholeIcon } from "@solar-icons/react/linear/shield-keyhole";
-import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
+import { KeyIcon } from "@solar-icons/react/outline/key";
+import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left";
+import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
 import { InboxIcon as InboxBold } from "@solar-icons/react/bold/inbox";
+import { ShieldKeyholeIcon as ShieldKeyholeBold } from "@solar-icons/react/bold/shield-keyhole";
+import { CheckCircleIcon as CheckCircleBold } from "@solar-icons/react/bold/check-circle";
 import { CheckIcon as CheckBold } from "@solar-icons/react/bold/check";
 import { PauseIcon as PauseBold } from "@solar-icons/react/bold/pause";
-import { ChatRoundDotsIcon as ChatRoundDotsBold } from "@solar-icons/react/bold/chat-round-dots";
-import { HistoryIcon as HistoryBold } from "@solar-icons/react/bold/history";
-import { RoutingIcon as RoutingBold } from "@solar-icons/react/bold/routing";
-import { ShieldKeyholeIcon as ShieldKeyholeBold } from "@solar-icons/react/bold/shield-keyhole";
-import { UsersGroupRoundedIcon as UsersGroupRoundedBold } from "@solar-icons/react/bold/users-group-rounded";
 import { agents, asks, versions, type Ask } from "#lib/fixtures";
-import { useShell, type ShellStyle } from "#lib/shell";
-import { Signal, Viewport } from "./kit";
-
-type Place = "needs-you" | "inbox" | "agents" | "routing" | "history" | "admin";
-
-/**
- * Each place has a line glyph and a solid one. The solid glyph marks the
- * current place. A place shows either a count or a dot, never both.
- */
-const places: { id: Place; label: string; icon: typeof InboxIcon; solid: typeof InboxIcon; count?: number; dot?: boolean }[] = [
-  { id: "needs-you", label: "Needs you", icon: ChatRoundDotsIcon, solid: ChatRoundDotsBold, count: asks.length },
-  { id: "inbox", label: "Inbox", icon: InboxIcon, solid: InboxBold, dot: true },
-  { id: "agents", label: "Agents", icon: UsersGroupRoundedIcon, solid: UsersGroupRoundedBold, count: 5 },
-  { id: "routing", label: "Routing", icon: RoutingIcon, solid: RoutingBold },
-  { id: "history", label: "History", icon: HistoryIcon, solid: HistoryBold, count: 128 },
-  { id: "admin", label: "Admin", icon: ShieldKeyholeIcon, solid: ShieldKeyholeBold },
-];
-
-/**
- * A count in a rounded rectangle. It is at least square, so one digit sits
- * centred in a square; more digits widen it leftward from a fixed right edge.
- */
-function NavCount({ value }: { value: number }) {
-  return (
-    <span className="ml-auto grid h-5 min-w-5 place-items-center rounded-md bg-foreground/10 px-1 text-xs font-medium text-foreground tabular-nums">
-      {value}
-    </span>
-  );
-}
-
-/** The dot form, for a place that has something new but no useful number. */
-function NavDot() {
-  return (
-    <span className="ml-auto grid size-5 place-items-center" aria-label="New">
-      <span className="size-1.5 rounded-full bg-foreground" />
-    </span>
-  );
-}
-
-function Brand() {
-  return (
-    <span className="grid size-6 shrink-0 place-items-center rounded-md bg-brand text-xs text-brand-foreground">O</span>
-  );
-}
-
-/**
- * The full sidebar: brand, search, places and the account, with its own hide
- * button. Docked, the button sits at the end of the brand row and leaves with
- * the sidebar. Opened over the page (`hideAt: "start"`), it sits before the
- * brand, exactly on the header toggle it covers.
- */
-function SidebarPanel({
-  place,
-  shell,
-  onHide,
-  hideAt,
-  onDock,
-}: {
-  place: Place;
-  shell: ShellStyle;
-  onHide: () => void;
-  hideAt: "start" | "end";
-  /** Shown from the rail: the end button docks the sidebar instead of hiding it. */
-  onDock?: () => void;
-}) {
-  // On the bare canvas, solid accents vanish; translucent ink reads on any surface.
-  const hover = shell === "inset" ? "hover:bg-foreground/5" : "hover:bg-accent";
-  const current = shell === "inset" ? "bg-foreground/7" : "bg-accent";
-  const hide = onDock ? (
-    <Button variant="ghost" size="icon-sm" aria-label="Dock sidebar" onClick={onDock} className="-me-1 ml-auto">
-      <PanelLeftOpenIcon />
-    </Button>
-  ) : (
-    <Button
-      variant="ghost"
-      size="icon-sm"
-      aria-label="Hide sidebar"
-      onClick={onHide}
-      // At the start it lands on the header toggle: same 28px button, same centre.
-      className={hideAt === "start" ? "-ms-3" : "-me-1 ml-auto"}
-    >
-      <PanelLeftCloseIcon />
-    </Button>
-  );
-  return (
-    <>
-      <div className="flex h-6 items-center gap-2 px-2 font-semibold">
-        {hideAt === "start" && !onDock ? hide : null}
-        <Brand />
-        Outpost
-        {hideAt === "end" || onDock ? hide : null}
-      </div>
-      <button
-        type="button"
-        className="mt-3 mb-2 flex h-(--control-h) items-center gap-2 rounded-lg border bg-background px-2 text-muted-foreground"
-      >
-        <MagnifierIcon className="size-4" />
-        Search
-        <Kbd className="ml-auto">⌘K</Kbd>
-      </button>
-      <nav aria-label="Outpost">
-        {places.map(({ id, label, icon: Line, solid: Solid, count, dot }) => {
-          const Icon = id === place ? Solid : Line;
-          return (
-            <a
-              key={id}
-              href="#"
-              aria-current={id === place ? "page" : undefined}
-              className={cn(
-                "flex items-center gap-2 rounded-lg px-2 py-1.5 font-semibold text-muted-foreground hover:text-foreground",
-                hover,
-                id === place && cn(current, "text-foreground"),
-              )}
-            >
-              <Icon className="size-4" />
-              {label}
-              {count ? <NavCount value={count} /> : dot ? <NavDot /> : null}
-            </a>
-          );
-        })}
-      </nav>
-      <button
-        type="button"
-        className={cn(
-          "mt-auto flex h-(--control-h) items-center gap-2 rounded-lg px-2 font-semibold text-muted-foreground hover:text-foreground",
-          hover,
-        )}
-      >
-        <SettingsIcon className="size-4" />
-        Matt
-        <AltArrowDownIcon className="ml-auto size-3.5" />
-      </button>
-    </>
-  );
-}
-
-/** Frame widths at or above this dock the sidebar; below it the sidebar opens over the page. Sits between the tablet (820px) and a laptop window with the workbench nav (~960px). */
-const DOCK_MIN_WIDTH = 896;
-
-/** Shared motion for the sidebar: where it sits and the space it takes. */
-const sidebarMotion = "duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none";
-
-const SidebarContext = createContext<{
-  expanded: boolean;
-  docked: boolean;
-  /** The collapsed sidebar left a rail, which carries the way back in. */
-  rail: boolean;
-  ready: boolean;
-  toggle: () => void;
-} | null>(null);
-
-/**
- * Shows the sidebar from the page header, just before the title. While the
- * sidebar is docked it carries its own hide button, so this one folds away to
- * nothing; when the sidebar leaves, it grows back in and pushes the title over.
- * Header rows use `gap-1.5`, which the folded state cancels with its margins.
- */
-function SidebarToggle() {
-  const sidebar = useContext(SidebarContext);
-  if (!sidebar) return null;
-  const folded = sidebar.docked || sidebar.rail;
-  return (
-    <div
-      inert={folded}
-      className={cn(
-        "flex shrink-0 overflow-hidden transition-[width,margin,opacity] ease-out motion-reduce:transition-none",
-        sidebar.ready ? "duration-300" : "duration-0",
-        folded ? "ms-1 -me-1.5 w-0 opacity-0" : "w-7 opacity-100",
-      )}
-    >
-      <Button
-        variant="ghost"
-        size="icon-sm"
-        aria-label={sidebar.expanded ? "Hide sidebar" : "Show sidebar"}
-        aria-expanded={sidebar.expanded}
-        onClick={sidebar.toggle}
-      >
-        {sidebar.expanded ? <PanelLeftCloseIcon /> : <PanelLeftOpenIcon />}
-      </Button>
-    </div>
-  );
-}
-
-/** Sidebar geometry in px, mirrored from the docked aside so the rail's popover can match it. */
-const SIDEBAR_WIDTH = 224; // w-56
-const RAIL_WIDTH = 56; // w-14
-const SIDEBAR_TOP = 16; // the aside's pt beyond the gutter, --spacing(4)
-const SIDEBAR_BOTTOM = 8; // the aside's pb beyond the gutter, --spacing(2)
-/** The popover keeps at least this much window around it, even when the container's gutter is 0. */
-const POPOVER_MARGIN = 8;
-
-/**
- * What a collapsed web sidebar leaves behind: the brand, search, then one icon per
- * place, then the account. A place with a count or something new carries a
- * dot; the tooltip names it and gives the count.
- *
- * Hovering the brand shows the sidebar as a popover the height of the page
- * container, held the gutter (at least 8px) off the window's top, left and
- * bottom. Inside it the items sit exactly where the docked sidebar puts them,
- * shifted right by that left margin, so docking it just drops the card. Its
- * end button docks it.
- */
-function SidebarRail({
-  place,
-  gutter,
-  anchor,
-  onDock,
-}: {
-  place: Place;
-  /** The container's gutter in px. */
-  gutter: number;
-  /** The rail column, which spans the frame's height. */
-  anchor: RefObject<HTMLDivElement | null>;
-  onDock: () => void;
-}) {
-  const [open, setOpen] = useState(false);
-  const margin = Math.max(gutter, POPOVER_MARGIN);
-  const item = "relative grid size-9 place-items-center rounded-lg text-muted-foreground hover:bg-foreground/5 hover:text-foreground";
-  return (
-    <>
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger
-          openOnHover
-          delay={0}
-          closeDelay={200}
-          aria-label="Show sidebar"
-          className="grid size-9 place-items-center rounded-lg hover:bg-foreground/5 data-popup-open:bg-foreground/5"
-        >
-          <Brand />
-        </PopoverTrigger>
-        <PopoverContent
-          anchor={anchor}
-          side="right"
-          align="start"
-          // Pull the popover back over the rail to sit `margin` off the window's left and top.
-          sideOffset={margin - RAIL_WIDTH}
-          alignOffset={margin}
-          style={{
-            // Vertical padding puts the items at the docked sidebar's height; never tighter than the margin.
-            paddingTop: Math.max(gutter + SIDEBAR_TOP - margin, POPOVER_MARGIN),
-            paddingBottom: Math.max(gutter + SIDEBAR_BOTTOM - margin, POPOVER_MARGIN),
-            height: `calc(var(--anchor-height) - ${margin * 2}px)`,
-            width: SIDEBAR_WIDTH,
-          }}
-          // Inherit the page type, not the popover's text-sm, so rows keep the docked line height.
-          className="gap-0 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] bg-popover px-2 text-[length:inherit] leading-[inherit] shadow-(--shadow-frame) data-open:zoom-in-100 data-closed:zoom-out-100 data-closed:slide-out-to-left-2"
-        >
-          <SidebarPanel
-            place={place}
-            shell="inset"
-            onHide={() => setOpen(false)}
-            hideAt="end"
-            onDock={() => {
-              setOpen(false);
-              onDock();
-            }}
-          />
-        </PopoverContent>
-      </Popover>
-      <Tooltip>
-        <TooltipTrigger render={<button type="button" aria-label="Search" className={cn(item, "mt-3")} />}>
-          <MagnifierIcon className="size-4.5" />
-        </TooltipTrigger>
-        <TooltipContent side="right">
-          Search
-          <span className="text-background/60">⌘K</span>
-        </TooltipContent>
-      </Tooltip>
-      <nav aria-label="Outpost" className="mt-2 flex flex-col items-center gap-1">
-        {places.map(({ id, label, icon: Line, solid: Solid, count, dot }) => {
-          const current = id === place;
-          const Icon = current ? Solid : Line;
-          return (
-            <Tooltip key={id}>
-              <TooltipTrigger
-                render={
-                  <a
-                    href="#"
-                    aria-label={label}
-                    aria-current={current ? "page" : undefined}
-                    className={cn(item, current && "bg-foreground/7 text-foreground")}
-                  />
-                }
-              >
-                <Icon className="size-4.5" />
-                {count || dot ? (
-                  <span aria-hidden className="absolute top-1.5 end-1.5 size-1.5 rounded-full bg-foreground ring-2 ring-canvas" />
-                ) : null}
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                {label}
-                {count ? <span className="text-background/60 tabular-nums">{count}</span> : null}
-              </TooltipContent>
-            </Tooltip>
-          );
-        })}
-      </nav>
-      <Tooltip>
-        <TooltipTrigger render={<button type="button" aria-label="Account" className={cn(item, "mt-auto")} />}>
-          <SettingsIcon className="size-4.5" />
-        </TooltipTrigger>
-        <TooltipContent side="right">Matt</TooltipContent>
-      </Tooltip>
-    </>
-  );
-}
-
-/**
- * The app frame: the sidebar and the page. Wide frames dock the expanded
- * sidebar beside the page; narrow ones start collapsed and open it over the
- * page. The toggle sits before the title in each page header, so it never
- * moves and the headers need no room for a collapsed control.
- *
- * Two shell styles share everything inside the page (see `#lib/shell`):
- * - inset (web): the sidebar sits flush on the canvas and the page is a
- *   rounded, lifted container held `--g` off the window's top, right and
- *   bottom. At a gutter of 0 its right corners square off against the edge.
- * - floating (Apple): the sidebar floats inside the window with a gap on
- *   every side, the way macOS 26 draws it, over one continuous page.
- */
-function AppFrame({
-  place,
-  title,
-  actions,
-  bare = false,
-  children,
-}: {
-  place: Place;
-  title: string;
-  actions?: ReactNode;
-  /** Leave the top bar out, so the page can give each column its own header. */
-  bare?: boolean;
-  children: ReactNode;
-}) {
-  const frameRef = useRef<HTMLDivElement>(null);
-  const railRef = useRef<HTMLDivElement>(null);
-  const shell = useShell();
-  const inset = shell.style === "inset";
-  const flush = shell.gutter === 0;
-  const [wide, setWide] = useState(true);
-  const [expanded, setExpanded] = useState(true);
-  // Transitions start after the first measurement, so a narrow frame doesn't animate closed on load.
-  const [ready, setReady] = useState(false);
-
-  useLayoutEffect(() => {
-    const frame = frameRef.current;
-    if (!frame) return;
-    const measure = () => {
-      const next = frame.offsetWidth >= DOCK_MIN_WIDTH;
-      setWide((previous) => {
-        if (previous !== next) setExpanded(next);
-        return next;
-      });
-    };
-    measure();
-    setExpanded(frame.offsetWidth >= DOCK_MIN_WIDTH);
-    const observer = new ResizeObserver(measure);
-    observer.observe(frame);
-    const frameId = requestAnimationFrame(() => setReady(true));
-    return () => {
-      observer.disconnect();
-      cancelAnimationFrame(frameId);
-    };
-  }, []);
-
-  const docked = wide && expanded;
-  const overlay = !wide && expanded;
-  // The web style leaves an icon rail where a collapsed sidebar was, on frames wide enough to dock it.
-  const rail = inset && wide && !expanded;
-  const motion = ready ? sidebarMotion : "transition-none";
-  const hide = () => setExpanded(false);
-
-  const backdrop = overlay ? (
-    <button
-      type="button"
-      aria-label="Hide sidebar"
-      onClick={hide}
-      className="absolute inset-0 z-20 bg-foreground/20 animate-in fade-in-0 duration-300"
-    />
-  ) : null;
-
-  const header = bare ? null : (
-    <header className="flex h-14 items-center gap-1.5 ps-3 pe-4">
-      <SidebarToggle />
-      <h1 className="font-semibold">{title}</h1>
-      <div className="ml-auto flex items-center gap-2">{actions}</div>
-    </header>
-  );
-
-  return (
-    <SidebarContext.Provider value={{ expanded, docked, rail, ready, toggle: () => setExpanded(!expanded) }}>
-      <div
-        ref={frameRef}
-        data-shell={shell.style}
-        className={cn(
-          "relative flex min-h-160 overflow-hidden text-foreground",
-          // --g is the container's gutter: the theme's value, or nothing on a phone.
-          inset ? "bg-canvas [--g:var(--shell-gutter,--spacing(2))] @max-md:[--g:0px]" : "bg-background",
-        )}
-      >
-        {/* Holds the docked sidebar's width in the page flow, and gives it up as the sidebar shrinks. */}
-        <div
-          aria-hidden
-          className={cn(
-            "shrink-0 transition-[width]",
-            motion,
-            docked ? (inset ? "w-56" : "w-[calc(--spacing(56)+--spacing(2))]") : rail ? "w-14" : "w-0",
-          )}
-        />
-        {backdrop}
-        {inset ? (
-          <div
-            ref={railRef}
-            inert={!rail}
-            className={cn(
-              "absolute inset-y-0 start-0 z-10 flex w-14 flex-col items-center pt-[calc(var(--g)+--spacing(2.5))] pb-(--g) transition-opacity",
-              motion,
-              rail ? "opacity-100 delay-150" : "pointer-events-none opacity-0",
-            )}
-          >
-            <SidebarRail place={place} gutter={shell.gutter} anchor={railRef} onDock={() => setExpanded(true)} />
-          </div>
-        ) : null}
-        <aside
-          aria-label="Sidebar"
-          inert={!expanded}
-          className={cn(
-            "absolute z-30 flex w-56 flex-col transition-[translate,opacity,box-shadow]",
-            motion,
-            expanded ? "translate-x-0 opacity-100" : "-translate-x-[calc(100%+--spacing(4))] opacity-0",
-            inset
-              ? // Flush on the canvas. The brand row lines up with the page header,
-                // and opened over the page its hide button lands on the header toggle.
-                cn(
-                  "inset-y-0 start-0 pe-2 pt-[calc(var(--g)+--spacing(4))] pb-[calc(var(--g)+--spacing(2))]",
-                  overlay ? "w-64 bg-canvas ps-[calc(var(--g)+--spacing(4))] shadow-xl" : "ps-2",
-                )
-              : cn(
-                  "inset-y-2 start-2 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] bg-muted/85 p-2 shadow-(--shadow-frame) ring-1 ring-foreground/8 backdrop-blur-xl",
-                  overlay && "bg-muted shadow-xl",
-                ),
-          )}
-          onKeyDown={(event) => {
-            if (event.key === "Escape" && overlay) hide();
-          }}
-        >
-          <SidebarPanel place={place} shell={shell.style} onHide={hide} hideAt={wide ? "end" : "start"} />
-        </aside>
-        <div
-          className={cn(
-            "flex min-w-0 flex-1 flex-col",
-            inset &&
-              cn(
-                "my-(--g) me-(--g) overflow-hidden bg-background shadow-(--shadow-frame) ring-1 ring-foreground/8 transition-[margin,border-radius]",
-                motion,
-                // Beside the docked sidebar or its rail the container meets it; otherwise it holds the gutter on the left too.
-                docked || rail ? "ms-0" : "ms-(--g)",
-                "rounded-[calc(var(--radius)*var(--corner-scale))] @max-md:rounded-none @max-md:ring-0 @max-md:shadow-none",
-                // At a gutter of 0 the container meets the window's edges and squares off there.
-                flush && "rounded-e-none",
-                flush && !docked && !rail && "rounded-s-none",
-              ),
-          )}
-        >
-          {header}
-          <div className="min-h-0 flex-1">{children}</div>
-        </div>
-      </div>
-    </SidebarContext.Provider>
-  );
-}
+import { AppFrame, SidebarToggle } from "./app-frame";
+import { AgentModeBadge, Signal, Viewport } from "./kit";
+import { outpostNavigation } from "./outpost-navigation";
 
 function AskRow({
   ask,
@@ -936,7 +450,7 @@ export function NeedsYouComposition() {
         />
       </div>
       <Viewport>
-        <AppFrame place="needs-you" title="Needs you" bare>
+        <AppFrame navigation={outpostNavigation} place="needs-you">
           <div className="grid h-full @3xl:grid-cols-[minmax(--spacing(64),--spacing(88))_1fr]">
             <div className={cn("flex flex-col @3xl:border-r", screen === "ask" && "@max-3xl:hidden")}>
               <div className="flex h-14 shrink-0 items-center gap-1.5 ps-3 pe-2">
@@ -1037,7 +551,7 @@ export function NeedsYouComposition() {
 export function AgentsComposition() {
   return (
     <Viewport>
-      <AppFrame place="agents" title="Agents" actions={<Button size="sm">New agent</Button>}>
+      <AppFrame navigation={outpostNavigation} place="agents" title="Agents" actions={<Button size="sm">New agent</Button>}>
         <div className="mx-auto w-full max-w-2xl px-(--pad) pt-2 pb-(--pad)">
           <dl className="grid grid-cols-3 gap-3">
             {[
@@ -1058,10 +572,7 @@ export function AgentsComposition() {
                 className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-0.5 border-b border-foreground/6 px-text py-3 last:border-b-0"
               >
                 <span className="font-medium">{agent.name}</span>
-                <span className="inline-flex items-center gap-2 justify-self-end">
-                  <Signal tone={agent.tone} />
-                  {agent.mode}
-                </span>
+                <AgentModeBadge tone={agent.tone} mode={agent.mode} className="justify-self-end" />
                 <span className="min-w-0 truncate text-muted-foreground">
                   {agent.runtime}
                   <span className="hidden @2xl:inline">
@@ -1138,6 +649,7 @@ export function AdminComposition() {
       />
     <Viewport>
       <AppFrame
+        navigation={outpostNavigation}
         place="admin"
         title="Admin"
         actions={
@@ -1154,8 +666,8 @@ export function AdminComposition() {
               {list === "open" ? <VersionsOpen /> : <VersionsBounded />}
             </CardContent>
             <CardFooter>
-              <Button variant="secondary">Compare</Button>
-              <Button>Roll back to v13</Button>
+              <Button shape="pill" variant="secondary">Compare</Button>
+              <Button shape="pill">Roll back to v13</Button>
             </CardFooter>
           </Card>
           <Card>
@@ -1171,7 +683,7 @@ export function AdminComposition() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button className="w-full">End admin now</Button>
+              <Button shape="pill" className="w-full">End admin now</Button>
             </CardFooter>
           </Card>
         </div>
@@ -1227,7 +739,7 @@ export function SignInComposition() {
           title="Sign in to Outpost"
           description="Use your Vercel account. Outpost only reads who you are."
         >
-          <Button size="lg" className="w-full">
+          <Button shape="pill" size="lg" className="w-full">
             Continue with Vercel
           </Button>
         </AuthCard>
@@ -1243,10 +755,10 @@ export function SignInComposition() {
             <Input id="code" defaultValue="KXQM-7TRD" className="h-(--button-h) text-center font-mono tracking-widest [--button-h:calc(var(--spacing)*9)]" />
           </div>
           <div className="mt-1 grid gap-2">
-            <Button size="lg" className="w-full">
+            <Button shape="pill" size="lg" className="w-full">
               Approve
             </Button>
-            <Button size="lg" variant="ghost" className="w-full">
+            <Button shape="pill" size="lg" variant="ghost" className="w-full">
               Deny
             </Button>
           </div>
