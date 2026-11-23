@@ -4,12 +4,13 @@
 @import "@fontsource-variable/jetbrains-mono";
 
 @source "../";
+@source inline("bg-{neutral,red,orange,amber,yellow,lime,emerald,blue,indigo,purple}-{50,{100..900..100},950}");
 
 /* Type seeds the theme panel tunes. */
 :root {
   --text-ui: 14px;
   --rond: 50;
-  --mono-scale: 0.92;
+  --mono-scale: 1;
 }
 
 @layer base {
@@ -25,4 +26,50 @@
   .font-mono {
     font-size: calc(var(--mono-scale) * 1em);
   }
+}
+
+/* The Pierre renderers inherit Workbench tokens across their shadow boundaries. */
+.workbench-file-tree {
+  --trees-bg-override: var(--background);
+  --trees-fg-override: var(--foreground);
+  --trees-fg-muted-override: var(--muted-foreground);
+  --trees-bg-muted-override: var(--accent);
+  --trees-selected-bg-override: var(--accent);
+  --trees-selected-fg-override: var(--foreground);
+  --trees-focus-ring-color-override: var(--ring);
+  --trees-selected-focused-border-color-override: var(--ring);
+  --trees-font-family-override: var(--font-ui);
+  --trees-font-size-override: var(--text-xs);
+  --trees-git-lane-width-override: calc(var(--trees-row-height) - 2 * var(--trees-item-padding-x));
+  --trees-status-modified-override: var(--info-foreground);
+  --trees-status-added-override: var(--success-foreground);
+  --trees-status-deleted-override: var(--destructive-foreground);
+  --trees-padding-inline-override: --spacing(1);
+  --trees-item-padding-x-override: --spacing(1);
+  --trees-level-gap-override: --spacing(1);
+  --trees-border-radius-override: var(--radius-xs);
+  color-scheme: inherit;
+}
+
+.workbench-code-frame {
+  background-color: var(--background);
+  border-radius: var(--radius);
+  corner-shape: round;
+}
+
+.workbench-code {
+  --diffs-font-family: var(--font-code);
+  --diffs-font-size: var(--text-xs);
+  --diffs-line-height: --spacing(5);
+  --diffs-light-bg: var(--background);
+  --diffs-dark-bg: var(--background);
+  --diffs-bg-context-override: var(--background);
+  --diffs-bg-context-gutter-override: var(--background);
+  --diffs-gap-inline: --spacing(3);
+  --diffs-fg-number-override: var(--muted-foreground);
+  --diffs-addition-color-override: var(--success-strong);
+  --diffs-deletion-color-override: var(--destructive-strong);
+  --diffs-bg-addition-override: var(--success-fill);
+  --diffs-bg-deletion-override: var(--destructive-fill);
+  color-scheme: inherit;
 }
