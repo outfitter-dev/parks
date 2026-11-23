@@ -2,11 +2,12 @@
 
 import { useState, type ComponentProps, type ReactNode } from "react";
 import { Badge } from "@workspace/ui/components/badge";
+import { Item, ItemContent, ItemGroup, ItemMedia, ItemMeta, ItemTitle } from "@workspace/ui/components/item";
 import { StatusDot } from "@workspace/ui/components/status-dot";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
 import type { Tone as UiTone } from "@workspace/ui/lib/tone";
 import { cn } from "@workspace/ui/lib/utils";
-import type { Tone } from "#lib/fixtures";
+import { versions, type Tone } from "#lib/fixtures";
 
 /** A titled example on a plain canvas. */
 export function Specimen({
@@ -153,5 +154,33 @@ export function HaloSignal({
         className="origin-center animate-spin [animation-duration:1.2s] [transform-box:fill-box] motion-reduce:animate-none"
       />
     </svg>
+  );
+}
+
+/**
+ * The routing history: one control-height row per saved version, newest
+ * first, the live one marked. `list` is the open form, `bounded` sits in a
+ * panel; the rows are the same either way.
+ */
+export function VersionRows({ variant = "list", className }: { variant?: "list" | "bounded"; className?: string }) {
+  return (
+    <ItemGroup variant={variant} className={cn(variant === "bounded" && "concentric", className)}>
+      {versions.map((item, index) => (
+        <Item key={item.version} size="xs">
+          <ItemMedia className="w-8 justify-start font-mono text-muted-foreground tabular-nums">v{item.version}</ItemMedia>
+          <ItemContent>
+            <ItemTitle className="font-normal">{item.change}</ItemTitle>
+          </ItemContent>
+          {index === 0 ? (
+            <ItemMeta className="flex items-center gap-2 font-medium text-success-strong">
+              <StatusDot tone="success" />
+              Live
+            </ItemMeta>
+          ) : (
+            <ItemMeta>{item.when}</ItemMeta>
+          )}
+        </Item>
+      ))}
+    </ItemGroup>
   );
 }
