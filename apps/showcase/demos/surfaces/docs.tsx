@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { Mark } from "@workspace/ui/components/mark";
 import { Alert, AlertDescription, AlertTitle } from "@workspace/ui/components/alert";
 import { Button } from "@workspace/ui/components/button";
 import { Kbd } from "@workspace/ui/components/kbd";
@@ -30,9 +31,9 @@ const installs: Record<string, string> = {
 function Step({ n, title, children }: { n: number; title: string; children: ReactNode }) {
   return (
     <section className="relative ps-10">
-      <span className="absolute start-0 top-0 grid size-6 place-items-center rounded-full bg-fill-subtle text-xs font-medium tabular-nums ring-1 ring-border-muted">
+      <Mark shape="circle" className="absolute start-0 top-0 bg-fill-subtle font-medium text-foreground ring-1 ring-border-muted">
         {n}
-      </span>
+      </Mark>
       <h2 id={title} className="mb-2 font-semibold">{title}</h2>
       <div className="flex flex-col gap-3 text-muted-foreground">{children}</div>
     </section>
@@ -46,7 +47,7 @@ export function DocsSurface() {
       <div className="min-h-160 bg-background text-foreground">
         <header className="flex h-12 items-center gap-4 px-4">
           <span className="flex items-center gap-2 font-semibold">
-            <span className="grid size-6 place-items-center rounded-md bg-foreground text-xs text-background">O</span>
+            <Mark variant="solid" className="font-normal">O</Mark>
             Outpost <span className="font-normal text-muted-foreground">Docs</span>
           </span>
           <Button variant="outline" className="ms-auto w-64 min-w-0 shrink justify-start gap-2 rounded-lg text-muted-foreground">

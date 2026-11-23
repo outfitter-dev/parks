@@ -2,6 +2,7 @@
 
 import { useState, type ComponentProps, type ReactNode } from "react";
 import { Badge } from "@workspace/ui/components/badge";
+import { StatusDot } from "@workspace/ui/components/status-dot";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
 import type { Tone as UiTone } from "@workspace/ui/lib/tone";
 import { cn } from "@workspace/ui/lib/utils";
@@ -88,20 +89,8 @@ export function Viewport({ children }: { children: ReactNode }) {
 }
 
 /** A small dot that signals state, used in place of colored badges. */
-export function Signal({ tone }: { tone: "live" | "wait" | "off" | "alert" | "new" }) {
-  return (
-    <span
-      aria-hidden
-      className={cn(
-        "inline-block size-2 shrink-0 rounded-full",
-        tone === "live" && "bg-success",
-        tone === "wait" && "bg-warning",
-        tone === "off" && "bg-fg-subtle",
-        tone === "alert" && "bg-destructive",
-        tone === "new" && "bg-new",
-      )}
-    />
-  );
+export function Signal({ tone }: { tone: Tone | "new" }) {
+  return <StatusDot tone={tone === "new" ? "info" : agentModeTones[tone]} />;
 }
 
 /** Agent modes as UI tones: the one mapping the badge and the halo share. */
