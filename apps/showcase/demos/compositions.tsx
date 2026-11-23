@@ -137,8 +137,8 @@ function SidebarPanel({ place }: { place: Place }) {
   );
 }
 
-/** Frame widths at or above this dock the sidebar; below it the sidebar opens over the page. Matches @5xl. */
-const DOCK_MIN_WIDTH = 1024;
+/** Frame widths at or above this dock the sidebar; below it the sidebar opens over the page. Sits between the tablet (820px) and a laptop window with the workbench nav (~960px). */
+const DOCK_MIN_WIDTH = 896;
 
 /** Shared motion for the sidebar: its shape, the space it takes, and the header clearance. */
 const sidebarMotion = "duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none";
