@@ -78,9 +78,9 @@
   --neutral-tint: 0.0015;
   --border-strength: 0.5;
   --shadow-level: 0;
-  /* The brand picks a palette step (palette.css); tune the palette's seed
-     to tune the brand. */
-  --brand: var(--color-orange-500);
+  /* The brand scale points at one palette (palette.css; a theme repoints
+     --color-brand-*), and the brand is its 500 step. */
+  --brand: var(--color-brand-500);
   --overlay: oklch(0 0 0 / 0.1);
 }
 

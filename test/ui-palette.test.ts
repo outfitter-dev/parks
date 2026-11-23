@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { paletteNames, renderPalette, steps } from "../packages/ui/src/lib/palette";
+import { chromaticScale, defaultBrand, maxChroma, paletteNames, palettes, renderPalette, steps } from "../packages/ui/src/lib/palette";
 
 const repo = join(import.meta.dirname, "..");
 const css = readFileSync(join(repo, "packages/ui/src/styles/palette.css"), "utf8");
@@ -26,9 +26,28 @@ describe("palette", () => {
     }
   });
 
-  it("derives the brand scale from --brand", () => {
+  it("points every brand step at the same step of one palette", () => {
     for (const step of steps) {
-      expect(css).toMatch(new RegExp(`--color-brand-${step}: oklch\\(from var\\(--brand\\)`));
+      expect(css).toMatch(new RegExp(`--color-brand-${step}: var\\(--color-${defaultBrand}-${step}\\);`));
     }
+  });
+
+  it("keeps every chromatic step inside Display P3 and every palette's steps in lightness order", () => {
+    for (const palette of Object.values(palettes)) {
+      if (palette.kind !== "chromatic") continue;
+      const scale = chromaticScale(palette.hue, palette.drift);
+      scale.forEach(([l, c, h], index) => {
+        expect(c).toBeLessThanOrEqual(maxChroma(l, h) + 1e-3);
+        if (index > 0) expect(l).toBeLessThan(scale[index - 1]![0]);
+      });
+    }
+  });
+
+  it("gives the same step the same lightness across hues, within a band", () => {
+    const chromatic = Object.values(palettes).filter((palette) => palette.kind === "chromatic");
+    steps.forEach((_, index) => {
+      const lightness = chromatic.map((palette) => chromaticScale(palette.hue, palette.drift)[index]![0]);
+      expect(Math.max(...lightness) - Math.min(...lightness)).toBeLessThan(0.11);
+    });
   });
 });

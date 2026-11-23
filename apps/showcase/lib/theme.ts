@@ -4,7 +4,7 @@
  * packages/ui defines. "Copy tokens" copies the same string.
  */
 
-import type { PaletteName } from "@workspace/ui/lib/palette";
+import { steps, type PaletteName } from "@workspace/ui/lib/palette";
 
 export type PresetId = "luma" | "linear";
 export type Mode = "system" | "light" | "dark";
@@ -17,7 +17,7 @@ export type ThemeTokens = {
   shape: { radius: number; pad: number; panelPad: number; textInset: number; control: number; field: number; smooth: number };
   type: { font: UiFont; size: number; rond: number; mono: MonoFont };
   color: {
-    /** A Tailwind palette name; the brand is that palette's 500 step. */
+    /** A Tailwind palette name; the brand scale is that palette, and the brand its 500 step. */
     brand: PaletteName;
     primary: PrimaryStyle;
     hue: number;
@@ -97,7 +97,7 @@ export function compileTheme(tokens: PresetValues): string {
     "--text-ui": `${type.size}px`,
     "--rond": `${type.rond}`,
     "--mono-scale": `${mono.scale[type.font]}`,
-    "--brand": `var(--color-${color.brand}-500)`,
+    ...Object.fromEntries(steps.map((step) => [`--color-brand-${step}`, `var(--color-${color.brand}-${step})`])),
     "--neutral-hue": `${color.hue}`,
     "--neutral-tint": `${color.tint}`,
     "--border-strength": `${color.border}`,
