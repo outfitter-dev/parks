@@ -237,7 +237,7 @@ const SIDEBAR_BOTTOM = 8; // the aside's pb beyond the gutter, --spacing(2)
 const POPOVER_MARGIN = 8;
 
 /**
- * What a collapsed web sidebar leaves behind: the brand, then one icon per
+ * What a collapsed web sidebar leaves behind: the brand, search, then one icon per
  * place, then the account. A place with a count or something new carries a
  * dot; the tooltip names it and gives the count.
  *
@@ -304,7 +304,16 @@ function SidebarRail({
           />
         </PopoverContent>
       </Popover>
-      <nav aria-label="Outpost" className="mt-3 flex flex-col items-center gap-1">
+      <Tooltip>
+        <TooltipTrigger render={<button type="button" aria-label="Search" className={cn(item, "mt-3")} />}>
+          <MagnifierIcon className="size-4.5" />
+        </TooltipTrigger>
+        <TooltipContent side="right">
+          Search
+          <span className="text-background/60">⌘K</span>
+        </TooltipContent>
+      </Tooltip>
+      <nav aria-label="Outpost" className="mt-2 flex flex-col items-center gap-1">
         {places.map(({ id, label, icon: Line, solid: Solid, count, dot }) => {
           const current = id === place;
           const Icon = current ? Solid : Line;
