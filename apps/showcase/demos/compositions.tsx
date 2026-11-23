@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import {
@@ -228,15 +228,40 @@ function SidebarToggle() {
   );
 }
 
+/** Sidebar geometry in px, mirrored from the docked aside so the rail's popover can match it. */
+const SIDEBAR_WIDTH = 224; // w-56
+const RAIL_WIDTH = 56; // w-14
+const SIDEBAR_TOP = 16; // the aside's pt beyond the gutter, --spacing(4)
+const SIDEBAR_BOTTOM = 8; // the aside's pb beyond the gutter, --spacing(2)
+/** The popover keeps at least this much window around it, even when the container's gutter is 0. */
+const POPOVER_MARGIN = 8;
+
 /**
  * What a collapsed web sidebar leaves behind: the brand, then one icon per
  * place, then the account. A place with a count or something new carries a
- * dot; the tooltip names it and gives the count. Hovering the brand shows the
- * whole sidebar as a popover laid over the rail, its brand on the rail's
- * brand, so it reads as the sidebar peeking back; its end button docks it.
+ * dot; the tooltip names it and gives the count.
+ *
+ * Hovering the brand shows the sidebar as a popover the height of the page
+ * container, held the gutter (at least 8px) off the window's top, left and
+ * bottom. Inside it the items sit exactly where the docked sidebar puts them,
+ * shifted right by that left margin, so docking it just drops the card. Its
+ * end button docks it.
  */
-function SidebarRail({ place, onDock }: { place: Place; onDock: () => void }) {
+function SidebarRail({
+  place,
+  gutter,
+  anchor,
+  onDock,
+}: {
+  place: Place;
+  /** The container's gutter in px. */
+  gutter: number;
+  /** The rail column, which spans the frame's height. */
+  anchor: RefObject<HTMLDivElement | null>;
+  onDock: () => void;
+}) {
   const [open, setOpen] = useState(false);
+  const margin = Math.max(gutter, POPOVER_MARGIN);
   const item = "relative grid size-9 place-items-center rounded-lg text-muted-foreground hover:bg-foreground/5 hover:text-foreground";
   return (
     <>
@@ -251,13 +276,21 @@ function SidebarRail({ place, onDock }: { place: Place; onDock: () => void }) {
           <Brand />
         </PopoverTrigger>
         <PopoverContent
+          anchor={anchor}
           side="right"
           align="start"
-          // Land the popover's brand on the rail's: the 36px trigger centres its 24px
-          // brand, and the panel's brand sits 16px in and 20px down.
-          sideOffset={-46}
-          alignOffset={-2}
-          className="h-[min(--spacing(140),var(--available-height))] w-56 gap-0 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] bg-popover p-2 shadow-(--shadow-frame)"
+          // Pull the popover back over the rail to sit `margin` off the window's left and top.
+          sideOffset={margin - RAIL_WIDTH}
+          alignOffset={margin}
+          style={{
+            // Vertical padding puts the items at the docked sidebar's height; never tighter than the margin.
+            paddingTop: Math.max(gutter + SIDEBAR_TOP - margin, POPOVER_MARGIN),
+            paddingBottom: Math.max(gutter + SIDEBAR_BOTTOM - margin, POPOVER_MARGIN),
+            height: `calc(var(--anchor-height) - ${margin * 2}px)`,
+            width: SIDEBAR_WIDTH,
+          }}
+          // Inherit the page type, not the popover's text-sm, so rows keep the docked line height.
+          className="gap-0 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] bg-popover px-2 text-[length:inherit] leading-[inherit] shadow-(--shadow-frame) data-[side=right]:slide-in-from-left-0"
         >
           <SidebarPanel
             place={place}
@@ -338,6 +371,7 @@ function AppFrame({
   children: ReactNode;
 }) {
   const frameRef = useRef<HTMLDivElement>(null);
+  const railRef = useRef<HTMLDivElement>(null);
   const shell = useShell();
   const inset = shell.style === "inset";
   const flush = shell.gutter === 0;
@@ -414,6 +448,7 @@ function AppFrame({
         {backdrop}
         {inset ? (
           <div
+            ref={railRef}
             inert={!rail}
             className={cn(
               "absolute inset-y-0 start-0 z-10 flex w-14 flex-col items-center pt-[calc(var(--g)+--spacing(2.5))] pb-(--g) transition-opacity",
@@ -421,7 +456,7 @@ function AppFrame({
               rail ? "opacity-100 delay-150" : "pointer-events-none opacity-0",
             )}
           >
-            <SidebarRail place={place} onDock={() => setExpanded(true)} />
+            <SidebarRail place={place} gutter={shell.gutter} anchor={railRef} onDock={() => setExpanded(true)} />
           </div>
         ) : null}
         <aside
