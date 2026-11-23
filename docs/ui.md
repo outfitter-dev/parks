@@ -9,6 +9,10 @@ Outpost's pages use Tailwind CSS v4 and shadcn components built on Base UI. Shar
 
 Import shared pieces by their package path, for example `import { Button } from "@workspace/ui/components/button"`.
 
+## Control typography
+
+Use the shared component’s typography for control labels. Tabs that switch between code examples use the same UI typeface and size as other tabs. Within a code example, use the code typography for the command or output. When migrating a bespoke control to a shared component, check which local styles still serve a purpose before carrying them over.
+
 ## Adding a shadcn component
 
 Add components through the repo script, which runs the shadcn CLI against `packages/ui` and then swaps every icon for Solar:
@@ -26,10 +30,10 @@ The script also fixes a CLI 4.23.0 bug that writes the `#lib/utils` import as `f
 Solar (`@solar-icons/react`) is the only icon library. Import each icon on its own from a style subpath, never from the package root:
 
 ```tsx
-import { BellIcon } from "@solar-icons/react/linear/bell";
+import { BellIcon } from "@solar-icons/react/outline/bell";
 ```
 
-Use `linear` by default, `bold` for selected states and `bold-duotone` for empty states. Buttons that hold only a glyph, and glyphs on a filled or dark background (a primary button, for example), use `bold`. A leading or trailing glyph in a button sits on the centre of the pill's end radius; the button computes that inset from its height, so mark the glyph with `data-icon="inline-start"` or `"inline-end"`. Icons take their colour from `currentColor` and their size from the component (usually `size-4`). `test/icons.test.ts` fails on any other icon library or a root import.
+Use `outline` by default, `bold` for selected states, and `bold-duotone` for empty states. Use `linear` when the icon needs an adjustable stroke. Mark icons alongside button text with `data-icon="inline-start"` or `"inline-end"` so the button sets the correct padding. Icons take their color from `currentColor` and their size from the component. `test/icons.test.ts` checks the icon library and import paths.
 
 ## Theme
 
