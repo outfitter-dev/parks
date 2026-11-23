@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, type ComponentType, type RefObject } from "react";
+import { Mark } from "@workspace/ui/components/mark";
+import { StatusDot } from "@workspace/ui/components/status-dot";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Kbd } from "@workspace/ui/components/kbd";
@@ -33,15 +35,15 @@ export type AppNavigation = {
 /** The dot form, for a place that has something new but no useful number. */
 function NavDot() {
   return (
-    <span className="ml-auto grid size-5 place-items-center" aria-label="New">
-      <span className="size-1.5 rounded-full bg-foreground" />
+    <span className="ml-auto grid size-5 place-items-center">
+      <StatusDot size="xs" label="New" className="bg-tone-strong" />
     </span>
   );
 }
 
 function Brand({ mark }: { mark: string }) {
   return (
-    <span className="grid size-6 shrink-0 place-items-center rounded-md bg-brand text-xs text-brand-foreground">{mark}</span>
+    <Mark tone="brand" variant="solid" className="font-normal">{mark}</Mark>
   );
 }
 
@@ -250,7 +252,7 @@ export function SidebarRail({
               >
                 <Icon className="size-5 shrink-0" />
                 {count || dot ? (
-                  <span aria-hidden className="absolute top-1.5 end-1.5 size-1.5 rounded-full bg-foreground ring-2 ring-canvas" />
+                  <StatusDot size="xs" className="absolute top-1.5 end-1.5 bg-tone-strong ring-2 ring-canvas" />
                 ) : null}
               </TooltipTrigger>
               <TooltipContent side="right">

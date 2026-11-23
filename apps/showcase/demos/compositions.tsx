@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import { Badge } from "@workspace/ui/components/badge";
+import { Mark } from "@workspace/ui/components/mark";
 import { Button } from "@workspace/ui/components/button";
 import {
   Card,
@@ -131,18 +132,14 @@ function markFor(mark: OptionMark, label: string, index: number, count: number):
 /** A bounded tile in the option's top-left corner, light until its option is picked. */
 function OptionTile({ picked, tone, children }: { picked: boolean; tone: MarkTone; children: ReactNode }) {
   return (
-    <span
+    <Mark
       aria-hidden
-      data-tone={picked && tone === "neutral" ? "brand" : tone}
-      className={cn(
-        "grid size-6 shrink-0 place-items-center rounded-md text-xs font-semibold tabular-nums transition-colors",
-        picked
-          ? "bg-tone-strong text-tone-contrast data-[tone=brand]:bg-tone"
-          : "bg-tone-fill text-tone-foreground data-[tone=neutral]:bg-fill-subtle data-[tone=brand]:text-tone-strong",
-      )}
+      tone={picked && tone === "neutral" ? "brand" : tone}
+      selected={picked}
+      className={cn(!picked && tone === "neutral" && "bg-fill-subtle")}
     >
       {children}
-    </span>
+    </Mark>
   );
 }
 
@@ -686,9 +683,9 @@ export function AdminComposition() {
 /** A circular tonal mark: the glyph and its ground come from the same brand ramp. */
 function TonalMark({ children }: { children: ReactNode }) {
   return (
-    <span className="grid size-12 place-items-center rounded-full bg-brand-fill text-brand-strong">
+    <Mark tone="brand" size="xl" shape="circle">
       {children}
-    </span>
+    </Mark>
   );
 }
 

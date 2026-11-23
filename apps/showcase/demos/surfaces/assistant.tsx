@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MultiFileDiff } from "@pierre/diffs/react";
+import { Mark } from "@workspace/ui/components/mark";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { InlineCode } from "@workspace/ui/components/inline-code";
@@ -169,9 +170,9 @@ export function AssistantSurface() {
 
           <Turn from="agent" name="Donna">
             <span className="flex items-center gap-2 text-muted-foreground">
-              <span className="grid size-7 place-items-center rounded-full bg-muted text-brand-strong">
+              <Mark tone="brand" size="lg" shape="circle">
                 <DotmCircular4 size={20} dotSize={3} ariaLabel="Working" />
-              </span>
+              </Mark>
               Adding the alias and a deprecation header
             </span>
           </Turn>
