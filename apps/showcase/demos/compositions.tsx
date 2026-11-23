@@ -23,7 +23,8 @@ import { ChatRoundDotsIcon } from "@solar-icons/react/linear/chat-round-dots";
 import { HistoryIcon } from "@solar-icons/react/linear/history";
 import { InboxIcon } from "@solar-icons/react/linear/inbox";
 import { KeyIcon } from "@solar-icons/react/linear/key";
-import { SidebarMinimalisticIcon } from "@solar-icons/react/linear/sidebar-minimalistic";
+import { PanelLeftCloseIcon } from "@solar-icons/react/linear/panel-left-close";
+import { PanelLeftOpenIcon } from "@solar-icons/react/linear/panel-left-open";
 import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
 import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
 import { CheckCircleIcon as CheckCircleBold } from "@solar-icons/react/bold/check-circle";
@@ -86,13 +87,22 @@ function Brand() {
   );
 }
 
-/** The full sidebar: brand, search, places and the account. Its toggle lives in the page header (see SidebarToggle). */
-function SidebarPanel({ place }: { place: Place }) {
+/**
+ * The full sidebar: brand, search, places and the account. Its toggle lives in
+ * the page header (see SidebarToggle); when the sidebar opens over the page and
+ * covers that toggle, `onHide` puts a hide button at the end of the brand row.
+ */
+function SidebarPanel({ place, onHide }: { place: Place; onHide?: () => void }) {
   return (
     <>
       <div className="flex h-6 items-center gap-2 px-2 font-semibold">
         <Brand />
         Outpost
+        {onHide ? (
+          <Button variant="ghost" size="icon-sm" aria-label="Hide sidebar" onClick={onHide} className="-me-1 ml-auto">
+            <PanelLeftCloseIcon />
+          </Button>
+        ) : null}
       </div>
       <button
         type="button"
@@ -154,7 +164,7 @@ function SidebarToggle() {
       aria-expanded={sidebar.expanded}
       onClick={sidebar.toggle}
     >
-      <SidebarMinimalisticIcon />
+      {sidebar.expanded ? <PanelLeftCloseIcon /> : <PanelLeftOpenIcon />}
     </Button>
   );
 }
@@ -243,7 +253,7 @@ function AppFrame({
           if (event.key === "Escape" && overlay) setExpanded(false);
         }}
       >
-        <SidebarPanel place={place} />
+        <SidebarPanel place={place} onHide={overlay ? () => setExpanded(false) : undefined} />
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
         {bare ? null : (
