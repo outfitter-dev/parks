@@ -64,99 +64,51 @@ import { Textarea } from "@workspace/ui/components/textarea";
 import { Toggle } from "@workspace/ui/components/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@workspace/ui/components/tooltip";
-import { AddCircleIcon } from "@solar-icons/react/bold/add-circle";
-import { BellOffIcon } from "@solar-icons/react/linear/bell-off";
-import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
-import { DangerCircleIcon } from "@solar-icons/react/linear/danger-circle";
-import { DangerTriangleIcon } from "@solar-icons/react/linear/danger-triangle";
-import { InfoCircleIcon } from "@solar-icons/react/linear/info-circle";
-import { MenuDotsIcon } from "@solar-icons/react/bold/menu-dots";
-import { PenIcon } from "@solar-icons/react/linear/pen";
-import { RefreshIcon } from "@solar-icons/react/linear/refresh";
+import { BellOffIcon } from "@solar-icons/react/outline/bell-off";
+import { CheckCircleIcon } from "@solar-icons/react/outline/check-circle";
+import { DangerCircleIcon } from "@solar-icons/react/outline/danger-circle";
+import { DangerTriangleIcon } from "@solar-icons/react/outline/danger-triangle";
+import { InfoCircleIcon } from "@solar-icons/react/outline/info-circle";
+import { PenIcon } from "@solar-icons/react/outline/pen";
 import { RefreshIcon as RefreshBoldIcon } from "@solar-icons/react/bold/refresh";
-import { PenIcon as PenBoldIcon } from "@solar-icons/react/bold/pen";
-import { TrashBinMinimalisticIcon } from "@solar-icons/react/linear/trash-bin-minimalistic";
+import { TrashBinMinimalisticIcon } from "@solar-icons/react/outline/trash-bin-minimalistic";
 import { agents } from "#lib/fixtures";
-import { HaloSignal, Signal, Specimen } from "./kit";
-
-export function ButtonDemo() {
-  return (
-    <>
-      <Specimen title="Variants">
-        <Button>Approve</Button>
-        <Button variant="secondary">Snooze</Button>
-        <Button variant="outline">View thread</Button>
-        <Button variant="ghost">Dismiss</Button>
-        <Button variant="destructive">Revoke</Button>
-        <Button variant="link">Open in Board</Button>
-      </Specimen>
-      <Specimen title="Sizes" note="Default height follows the control token.">
-        <Button size="xs">Extra small</Button>
-        <Button size="sm">Small</Button>
-        <Button>Default</Button>
-        <Button size="lg">Large</Button>
-      </Specimen>
-      <Specimen title="With icons" note="Glyph-only buttons and filled buttons use solid glyphs; text buttons on light fills keep the outline.">
-        <Button>
-          <AddCircleIcon data-icon="inline-start" />
-          New agent
-        </Button>
-        <Button variant="outline">
-          <RefreshIcon data-icon="inline-start" />
-          Re-run
-        </Button>
-        <Button variant="ghost" size="icon" aria-label="More">
-          <MenuDotsIcon />
-        </Button>
-        <Button variant="outline" size="icon-sm" aria-label="Edit">
-          <PenBoldIcon />
-        </Button>
-      </Specimen>
-      <Specimen title="States">
-        <Button disabled>Disabled</Button>
-        <Button variant="outline" aria-invalid>
-          Invalid
-        </Button>
-      </Specimen>
-    </>
-  );
-}
+import { AgentModeBadge, HaloSignal, Specimen } from "./kit";
 
 export function BadgeDemo() {
   return (
     <>
       <Specimen title="Tones" note="Flat by default: a soft tint with matching text and no edge. Neutral is the default.">
         <Badge>Dry run</Badge>
+        <Badge variant="surface" shape="pill">Approval</Badge>
         <Badge variant="info">Queued</Badge>
         <Badge variant="success">Live</Badge>
         <Badge variant="warning">Waiting</Badge>
         <Badge variant="destructive">Failed</Badge>
-        <Badge variant="primary">New</Badge>
-        <Badge variant="outline">Muted</Badge>
+        <Badge variant="info">New</Badge>
       </Specimen>
       <Specimen
         title="Status"
-        note="A leading dot sits as far from the start edge as from the top and bottom. A neutral dot is lighter than its label."
+        note="Rectangular badges with dots use the same side padding as text-only badges. A neutral dot is lighter than its label."
       >
         <Badge dot>Off</Badge>
         <Badge variant="info" live>Running</Badge>
         <Badge variant="success" dot>In sync</Badge>
         <Badge variant="warning" dot>Needs you</Badge>
         <Badge variant="destructive" dot>Failing</Badge>
-        <Badge icon={<HaloSignal tone="wait" label="Working" />}>Working</Badge>
-          Delivering
-        </Badge>
+        <Badge icon={<HaloSignal label="Working" />}>Working</Badge>
       </Specimen>
       <Specimen title="Live" note="The dot gives off a soft halo while something runs. Reduced motion stops it.">
         <Badge variant="success" live>Live</Badge>
         <Badge variant="info" live>Deploying</Badge>
         <Badge variant="destructive" live>Recording</Badge>
       </Specimen>
-      <Specimen title="Counts" note="Round, at least as wide as it is tall, digits of even width. Above the cap it reads 99+.">
+      <Specimen title="Counts" note="Plain and filled counts share the same sizing. Above the cap, the count reads 99+.">
         <Badge count={3} />
         <Badge variant="info" count={12} />
         <Badge variant="destructive" count={128} />
-        <Badge variant="primary" count={7} />
+        <Badge variant="plain" shape="rect" count={7} />
+        <Badge variant="success" shape="rect" count={7} />
       </Specimen>
       <Specimen
         title="Shape"
@@ -203,14 +155,14 @@ export function CardDemo() {
             </CardAction>
           </CardHeader>
           <CardContent>
-            <div className="panel flex items-center justify-between bg-muted px-text">
+            <div className="panel flex items-center justify-between bg-panel-fill px-text">
               <span>Destination</span>
               <span className="font-mono text-muted-foreground">webhook · devin</span>
             </div>
           </CardContent>
           <CardFooter>
-            <Button variant="ghost">Mute</Button>
-            <Button>Open</Button>
+            <Button shape="pill" variant="ghost">Mute</Button>
+            <Button shape="pill">Open</Button>
           </CardFooter>
         </Card>
       </Specimen>
@@ -398,9 +350,7 @@ export function TableDemo() {
             <TableRow key={agent.name}>
               <TableCell className="pl-(--pad) font-medium">{agent.name}</TableCell>
               <TableCell>
-                <span className="inline-flex items-center gap-2">
-                  <Signal tone={agent.tone} /> {agent.mode}
-                </span>
+                <AgentModeBadge tone={agent.tone} mode={agent.mode} />
               </TableCell>
               <TableCell className="font-mono text-muted-foreground">{agent.destination}</TableCell>
               <TableCell className="pr-(--pad) text-right text-muted-foreground">{agent.seen}</TableCell>
@@ -431,7 +381,7 @@ export function TableDemo() {
                 </span>
               </TableCell>
               <TableCell className="py-2.5 pr-(--pad) text-right">
-                <Badge variant={modeBadge[agent.tone]} dot>{agent.mode}</Badge>
+                <AgentModeBadge tone={agent.tone} mode={agent.mode} />
                 <span className="block pt-0.5 text-xs text-muted-foreground">{agent.seen}</span>
               </TableCell>
             </TableRow>
@@ -442,13 +392,6 @@ export function TableDemo() {
     </>
   );
 }
-
-const modeBadge = {
-  live: "success",
-  wait: "warning",
-  alert: "destructive",
-  off: "neutral",
-} as const;
 
 export function FeedbackDemo() {
   return (

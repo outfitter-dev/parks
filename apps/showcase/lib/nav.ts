@@ -29,6 +29,7 @@ export const entries: Entry[] = [
 
   { section: "components", slug: "button", title: "Button", summary: "Variants, sizes, icons and states." },
   { section: "components", slug: "badge", title: "Badge", summary: "Short status labels." },
+  { section: "components", slug: "breadcrumb", title: "Breadcrumb", summary: "Paths, separators, and overflow for deep navigation." },
   { section: "components", slug: "card", title: "Card", summary: "The frame. Its radius is the inner radius plus its padding." },
   { section: "components", slug: "inputs", title: "Inputs", summary: "Input, textarea, select, checkbox and switch." },
   { section: "components", slug: "tabs", title: "Tabs and toggles", summary: "Tabs, toggle and toggle group." },
