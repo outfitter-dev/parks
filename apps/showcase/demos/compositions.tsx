@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import {
@@ -86,14 +86,11 @@ function Brand() {
   );
 }
 
-/**
- * The full sidebar: brand, search, places and the account. The toggle sits
- * outside it (see AppFrame), so the brand row leaves room for it at the end.
- */
+/** The full sidebar: brand, search, places and the account. Its toggle lives in the page header (see SidebarToggle). */
 function SidebarPanel({ place }: { place: Place }) {
   return (
     <>
-      <div className="flex h-6 items-center gap-2 ps-2 pe-9 font-semibold">
+      <div className="flex h-6 items-center gap-2 px-2 font-semibold">
         <Brand />
         Outpost
       </div>
@@ -140,18 +137,36 @@ function SidebarPanel({ place }: { place: Place }) {
 /** Frame widths at or above this dock the sidebar; below it the sidebar opens over the page. Sits between the tablet (820px) and a laptop window with the workbench nav (~960px). */
 const DOCK_MIN_WIDTH = 896;
 
-/** Shared motion for the sidebar: its shape, the space it takes, and the header clearance. */
+/** Shared motion for the sidebar: where it sits and the space it takes. */
 const sidebarMotion = "duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none";
+
+const SidebarContext = createContext<{ expanded: boolean; toggle: () => void } | null>(null);
+
+/** Shows or hides the sidebar. Sits just before the page title in every header, open or closed. */
+function SidebarToggle() {
+  const sidebar = useContext(SidebarContext);
+  if (!sidebar) return null;
+  return (
+    <Button
+      variant="ghost"
+      size="icon-sm"
+      aria-label={sidebar.expanded ? "Hide sidebar" : "Show sidebar"}
+      aria-expanded={sidebar.expanded}
+      onClick={sidebar.toggle}
+    >
+      <SidebarMinimalisticIcon />
+    </Button>
+  );
+}
 
 /**
  * The app frame: an inset sidebar and the page. The sidebar floats inside the
- * window with a gap on every side, the way macOS 26 draws it. The toggle is
- * pinned to the sidebar's top end corner, so collapsing carries it along as
- * the sidebar shrinks into a circle in the top corner that holds only it.
+ * window with a gap on every side, the way macOS 26 draws it, and slides out
+ * of the frame when hidden. Its toggle sits before the title in each page
+ * header, so it never moves and the headers need no room for a collapsed control.
  *
  * Wide frames dock the expanded sidebar beside the page; narrow ones start
- * collapsed and open it over the page. Page headers are as tall as the circle's
- * centre line needs, and read `--clear` to step past the circle while it shows.
+ * collapsed and open it over the page.
  */
 function AppFrame({
   place,
@@ -199,13 +214,8 @@ function AppFrame({
   const motion = ready ? sidebarMotion : "transition-none";
 
   return (
-    <div
-      ref={frameRef}
-      className={cn(
-        "relative flex min-h-160 overflow-hidden bg-background text-foreground",
-        docked ? "[--clear:--spacing(0)]" : "[--clear:--spacing(11)]",
-      )}
-    >
+    <SidebarContext.Provider value={{ expanded, toggle: () => setExpanded(!expanded) }}>
+    <div ref={frameRef} className="relative flex min-h-160 overflow-hidden bg-background text-foreground">
       {/* Holds the docked sidebar's width in the page flow, and gives it up as the sidebar shrinks. */}
       <div
         aria-hidden
@@ -221,48 +231,24 @@ function AppFrame({
       ) : null}
       <aside
         aria-label="Sidebar"
+        inert={!expanded}
         className={cn(
-          "absolute start-2 top-2 z-30 overflow-hidden bg-muted/85 shadow-(--shadow-frame) ring-1 ring-foreground/8 backdrop-blur-xl",
-          "transition-[width,height,border-radius,box-shadow]",
+          "absolute inset-y-2 start-2 z-30 flex w-56 flex-col rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] bg-muted/85 p-2 shadow-(--shadow-frame) ring-1 ring-foreground/8 backdrop-blur-xl",
+          "transition-[translate,opacity,box-shadow]",
           motion,
-          expanded
-            ? "h-[calc(100%-var(--spacing)*4)] w-56 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))]"
-            : "size-10 rounded-[--spacing(5)] [corner-shape:round]",
+          expanded ? "translate-x-0 opacity-100" : "-translate-x-[calc(100%+--spacing(4))] opacity-0",
           overlay && "bg-muted shadow-xl",
         )}
         onKeyDown={(event) => {
           if (event.key === "Escape" && overlay) setExpanded(false);
         }}
       >
-        <div
-          inert={!expanded}
-          className={cn(
-            "absolute inset-y-0 start-0 flex w-56 flex-col p-2 transition-opacity",
-            motion,
-            expanded ? "opacity-100 delay-100" : "opacity-0 duration-150",
-          )}
-        >
-          <SidebarPanel place={place} />
-        </div>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label={expanded ? "Hide sidebar" : "Show sidebar"}
-          aria-expanded={expanded}
-          onClick={() => setExpanded(!expanded)}
-          className="absolute end-1.5 top-1.5"
-        >
-          <SidebarMinimalisticIcon />
-        </Button>
+        <SidebarPanel place={place} />
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
         {bare ? null : (
-          <header
-            className={cn(
-              "flex h-14 items-center gap-3 pe-4 ps-[calc(--spacing(4)+var(--clear))] transition-[padding]",
-              motion,
-            )}
-          >
+          <header className="flex h-14 items-center gap-1.5 ps-2.5 pe-4">
+            <SidebarToggle />
             <h1 className="font-semibold">{title}</h1>
             <div className="ml-auto flex items-center gap-2">{actions}</div>
           </header>
@@ -270,6 +256,7 @@ function AppFrame({
         <div className="min-h-0 flex-1">{children}</div>
       </div>
     </div>
+    </SidebarContext.Provider>
   );
 }
 
@@ -695,7 +682,8 @@ export function NeedsYouComposition() {
         <AppFrame place="needs-you" title="Needs you" bare>
           <div className="grid h-full @3xl:grid-cols-[minmax(--spacing(64),--spacing(88))_1fr]">
             <div className={cn("flex flex-col @3xl:border-r", screen === "ask" && "@max-3xl:hidden")}>
-              <div className="flex h-14 shrink-0 items-center gap-2 pe-2 ps-[calc(--spacing(4)+var(--clear))] transition-[padding] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none">
+              <div className="flex h-14 shrink-0 items-center gap-1.5 ps-2.5 pe-2">
+                <SidebarToggle />
                 <h1 className="font-semibold">Needs you</h1>
                 <Tabs
                   value={view}
@@ -737,7 +725,7 @@ export function NeedsYouComposition() {
             {view === "open" && ask ? (
               <div className={cn("flex min-h-160 flex-col @3xl:min-h-0", screen === "list" && "@max-3xl:hidden")}>
                 <div className="grid gap-3 px-2 pb-3 @3xl:hidden">
-                  <div className="flex h-14 items-center gap-1 ps-(--clear) transition-[padding] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none">
+                  <div className="flex h-14 items-center gap-1">
                     <Button variant="ghost" size="sm" onClick={() => setScreen("list")}>
                       <AltArrowLeftIcon data-icon="inline-start" />
                       All asks
