@@ -90,19 +90,20 @@ function Brand() {
 /**
  * The full sidebar: brand, search, places and the account. Its toggle lives in
  * the page header (see SidebarToggle); when the sidebar opens over the page and
- * covers that toggle, `onHide` puts a hide button at the end of the brand row.
+ * covers that toggle, `onHide` puts a hide button in the same spot, before the brand.
  */
 function SidebarPanel({ place, onHide }: { place: Place; onHide?: () => void }) {
   return (
     <>
       <div className="flex h-6 items-center gap-2 px-2 font-semibold">
-        <Brand />
-        Outpost
         {onHide ? (
-          <Button variant="ghost" size="icon-sm" aria-label="Hide sidebar" onClick={onHide} className="-me-1 ml-auto">
+          // Lands exactly on the header toggle it covers: same 28px button, same centre.
+          <Button variant="ghost" size="icon-sm" aria-label="Hide sidebar" onClick={onHide} className="-ms-3">
             <PanelLeftCloseIcon />
           </Button>
         ) : null}
+        <Brand />
+        Outpost
       </div>
       <button
         type="button"
@@ -257,7 +258,7 @@ function AppFrame({
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
         {bare ? null : (
-          <header className="flex h-14 items-center gap-1.5 ps-2.5 pe-4">
+          <header className="flex h-14 items-center gap-1.5 ps-3 pe-4">
             <SidebarToggle />
             <h1 className="font-semibold">{title}</h1>
             <div className="ml-auto flex items-center gap-2">{actions}</div>
@@ -692,7 +693,7 @@ export function NeedsYouComposition() {
         <AppFrame place="needs-you" title="Needs you" bare>
           <div className="grid h-full @3xl:grid-cols-[minmax(--spacing(64),--spacing(88))_1fr]">
             <div className={cn("flex flex-col @3xl:border-r", screen === "ask" && "@max-3xl:hidden")}>
-              <div className="flex h-14 shrink-0 items-center gap-1.5 ps-2.5 pe-2">
+              <div className="flex h-14 shrink-0 items-center gap-1.5 ps-3 pe-2">
                 <SidebarToggle />
                 <h1 className="font-semibold">Needs you</h1>
                 <Tabs
