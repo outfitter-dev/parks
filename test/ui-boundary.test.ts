@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
+import { colourOpacity } from "./ui-rules";
 
 // packages/ui is meant to move to a shared repo (POST-120), so it may only use
 // its own files and the packages it declares. It must not reach into the app.
@@ -81,6 +82,12 @@ describe("packages/ui boundary", () => {
           const lengths = value.match(/\d+(?:\.\d+)?(?:px|rem|em)/g) ?? [];
           expect(lengths.every((length) => length === "1px" || length === "2px"), `${name}: ${value}`).toBe(true);
         }
+      });
+
+      // Translucent colours are named roles in globals.css (fill-subtle,
+      // border-muted, focus-ring and so on), never an ad hoc /NN opacity.
+      it(`${name} uses colour roles, not /NN opacity`, () => {
+        expect(text.match(colourOpacity) ?? [], name).toEqual([]);
       });
 
       // Light and dark values live in one token via light-dark(), so a

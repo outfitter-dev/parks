@@ -33,7 +33,7 @@ Solar (`@solar-icons/react`) is the only icon library. Import each icon on its o
 import { BellIcon } from "@solar-icons/react/outline/bell";
 ```
 
-Use `outline` by default, `bold` for selected states, and `bold-duotone` for empty states. Use `linear` when the icon needs an adjustable stroke. Mark icons alongside button text with `data-icon="inline-start"` or `"inline-end"` so the button sets the correct padding. Icons take their color from `currentColor` and their size from the component. `test/icons.test.ts` checks the icon library and import paths.
+Use `outline` by default, `bold` for selected states, and `bold-duotone` for empty states. `outline` glyphs are filled paths, so their weight is fixed at 1.5/24 of the icon size; there is no stroke token. Mark icons alongside button text with `data-icon="inline-start"` or `"inline-end"` so the button sets the correct padding. Icons take their color from `currentColor` and their size from the component. `test/icons.test.ts` checks the icon library and import paths.
 
 ## Theme
 
@@ -43,6 +43,8 @@ Values are stacked, not hard-coded:
 
 - **Seeds** are the few values a theme tunes: radius and padding, the neutral hue and tint, border strength, shadow level, the brand colour. The workbench theme panel sets only seeds.
 - **Derived tokens** are built from seeds. Every neutral is a lightness step on the neutral hue and tint, written once with `light-dark()` for both modes. Foregrounds point at the surface text they share (`--card-foreground: var(--foreground)`), and radii step from `--radius` by `--radius-step`.
-- **Components** use tokens or the Tailwind scale (`p-0.75`, `--spacing(60)`), never a literal colour or length. The only literals allowed are 1px and 2px hairline offsets. `test/ui-boundary.test.ts` enforces this.
+- **Palettes** are every Tailwind palette name (`red` to `rose`, the four greys and `neutral`), generated into `styles/palette.css` by `bun scripts/ui-palette.ts` from `src/lib/palette.ts`. Each palette has one seed, its 500 step, and every other step is that seed on one shared OKLCH curve, so `bg-red-500` keeps working while the values are ours. `neutral` follows the neutral hue and tint seeds. The brand is a palette name (Luma uses `orange`); `--color-brand-*` is the same curve from `--brand`. `test/ui-palette.test.ts` checks the CSS matches the script.
+- **Roles** are what components use. Tones map to palettes (destructive red, warning amber, success emerald, info blue, merged purple) and each gives `strong`, `foreground`, `contrast`, `fill` and `border` roles for both modes. Translucent neutrals are named too: `fg-subtle`, `fill-subtle`, `fill`, `fill-strong`, `border-muted`, `border-strong`, `inverse-muted`, `glass`, `focus-ring`.
+- **Components** use roles or the Tailwind scale (`p-0.75`, `--spacing(60)`), never a literal colour, a palette step, an ad hoc `/NN` opacity, a `dark:` override or a literal length. The only literals allowed are 1px and 2px hairline offsets. `test/ui-boundary.test.ts` enforces this for `packages/ui`, and `test/ui-workbench-roles.test.ts` holds the workbench demos to the opacity and `dark:` rules.
 
 A theme that sets `--primary-seed` (for example `var(--brand)`) replaces the default ink primary.

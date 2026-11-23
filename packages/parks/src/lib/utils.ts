@@ -16,7 +16,7 @@ const twMerge = extendTailwindMerge<"text-trim">({
       px: [{ px: ["inset", "text"] }],
       ps: [{ ps: ["inset", "text"] }],
       pe: [{ pe: ["inset", "text"] }],
-      rounded: [{ rounded: ["frame", "inner", "field"] }],
+      rounded: [{ rounded: ["frame", "inner", "field", "inset-action"] }],
     },
   },
 });

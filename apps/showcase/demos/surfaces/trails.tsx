@@ -88,7 +88,7 @@ function Node({ label, kind, current }: { label: string; kind: "trail" | "resour
     <span
       className={cn(
         "flex items-center gap-1.5 rounded-lg border bg-background px-2.5 py-1.5 font-mono text-xs shadow-xs",
-        current && "border-foreground/30 ring-2 ring-foreground/6",
+        current && "border-border-strong ring-2 ring-border-muted",
       )}
     >
       <Icon className="size-3.5 text-muted-foreground" />

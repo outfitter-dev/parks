@@ -4,6 +4,7 @@ import { DialRoot, useDialKitController, type DialConfig } from "dialkit";
 import "dialkit/styles.css";
 import { useEffect, useMemo, useRef } from "react";
 import { defaultShell, isShellStyle, setShell } from "#lib/shell";
+import { isPaletteName, paletteNames } from "@workspace/ui/lib/palette";
 import { compileTheme, presets, type Mode, type PresetId, type PresetValues } from "#lib/theme";
 
 const start = presets.luma.values;
@@ -31,7 +32,6 @@ const config = {
     control: [start.shape.control, 24, 44, 1],
     field: [start.shape.field, 0, 24, 1],
     smooth: [start.shape.smooth, 1, 4, 0.1],
-    stroke: [start.shape.stroke, 1, 2.5, 0.25],
   },
   type: {
     font: {
@@ -54,7 +54,11 @@ const config = {
     },
   },
   color: {
-    brand: { type: "color", default: start.color.brand },
+    brand: {
+      type: "select",
+      options: paletteNames.map((name) => ({ value: name, label: name })),
+      default: start.color.brand,
+    },
     primary: {
       type: "select",
       options: [
@@ -109,6 +113,8 @@ export function ThemeController() {
     },
     color: {
       ...values.color,
+      // Saved settings from before the palette select hold a colour string.
+      brand: isPaletteName(values.color.brand) ? values.color.brand : start.color.brand,
       primary: values.color.primary === "brand" ? "brand" : "ink",
     },
   };

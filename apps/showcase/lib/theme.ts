@@ -4,6 +4,8 @@
  * packages/ui defines. "Copy tokens" copies the same string.
  */
 
+import type { PaletteName } from "@workspace/ui/lib/palette";
+
 export type PresetId = "luma" | "linear";
 export type Mode = "system" | "light" | "dark";
 export type UiFont = "allo" | "inter";
@@ -12,10 +14,11 @@ export type PrimaryStyle = "ink" | "brand";
 
 export type ThemeTokens = {
   mode: Mode;
-  shape: { radius: number; pad: number; panelPad: number; textInset: number; control: number; field: number; smooth: number; stroke: number };
+  shape: { radius: number; pad: number; panelPad: number; textInset: number; control: number; field: number; smooth: number };
   type: { font: UiFont; size: number; rond: number; mono: MonoFont };
   color: {
-    brand: string;
+    /** A Tailwind palette name; the brand is that palette's 500 step. */
+    brand: PaletteName;
     primary: PrimaryStyle;
     hue: number;
     tint: number;
@@ -30,10 +33,10 @@ export const presets: Record<PresetId, { label: string; values: PresetValues }> 
   luma: {
     label: "Luma tuned",
     values: {
-      shape: { radius: 13, pad: 12, panelPad: 8, textInset: 0.4, control: 34, field: 8, smooth: 2, stroke: 1.5 },
+      shape: { radius: 13, pad: 12, panelPad: 8, textInset: 0.4, control: 34, field: 8, smooth: 2 },
       type: { font: "allo", size: 14, rond: 50, mono: "jetbrains" },
       color: {
-        brand: "oklch(0.705 0.213 47.604)",
+        brand: "orange",
         primary: "ink",
         hue: 70,
         tint: 0.0015,
@@ -45,10 +48,10 @@ export const presets: Record<PresetId, { label: string; values: PresetValues }> 
   linear: {
     label: "Linear-like",
     values: {
-      shape: { radius: 6, pad: 8, panelPad: 6, textInset: 0.4, control: 28, field: 6, smooth: 2, stroke: 1.5 },
+      shape: { radius: 6, pad: 8, panelPad: 6, textInset: 0.4, control: 28, field: 6, smooth: 2 },
       type: { font: "inter", size: 13, rond: 0, mono: "jetbrains" },
       color: {
-        brand: "oklch(0.6 0.17 277)",
+        brand: "indigo",
         primary: "brand",
         hue: 270,
         tint: 0.008,
@@ -64,9 +67,13 @@ const uiFonts: Record<UiFont, string> = {
   inter: `"Inter Variable", ui-sans-serif, system-ui, sans-serif`,
 };
 
-const monoFonts: Record<MonoFont, { stack: string; scale: number }> = {
-  plex: { stack: `"IBM Plex Mono", ui-monospace, monospace`, scale: 0.92 },
-  jetbrains: { stack: `"JetBrains Mono Variable", ui-monospace, monospace`, scale: 0.88 },
+/**
+ * Each mono font's size relative to the UI font beside it, so code and text
+ * share an x-height. At equal sizes JetBrains Mono and Allo already match.
+ */
+const monoFonts: Record<MonoFont, { stack: string; scale: Record<UiFont, number> }> = {
+  plex: { stack: `"IBM Plex Mono", ui-monospace, monospace`, scale: { allo: 0.92, inter: 0.92 } },
+  jetbrains: { stack: `"JetBrains Mono Variable", ui-monospace, monospace`, scale: { allo: 1, inter: 0.88 } },
 };
 
 /**
@@ -85,15 +92,12 @@ export function compileTheme(tokens: PresetValues): string {
     "--control-h": `${shape.control}px`,
     "--field-radius": `${shape.field}px`,
     "--corner-smoothing": `${shape.smooth}`,
-    // Older saved settings predate the stroke dial.
-    "--icon-stroke": `${shape.stroke ?? 1.5}px`,
     "--font-ui": uiFonts[type.font],
     "--font-code": mono.stack,
     "--text-ui": `${type.size}px`,
     "--rond": `${type.rond}`,
-    // At equal sizes, JetBrains Mono and Allo have nearly identical x- and cap heights.
-    "--mono-scale": type.font === "allo" && type.mono === "jetbrains" ? "1" : `${mono.scale}`,
-    "--brand": color.brand,
+    "--mono-scale": `${mono.scale[type.font]}`,
+    "--brand": `var(--color-${color.brand}-500)`,
     "--neutral-hue": `${color.hue}`,
     "--neutral-tint": `${color.tint}`,
     "--border-strength": `${color.border}`,

@@ -39,7 +39,7 @@ export function CodeFrame({ label, copyText, className, children }: {
   return (
     <figure className={cn("workbench-code-frame min-w-0 overflow-hidden border", className)}>
       {label || copyText !== undefined ? (
-        <figcaption className="flex min-h-8 items-center gap-2 border-b bg-muted/40 py-1 ps-3 pe-1 font-mono text-xs text-muted-foreground">
+        <figcaption className="flex min-h-8 items-center gap-2 border-b bg-fill-subtle py-1 ps-3 pe-1 font-mono text-xs text-muted-foreground">
           {label}
           {copyText !== undefined ? (
             <>
@@ -114,7 +114,7 @@ export function TraceLine({
   if (!children) return <li>{row}</li>;
   return (
     <li>
-      <button type="button" aria-expanded={open} onClick={() => setOpen(!open)} className="w-full rounded-md text-left hover:bg-accent/60">
+      <button type="button" aria-expanded={open} onClick={() => setOpen(!open)} className="w-full rounded-md text-left hover:bg-ghost-hover">
         {row}
       </button>
       {open ? <div className="mt-1 mb-2 ml-6">{children}</div> : null}
@@ -132,7 +132,7 @@ export function Turn({ from, name, children }: { from: "you" | "agent"; name?: s
   if (from === "you") {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[80%] rounded-2xl rounded-br-md bg-foreground/6 px-3.5 py-2 ring-1 ring-foreground/6">
+        <div className="max-w-[80%] rounded-2xl rounded-br-md bg-fill-subtle px-3.5 py-2 ring-1 ring-border-muted">
           <span className="sr-only">You said: </span>
           {children}
         </div>

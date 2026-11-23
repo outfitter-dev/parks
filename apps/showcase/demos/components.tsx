@@ -161,8 +161,8 @@ export function CardDemo() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button shape="pill" variant="ghost">Mute</Button>
-            <Button shape="pill">Open</Button>
+            <Button variant="ghost">Mute</Button>
+            <Button>Open</Button>
           </CardFooter>
         </Card>
       </Specimen>

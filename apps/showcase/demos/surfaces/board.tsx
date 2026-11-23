@@ -78,7 +78,7 @@ function Meter({ task }: { task: Task }) {
           {Array.from({ length: total }, (_, index) => (
             <span
               key={index}
-              className={cn("h-1 flex-1 rounded-full", index < done ? "bg-brand" : "bg-foreground/10")}
+              className={cn("h-1 flex-1 rounded-full", index < done ? "bg-brand" : "bg-fill-strong")}
             />
           ))}
         </span>
@@ -134,7 +134,7 @@ function RunTimeline() {
             <TimelineTitle className="text-trim min-w-0 flex-1">{step.title}</TimelineTitle>
             <TimelineDate className="text-trim mb-0 shrink-0 font-normal tabular-nums">{step.date}</TimelineDate>
           </TimelineHeader>
-          <TimelineIndicator className={cn("mt-0.5", index === 3 && "border-brand bg-brand/20")} />
+          <TimelineIndicator className={cn("mt-0.5", index === 3 && "border-brand bg-brand-fill")} />
           <TimelineSeparator className="mt-0.5" />
           <TimelineContent>{step.body}</TimelineContent>
         </TimelineItem>
@@ -179,7 +179,7 @@ export function BoardSurface() {
             >
               Work by state
             </Heading>
-            <div className="grid gap-4 rounded-xl bg-muted/50 p-2 @3xl:grid-cols-4 @3xl:gap-2">
+            <div className="grid gap-4 rounded-xl bg-fill-subtle p-2 @3xl:grid-cols-4 @3xl:gap-2">
               {lanes.map((lane) => (
                 <div key={lane.id} className="flex flex-col gap-2">
                   <span className="flex items-center gap-2 px-1 text-muted-foreground">

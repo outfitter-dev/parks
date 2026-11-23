@@ -21,7 +21,7 @@ function Cover({ className }: { className?: string }) {
     <div
       aria-hidden
       className={cn(
-        "rounded-xl bg-muted text-brand-600 ring-1 ring-foreground/6 dark:text-brand-400",
+        "rounded-xl bg-muted text-brand-strong ring-1 ring-border-muted",
         "bg-[radial-gradient(currentColor_1.5px,transparent_1.5px)] bg-size-[--spacing(3)_--spacing(3)]",
         "mask-radial-from-30% mask-radial-at-[70%_40%]",
         className,
@@ -65,7 +65,7 @@ function Index() {
         ))}
       </ul>
 
-      <form className="mt-10 flex flex-col gap-3 rounded-xl bg-muted/50 p-5 @3xl:flex-row @3xl:items-center">
+      <form className="mt-10 flex flex-col gap-3 rounded-xl bg-fill-subtle p-5 @3xl:flex-row @3xl:items-center">
         <span className="flex-1">
           <span className="font-medium">New notes by email</span>
           <span className="block text-muted-foreground">About twice a month. No tracking pixels.</span>

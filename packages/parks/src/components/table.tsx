@@ -43,7 +43,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
     <tfoot
       data-slot="table-footer"
       className={cnState(
-        "bg-muted/50 font-medium [&>tr:first-child>td]:border-t [&>tr>td]:border-b-0",
+        "bg-fill-subtle font-medium [&>tr:first-child>td]:border-t [&>tr>td]:border-b-0",
         className
       )}
       {...props}
@@ -82,7 +82,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="table-cell"
       className={cnState(
-        "border-b p-2 align-middle whitespace-nowrap transition-colors [&:has([role=checkbox])]:pr-0 in-data-[slot=table-body]:group-hover/row:border-b-transparent in-data-[slot=table-body]:group-hover/row:bg-muted/50 in-data-[slot=table-body]:group-hover/row:first:rounded-s-(--field-radius) in-data-[slot=table-body]:group-hover/row:last:rounded-e-(--field-radius) in-data-[slot=table-body]:group-data-[state=selected]/row:first:rounded-s-(--field-radius) in-data-[slot=table-body]:group-data-[state=selected]/row:last:rounded-e-(--field-radius) in-data-[slot=table-body]:group-has-aria-expanded/row:bg-muted/50 in-data-[slot=table-body]:group-data-[state=selected]/row:border-b-transparent in-data-[slot=table-body]:group-data-[state=selected]/row:bg-muted",
+        "border-b p-2 align-middle whitespace-nowrap transition-colors [&:has([role=checkbox])]:pr-0 in-data-[slot=table-body]:group-hover/row:border-b-transparent in-data-[slot=table-body]:group-hover/row:bg-fill-subtle in-data-[slot=table-body]:group-hover/row:first:rounded-s-(--field-radius) in-data-[slot=table-body]:group-hover/row:last:rounded-e-(--field-radius) in-data-[slot=table-body]:group-data-[state=selected]/row:first:rounded-s-(--field-radius) in-data-[slot=table-body]:group-data-[state=selected]/row:last:rounded-e-(--field-radius) in-data-[slot=table-body]:group-has-aria-expanded/row:bg-fill-subtle in-data-[slot=table-body]:group-data-[state=selected]/row:border-b-transparent in-data-[slot=table-body]:group-data-[state=selected]/row:bg-muted",
         className
       )}
       {...props}
