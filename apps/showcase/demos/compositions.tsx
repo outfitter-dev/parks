@@ -17,6 +17,7 @@ import { Progress } from "@workspace/ui/components/progress";
 import { Tabs, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
 import { Textarea } from "@workspace/ui/components/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
+import type { Tone } from "@workspace/ui/lib/tone";
 import { cn } from "@workspace/ui/lib/utils";
 import { KeyIcon } from "@solar-icons/react/outline/key";
 import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left";
@@ -73,7 +74,7 @@ type OptionStyle = "cards" | "stacked" | "tray";
 type OptionMark = "none" | "glyph" | "letter" | "number" | "yn";
 type OptionTone = "neutral" | "coded";
 type OptionLook = { style: OptionStyle; mark: OptionMark; tone: OptionTone; multi: boolean };
-type MarkTone = "neutral" | "success" | "warning" | "destructive" | "info" | "brand";
+type MarkTone = Extract<Tone, "neutral" | "success" | "warning" | "destructive" | "info" | "brand">;
 
 /**
  * Mark glyphs drawn on one stroke so a check and a pause carry the same weight.
@@ -122,29 +123,22 @@ function markFor(mark: OptionMark, label: string, index: number, count: number):
 }
 
 /**
- * Tile colours per tone, all roles, so light and dark come from the theme.
+ * Tiles read the tone roles, so light and dark come from the theme.
  * Unpicked is the tone's fill with its foreground mark; picked is the strong
  * tone with its contrast mark. Neutral is used when marks are not colour
- * coded, and keeps the brand for the picked state.
+ * coded: a fainter fill, and the brand once picked.
  */
-const tileTones: Record<MarkTone, { idle: string; picked: string }> = {
-  neutral: { idle: "bg-fill-subtle text-muted-foreground", picked: "bg-brand text-brand-foreground" },
-  success: { idle: "bg-success-fill text-success-foreground", picked: "bg-success-strong text-success-contrast" },
-  warning: { idle: "bg-warning-fill text-warning-foreground", picked: "bg-warning-strong text-warning-contrast" },
-  destructive: { idle: "bg-destructive-fill text-destructive-foreground", picked: "bg-destructive-strong text-destructive-contrast" },
-  info: { idle: "bg-info-fill text-info-foreground", picked: "bg-info-strong text-info-contrast" },
-  brand: { idle: "bg-brand-fill text-brand-strong", picked: "bg-brand text-brand-foreground" },
-};
-
 /** A bounded tile in the option's top-left corner, light until its option is picked. */
 function OptionTile({ picked, tone, children }: { picked: boolean; tone: MarkTone; children: ReactNode }) {
-  const colours = tileTones[tone];
   return (
     <span
       aria-hidden
+      data-tone={picked && tone === "neutral" ? "brand" : tone}
       className={cn(
         "grid size-6 shrink-0 place-items-center rounded-md text-xs font-semibold tabular-nums transition-colors",
-        picked ? colours.picked : colours.idle,
+        picked
+          ? "bg-tone-strong text-tone-contrast data-[tone=brand]:bg-tone"
+          : "bg-tone-fill text-tone-foreground data-[tone=neutral]:bg-fill-subtle data-[tone=brand]:text-tone-strong",
       )}
     >
       {children}
@@ -649,7 +643,7 @@ export function AdminComposition() {
         place="admin"
         title="Admin"
         actions={
-          <Badge variant="warning" dot>Elevated · 11:42 left</Badge>
+          <Badge tone="warning" dot>Elevated · 11:42 left</Badge>
         }
       >
         <div className="grid gap-(--pad) p-(--pad) @5xl:grid-cols-[1fr_--spacing(80)]">

@@ -33,13 +33,46 @@ const shapes = [
 ] as const;
 
 const variants = [
-  { variant: "default", label: "Primary" },
+  { variant: "solid", label: "Solid (primary)" },
+  { variant: "tint", label: "Tint" },
   { variant: "secondary", label: "Secondary" },
   { variant: "outline", label: "Outline" },
   { variant: "ghost", label: "Ghost" },
-  { variant: "destructive", label: "Destructive" },
   { variant: "link", label: "Link" },
 ] as const;
+
+const buttonTones = ["neutral", "destructive", "brand", "success"] as const;
+
+/** Tone is the colour, variant the emphasis: any tone takes any variant. */
+function ButtonTones() {
+  return (
+    <Specimen
+      title="Tones"
+      note="`tone` picks the colour and `variant` the emphasis. Outline, secondary, ghost and link keep neutral chrome and take the tone's text. shadcn's `destructive` is a destructive tint."
+    >
+      <Table aria-label="Button tones by variant">
+        <TableHeader>
+          <TableRow>
+            <TableHead scope="col">Tone</TableHead>
+            {variants.map(({ variant, label }) => <TableHead key={variant} scope="col">{label}</TableHead>)}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {buttonTones.map((tone) => (
+            <TableRow key={tone}>
+              <TableHead scope="row">{tone}</TableHead>
+              {variants.map(({ variant }) => (
+                <TableCell key={variant}>
+                  <Button tone={tone} variant={variant} size="sm">{tone === "destructive" ? "Delete" : "Edit"}</Button>
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Specimen>
+  );
+}
 
 const sizes = [
   { text: "xs", icon: "icon-xs", label: "Extra small", dimensions: "24px button · 12px icon" },
@@ -244,6 +277,7 @@ export function ButtonDemo() {
   return (
     <ButtonInspector>
       <ButtonVariants />
+      <ButtonTones />
       <ButtonSizes />
       <EmbeddedActions />
       <ButtonIconPlacement />

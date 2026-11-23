@@ -11,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@workspace/ui/components/table";
+import type { Tone } from "@workspace/ui/lib/tone";
 import { cn } from "@workspace/ui/lib/utils";
 import { ArrowRightIcon } from "@solar-icons/react/outline/arrow-right";
 import { BoltIcon } from "@solar-icons/react/outline/bolt";
@@ -62,10 +63,10 @@ const topo: { group: string; trails: { id: string; intent: Intent }[] }[] = [
   { group: "thread", trails: [{ id: "thread.reply", intent: "write" }] },
 ];
 
-const intentTones = { read: "neutral", write: "info", destroy: "destructive" } as const;
+const intentTones = { read: "neutral", write: "info", destroy: "destructive" } as const satisfies Record<string, Tone>;
 
 function IntentMark({ intent, className }: { intent: Intent; className?: string }) {
-  return <Badge variant={intentTones[intent]} className={cn("font-mono", className)}>{intent}</Badge>;
+  return <Badge tone={intentTones[intent]} className={cn("font-mono", className)}>{intent}</Badge>;
 }
 
 const input = `z.object({

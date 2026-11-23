@@ -1,40 +1,50 @@
 import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva } from "class-variance-authority"
+import { isTone, type Tone } from "#lib/tone"
 import { cnState } from "#lib/utils"
 
+/*
+ * `tone` colours only the glyph and title. The description stays muted, so a
+ * red or amber alert reads at a glance without shouting. `variant` keeps
+ * shadcn's names (`default`, `destructive`) and the older tone names as
+ * aliases for `tone`.
+ */
 const alertVariants = cva(
-  "group/alert relative grid w-full gap-0.5 rounded-lg border px-2.5 py-2 text-left text-sm has-data-[slot=alert-action]:relative has-data-[slot=alert-action]:pr-18 has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-2 *:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4",
+  "group/alert relative grid w-full gap-0.5 rounded-lg border bg-card px-2.5 py-2 text-left text-sm text-card-foreground has-data-[slot=alert-action]:relative has-data-[slot=alert-action]:pr-18 has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-2 *:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4",
   {
     variants: {
-      variant: {
-        default: "bg-card text-card-foreground",
-        // Tones colour only the glyph and title. The description stays muted,
-        // so a red or amber alert reads at a glance without shouting.
-        destructive:
-          "bg-card text-card-foreground *:data-[slot=alert-title]:text-destructive-strong *:[svg]:text-destructive-strong",
-        warning:
-          "bg-card text-card-foreground *:data-[slot=alert-title]:text-warning-strong *:[svg]:text-warning-strong",
-        success:
-          "bg-card text-card-foreground *:data-[slot=alert-title]:text-success-strong *:[svg]:text-success-strong",
-        info: "bg-card text-card-foreground *:data-[slot=alert-title]:text-info-strong *:[svg]:text-info-strong",
+      toned: {
+        true: "*:data-[slot=alert-title]:text-tone-strong *:[svg]:text-tone-strong",
+        false: "",
       },
     },
     defaultVariants: {
-      variant: "default",
+      toned: false,
     },
   }
 )
 
-function Alert({
-  className,
-  variant,
-  ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof alertVariants>) {
+type AlertVariant = "default" | Exclude<Tone, "neutral" | "brand" | "merged">
+
+type AlertProps = React.ComponentProps<"div"> & {
+  /** The colour of the glyph and title. Defaults to neutral. */
+  tone?: Tone
+  /** shadcn's `default`/`destructive`, or an older tone name: an alias for `tone`. */
+  variant?: AlertVariant | null
+}
+
+function Alert({ className, variant, tone: toneProp, ...props }: AlertProps) {
+  const tone: Tone = isTone(toneProp)
+    ? toneProp
+    : variant && variant !== "default"
+      ? variant
+      : "neutral"
   return (
     <div
       data-slot="alert"
+      data-tone={tone}
       role="alert"
-      className={cnState(alertVariants({ variant }), className)}
+      className={cnState(alertVariants({ toned: tone !== "neutral" }), className)}
       {...props}
     />
   )
@@ -99,4 +109,5 @@ function AlertAction({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-export { Alert, AlertTitle, AlertDescription, AlertAction, AlertMeta }
+export { Alert, AlertTitle, AlertDescription, AlertAction, AlertMeta, alertVariants }
+export type { AlertProps, AlertVariant }
