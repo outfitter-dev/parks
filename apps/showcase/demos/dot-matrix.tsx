@@ -198,7 +198,7 @@ export function DotMatrixDemo() {
         <Round className="size-10">
           <DotmCircular4 size={28} dotSize={3} ariaLabel="Syncing" />
         </Round>
-        <Button variant="outline" size="icon" className="rounded-full" disabled>
+        <Button variant="secondary" size="icon" className="rounded-full" disabled>
           <DotmCircular4 size={16} dotSize={2} ariaLabel="Re-running" />
         </Button>
         <Badge tone="info" icon={<DotmCircular4 size={12} dotSize={1.5} ariaLabel="Delivering" />}>
