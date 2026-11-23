@@ -4,6 +4,7 @@ import { Alert, AlertDescription, AlertMeta, AlertTitle } from "@workspace/ui/co
 import { CodeRef } from "@workspace/ui/components/code-ref";
 import { Avatar, AvatarFallback, AvatarGroup } from "@workspace/ui/components/avatar";
 import { Fragment } from "react";
+import { Item, ItemContent, ItemGroup, ItemMeta, ItemTitle } from "@workspace/ui/components/item";
 import { Badge } from "@workspace/ui/components/badge";
 import { Mark } from "@workspace/ui/components/mark";
 import { StatusDot } from "@workspace/ui/components/status-dot";
@@ -198,10 +199,12 @@ export function CardDemo() {
             </CardAction>
           </CardHeader>
           <CardContent>
-            <div className="panel flex items-center justify-between bg-panel-fill px-text">
-              <span>Destination</span>
-              <span className="font-mono text-muted-foreground">webhook · devin</span>
-            </div>
+            <Item variant="muted" size="xs" className="panel">
+              <ItemContent>
+                <ItemTitle className="font-normal">Destination</ItemTitle>
+              </ItemContent>
+              <ItemMeta className="font-mono">webhook · devin</ItemMeta>
+            </Item>
           </CardContent>
           <CardFooter>
             <Button variant="ghost">Mute</Button>
@@ -559,14 +562,16 @@ export function LayoutDemo() {
       </Specimen>
       <Specimen title="Scroll area" note="A bounded list with an overlay scrollbar.">
         <ScrollArea className="h-56 w-full max-w-sm rounded-lg border">
-          <div className="p-(--pad)">
+          <ItemGroup variant="list" className="px-(--pad)">
             {Array.from({ length: 24 }, (_, index) => (
-              <div key={index} className="flex justify-between border-b py-2 last:border-b-0">
-                <span>Delivery {String(index + 1).padStart(3, "0")}</span>
-                <span className="font-mono text-muted-foreground">200</span>
-              </div>
+              <Item key={index} size="xs" className="px-0">
+                <ItemContent>
+                  <ItemTitle className="font-normal">Delivery {String(index + 1).padStart(3, "0")}</ItemTitle>
+                </ItemContent>
+                <ItemMeta className="font-mono">200</ItemMeta>
+              </Item>
             ))}
-          </div>
+          </ItemGroup>
         </ScrollArea>
       </Specimen>
     </>

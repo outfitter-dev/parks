@@ -1,6 +1,7 @@
 "use client";
 
 import { FileTree, useFileTree, useFileTreeSelection } from "@pierre/trees/react";
+import { Item, ItemGroup, ItemMeta } from "@workspace/ui/components/item";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
 import { Tabs, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
@@ -174,11 +175,11 @@ function LandingDetails() {
 
       <section>
         <Heading>Rendered for each target</Heading>
-        <ul className="grid grid-cols-[max-content_minmax(0,1fr)_max-content] gap-x-2 divide-y rounded-lg border [--row-action-inset:--spacing(1)]">
+        <ItemGroup variant="list" className="grid grid-cols-[max-content_minmax(0,1fr)_max-content] gap-x-2 rounded-lg border [--row-action-inset:--spacing(1)]">
           {targets.map((target) => {
             const drifted = target.state === "drift";
             return (
-              <li key={target.name} className="col-span-3 grid min-h-9 grid-cols-subgrid items-center py-(--row-action-inset) ps-2.5 pe-(--row-action-inset)">
+              <Item key={target.name} size="xs" className="col-span-3 grid min-h-9 grid-cols-subgrid gap-x-2 py-(--row-action-inset) ps-2.5 pe-(--row-action-inset)">
                 <Tooltip>
                   <TooltipTrigger render={<span tabIndex={0} />} className="flex items-center gap-1.5 rounded-xs text-xs font-medium focus-visible:outline-2 focus-visible:outline-ring">
                     <Signal tone={drifted ? "wait" : "live"} />
@@ -187,7 +188,7 @@ function LandingDetails() {
                   </TooltipTrigger>
                   <TooltipContent>{drifted ? "Hand-edited since it was rendered" : "In sync with the source"}</TooltipContent>
                 </Tooltip>
-                <span title={target.path} className="min-w-0 truncate font-mono text-xs text-muted-foreground">{target.path}</span>
+                <ItemMeta title={target.path} className="min-w-0 truncate font-mono text-xs">{target.path}</ItemMeta>
                 {drifted ? (
                   <Tooltip>
                     <TooltipTrigger render={<Button
@@ -202,10 +203,10 @@ function LandingDetails() {
                     <TooltipContent>Repair output</TooltipContent>
                   </Tooltip>
                 ) : null}
-              </li>
+              </Item>
             );
           })}
-        </ul>
+        </ItemGroup>
       </section>
 
       <div className="grid gap-6 @5xl:grid-cols-[1.4fr_1fr]">

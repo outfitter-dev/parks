@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemHeader, ItemMedia, ItemMeta, ItemTitle } from "@workspace/ui/components/item";
 import { Badge } from "@workspace/ui/components/badge";
 import { Mark } from "@workspace/ui/components/mark";
 import { Button } from "@workspace/ui/components/button";
@@ -30,7 +31,7 @@ import { CheckIcon as CheckBold } from "@solar-icons/react/bold/check";
 import { PauseIcon as PauseBold } from "@solar-icons/react/bold/pause";
 import { agents, asks, versions, type Ask } from "#lib/fixtures";
 import { AppFrame, SidebarToggle } from "./app-frame";
-import { AgentModeBadge, Signal, Viewport } from "./kit";
+import { AgentModeBadge, Signal, VersionRows, Viewport } from "./kit";
 import { outpostNavigation } from "./outpost-navigation";
 
 function AskRow({
@@ -45,29 +46,31 @@ function AskRow({
   onSelect: () => void;
 }) {
   return (
-    <button
-      type="button"
+    <Item
+      render={<button type="button" />}
+      size="sm"
       onClick={onSelect}
       aria-pressed={active}
-      className={cn(
-        "flex w-full flex-col gap-1 rounded-lg px-3 py-2.5 text-left hover:bg-accent",
-        active && "@3xl:bg-accent",
-      )}
+      className={cn("gap-y-1", active && "@3xl:bg-fill")}
     >
-      <span className="flex items-center gap-2 text-muted-foreground">
-        <span className="font-medium text-foreground">{ask.agent}</span>
-        <span>{ask.project}</span>
-        <span className="ml-auto text-xs tabular-nums">{answered ? "Answered" : ask.age}</span>
-        {answered ? (
-          <CheckCircleBold className="size-3.5 shrink-0 text-success-strong" />
-        ) : (
-          <span className="grid size-3.5 shrink-0 place-items-center" aria-label="Unread">
-            <Signal tone="new" />
-          </span>
-        )}
-      </span>
-      <span className={cn("line-clamp-2", answered && "text-muted-foreground")}>{ask.title}</span>
-    </button>
+      <ItemHeader>
+        <ItemTitle className="gap-2">
+          {ask.agent}
+          <span className="font-normal text-muted-foreground">{ask.project}</span>
+        </ItemTitle>
+        <span className="ms-auto flex items-center gap-2">
+          <ItemMeta className="text-xs">{answered ? "Answered" : ask.age}</ItemMeta>
+          {answered ? (
+            <CheckCircleBold className="size-3.5 shrink-0 text-success-strong" />
+          ) : (
+            <span className="grid size-3.5 shrink-0 place-items-center" aria-label="Unread">
+              <Signal tone="new" />
+            </span>
+          )}
+        </span>
+      </ItemHeader>
+      <ItemDescription className={cn("basis-full", !answered && "text-foreground")}>{ask.title}</ItemDescription>
+    </Item>
   );
 }
 
@@ -552,72 +555,29 @@ export function AgentsComposition() {
               </div>
             ))}
           </dl>
-          <ul className="mt-6 grid">
+          <ItemGroup variant="list" className="mt-6">
             {agents.map((agent) => (
-              <li
-                key={agent.name}
-                className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-0.5 border-b border-border-muted px-text py-3 last:border-b-0"
-              >
-                <span className="font-medium">{agent.name}</span>
-                <AgentModeBadge tone={agent.tone} mode={agent.mode} className="justify-self-end" />
-                <span className="min-w-0 truncate text-muted-foreground">
-                  {agent.runtime}
-                  <span className="hidden @2xl:inline">
-                    {" · "}
-                    <span className="font-mono">{agent.destination}</span>
-                  </span>
-                </span>
-                <span className="justify-self-end text-muted-foreground tabular-nums">{agent.seen}</span>
-              </li>
+              <Item key={agent.name} size="sm" className="px-text">
+                <ItemContent>
+                  <ItemTitle>{agent.name}</ItemTitle>
+                  <ItemDescription className="truncate">
+                    {agent.runtime}
+                    <span className="hidden @2xl:inline">
+                      {" · "}
+                      <span className="font-mono">{agent.destination}</span>
+                    </span>
+                  </ItemDescription>
+                </ItemContent>
+                <ItemMeta>{agent.seen}</ItemMeta>
+                <ItemActions className="self-start">
+                  <AgentModeBadge tone={agent.tone} mode={agent.mode} />
+                </ItemActions>
+              </Item>
             ))}
-          </ul>
+          </ItemGroup>
         </div>
       </AppFrame>
     </Viewport>
-  );
-}
-
-function VersionsBounded() {
-  return (
-    <div className="concentric divide-y overflow-hidden rounded-lg bg-muted">
-      {versions.map((item, index) => (
-        <div key={item.version} className="flex h-(--control-h) items-center gap-3 px-text">
-          <span className="w-8 shrink-0 font-mono text-muted-foreground tabular-nums">v{item.version}</span>
-          <span className="min-w-0 flex-1 truncate">{item.change}</span>
-          {index === 0 ? (
-            <span className="flex items-center gap-2 font-medium text-success-strong">
-              <Signal tone="live" />
-              Live
-            </span>
-          ) : (
-            <span className="text-muted-foreground">{item.when}</span>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/** The open list: no container, more air, and the live version marked with a signal instead of a pill. */
-function VersionsOpen() {
-  return (
-    <ol className="grid px-text">
-      {versions.map((item, index) => (
-        <li key={item.version} className="flex items-baseline gap-2.5 border-b border-border-muted py-3 last:border-b-0">
-          <span className="shrink-0 font-mono text-muted-foreground tabular-nums">v{item.version}</span>
-          <span className="min-w-0 flex-1">
-            <span className="block truncate">{item.change}</span>
-            <span className="text-muted-foreground">{item.when}</span>
-          </span>
-          {index === 0 ? (
-            <span className="flex items-center gap-2 font-medium text-success-strong">
-              <Signal tone="live" />
-              Live
-            </span>
-          ) : null}
-        </li>
-      ))}
-    </ol>
   );
 }
 
@@ -650,7 +610,7 @@ export function AdminComposition() {
               <CardDescription>Each save makes a new version. Older ones stay here.</CardDescription>
             </CardHeader>
             <CardContent>
-              {list === "open" ? <VersionsOpen /> : <VersionsBounded />}
+              <VersionRows variant={list === "open" ? "list" : "bounded"} />
             </CardContent>
             <CardFooter>
               <Button variant="secondary">Compare</Button>
@@ -664,10 +624,12 @@ export function AdminComposition() {
             </CardHeader>
             <CardContent className="grid gap-3">
               <Progress value={78} aria-label="Time left" />
-              <div className="flex h-(--control-h) items-center rounded-lg bg-muted pe-text [--lead-size:var(--control-h)]">
-                <span className="lead"><KeyIcon className="size-4 text-muted-foreground" /></span>
-                Passkey confirmed at 9:38 PM
-              </div>
+              <Item variant="muted" size="xs">
+                <ItemMedia variant="icon"><KeyIcon className="text-muted-foreground" /></ItemMedia>
+                <ItemContent>
+                  <ItemTitle className="font-normal">Passkey confirmed at 9:38 PM</ItemTitle>
+                </ItemContent>
+              </Item>
             </CardContent>
             <CardFooter>
               <Button className="w-full">End admin now</Button>
