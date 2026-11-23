@@ -14,9 +14,11 @@ import {
 import { Input } from "@workspace/ui/components/input";
 import { Kbd } from "@workspace/ui/components/kbd";
 import { Label } from "@workspace/ui/components/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@workspace/ui/components/popover";
 import { Progress } from "@workspace/ui/components/progress";
 import { Tabs, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
 import { Textarea } from "@workspace/ui/components/textarea";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@workspace/ui/components/tooltip";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
 import { cn } from "@workspace/ui/lib/utils";
 import { ChatRoundDotsIcon } from "@solar-icons/react/linear/chat-round-dots";
@@ -99,16 +101,23 @@ function SidebarPanel({
   shell,
   onHide,
   hideAt,
+  onDock,
 }: {
   place: Place;
   shell: ShellStyle;
   onHide: () => void;
   hideAt: "start" | "end";
+  /** Shown from the rail: the end button docks the sidebar instead of hiding it. */
+  onDock?: () => void;
 }) {
   // On the bare canvas, solid accents vanish; translucent ink reads on any surface.
   const hover = shell === "inset" ? "hover:bg-foreground/5" : "hover:bg-accent";
   const current = shell === "inset" ? "bg-foreground/7" : "bg-accent";
-  const hide = (
+  const hide = onDock ? (
+    <Button variant="ghost" size="icon-sm" aria-label="Dock sidebar" onClick={onDock} className="-me-1 ml-auto">
+      <PanelLeftOpenIcon />
+    </Button>
+  ) : (
     <Button
       variant="ghost"
       size="icon-sm"
@@ -123,10 +132,10 @@ function SidebarPanel({
   return (
     <>
       <div className="flex h-6 items-center gap-2 px-2 font-semibold">
-        {hideAt === "start" ? hide : null}
+        {hideAt === "start" && !onDock ? hide : null}
         <Brand />
         Outpost
-        {hideAt === "end" ? hide : null}
+        {hideAt === "end" || onDock ? hide : null}
       </div>
       <button
         type="button"
@@ -178,9 +187,14 @@ const DOCK_MIN_WIDTH = 896;
 /** Shared motion for the sidebar: where it sits and the space it takes. */
 const sidebarMotion = "duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none";
 
-const SidebarContext = createContext<{ expanded: boolean; docked: boolean; ready: boolean; toggle: () => void } | null>(
-  null,
-);
+const SidebarContext = createContext<{
+  expanded: boolean;
+  docked: boolean;
+  /** The collapsed sidebar left a rail, which carries the way back in. */
+  rail: boolean;
+  ready: boolean;
+  toggle: () => void;
+} | null>(null);
 
 /**
  * Shows the sidebar from the page header, just before the title. While the
@@ -191,7 +205,7 @@ const SidebarContext = createContext<{ expanded: boolean; docked: boolean; ready
 function SidebarToggle() {
   const sidebar = useContext(SidebarContext);
   if (!sidebar) return null;
-  const folded = sidebar.docked;
+  const folded = sidebar.docked || sidebar.rail;
   return (
     <div
       inert={folded}
@@ -211,6 +225,88 @@ function SidebarToggle() {
         {sidebar.expanded ? <PanelLeftCloseIcon /> : <PanelLeftOpenIcon />}
       </Button>
     </div>
+  );
+}
+
+/**
+ * What a collapsed web sidebar leaves behind: the brand, then one icon per
+ * place, then the account. A place with a count or something new carries a
+ * dot; the tooltip names it and gives the count. Hovering the brand shows the
+ * whole sidebar as a popover laid over the rail, its brand on the rail's
+ * brand, so it reads as the sidebar peeking back; its end button docks it.
+ */
+function SidebarRail({ place, onDock }: { place: Place; onDock: () => void }) {
+  const [open, setOpen] = useState(false);
+  const item = "relative grid size-9 place-items-center rounded-lg text-muted-foreground hover:bg-foreground/5 hover:text-foreground";
+  return (
+    <>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger
+          openOnHover
+          delay={80}
+          closeDelay={200}
+          aria-label="Show sidebar"
+          className="grid size-9 place-items-center rounded-lg hover:bg-foreground/5 data-popup-open:bg-foreground/5"
+        >
+          <Brand />
+        </PopoverTrigger>
+        <PopoverContent
+          side="right"
+          align="start"
+          // Land the popover's brand on the rail's: the 36px trigger centres its 24px
+          // brand, and the panel's brand sits 16px in and 20px down.
+          sideOffset={-46}
+          alignOffset={-2}
+          className="h-[min(--spacing(140),var(--available-height))] w-56 gap-0 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] bg-popover p-2 shadow-(--shadow-frame)"
+        >
+          <SidebarPanel
+            place={place}
+            shell="inset"
+            onHide={() => setOpen(false)}
+            hideAt="end"
+            onDock={() => {
+              setOpen(false);
+              onDock();
+            }}
+          />
+        </PopoverContent>
+      </Popover>
+      <nav aria-label="Outpost" className="mt-3 flex flex-col items-center gap-1">
+        {places.map(({ id, label, icon: Line, solid: Solid, count, dot }) => {
+          const current = id === place;
+          const Icon = current ? Solid : Line;
+          return (
+            <Tooltip key={id}>
+              <TooltipTrigger
+                render={
+                  <a
+                    href="#"
+                    aria-label={label}
+                    aria-current={current ? "page" : undefined}
+                    className={cn(item, current && "bg-foreground/7 text-foreground")}
+                  />
+                }
+              >
+                <Icon className="size-4.5" />
+                {count || dot ? (
+                  <span aria-hidden className="absolute top-1.5 end-1.5 size-1.5 rounded-full bg-foreground ring-2 ring-canvas" />
+                ) : null}
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                {label}
+                {count ? <span className="text-background/60 tabular-nums">{count}</span> : null}
+              </TooltipContent>
+            </Tooltip>
+          );
+        })}
+      </nav>
+      <Tooltip>
+        <TooltipTrigger render={<button type="button" aria-label="Account" className={cn(item, "mt-auto")} />}>
+          <SettingsIcon className="size-4.5" />
+        </TooltipTrigger>
+        <TooltipContent side="right">Matt</TooltipContent>
+      </Tooltip>
+    </>
   );
 }
 
@@ -273,6 +369,8 @@ function AppFrame({
 
   const docked = wide && expanded;
   const overlay = !wide && expanded;
+  // The web style leaves an icon rail where a collapsed sidebar was, on frames wide enough to dock it.
+  const rail = inset && wide && !expanded;
   const motion = ready ? sidebarMotion : "transition-none";
   const hide = () => setExpanded(false);
 
@@ -294,7 +392,7 @@ function AppFrame({
   );
 
   return (
-    <SidebarContext.Provider value={{ expanded, docked, ready, toggle: () => setExpanded(!expanded) }}>
+    <SidebarContext.Provider value={{ expanded, docked, rail, ready, toggle: () => setExpanded(!expanded) }}>
       <div
         ref={frameRef}
         data-shell={shell.style}
@@ -310,10 +408,22 @@ function AppFrame({
           className={cn(
             "shrink-0 transition-[width]",
             motion,
-            docked ? (inset ? "w-56" : "w-[calc(--spacing(56)+--spacing(2))]") : "w-0",
+            docked ? (inset ? "w-56" : "w-[calc(--spacing(56)+--spacing(2))]") : rail ? "w-14" : "w-0",
           )}
         />
         {backdrop}
+        {inset ? (
+          <div
+            inert={!rail}
+            className={cn(
+              "absolute inset-y-0 start-0 z-10 flex w-14 flex-col items-center pt-[calc(var(--g)+--spacing(2.5))] pb-(--g) transition-opacity",
+              motion,
+              rail ? "opacity-100 delay-150" : "pointer-events-none opacity-0",
+            )}
+          >
+            <SidebarRail place={place} onDock={() => setExpanded(true)} />
+          </div>
+        ) : null}
         <aside
           aria-label="Sidebar"
           inert={!expanded}
@@ -346,12 +456,12 @@ function AppFrame({
               cn(
                 "my-(--g) me-(--g) overflow-hidden bg-background shadow-(--shadow-frame) ring-1 ring-foreground/8 transition-[margin,border-radius]",
                 motion,
-                // With the sidebar docked the container meets it; otherwise it holds the gutter on the left too.
-                docked ? "ms-0" : "ms-(--g)",
+                // Beside the docked sidebar or its rail the container meets it; otherwise it holds the gutter on the left too.
+                docked || rail ? "ms-0" : "ms-(--g)",
                 "rounded-[calc(var(--radius)*var(--corner-scale))] @max-md:rounded-none @max-md:ring-0 @max-md:shadow-none",
                 // At a gutter of 0 the container meets the window's edges and squares off there.
                 flush && "rounded-e-none",
-                flush && !docked && "rounded-s-none",
+                flush && !docked && !rail && "rounded-s-none",
               ),
           )}
         >
