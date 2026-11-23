@@ -48,6 +48,11 @@ const badgeVariants = cva(
         true: "ring-1 ring-tone-border",
         false: "",
       },
+      // Code, paths and identifiers: tags, file chips, graph nodes.
+      mono: {
+        true: "font-mono font-normal",
+        false: "",
+      },
       // The control scale's names (#lib/size), at badge heights.
       size: {
         xs: "[--badge-h:--spacing(4)] gap-0.5 px-1",
@@ -61,6 +66,7 @@ const badgeVariants = cva(
       size: "default",
       shape: "rect",
       ring: false,
+      mono: false,
     },
   }
 )
@@ -134,6 +140,7 @@ function Badge({
   tone: toneProp,
   shape,
   size,
+  mono,
   ring = false,
   dot,
   live,
@@ -189,14 +196,14 @@ function Badge({
     props: mergeProps<"span">(
       {
         className: cnState(
-          badgeVariants({ variant, size, shape: isCount && shape !== "rect" ? "pill" : shape, ring }),
+          badgeVariants({ variant, size, mono, shape: isCount && shape !== "rect" ? "pill" : shape, ring }),
           "data-[tone=destructive]:focus-visible:ring-invalid-ring",
           lead === "dot" && "[--badge-mark:--spacing(1.5)]",
-          lead === "icon" && "[--badge-mark:--spacing(3)]",
+          lead === "icon" && "[--badge-mark:--spacing(3)] data-[size=lg]:[--badge-mark:--spacing(4)]",
           className
         ),
         children: content,
-        ...{ "data-tone": tone, "data-variant": variant },
+        ...{ "data-tone": tone, "data-variant": variant, "data-size": size ?? "default" },
         ...(lead ? { "data-lead": lead } : {}),
         ...(isCount ? { "data-count": "" } : {}),
       },

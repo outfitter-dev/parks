@@ -3,6 +3,7 @@
 import { FileTree, useFileTree, useFileTreeSelection } from "@pierre/trees/react";
 import { Item, ItemGroup, ItemMeta } from "@workspace/ui/components/item";
 import { Badge } from "@workspace/ui/components/badge";
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@workspace/ui/components/empty";
 import { Button } from "@workspace/ui/components/button";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@workspace/ui/components/tooltip";
@@ -141,7 +142,12 @@ export function SkillsetSurface() {
           {showLanding ? (
             <LandingDetails />
           ) : (
-            <p className="text-muted-foreground">No preview for {selectedPath}.</p>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No preview</EmptyTitle>
+                <EmptyDescription className="font-mono text-xs">{selectedPath}</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           )}
         </ExplorerLayout>
       </AppFrame>
@@ -156,7 +162,7 @@ function LandingDetails() {
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <h2 className="text-lg font-semibold">landing</h2>
-            <Badge className="font-mono">.md</Badge>
+            <Badge mono>.md</Badge>
           </div>
           <p className="text-muted-foreground">
             Merge a reviewed, green change or stack under existing authority, bottom-up, and confirm what landed.
