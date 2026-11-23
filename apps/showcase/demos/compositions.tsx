@@ -88,22 +88,31 @@ function Brand() {
 }
 
 /**
- * The full sidebar: brand, search, places and the account. Its toggle lives in
- * the page header (see SidebarToggle); when the sidebar opens over the page and
- * covers that toggle, `onHide` puts a hide button in the same spot, before the brand.
+ * The full sidebar: brand, search, places and the account, with its own hide
+ * button. Docked, the button sits at the end of the brand row and leaves with
+ * the sidebar. Opened over the page (`hideAt: "start"`), it sits before the
+ * brand, exactly on the header toggle it covers.
  */
-function SidebarPanel({ place, onHide }: { place: Place; onHide?: () => void }) {
+function SidebarPanel({ place, onHide, hideAt }: { place: Place; onHide: () => void; hideAt: "start" | "end" }) {
+  const hide = (
+    <Button
+      variant="ghost"
+      size="icon-sm"
+      aria-label="Hide sidebar"
+      onClick={onHide}
+      // At the start it lands on the header toggle: same 28px button, same centre.
+      className={hideAt === "start" ? "-ms-3" : "-me-1 ml-auto"}
+    >
+      <PanelLeftCloseIcon />
+    </Button>
+  );
   return (
     <>
       <div className="flex h-6 items-center gap-2 px-2 font-semibold">
-        {onHide ? (
-          // Lands exactly on the header toggle it covers: same 28px button, same centre.
-          <Button variant="ghost" size="icon-sm" aria-label="Hide sidebar" onClick={onHide} className="-ms-3">
-            <PanelLeftCloseIcon />
-          </Button>
-        ) : null}
+        {hideAt === "start" ? hide : null}
         <Brand />
         Outpost
+        {hideAt === "end" ? hide : null}
       </div>
       <button
         type="button"
@@ -151,22 +160,39 @@ const DOCK_MIN_WIDTH = 896;
 /** Shared motion for the sidebar: where it sits and the space it takes. */
 const sidebarMotion = "duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none";
 
-const SidebarContext = createContext<{ expanded: boolean; toggle: () => void } | null>(null);
+const SidebarContext = createContext<{ expanded: boolean; docked: boolean; ready: boolean; toggle: () => void } | null>(
+  null,
+);
 
-/** Shows or hides the sidebar. Sits just before the page title in every header, open or closed. */
+/**
+ * Shows the sidebar from the page header, just before the title. While the
+ * sidebar is docked it carries its own hide button, so this one folds away to
+ * nothing; when the sidebar leaves, it grows back in and pushes the title over.
+ * Header rows use `gap-1.5`, which the folded state cancels with its margins.
+ */
 function SidebarToggle() {
   const sidebar = useContext(SidebarContext);
   if (!sidebar) return null;
+  const folded = sidebar.docked;
   return (
-    <Button
-      variant="ghost"
-      size="icon-sm"
-      aria-label={sidebar.expanded ? "Hide sidebar" : "Show sidebar"}
-      aria-expanded={sidebar.expanded}
-      onClick={sidebar.toggle}
+    <div
+      inert={folded}
+      className={cn(
+        "flex shrink-0 overflow-hidden transition-[width,margin,opacity] ease-out motion-reduce:transition-none",
+        sidebar.ready ? "duration-300" : "duration-0",
+        folded ? "ms-1 -me-1.5 w-0 opacity-0" : "w-7 opacity-100",
+      )}
     >
-      {sidebar.expanded ? <PanelLeftCloseIcon /> : <PanelLeftOpenIcon />}
-    </Button>
+      <Button
+        variant="ghost"
+        size="icon-sm"
+        aria-label={sidebar.expanded ? "Hide sidebar" : "Show sidebar"}
+        aria-expanded={sidebar.expanded}
+        onClick={sidebar.toggle}
+      >
+        {sidebar.expanded ? <PanelLeftCloseIcon /> : <PanelLeftOpenIcon />}
+      </Button>
+    </div>
   );
 }
 
@@ -225,7 +251,7 @@ function AppFrame({
   const motion = ready ? sidebarMotion : "transition-none";
 
   return (
-    <SidebarContext.Provider value={{ expanded, toggle: () => setExpanded(!expanded) }}>
+    <SidebarContext.Provider value={{ expanded, docked, ready, toggle: () => setExpanded(!expanded) }}>
     <div ref={frameRef} className="relative flex min-h-160 overflow-hidden bg-background text-foreground">
       {/* Holds the docked sidebar's width in the page flow, and gives it up as the sidebar shrinks. */}
       <div
@@ -254,7 +280,7 @@ function AppFrame({
           if (event.key === "Escape" && overlay) setExpanded(false);
         }}
       >
-        <SidebarPanel place={place} onHide={overlay ? () => setExpanded(false) : undefined} />
+        <SidebarPanel place={place} onHide={() => setExpanded(false)} hideAt={wide ? "end" : "start"} />
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
         {bare ? null : (
