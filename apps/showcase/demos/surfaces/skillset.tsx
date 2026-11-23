@@ -170,11 +170,11 @@ export function SkillsetSurface() {
                     <span className="min-w-0 flex-1 truncate font-mono text-xs text-muted-foreground">{target.path}</span>
                     {target.state === "drift" ? (
                       <>
-                        <Badge variant="warning">Hand-edited</Badge>
+                        <Badge variant="warning" dot>Hand-edited</Badge>
                         <Button variant="secondary" size="sm">Repair</Button>
                       </>
                     ) : (
-                      <Badge variant="success">In sync</Badge>
+                      <Badge variant="success" dot>In sync</Badge>
                     )}
                   </li>
                 ))}

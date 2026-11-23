@@ -77,7 +77,8 @@ import { RefreshIcon as RefreshBoldIcon } from "@solar-icons/react/bold/refresh"
 import { PenIcon as PenBoldIcon } from "@solar-icons/react/bold/pen";
 import { TrashBinMinimalisticIcon } from "@solar-icons/react/linear/trash-bin-minimalistic";
 import { agents } from "#lib/fixtures";
-import { Signal, Specimen } from "./kit";
+import { DotmCircular4 } from "./dotmatrix/dotm-circular-4";
+import { HaloSignal, Signal, Specimen } from "./kit";
 
 export function ButtonDemo() {
   return (
@@ -125,41 +126,63 @@ export function ButtonDemo() {
 export function BadgeDemo() {
   return (
     <>
-      <Specimen title="Variants">
-        <Badge>Live</Badge>
-        <Badge variant="secondary">Dry run</Badge>
-        <Badge variant="outline">Muted</Badge>
+      <Specimen title="Tones" note="Flat by default: a soft tint with matching text and no edge. Neutral is the default.">
+        <Badge>Dry run</Badge>
+        <Badge variant="info">Queued</Badge>
         <Badge variant="success">Live</Badge>
         <Badge variant="warning">Waiting</Badge>
-        <Badge variant="info">Queued</Badge>
         <Badge variant="destructive">Failed</Badge>
+        <Badge variant="primary">New</Badge>
+        <Badge variant="outline">Muted</Badge>
       </Specimen>
       <Specimen
-        title="On a surface"
-        note="Fills are translucent and each badge carries a soft tonal ring, so it separates from whatever sits behind it."
+        title="Status"
+        note="A leading dot sits as far from the start edge as from the top and bottom. A neutral dot is lighter than its label."
+      >
+        <Badge dot>Off</Badge>
+        <Badge variant="info" live>Running</Badge>
+        <Badge variant="success" dot>In sync</Badge>
+        <Badge variant="warning" dot>Needs you</Badge>
+        <Badge variant="destructive" dot>Failing</Badge>
+        <Badge icon={<HaloSignal tone="wait" label="Working" />}>Working</Badge>
+        <Badge variant="info" icon={<DotmCircular4 size={12} dotSize={1.5} ariaLabel="Delivering" />}>
+          Delivering
+        </Badge>
+      </Specimen>
+      <Specimen title="Live" note="The dot gives off a soft halo while something runs. Reduced motion stops it.">
+        <Badge variant="success" live>Live</Badge>
+        <Badge variant="info" live>Deploying</Badge>
+        <Badge variant="destructive" live>Recording</Badge>
+      </Specimen>
+      <Specimen title="Counts" note="Round, at least as wide as it is tall, digits of even width. Above the cap it reads 99+.">
+        <Badge count={3} />
+        <Badge variant="info" count={12} />
+        <Badge variant="destructive" count={128} />
+        <Badge variant="primary" count={7} />
+      </Specimen>
+      <Specimen
+        title="Shape"
+        note="A rounded rectangle by default, so it sits quietly beside other corners. In a card's corner it becomes a pill that shares the corner's centre."
+      >
+        <Badge variant="success" dot>Rectangle</Badge>
+        <Badge variant="success" dot shape="pill">Pill</Badge>
+      </Specimen>
+      <Specimen
+        title="With a ring"
+        note="For a busy surface, `ring` adds a 1px ring in the badge's own tone."
       >
         <div className="flex flex-wrap items-center gap-2 rounded-lg bg-muted p-3">
-          <Badge variant="secondary">Dry run</Badge>
-          <Badge variant="outline">
-            <span className="lead"><Signal tone="live" /></span>Live
-          </Badge>
-          <Badge variant="success">Live</Badge>
+          <Badge ring>Dry run</Badge>
+          <Badge variant="success" ring live>Live</Badge>
+          <Badge variant="warning" ring dot>Needs you</Badge>
+          <Badge variant="destructive" ring>Failed</Badge>
+        </div>
+        <div className="flex flex-wrap items-center gap-2 rounded-lg bg-muted p-3">
+          <Badge>Dry run</Badge>
+          <Badge variant="success" live>Live</Badge>
+          <Badge variant="warning" dot>Needs you</Badge>
           <Badge variant="destructive">Failed</Badge>
         </div>
-      </Specimen>
-      <Specimen title="With a signal dot" note="The dot carries the state; the label stays neutral.">
-        <Badge variant="outline">
-          <span className="lead"><Signal tone="live" /></span>Live
-        </Badge>
-        <Badge variant="outline">
-          <span className="lead"><Signal tone="wait" /></span>Waiting on you
-        </Badge>
-        <Badge variant="outline">
-          <span className="lead"><Signal tone="off" /></span>Off
-        </Badge>
-        <Badge variant="outline">
-          <span className="lead"><Signal tone="alert" /></span>Failing
-        </Badge>
       </Specimen>
     </>
   );
@@ -178,9 +201,7 @@ export function CardDemo() {
             <CardTitle>Donna</CardTitle>
             <CardDescription>Devin · overnight PR backlog</CardDescription>
             <CardAction>
-              <Badge variant="outline">
-                <span className="lead"><Signal tone="live" /></span>Live
-              </Badge>
+              <Badge variant="success" live>Live</Badge>
             </CardAction>
           </CardHeader>
           <CardContent>
@@ -412,7 +433,7 @@ export function TableDemo() {
                 </span>
               </TableCell>
               <TableCell className="py-2.5 pr-(--pad) text-right">
-                <Badge variant={modeBadge[agent.tone]}>{agent.mode}</Badge>
+                <Badge variant={modeBadge[agent.tone]} dot>{agent.mode}</Badge>
                 <span className="block pt-0.5 text-xs text-muted-foreground">{agent.seen}</span>
               </TableCell>
             </TableRow>
@@ -428,7 +449,7 @@ const modeBadge = {
   live: "success",
   wait: "warning",
   alert: "destructive",
-  off: "secondary",
+  off: "neutral",
 } as const;
 
 export function FeedbackDemo() {

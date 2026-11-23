@@ -172,10 +172,7 @@ export function DotMatrixDemo() {
           ))}
         </span>
         <span className="flex flex-wrap items-center gap-4">
-          <Badge variant="outline">
-            <span className="lead"><HaloSignal tone="wait" size={12} label="Working" /></span>
-            Working
-          </Badge>
+          <Badge icon={<HaloSignal tone="wait" label="Working" />}>Working</Badge>
           <Button variant="secondary" disabled>
             <HaloSignal tone="live" size={14} label="Deploying" data-icon="inline-start" />
             Deploying
@@ -204,12 +201,10 @@ export function DotMatrixDemo() {
         <Button variant="outline" size="icon" className="rounded-full" disabled>
           <DotmCircular4 size={16} dotSize={2} ariaLabel="Re-running" />
         </Button>
-        <Badge variant="outline" className="gap-1.5">
-          <DotmCircular4 size={12} dotSize={1.5} ariaLabel="Delivering" />
+        <Badge variant="info" icon={<DotmCircular4 size={12} dotSize={1.5} ariaLabel="Delivering" />}>
           Delivering
         </Badge>
-        <Badge variant="secondary" className="gap-1.5 text-brand-700 dark:text-brand-300">
-          <DotmCircular2 size={12} dotSize={1.5} ariaLabel="Waiting" />
+        <Badge variant="warning" icon={<DotmCircular2 size={12} dotSize={1.5} ariaLabel="Waiting" />}>
           Waiting on Rex
         </Badge>
       </Specimen>
