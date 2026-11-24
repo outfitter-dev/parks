@@ -8,7 +8,14 @@ import { describe, expect, it } from "vitest";
 const repo = join(import.meta.dirname, "..");
 const gallery = join(repo, "apps/showcase/demos/icons.tsx");
 const scanned = ["app", "apps", "cli", "lib", "packages", "plugins"];
-const skip = new Set(["node_modules", ".next", ".turbo", "dist"]);
+const skip = new Set([
+  "node_modules",
+  ".next",
+  ".turbo",
+  ".wrangler",
+  "dist",
+  "out",
+]);
 
 function files(dir: string): string[] {
   let names: string[];

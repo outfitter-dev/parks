@@ -22,6 +22,8 @@
     "test": "vitest run",
     "dev": "bun scripts/dev.ts",
     "build": "bun run --cwd apps/showcase build",
+    "deploy:check": "bun run build && wrangler deploy --dry-run",
+    "preview": "bun run build && wrangler dev",
     "changeset": "changeset",
     "ui:add": "bun scripts/ui-add.ts",
     "ui:palette": "bun scripts/ui-palette.ts",
@@ -45,7 +47,8 @@
     "tailwindcss": "4.3.5",
     "typescript": "7.0.2",
     "ultracite": "8.3.1",
-    "vitest": "5.1.1"
+    "vitest": "5.1.1",
+    "wrangler": "4.168.0"
   },
   "engines": {
     "bun": ">=1.4.4"

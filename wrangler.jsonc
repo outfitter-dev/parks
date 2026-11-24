@@ -1,0 +1,13 @@
+// Parks' showcase as a static Cloudflare Worker: no server code, only the
+// files `bun run build` exports to apps/showcase/out (pages, /r and llms.txt).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "parks",
+  "account_id": "a99f870938c35bab699690600efd5a35",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./apps/showcase/out",
+    "not_found_handling": "404-page",
+  },
+  "routes": [{ "pattern": "parks.outfitter.dev", "custom_domain": true }],
+}
