@@ -10,6 +10,7 @@ import {
   AttachmentMedia,
   AttachmentTitle,
 } from "@outfitter/parks/components/attachment";
+import { Message } from "@outfitter/parks/components/message";
 import { Prose } from "@outfitter/parks/components/prose";
 import {
   Questionnaire,
@@ -33,16 +34,7 @@ import {
   ResizablePanelGroup,
 } from "@outfitter/parks/components/resizable";
 import { Spinner } from "@outfitter/parks/components/spinner";
-import {
-  Trace,
-  TraceCollapsible,
-  TraceCollapsibleContent,
-  TraceCollapsibleTrigger,
-  TraceDescription,
-  TraceIcon,
-  TraceLine,
-  TraceTitle,
-} from "@outfitter/parks/components/trace";
+import { Trace, TraceStep } from "@outfitter/parks/components/trace";
 import { CloseIcon } from "@solar-icons/react/bold/close";
 import { RefreshIcon } from "@solar-icons/react/bold/refresh";
 import { CodeSquareIcon } from "@solar-icons/react/outline/code-square";
@@ -141,59 +133,43 @@ export function AttachmentDemo() {
 export function TraceDemo() {
   return (
     <Specimen
-      title="Tool steps"
-      note="What an agent did, one line per step. A running step shimmers, an error takes the destructive tone, and a step with output opens to show it."
+      title="Tool steps in a thread"
+      note="A message per turn: yours in a bubble, the agent's as plain content. Inside it, a trace lists what the agent did, one line per step. A running step shows the spinner, a failed step takes the destructive tone, and a step with output opens to show it."
       className="block max-w-lg"
     >
-      <Trace>
-        <TraceLine>
-          <TraceIcon>
-            <MagnifierIcon />
-          </TraceIcon>
-          <TraceTitle>Searched for /v1/ask</TraceTitle>
-          <TraceDescription>3 results</TraceDescription>
-        </TraceLine>
-        <TraceCollapsible defaultOpen>
-          <TraceCollapsibleTrigger>
-            <TraceLine>
-              <TraceIcon>
-                <PenIcon />
-              </TraceIcon>
-              <TraceTitle>Edited src/http/routes.ts</TraceTitle>
-              <TraceDescription>+2 −1</TraceDescription>
-            </TraceLine>
-          </TraceCollapsibleTrigger>
-          <TraceCollapsibleContent>
-            Renamed the route to /v1/asks and kept /v1/ask as an alias.
-          </TraceCollapsibleContent>
-        </TraceCollapsible>
-        <TraceCollapsible>
-          <TraceCollapsibleTrigger>
-            <TraceLine status="error">
-              <TraceIcon>
-                <CodeSquareIcon />
-              </TraceIcon>
-              <TraceTitle>Ran bun run test routes</TraceTitle>
-              <TraceDescription>1 failed</TraceDescription>
-            </TraceLine>
-          </TraceCollapsibleTrigger>
-          <TraceCollapsibleContent>
-            routes.test.ts › keeps the old name: expected 200, got 404.
-          </TraceCollapsibleContent>
-        </TraceCollapsible>
-        <TraceLine status="running">
-          <TraceIcon>
-            <PenIcon />
-          </TraceIcon>
-          <TraceTitle>Adding the deprecation header</TraceTitle>
-        </TraceLine>
-        <TraceLine status="pending">
-          <TraceIcon>
-            <CodeSquareIcon />
-          </TraceIcon>
-          <TraceTitle>Re-run the tests</TraceTitle>
-        </TraceLine>
-      </Trace>
+      <div className="flex flex-col gap-4">
+        <Message from="you">Make the ask route plural like the others.</Message>
+        <Message from="agent" author="Mardy">
+          <Trace>
+            <TraceStep
+              icon={<MagnifierIcon />}
+              title="Searched for /v1/ask"
+              detail="3 results"
+            />
+            <TraceStep
+              icon={<PenIcon />}
+              title="Edited src/http/routes.ts"
+              detail="+2 −1"
+              defaultOpen
+            >
+              Renamed the route to /v1/asks and kept /v1/ask as an alias.
+            </TraceStep>
+            <TraceStep
+              icon={<CodeSquareIcon />}
+              title="Ran bun run test routes"
+              detail="1 failed"
+              status="failed"
+            >
+              routes.test.ts › keeps the old name: expected 200, got 404.
+            </TraceStep>
+            <TraceStep
+              icon={<PenIcon />}
+              title="Adding the deprecation header"
+              status="running"
+            />
+          </Trace>
+        </Message>
+      </div>
     </Specimen>
   );
 }

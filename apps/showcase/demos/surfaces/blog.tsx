@@ -161,8 +161,8 @@ function Article() {
         </h2>
         <p>
           Every runtime can run a hook or call a CLI. So producers post a run
-          card to the Board, and Sequoia edits it in place. The app hides
-          those channels from the main views and decides who gets woken.
+          card to the Board, and Sequoia edits it in place. The app hides those
+          channels from the main views and decides who gets woken.
         </p>
         <blockquote className="border-brand border-s-2 ps-4 text-lg text-pretty">
           Observe broadly, control narrowly. The Board holds the history;
