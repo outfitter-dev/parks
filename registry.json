@@ -36,6 +36,26 @@
         }
       ],
       "docs": "Import @outfitter/parks/styles.css once from your root stylesheet before using Parks blocks."
+    },
+    {
+      "name": "app-shell",
+      "type": "registry:block",
+      "title": "App shell",
+      "description": "The app frame: a sidebar that docks on wide frames and opens as a modal over the page on narrow ones, a page bar and a sidebar toggle, in inset (web) or floating (Apple) style.",
+      "dependencies": ["@outfitter/parks", "@solar-icons/react"],
+      "files": [
+        {
+          "path": "apps/showcase/registry/app-shell/app-shell.tsx",
+          "type": "registry:component",
+          "target": "components/parks/app-shell/app-shell.tsx"
+        },
+        {
+          "path": "apps/showcase/registry/app-shell/app-sidebar.tsx",
+          "type": "registry:component",
+          "target": "components/parks/app-shell/app-sidebar.tsx"
+        }
+      ],
+      "docs": "Import @outfitter/parks/styles.css once from your root stylesheet before using Parks blocks."
     }
   ]
 }
