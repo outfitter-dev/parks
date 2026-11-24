@@ -318,19 +318,21 @@ function AskOptions({
         : look.multi
           ? "Pick any that apply."
           : "Pick an option to answer.";
+  // The legend names the fieldset, so it stays its direct child. In a box the
+  // visible header is a plain line above the rows, hidden from assistive tech
+  // because the legend already says it.
   const body = inBox ? (
-    // The header sits in the box above the rows, divided by a full-width rule.
     <div className={stackedBox}>
-      <QuestionnaireTitle className="border-border mb-0! w-full border-b px-3 py-2.5">
+      <p
+        aria-hidden
+        className="border-border w-full border-b px-3 py-2.5 text-base leading-snug font-medium text-pretty"
+      >
         {ask.title}
-      </QuestionnaireTitle>
+      </p>
       {choices}
     </div>
   ) : (
-    <>
-      <QuestionnaireTitle className="sr-only">{ask.title}</QuestionnaireTitle>
-      {choices}
-    </>
+    choices
   );
   const subtext = (
     <AskSubtext
@@ -347,6 +349,7 @@ function AskOptions({
       className="mt-5 gap-2"
     >
       <QuestionnaireItem name={ask.id} multiple={look.multi} className="gap-2">
+        <QuestionnaireTitle className="sr-only">{ask.title}</QuestionnaireTitle>
         {look.style === "tray" ? (
           <Card variant="tray" className="grid">
             {body}
