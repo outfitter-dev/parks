@@ -14,10 +14,11 @@
 
 import { useSyncExternalStore } from "react";
 
-export type ShellStyle = "inset" | "floating";
-export type Shell = { style: ShellStyle; gutter: number };
+import { defaultShell } from "../registry/app-shell/app-shell";
+import type { Shell, ShellStyle } from "../registry/app-shell/app-shell";
 
-export const defaultShell: Shell = { style: "inset", gutter: 8 };
+export { defaultShell } from "../registry/app-shell/app-shell";
+export type { Shell, ShellStyle } from "../registry/app-shell/app-shell";
 
 let current = defaultShell;
 const listeners = new Set<() => void>();

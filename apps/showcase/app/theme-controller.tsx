@@ -135,10 +135,6 @@ export function ThemeController() {
     : defaultShell.style;
   useEffect(() => {
     setShell({ style: shellStyle, gutter: values.shell.gutter });
-    document.documentElement.style.setProperty(
-      "--shell-gutter",
-      `${values.shell.gutter}px`
-    );
   }, [shellStyle, values.shell.gutter]);
 
   const mode = isMode(values.mode) ? values.mode : "system";

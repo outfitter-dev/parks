@@ -37,6 +37,8 @@ type AskProps = {
   multiple?: boolean;
   shortcuts?: "letters" | "numbers";
   layout?: "stacked" | "tray";
+  /** Labels picked when the ask first renders, such as an earlier answer. */
+  defaultValue?: readonly string[];
   /** Called with the picked labels whenever the selection changes. */
   onPick?: (picked: string[]) => void;
   /** Replaces the default hint under the box. */
@@ -68,11 +70,12 @@ export function Ask({
   multiple = false,
   shortcuts,
   layout = "stacked",
+  defaultValue = [],
   onPick,
   hint,
   className,
 }: AskProps) {
-  const [picked, setPicked] = useState<string[]>([]);
+  const [picked, setPicked] = useState<string[]>([...defaultValue]);
   const toggle = (label: string) => {
     let next = [label];
     if (multiple) {

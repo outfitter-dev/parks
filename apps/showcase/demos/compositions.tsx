@@ -457,7 +457,8 @@ function AskDetail({
   picked: readonly string[];
   onPick: (next: string[]) => void;
 }) {
-  const [reply, setReply] = useState("");
+  // A free-text answer comes back when the ask is reopened.
+  const [reply, setReply] = useState(picked[0] ?? "");
   return (
     <div className="mx-auto w-full max-w-xl p-(--pad) @3xl:p-6">
       <p className="text-muted-foreground flex items-start gap-2">

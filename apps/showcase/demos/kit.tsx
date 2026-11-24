@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge } from "@outfitter/parks/components/badge";
+import { HaloSignal as ParksHaloSignal } from "@outfitter/parks/components/halo-signal";
 import {
   Item,
   ItemContent,
@@ -142,66 +143,16 @@ export function AgentModeBadge({
   );
 }
 
-/**
- * A Signal dot inside a faint halo with an arc travelling around it: the
- * ring uses the same colour as the dot. At 16px the dot is
- * the same 8px as a plain Signal. Inside a 12px badge icon, the dot shrinks
- * to 5px to give it more room inside the halo.
- */
+/** The package's HaloSignal, coloured by an agent mode. */
 export function HaloSignal({
   tone,
-  size = 16,
-  label,
-  className,
   ...props
-}: Omit<ComponentProps<"svg">, "children"> & {
-  tone?: Tone;
-  size?: number;
-  label: string;
-}) {
+}: Omit<ComponentProps<typeof ParksHaloSignal>, "tone"> & { tone?: Tone }) {
   return (
-    <svg
+    <ParksHaloSignal
       {...props}
-      role="img"
-      aria-label={label}
-      width={size}
-      height={size}
-      viewBox="0 0 16 16"
-      data-tone={tone ? agentModeTones[tone] : undefined}
-      className={cn(
-        "shrink-0",
-        tone ? "text-tone-mark" : "text-muted-foreground",
-        className
-      )}
-    >
-      <circle
-        cx="8"
-        cy="8"
-        r="4"
-        fill="currentColor"
-        className="in-data-[slot=badge-icon]:[r:calc(10px/3)]"
-      />
-      <circle
-        cx="8"
-        cy="8"
-        r="7"
-        fill="none"
-        stroke="currentColor"
-        strokeOpacity="0.18"
-        strokeWidth="1.5"
-      />
-      <circle
-        cx="8"
-        cy="8"
-        r="7"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeDasharray="11 33"
-        className="origin-center animate-spin [animation-duration:1.2s] [transform-box:fill-box] motion-reduce:animate-none"
-      />
-    </svg>
+      tone={tone ? agentModeTones[tone] : undefined}
+    />
   );
 }
 

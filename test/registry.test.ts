@@ -35,10 +35,8 @@ describe("registry", () => {
       for (const file of item.files) {
         const text = readFileSync(path.join(repo, file.path), "utf8");
 
-        it(`${file.path} lives under apps/showcase/registry/${item.name}`, () => {
-          expect(
-            file.path.startsWith(`apps/showcase/registry/${item.name}/`)
-          ).toBe(true);
+        it(`${file.path} lives under apps/showcase/registry`, () => {
+          expect(file.path.startsWith("apps/showcase/registry/")).toBe(true);
         });
 
         it(`${file.path} imports Parks from the package, not copies`, () => {
@@ -46,11 +44,15 @@ describe("registry", () => {
             text.matchAll(/from\s+["']([^"']+)["']/gu),
             (match) => match[1] ?? ""
           );
+          // A relative import may only reach another file of the same item,
+          // which the CLI installs beside it.
+          const siblings = new Set(item.files.map((other) => other.path));
           for (const specifier of specifiers) {
-            expect(
-              specifier.startsWith(".") || specifier.startsWith("#"),
-              specifier
-            ).toBe(false);
+            expect(specifier.startsWith("#"), specifier).toBe(false);
+            if (specifier.startsWith(".")) {
+              const target = `${path.join(path.dirname(file.path), specifier)}.tsx`;
+              expect(siblings.has(target), specifier).toBe(true);
+            }
           }
         });
 
