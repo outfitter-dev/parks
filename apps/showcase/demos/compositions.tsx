@@ -141,13 +141,21 @@ function markFor(mark: OptionMark, label: string, index: number, count: number):
 const choicesClass: Record<OptionStyle, string> = {
   cards: "",
   stacked: "gap-0 overflow-hidden rounded-lg border border-border-muted bg-card",
-  tray: "gap-0",
+  tray: "gap-0 p-1",
 };
 const choiceClass: Record<OptionStyle, string> = {
   cards: "",
   stacked:
     "rounded-none border-x-0 border-t-0 border-b-border-muted last:border-b-0 px-frame py-frame data-checked:border-b-border-muted data-checked:bg-brand-fill data-checked:ring-0 hover:data-checked:bg-brand-fill",
-  tray: "rounded-none border-0 border-t border-border first:border-t-0 data-checked:border-border bg-transparent px-0 py-3 ring-0 data-checked:bg-transparent data-checked:ring-0 hover:bg-transparent",
+  // Rows inset in the card: text lines up with the header, hover and the
+  // checked fill sit on a rounded row, and the inset rule between rows hides
+  // next to a filled row so the fill never meets a line.
+  tray: [
+    "rounded-md border-0 bg-transparent px-[calc(var(--frame-space)-var(--spacing))] ring-0",
+    "hover:bg-ghost-hover data-checked:bg-brand-fill data-checked:ring-0 hover:data-checked:bg-brand-fill-hover",
+    "before:pointer-events-none before:absolute before:inset-x-[calc(var(--frame-space)-var(--spacing))] before:top-0 before:h-px before:bg-border-muted first:before:hidden",
+    "hover:before:opacity-0 data-checked:before:opacity-0 [&:hover+*]:before:opacity-0 [&[data-checked]+*]:before:opacity-0",
+  ].join(" "),
 };
 
 function OptionText({ option }: { option: Ask["options"][number] }) {
@@ -222,9 +230,9 @@ function AskOptions({
     return (
       <Questionnaire shortcuts={shortcuts} onSubmit={(event) => event.preventDefault()} className="mt-5">
         <Card variant="tray" className="grid">
-          <Card variant="outline" className="gap-0 px-frame pt-frame pb-1">
+          <Card variant="outline" className="gap-0 p-0">
             <QuestionnaireItem name={ask.id} multiple={look.multi} className="gap-0">
-              <QuestionnaireTitle className="mb-1!">{ask.title}</QuestionnaireTitle>
+              <QuestionnaireTitle className="mb-0! w-full border-b border-border-muted px-(--frame-space) py-3">{ask.title}</QuestionnaireTitle>
               {choices}
             </QuestionnaireItem>
           </Card>
