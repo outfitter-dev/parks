@@ -69,6 +69,7 @@ To keep a deliberate exception, put `// parks-ignore <rule>: <reason>` on the li
 `parks contrast <compiled.css>` scores every text role on its surface, in light and dark, against WCAG's 4.5:1. That includes each tone's text on its tint and on its solid fill. It renders the roles in Chromium, so it needs `playwright-core` and its browser:
 
 ```sh
+bun add -d playwright-core
 bunx playwright-core install chromium-headless-shell
 bunx parks contrast dist/app.css
 ```

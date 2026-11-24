@@ -17,7 +17,13 @@ type ContrastPair = {
   minimum: number;
 };
 
-type Sample = ContrastPair & { mode: Mode; textRgb: Rgb; surfaceRgb: Rgb };
+type Sample = ContrastPair & {
+  mode: Mode;
+  textRgb: Rgb;
+  surfaceRgb: Rgb;
+  /** Set when a role does not resolve to a colour, so its contrast is meaningless. */
+  invalid?: string;
+};
 
 type ContrastResult = Sample & { ratio: number; ok: boolean };
 
@@ -72,16 +78,30 @@ function contrastRatio(first: Rgb, second: Rgb) {
 function checkContrast(samples: readonly Sample[]): ContrastResult[] {
   return samples.map((sample) => {
     const ratio = contrastRatio(sample.textRgb, sample.surfaceRgb);
-    return { ...sample, ratio, ok: ratio >= sample.minimum };
+    return {
+      ...sample,
+      ratio,
+      ok: sample.invalid === undefined && ratio >= sample.minimum,
+    };
   });
 }
 
 /**
- * Runs in the browser. For each mode and pair it paints the page background,
- * the surface and the text colour on a canvas, so translucent roles are
- * composited the way they render, and reads back the opaque result.
+ * Runs in the browser, in one mode: the caller sets the mode class on the
+ * root element and emulates the matching colour scheme, so root-scoped and
+ * media-query overrides apply as they do in the app. For each pair it paints
+ * the page background, the surface and the text colour on a canvas, so
+ * translucent roles composite the way they render, and reads back the
+ * opaque result. A surface is read as a background and a text role as a
+ * colour; one that does not resolve to a colour is reported as invalid.
  */
-function probeContrast(pairs: readonly ContrastPair[]): Sample[] {
+function probeContrast({
+  pairs,
+  mode,
+}: {
+  pairs: readonly ContrastPair[];
+  mode: Mode;
+}): Sample[] {
   const canvas = document.createElement("canvas");
   canvas.width = 1;
   canvas.height = 1;
@@ -103,36 +123,58 @@ function probeContrast(pairs: readonly ContrastPair[]): Sample[] {
     ).data;
     return [red, green, blue];
   };
-  const samples: Sample[] = [];
-  for (const mode of ["light", "dark"] as const) {
-    const root = document.createElement("div");
-    root.className = mode;
-    document.body.append(root);
-    const read = (role: string, tone?: string) => {
-      const probe = document.createElement("span");
-      if (tone) {
-        probe.dataset.tone = tone;
-      }
-      probe.style.color = `var(--${role})`;
-      root.append(probe);
-      const colour = getComputedStyle(probe).color;
-      probe.remove();
-      return colour;
-    };
-    const page = read("background");
-    for (const pair of pairs) {
-      const surface = read(pair.surface, pair.tone);
-      const text = read(pair.text, pair.tone);
-      const base = pair.tone ? [page, read("card")] : [page];
-      samples.push({
-        ...pair,
-        mode,
-        surfaceRgb: paint([...base, surface]),
-        textRgb: paint([...base, surface, text]),
-      });
+  // A sentinel colour on the container shows when a text role fails to
+  // resolve and inherits instead.
+  const sentinel = "rgb(1, 2, 3)";
+  const container = document.createElement("div");
+  container.style.color = sentinel;
+  document.body.append(container);
+  const probe = (tone?: string) => {
+    const element = document.createElement("span");
+    if (tone) {
+      element.dataset.tone = tone;
     }
-    root.remove();
+    container.append(element);
+    return element;
+  };
+  const surfaceOf = (role: string, tone?: string) => {
+    const element = probe(tone);
+    element.style.backgroundColor = `var(--${role})`;
+    const colour = getComputedStyle(element).backgroundColor;
+    element.remove();
+    return colour;
+  };
+  const textOf = (role: string, tone?: string) => {
+    const element = probe(tone);
+    element.style.color = `var(--${role})`;
+    const colour = getComputedStyle(element).color;
+    element.remove();
+    return colour;
+  };
+  const transparent = (colour: string) =>
+    /^rgba\(0, 0, 0, 0\)$|^transparent$/u.test(colour);
+  const page = surfaceOf("background");
+  const card = surfaceOf("card");
+  const samples: Sample[] = [];
+  for (const pair of pairs) {
+    const surface = surfaceOf(pair.surface, pair.tone);
+    const text = textOf(pair.text, pair.tone);
+    const base = pair.tone ? [page, card] : [page];
+    let invalid: string | undefined;
+    if (transparent(surface)) {
+      invalid = `--${pair.surface} does not resolve to a colour`;
+    } else if (text === sentinel) {
+      invalid = `--${pair.text} does not resolve to a colour`;
+    }
+    samples.push({
+      ...pair,
+      mode,
+      invalid,
+      surfaceRgb: paint([...base, surface]),
+      textRgb: paint([...base, surface, text]),
+    });
   }
+  container.remove();
   return samples;
 }
 

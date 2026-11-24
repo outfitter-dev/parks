@@ -49,6 +49,52 @@ describe("parks source rules", () => {
     ).toEqual([]);
   });
 
+  it("accepts only a solid or secondary partner for an outline button", () => {
+    expect(
+      rulesIn(
+        `<Button variant="outline">Cancel</Button>\n<Button variant="tint">Delete</Button>`
+      )
+    ).toEqual(["lone-outline-button"]);
+    expect(
+      rulesIn(
+        `<Button variant="outline">Cancel</Button>\n<Button variant="secondary">Keep</Button>`
+      )
+    ).toEqual([]);
+  });
+
+  it("finds outline buttons with single quotes or a JSX render prop", () => {
+    expect(rulesIn(`<Button variant='outline'>Edit</Button>`)).toEqual([
+      "lone-outline-button",
+    ]);
+    expect(
+      rulesIn(
+        `<Button render={<a href="/x" />} variant="outline">Open</Button>`
+      )
+    ).toEqual(["lone-outline-button"]);
+  });
+
+  it("ignores fragment links and comments", () => {
+    expect(
+      rulesIn(`<a href="#add" className="text-foreground">Add</a>`)
+    ).toEqual([]);
+    expect(
+      rulesIn(`// for example bg-red-500 or #fff\n<div className="bg-card" />`)
+    ).toEqual([]);
+  });
+
+  it("flags other colour forms and units", () => {
+    expect(rulesIn(`<div style={{ color: "red" }} />`)).toEqual([
+      "literal-colour",
+    ]);
+    expect(rulesIn(`<div style={{ color: "oklab(0.5 0 0)" }} />`)).toEqual([
+      "literal-colour",
+    ]);
+    expect(rulesIn(`<div className="via-red-500" />`)).toEqual([
+      "palette-colour",
+    ]);
+    expect(rulesIn(`<div className="w-[14ch]" />`)).toEqual(["literal-length"]);
+  });
+
   it("honours a parks-ignore comment on the line above", () => {
     expect(
       rulesIn(

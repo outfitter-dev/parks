@@ -15,6 +15,7 @@ import path from "node:path";
 import process from "node:process";
 
 import { checkContrast, contrastPairs, probeContrast } from "#rules/contrast";
+import type { Mode } from "#rules/contrast";
 import { checkSource } from "#rules/source";
 
 const skip = new Set(["node_modules", "dist", ".next", "coverage", ".git"]);
@@ -64,14 +65,25 @@ async function contrast(cssFile: string | undefined) {
     await page.setContent(
       `<!doctype html><html><head><style>${css}</style></head><body></body></html>`
     );
-    const results = checkContrast(
-      await page.evaluate(probeContrast, contrastPairs)
-    );
+    // One page, one mode at a time: the root class and colour scheme are
+    // page state, so the modes cannot be sampled in parallel.
+    const sample = async (mode: Mode) => {
+      await page.emulateMedia({ colorScheme: mode });
+      await page.evaluate((name) => {
+        document.documentElement.className = name;
+      }, mode);
+      return page.evaluate(probeContrast, { pairs: contrastPairs, mode });
+    };
+    const light = await sample("light");
+    const dark = await sample("dark");
+    const results = checkContrast([...light, ...dark]);
     const failed = results.filter((result) => !result.ok);
     for (const result of failed) {
       const where = result.tone ? `${result.tone} ` : "";
       console.log(
-        `${result.mode}  ${where}${result.text} on ${result.surface}: ${result.ratio.toFixed(2)} (needs ${result.minimum})`
+        result.invalid
+          ? `${result.mode}  ${where}${result.text} on ${result.surface}: ${result.invalid}`
+          : `${result.mode}  ${where}${result.text} on ${result.surface}: ${result.ratio.toFixed(2)} (needs ${result.minimum})`
       );
     }
     console.log(

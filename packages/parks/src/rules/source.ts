@@ -34,46 +34,81 @@ const colourOpacity =
 const paletteNames =
   "slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose";
 
-const lengthInBrackets = /\[[^\]\n]*\d(?:\.\d+)?(?:px|rem|em)[^\]\n]*\]/gu;
+const lengthUnit = String.raw`\d+(?:\.\d+)?(?:px|rem|em|ch|ex|vw|vh|vmin|vmax|pt|pc|cm|mm|in)\b`;
+const lengthInBrackets = new RegExp(
+  String.raw`\[[^\]\n]*${lengthUnit}[^\]\n]*\]`,
+  "gu"
+);
 const hairline = new Set(["1px", "2px"]);
 
+/**
+ * Bracketed lengths other than 1px and 2px hairlines.
+ * @yields {{ index: number; match: string }} each offending bracket value
+ */
 function* literalLengths(text: string) {
   for (const found of text.matchAll(lengthInBrackets)) {
-    const lengths = found[0].match(/\d+(?:\.\d+)?(?:px|rem|em)/gu) ?? [];
+    const lengths = found[0].match(new RegExp(lengthUnit, "gu")) ?? [];
     if (lengths.some((length) => !hairline.has(length))) {
       yield { index: found.index, match: found[0] };
     }
   }
 }
 
-const buttonTag = /<Button\b[^>]*>/gu;
+/** A Button's opening tag, allowing JSX-valued props such as render={<a />}. */
+const buttonTag = /<Button\b(?:[^>{]|\{(?:[^{}]|\{[^{}]*\})*\})*>/gu;
 const nearby = 400;
 
-const isOutline = (tag: string) => /variant=["{]["']?outline/u.test(tag);
-const isQuiet = (tag: string) =>
-  /variant=["{]["']?(?:outline|ghost|link)/u.test(tag);
+function variantOf(tag: string) {
+  return /\bvariant=(?:\{\s*)?["'`]([a-z-]+)["'`]/u.exec(tag)?.[1];
+}
+
+/** Partners an outline Button may stand beside: solid (and its aliases) or secondary. */
+const partners = new Set([
+  undefined,
+  "solid",
+  "default",
+  "destructive",
+  "secondary",
+]);
 
 /**
- * An outline Button with no other solid or secondary Button near it.
+ * An outline Button with no solid or secondary Button near it.
  * @yields {{ index: number; match: string }} each lone outline Button tag
  */
 function* loneOutlineButtons(text: string) {
   const tags = Array.from(text.matchAll(buttonTag), (found) => ({
     index: found.index,
     tag: found[0],
+    variant: variantOf(found[0]),
   }));
-  for (const { index, tag } of tags) {
-    if (!isOutline(tag)) {
+  for (const { index, tag, variant } of tags) {
+    if (variant !== "outline") {
       continue;
     }
-    const partner = tags.some(
+    const paired = tags.some(
       (other) =>
         other.index !== index &&
         Math.abs(other.index - index) < nearby &&
-        !isQuiet(other.tag)
+        partners.has(other.variant)
     );
-    if (!partner) {
+    if (!paired) {
       yield { index, match: tag };
+    }
+  }
+}
+
+const colourFunctions = /\b(?:oklch|oklab|lab|lch|hsla?|hwb|rgba?|color)\(/giu;
+/** A hex colour, but not a fragment link or id such as href="#add". */
+const hexColour =
+  /(?<!(?:href|to|id|src|htmlFor|aria-[a-z]+)=["'`])(?<![\w&/])#[0-9a-f]{3,8}\b(?![\w-])/giu;
+/** A named colour as a style value: color: "red". */
+const namedColour =
+  /\b(?:color|background|backgroundColor|borderColor|outlineColor|fill|stroke)\s*:\s*["'`](?!var\(|currentColor|transparent|inherit|initial|unset)[a-z]+["'`]/giu;
+
+function* literalColours(text: string) {
+  for (const pattern of [colourFunctions, hexColour, namedColour]) {
+    for (const found of text.matchAll(pattern)) {
+      yield { index: found.index, match: found[0] };
     }
   }
 }
@@ -94,14 +129,14 @@ const rules: readonly Rule[] = [
   {
     id: "literal-colour",
     message: "Use a colour role, not a literal colour.",
-    find: matches(/oklch\(|rgba?\(|hsla?\(|(?<![\w&])#[0-9a-f]{3,8}\b/giu),
+    find: literalColours,
   },
   {
     id: "palette-colour",
     message: "Use a colour role, not a palette step such as red-500.",
     find: matches(
       new RegExp(
-        String.raw`\b(?:bg|text|border|ring|fill|stroke|outline|shadow|from|to)-(?:white|black|(?:${paletteNames})-\d+)\b`,
+        String.raw`\b(?:bg|text|border|ring|fill|stroke|outline|shadow|from|via|to|divide|decoration|caret|accent|placeholder)-(?:white|black|(?:${paletteNames})-\d+)\b`,
         "gu"
       )
     ),
@@ -138,12 +173,20 @@ function ignored(lines: readonly string[], line: number, rule: string) {
 }
 
 /** Every rule violation in one file's text, with its line. */
+/** Replaces comments with spaces, keeping offsets and line breaks, so prose in comments is not checked. */
+function withoutComments(text: string) {
+  return text.replaceAll(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/gu, (comment) =>
+    comment.replaceAll(/[^\n]/gu, " ")
+  );
+}
+
 function checkSource(text: string, only?: readonly string[]): Violation[] {
   const lines = text.split("\n");
+  const code = withoutComments(text);
   const active = only ? rules.filter((rule) => only.includes(rule.id)) : rules;
   const found: Violation[] = [];
   for (const rule of active) {
-    for (const { index, match } of rule.find(text)) {
+    for (const { index, match } of rule.find(code)) {
       const line = lineOf(text, index);
       if (!ignored(lines, line, rule.id)) {
         found.push({ rule: rule.id, message: rule.message, line, match });
