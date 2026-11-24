@@ -3,6 +3,7 @@
 import { useMemo, useState, type ComponentType, type ReactNode } from "react";
 import type { FileContents } from "@pierre/diffs";
 import { File } from "@pierre/diffs/react";
+import { SectionHeader, SectionHeaderAction, SectionHeaderTitle } from "@workspace/ui/components/section-header";
 import { Button } from "@workspace/ui/components/button";
 import { Card } from "@workspace/ui/components/card";
 import { cn } from "@workspace/ui/lib/utils";
@@ -162,9 +163,9 @@ export function Stat({ label, value, note }: { label: string; value: string; not
 /** A section heading inside a page. */
 export function Heading({ children, action }: { children: ReactNode; action?: ReactNode }) {
   return (
-    <div className="mb-2 flex items-center gap-2">
-      <h2 className="font-medium">{children}</h2>
-      {action ? <div className="ml-auto">{action}</div> : null}
-    </div>
+    <SectionHeader className="mb-2">
+      <SectionHeaderTitle>{children}</SectionHeaderTitle>
+      {action ? <SectionHeaderAction>{action}</SectionHeaderAction> : null}
+    </SectionHeader>
   );
 }

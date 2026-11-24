@@ -51,6 +51,8 @@ Every card-like box is a `Card`. `variant` sets the look: `raised` (the default)
 
 Card, Dialog, Popover and Alert headers share one grid (`packages/ui/src/lib/header.ts`): lead, title, description, meta, then actions. Meta and actions take their own columns, so an Alert with both a time and an action does not overlap. `CardLead` takes an icon, Mark or Avatar; `CardMeta` a time or count; `CardAction` any number of buttons. Titles are `font-semibold` on frames (Card, Dialog) and `font-medium` on rows and popovers (Item, Popover, Alert). `GroupLabel` is the one overline style for a group of rows; menu and select labels use the same style.
 
+A section or detail header on the page, outside a frame, is a `SectionHeader` (`packages/ui/src/components/section-header.tsx`) on the same grid: `SectionHeaderTitle` (an `h2` by default, `render` for another level), `SectionHeaderDescription`, `SectionHeaderMeta` and `SectionHeaderAction`. `size="default"` is a section heading in `font-medium`; `size="lg"` titles a detail view in `text-lg font-semibold`. Badges that qualify the title go inside `SectionHeaderTitle`, after the text.
+
 ## Sizes, toggles and segmented controls
 
 Controls share one size scale, `xs`, `sm`, `default` and `lg` (`packages/ui/src/lib/size.ts`): 24, 28, `--control-h` and 36px. Button, Toggle, Input, Select and the segmented control draw at those heights, so same-size controls line up in a row. Badge, Avatar and Item use the same names for their own steps. Icon-only is a size where a component takes one: `icon`, `icon-xs`, `icon-sm`, `icon-lg`.

@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge } from "@workspace/ui/components/badge";
+import { SectionHeader, SectionHeaderDescription, SectionHeaderTitle } from "@workspace/ui/components/section-header";
 import { GroupLabel } from "@workspace/ui/components/group-label";
 import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card";
 import { NavItem } from "@workspace/ui/components/nav-item";
@@ -125,14 +126,14 @@ export function TrailsSurface() {
             </nav>
           }
         >
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <h2 className="font-mono text-lg font-semibold">ask.create</h2>
+          <SectionHeader size="lg">
+            <SectionHeaderTitle>
+              <span className="font-mono">ask.create</span>
               <IntentMark intent="write" />
               <Badge>v2</Badge>
-            </div>
-            <p className="mt-1 text-muted-foreground">Ask Matt a question with up to four options. Posts an <InlineCode>ask.choice@1</InlineCode> block to the thread.</p>
-          </div>
+            </SectionHeaderTitle>
+            <SectionHeaderDescription>Ask Matt a question with up to four options. Posts an <InlineCode>ask.choice@1</InlineCode> block to the thread.</SectionHeaderDescription>
+          </SectionHeader>
 
           <section>
             <Heading>Rendered on each surface</Heading>

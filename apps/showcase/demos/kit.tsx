@@ -3,6 +3,7 @@
 import { useState, type ComponentProps, type ReactNode } from "react";
 import { Badge } from "@workspace/ui/components/badge";
 import { Item, ItemContent, ItemGroup, ItemMedia, ItemMeta, ItemTitle } from "@workspace/ui/components/item";
+import { SectionHeader, SectionHeaderDescription, SectionHeaderTitle } from "@workspace/ui/components/section-header";
 import { StatusDot } from "@workspace/ui/components/status-dot";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
 import type { Tone as UiTone } from "@workspace/ui/lib/tone";
@@ -23,8 +24,10 @@ export function Specimen({
 }) {
   return (
     <section className="mb-8">
-      <h2 className="font-medium">{title}</h2>
-      {note ? <p className="mt-0.5 max-w-prose text-muted-foreground">{note}</p> : null}
+      <SectionHeader>
+        <SectionHeaderTitle>{title}</SectionHeaderTitle>
+        {note ? <SectionHeaderDescription>{note}</SectionHeaderDescription> : null}
+      </SectionHeader>
       <div
         className={cn(
           "mt-3 flex flex-wrap items-center gap-3 frame p-frame border border-dashed bg-background",
