@@ -147,12 +147,12 @@ const choiceClass: Record<OptionStyle, string> = {
   cards: "",
   stacked:
     "rounded-none border-x-0 border-t-0 border-b-border-muted last:border-b-0 px-frame py-frame data-checked:border-b-border-muted data-checked:bg-brand-fill data-checked:ring-0 hover:data-checked:bg-brand-fill",
-  // Rows inset in the card: text lines up with the header, hover and the
-  // checked fill sit on a rounded row, and the inset rule between rows hides
-  // next to a filled row so the fill never meets a line.
+  // Rows inset in the card, concentric with it: text lines up with the
+  // header, hover sinks the row like the old tray cards, the picked row takes
+  // the brand ring, and the inset rule hides beside either so it never meets them.
   tray: [
-    "rounded-md border-0 bg-transparent px-[calc(var(--frame-space)-var(--spacing))] ring-0",
-    "hover:bg-ghost-hover data-checked:bg-brand-fill data-checked:ring-0 hover:data-checked:bg-brand-fill-hover",
+    "rounded-[calc((var(--tray-radius)-var(--spacing))*var(--corner-scale))] border-0 bg-transparent px-[calc(var(--frame-space)-var(--spacing))] ring-0",
+    "hover:bg-ghost-hover data-checked:bg-card data-checked:ring-1 data-checked:ring-brand hover:data-checked:bg-card",
     "before:pointer-events-none before:absolute before:inset-x-[calc(var(--frame-space)-var(--spacing))] before:top-0 before:h-px before:bg-border-muted first:before:hidden",
     "hover:before:opacity-0 data-checked:before:opacity-0 [&:hover+*]:before:opacity-0 [&[data-checked]+*]:before:opacity-0",
   ].join(" "),
