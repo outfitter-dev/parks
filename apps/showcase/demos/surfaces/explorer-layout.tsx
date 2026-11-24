@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { PageBar } from "../app-frame";
-import { BreadcrumbPath } from "@workspace/ui/components/breadcrumb";
+import { BreadcrumbPath } from "@outfitter/parks/components/breadcrumb";
 
 /** The browser pane owns navigation. The detail pane owns the selected item's path and actions. */
 export function ExplorerLayout({

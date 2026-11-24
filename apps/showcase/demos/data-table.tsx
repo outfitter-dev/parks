@@ -1,7 +1,7 @@
 "use client";
 
-import { Badge } from "@workspace/ui/components/badge";
-import { Button } from "@workspace/ui/components/button";
+import { Badge } from "@outfitter/parks/components/badge";
+import { Button } from "@outfitter/parks/components/button";
 import {
   DataTable,
   DataTableColumnHeader,
@@ -10,14 +10,14 @@ import {
   dataTableColumns,
   dataTableSelectColumn,
   useDataTable,
-} from "@workspace/ui/components/data-table";
+} from "@outfitter/parks/components/data-table";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@workspace/ui/components/dropdown-menu";
+} from "@outfitter/parks/components/dropdown-menu";
 import { MenuDotsIcon } from "@solar-icons/react/bold/menu-dots";
 import { Specimen } from "./kit";
 

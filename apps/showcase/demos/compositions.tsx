@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemHeader, ItemMedia, ItemMeta, ItemTitle } from "@workspace/ui/components/item";
-import { Badge } from "@workspace/ui/components/badge";
-import { SectionHeader, SectionHeaderDescription, SectionHeaderTitle } from "@workspace/ui/components/section-header";
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@workspace/ui/components/empty";
-import { Mark } from "@workspace/ui/components/mark";
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemHeader, ItemMedia, ItemMeta, ItemTitle } from "@outfitter/parks/components/item";
+import { Badge } from "@outfitter/parks/components/badge";
+import { SectionHeader, SectionHeaderDescription, SectionHeaderTitle } from "@outfitter/parks/components/section-header";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@outfitter/parks/components/empty";
+import { Mark } from "@outfitter/parks/components/mark";
 import {
   Questionnaire,
   QuestionnaireChoice,
@@ -13,8 +13,8 @@ import {
   QuestionnaireChoices,
   QuestionnaireItem,
   QuestionnaireTitle,
-} from "@workspace/ui/components/questionnaire";
-import { Button } from "@workspace/ui/components/button";
+} from "@outfitter/parks/components/questionnaire";
+import { Button } from "@outfitter/parks/components/button";
 import {
   Card,
   CardContent,
@@ -22,14 +22,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@workspace/ui/components/card";
-import { Input } from "@workspace/ui/components/input";
-import { Label } from "@workspace/ui/components/label";
-import { Progress } from "@workspace/ui/components/progress";
-import { Textarea } from "@workspace/ui/components/textarea";
-import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
-import type { Tone } from "@workspace/ui/lib/tone";
-import { cn } from "@workspace/ui/lib/utils";
+} from "@outfitter/parks/components/card";
+import { Input } from "@outfitter/parks/components/input";
+import { Label } from "@outfitter/parks/components/label";
+import { Progress } from "@outfitter/parks/components/progress";
+import { Textarea } from "@outfitter/parks/components/textarea";
+import { ToggleGroup, ToggleGroupItem } from "@outfitter/parks/components/toggle-group";
+import type { Tone } from "@outfitter/parks/lib/tone";
+import { cn } from "@outfitter/parks/lib/utils";
 import { KeyIcon } from "@solar-icons/react/outline/key";
 import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left";
 import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";

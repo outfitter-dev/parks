@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { TooltipProvider } from "@workspace/ui/components/tooltip";
+import { TooltipProvider } from "@outfitter/parks/components/tooltip";
 import { Annotations } from "./annotations";
 import { Shell } from "./shell";
 import { ThemeController } from "./theme-controller";
@@ -7,8 +7,8 @@ import { typingGuard } from "./typing-guard";
 import "./globals.css";
 
 export const metadata = {
-  title: "Outpost workbench",
-  description: "Compositions, components and primitives for the Outpost UI.",
+  title: "Parks showcase",
+  description: "Compositions, components and primitives in Parks, Outfitter's design system.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

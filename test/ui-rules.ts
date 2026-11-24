@@ -1,4 +1,4 @@
-// Shared by the packages/ui and workbench colour checks.
+// Shared by the packages/parks and workbench colour checks.
 
 /** A colour utility with an opacity modifier, such as bg-foreground/10. Text sizes with a line height (text-xs/5) are not colours. */
 export const colourOpacity =

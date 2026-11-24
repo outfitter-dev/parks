@@ -1,8 +1,8 @@
 "use client";
 
-import { Badge } from "@workspace/ui/components/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card";
-import { paletteNames, steps } from "@workspace/ui/lib/palette";
+import { Badge } from "@outfitter/parks/components/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@outfitter/parks/components/card";
+import { paletteNames, steps } from "@outfitter/parks/lib/palette";
 import { Specimen, VersionRows } from "./kit";
 
 const swatches = [

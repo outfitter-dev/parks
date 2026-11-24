@@ -1,8 +1,8 @@
 "use client";
 
 import type { ComponentType, ReactNode } from "react";
-import { Badge } from "@workspace/ui/components/badge";
-import { Button } from "@workspace/ui/components/button";
+import { Badge } from "@outfitter/parks/components/badge";
+import { Button } from "@outfitter/parks/components/button";
 import { DotmCircular1 } from "./dotmatrix/dotm-circular-1";
 import { DotmCircular2 } from "./dotmatrix/dotm-circular-2";
 import { DotmCircular3 } from "./dotmatrix/dotm-circular-3";

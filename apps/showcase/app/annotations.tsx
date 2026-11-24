@@ -47,5 +47,5 @@ export function Annotations() {
   }, []);
 
   if (!ready) return null;
-  return <Agentation appName="Outpost workbench" endpoint={endpoint} />;
+  return <Agentation appName="Parks showcase" endpoint={endpoint} />;
 }

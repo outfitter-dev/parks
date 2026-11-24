@@ -1,17 +1,15 @@
-# Workbench
+# Showcase
 
-A preview app for `packages/ui`. It shows full screen compositions, single components and the primitives they are built from. The DialKit panel in the corner tunes the design tokens live and switches between the Luma tuned and Linear-like presets.
+A preview app for `packages/parks`. It shows full screen compositions, single components and the primitives they are built from. The DialKit panel in the corner tunes the design tokens live and switches between the Luma tuned and Linear-like presets.
 
-The workbench depends only on `@workspace/ui`. It needs no Outpost secrets, and it can move with the UI package when that package leaves this repo (POST-120).
+The showcase depends only on `@outfitter/parks` and needs no secrets. Everything in this repo is public, so fixtures only.
 
 ## Run it
 
 ```sh
 bun install
-bun run --cwd apps/workbench dev   # http://localhost:3100
+bun run --cwd apps/showcase dev   # http://localhost:3100
 ```
-
-Every branch also gets a Vercel preview from the `ui-workbench` project, at `ui-workbench-git-<branch>-outfitter.vercel.app`. Previews need a Vercel login.
 
 ## Add an entry
 
@@ -19,11 +17,11 @@ Every branch also gets a Vercel preview from the `ui-workbench` project, at `ui-
 2. Write the demo in `demos/` as a client component. Use `Specimen` for component examples and `Viewport` for full screens.
 3. Register it in `demos/index.tsx` under `section/slug`.
 
-Fixtures in `lib/fixtures.ts` are made up. Never load live Board or Outpost data here.
+Fixtures in `lib/fixtures.ts` are made up. Never load live product data here.
 
 ## Tokens
 
-`lib/theme.ts` holds the presets and compiles them to the CSS variables that `packages/ui` reads. "Copy tokens" in the panel copies that CSS. The corner model: `--radius` is the inner radius, `--pad` is a frame's padding, and a frame's radius is their sum (`rounded-frame`). Frame padding is even on every side so pills, buttons and glyphs sit concentric in the corners; text blocks add `--inset` on the left and right (`px-inset`, `ps-inset`, `pe-inset`) so they don't read top-heavy. The `frame` and `panel` utilities in `packages/ui` publish their own padding, radius and inset to their children, and `--inset` is `--inset-ratio` times the nearest container's padding, so smaller or nested containers get a smaller inset on their own. Resize one with `--frame-pad` or `--panel-pad` on that element. Buttons and badges use `text-trim` (CSS `text-box`) so a single line centres on its cap height.
+`lib/theme.ts` holds the presets and compiles them to the CSS variables that `packages/parks` reads. "Copy tokens" in the panel copies that CSS. The corner model: `--radius` is the inner radius, `--pad` is a frame's padding, and a frame's radius is their sum (`rounded-frame`). Frame padding is even on every side so pills, buttons and glyphs sit concentric in the corners; text blocks add `--inset` on the left and right (`px-inset`, `ps-inset`, `pe-inset`) so they don't read top-heavy. The `frame` and `panel` utilities in `packages/parks` publish their own padding, radius and inset to their children, and `--inset` is `--inset-ratio` times the nearest container's padding, so smaller or nested containers get a smaller inset on their own. Resize one with `--frame-pad` or `--panel-pad` on that element. Buttons and badges use `text-trim` (CSS `text-box`) so a single line centres on its cap height.
 
 ## Icons and components
 

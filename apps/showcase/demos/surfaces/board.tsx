@@ -1,11 +1,11 @@
 "use client";
 
-import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia, ItemTitle } from "@workspace/ui/components/item";
-import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/ui/components/card";
-import { Badge } from "@workspace/ui/components/badge";
-import { Button } from "@workspace/ui/components/button";
-import { Progress } from "@workspace/ui/components/progress";
-import { cn } from "@workspace/ui/lib/utils";
+import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia, ItemTitle } from "@outfitter/parks/components/item";
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@outfitter/parks/components/card";
+import { Badge } from "@outfitter/parks/components/badge";
+import { Button } from "@outfitter/parks/components/button";
+import { Progress } from "@outfitter/parks/components/progress";
+import { cn } from "@outfitter/parks/lib/utils";
 import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
 import { CheckCircleIcon } from "@solar-icons/react/outline/check-circle";
 import { CodeSquareIcon } from "@solar-icons/react/outline/code-square";
@@ -14,7 +14,7 @@ import { Widget2Icon } from "@solar-icons/react/outline/widget-2";
 import { Widget2Icon as Widget2Bold } from "@solar-icons/react/bold/widget-2";
 import { AppFrame } from "../app-frame";
 import { outpostNavigation } from "../outpost-navigation";
-import { StatusDot } from "@workspace/ui/components/status-dot";
+import { StatusDot } from "@outfitter/parks/components/status-dot";
 import { HaloSignal, Signal, Viewport } from "../kit";
 import {
   Timeline,

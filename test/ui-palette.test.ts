@@ -1,10 +1,10 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { chromaticScale, defaultBrand, maxChroma, paletteNames, palettes, renderPalette, steps } from "../packages/ui/src/lib/palette";
+import { chromaticScale, defaultBrand, maxChroma, paletteNames, palettes, renderPalette, steps } from "../packages/parks/src/lib/palette";
 
 const repo = join(import.meta.dirname, "..");
-const css = readFileSync(join(repo, "packages/ui/src/styles/palette.css"), "utf8");
+const css = readFileSync(join(repo, "packages/parks/src/styles/palette.css"), "utf8");
 
 // Tailwind 4's palette names. Ours retunes the values, never the names.
 const tailwindNames = [

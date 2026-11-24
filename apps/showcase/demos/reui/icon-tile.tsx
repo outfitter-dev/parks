@@ -6,7 +6,7 @@ import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { cn } from "@workspace/ui/lib/utils"
+import { cn } from "@outfitter/parks/lib/utils"
 
 /**
  * CSS variable architecture:

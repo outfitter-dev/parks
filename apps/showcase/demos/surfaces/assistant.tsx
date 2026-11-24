@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { MultiFileDiff } from "@pierre/diffs/react";
-import { Card, CardHeader, CardLead, CardMeta, CardTitle } from "@workspace/ui/components/card";
-import { Badge } from "@workspace/ui/components/badge";
-import { Button } from "@workspace/ui/components/button";
-import { InlineCode } from "@workspace/ui/components/inline-code";
-import { Textarea } from "@workspace/ui/components/textarea";
+import { Card, CardHeader, CardLead, CardMeta, CardTitle } from "@outfitter/parks/components/card";
+import { Badge } from "@outfitter/parks/components/badge";
+import { Button } from "@outfitter/parks/components/button";
+import { InlineCode } from "@outfitter/parks/components/inline-code";
+import { Textarea } from "@outfitter/parks/components/textarea";
 import { ArrowUpIcon } from "@solar-icons/react/bold/arrow-up";
 import { ChatRoundDotsIcon } from "@solar-icons/react/outline/chat-round-dots";
 import { ChatRoundDotsIcon as ChatRoundDotsBold } from "@solar-icons/react/bold/chat-round-dots";

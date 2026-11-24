@@ -1,5 +1,5 @@
 {
-  "name": "@workspace/workbench",
+  "name": "@outfitter/parks-showcase",
   "private": true,
   "type": "module",
   "imports": {
@@ -21,7 +21,7 @@
     "@pierre/diffs": "1.7.1",
     "@pierre/trees": "1.0.0",
     "@solar-icons/react": "2.7.0",
-    "@workspace/ui": "workspace:*",
+    "@outfitter/parks": "workspace:*",
     "allo-font": "1.0.3",
     "class-variance-authority": "0.7.1",
     "dialkit": "2.2.1",

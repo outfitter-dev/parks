@@ -3,10 +3,10 @@
 import { useMemo, useState, type ComponentType, type ReactNode } from "react";
 import type { FileContents } from "@pierre/diffs";
 import { File } from "@pierre/diffs/react";
-import { SectionHeader, SectionHeaderAction, SectionHeaderTitle } from "@workspace/ui/components/section-header";
-import { Button } from "@workspace/ui/components/button";
-import { Card } from "@workspace/ui/components/card";
-import { cn } from "@workspace/ui/lib/utils";
+import { SectionHeader, SectionHeaderAction, SectionHeaderTitle } from "@outfitter/parks/components/section-header";
+import { Button } from "@outfitter/parks/components/button";
+import { Card } from "@outfitter/parks/components/card";
+import { cn } from "@outfitter/parks/lib/utils";
 import {
   Trace as TracePart,
   TraceCollapsible,
@@ -16,7 +16,7 @@ import {
   TraceIcon,
   TraceLine as TraceLinePart,
   TraceTitle,
-} from "@workspace/ui/components/trace";
+} from "@outfitter/parks/components/trace";
 import { CheckIcon } from "@solar-icons/react/outline/check";
 import { CopyIcon } from "@solar-icons/react/outline/copy";
 

@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { NavItem } from "@workspace/ui/components/nav-item";
-import { GroupLabel } from "@workspace/ui/components/group-label";
+import { NavItem } from "@outfitter/parks/components/nav-item";
+import { GroupLabel } from "@outfitter/parks/components/group-label";
 import { Widget2Icon } from "@solar-icons/react/outline/widget-2";
 import { entries, sections } from "#lib/nav";
 
@@ -15,7 +15,7 @@ export function Shell({ children }: { children: ReactNode }) {
       <aside className="border-b bg-fill-subtle md:sticky md:top-0 md:h-dvh md:overflow-y-auto md:border-r md:border-b-0">
         <Link href="/" className="flex items-center gap-2 px-4 pt-4 pb-3 font-medium">
           <Widget2Icon className="size-4 text-brand" />
-          Outpost workbench
+          Parks showcase
         </Link>
         <nav aria-label="Workbench" className="flex gap-6 overflow-x-auto px-2 pb-4 md:flex-col md:gap-4">
           {sections.map((section) => (

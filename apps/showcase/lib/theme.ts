@@ -1,10 +1,10 @@
 /**
  * Theme presets and the CSS they compile to. The workbench writes this CSS
  * into a <style> tag so every component reads the same variables that
- * packages/ui defines. "Copy tokens" copies the same string.
+ * packages/parks defines. "Copy tokens" copies the same string.
  */
 
-import { steps, type PaletteName } from "@workspace/ui/lib/palette";
+import { steps, type PaletteName } from "@outfitter/parks/lib/palette";
 
 export type PresetId = "luma" | "linear";
 export type Mode = "system" | "light" | "dark";
@@ -77,7 +77,7 @@ const monoFonts: Record<MonoFont, { stack: string; scale: Record<UiFont, number>
 };
 
 /**
- * The theme only sets seeds. packages/ui derives every colour, radius and
+ * The theme only sets seeds. packages/parks derives every colour, radius and
  * shadow from them, in light and dark, so the workbench never restates a
  * derived value.
  */

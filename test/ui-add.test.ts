@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { rewrite } from "../scripts/ui-add";
 
-const ui = join(import.meta.dirname, "../packages/ui");
+const ui = join(import.meta.dirname, "../packages/parks");
 const iconMap: Record<string, string> = JSON.parse(readFileSync(join(ui, "icons.json"), "utf8"));
 const solarIcons = join(ui, "node_modules/@solar-icons/react/dist/icons");
 
