@@ -20,6 +20,6 @@ Read `README.md` and `docs/ui.md` before changing components or tokens. `docs/ui
 
 ## Work here
 
-Run `./scripts/bootstrap.sh` in a fresh checkout, then `bun run check` (lint, format, typecheck, tests). `bun run dev` serves the showcase on http://localhost:3100. Add a changeset (`bun run changeset`) when a change to `@outfitter/parks` would be visible to its users.
+Run `./scripts/bootstrap.sh` in a fresh checkout, then `bun run check` (lint, format, typecheck, tests). `bun run dev` serves the showcase on http://localhost:3100. The showcase is a static export served by a Cloudflare Worker (`wrangler.jsonc`): `bun run preview` serves the built site locally, and `bun run deploy:check` builds it and dry-runs the deploy. Add a changeset (`bun run changeset`) when a change to `@outfitter/parks` would be visible to its users.
 
 Work on a branch named for its Linear issue and keep the pull request in draft until CI passes. Do not publish the package, change repository settings or access, or deploy as an incidental change.
