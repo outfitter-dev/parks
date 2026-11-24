@@ -41,7 +41,7 @@ Build any row of label, meta and trailing action with `Item` (`packages/parks/sr
 
 `Item` takes `variant` (`default`, `outline`, `muted`), `size` (`default`, `sm`, `xs`; `xs` is one control high) and `selected`. Render it as a link or button with `render` to get hover and focus states. Wrap rows in `ItemGroup`: `open` spaces them apart, `list` divides them with rules, and `bounded` also puts them in one rounded panel. Neither component sets a list role; add `role="list"` and `role="listitem"` yourself when the rows are a real list rather than buttons or links.
 
-Disclosure rows that open in place, such as `TraceLine` in the workbench, stay on Collapsible.
+Disclosure rows that open in place, such as a `TraceStep` with output, stay on Collapsible.
 
 Menu, select and nav rows share one recipe in `packages/parks/src/lib/row.ts`, so weight, padding, icon size and the highlighted state match. Use `NavItem` for a nav link (`current` sets `aria-current="page"` and the same fill as a selected Item; `size="sm"` for dense lists). Menu items, labels and sub-menu triggers take `indent` to line up past an icon column; shadcn's `inset` still works as an alias, but it is not the `--inset` text padding.
 
@@ -85,7 +85,7 @@ These come from shadcn as is, tuned to the tokens above. The workbench shows eac
 
 - **Data table.** `#components/data-table` follows shadcn's TanStack Table v9 guide on our `Table`. `useDataTable` and `dataTableColumns` share one feature set (filtering, sorting, visibility, selection, pagination); add `dataTableSelectColumn`, `DataTableColumnHeader`, `DataTableToolbar` and `DataTablePagination` as needed. Read state from `table.state`; v9 has no `getState()`.
 - **Questionnaire.** From `@shadcn/react`. `Questionnaire` with `shortcuts` (`letters` or `numbers`) makes A–D or 1–9 real keys while focus is in the form; `QuestionnaireItem` takes `name` and `multiple`. The Needs you asks are built on it. Radio and checkbox indicators are separate elements because anything with `rounded-full` is forced round.
-- **Trace.** Tool activity in an assistant thread: `TraceLine`, `TraceDescription`, `status`, and `TraceCollapsible` for lines with detail.
+- **Message and Trace.** `Message` is one turn in a conversation (`from="you"` sits in a bubble, `from="agent"` reads as plain content). `Trace` lists an agent's steps as `TraceStep`s with an icon, title, `detail` and `status` (`done`, `running`, `failed`); a step with children opens in place.
 - **Attachment.** An uploaded file, with idle, uploading, done and error states. Context chips in the composer stay as Badges.
 - **Resizable.** `ResizablePanelGroup`, `ResizablePanel` and `ResizableHandle` on react-resizable-panels; sizes are percentage strings.
 - **Prose.** Our own wrapper for rendered Markdown, after shadcn's Typography page (which ships no component). `size="sm"` tightens it for cards and bubbles. Long-form text only.

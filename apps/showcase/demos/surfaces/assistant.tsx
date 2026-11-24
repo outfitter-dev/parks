@@ -10,7 +10,9 @@ import {
   CardTitle,
 } from "@outfitter/parks/components/card";
 import { InlineCode } from "@outfitter/parks/components/inline-code";
+import { Message } from "@outfitter/parks/components/message";
 import { Textarea } from "@outfitter/parks/components/textarea";
+import { Trace, TraceStep } from "@outfitter/parks/components/trace";
 import { MultiFileDiff } from "@pierre/diffs/react";
 import { ArrowUpIcon } from "@solar-icons/react/bold/arrow-up";
 import { ChatRoundDotsIcon as ChatRoundDotsBold } from "@solar-icons/react/bold/chat-round-dots";
@@ -27,7 +29,7 @@ import { AppFrame } from "../app-frame";
 import type { AppNavigation } from "../app-sidebar";
 import { HaloSignal, Viewport } from "../kit";
 import { FileType } from "../reui/file-type";
-import { CodeBlock, CodeFrame, Trace, TraceLine, Turn } from "./parts";
+import { CodeBlock, CodeFrame } from "./parts";
 
 const navigation = {
   name: "Sequoia",
@@ -202,20 +204,20 @@ export function AssistantSurface() {
         }
       >
         <div className="mx-auto flex min-h-full max-w-3xl flex-col gap-6 px-4 py-6">
-          <Turn from="you">
+          <Message from="you">
             Can you make the ask route plural like the others, and check nothing
             else calls it?
-          </Turn>
+          </Message>
 
-          <Turn from="agent" name="Mardy">
+          <Message from="agent" author="Mardy">
             <Trace>
-              <TraceLine
-                icon={MagnifierIcon}
+              <TraceStep
+                icon={<MagnifierIcon />}
                 title="Searched for /v1/ask"
                 detail="3 results"
               />
-              <TraceLine
-                icon={PenIcon}
+              <TraceStep
+                icon={<PenIcon />}
                 title="Edited src/http/routes.ts"
                 detail="+2 −1"
                 defaultOpen
@@ -228,18 +230,17 @@ export function AssistantSurface() {
                     className="workbench-code"
                   />
                 </CodeFrame>
-              </TraceLine>
-              <TraceLine
-                icon={CodeSquareIcon}
+              </TraceStep>
+              <TraceStep
+                icon={<CodeSquareIcon />}
                 title="Ran bun run test routes"
                 detail="18 passed"
-                tone="ok"
               >
                 <CodeBlock
                   code={"✓ test/http/routes.test.ts (18)\nTests  18 passed"}
                   label="Output"
                 />
-              </TraceLine>
+              </TraceStep>
             </Trace>
             <p>
               The route is now <InlineCode>/v1/asks</InlineCode>. Two callers
@@ -248,16 +249,16 @@ export function AssistantSurface() {
               keep working for a while.
             </p>
             <AskCard />
-          </Turn>
+          </Message>
 
-          <Turn from="you">Go with the recommendation.</Turn>
+          <Message from="you">Go with the recommendation.</Message>
 
-          <Turn from="agent" name="Mardy">
+          <Message from="agent" author="Mardy">
             <span className="text-muted-foreground flex items-center gap-2">
               <HaloSignal size={20} label="Working" className="text-brand" />
               Adding the alias and a deprecation header
             </span>
-          </Turn>
+          </Message>
 
           <div className="bg-background sticky bottom-0 mt-auto pt-2">
             <Composer />

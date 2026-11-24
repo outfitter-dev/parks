@@ -69,8 +69,8 @@ import type { Ask } from "#lib/fixtures";
 
 import { AppFrame, PageBar } from "./app-frame";
 import { AgentModeBadge, Signal, VersionRows, Viewport } from "./kit";
-import { Stat } from "./surfaces/parts";
 import { sequoiaNavigation } from "./sequoia-navigation";
+import { Stat } from "./surfaces/parts";
 
 function AskRow({
   ask,
