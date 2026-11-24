@@ -106,6 +106,22 @@ import { WrenchIcon as WrenchSolid } from "@solar-icons/react/bold/wrench";
 import { InboxIcon as InboxDuotone } from "@solar-icons/react/bold-duotone/inbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
 import { Specimen } from "./kit";
+import { DocumentTextIcon as DocumentTextOutline } from "@solar-icons/react/outline/document-text";
+import { DocumentTextIcon as DocumentTextSolid } from "@solar-icons/react/bold/document-text";
+import { DoubleAltArrowLeftIcon as DoubleAltArrowLeftOutline } from "@solar-icons/react/outline/double-alt-arrow-left";
+import { DoubleAltArrowLeftIcon as DoubleAltArrowLeftSolid } from "@solar-icons/react/bold/double-alt-arrow-left";
+import { DoubleAltArrowRightIcon as DoubleAltArrowRightOutline } from "@solar-icons/react/outline/double-alt-arrow-right";
+import { DoubleAltArrowRightIcon as DoubleAltArrowRightSolid } from "@solar-icons/react/bold/double-alt-arrow-right";
+import { EyeClosedIcon as EyeClosedOutline } from "@solar-icons/react/outline/eye-closed";
+import { EyeClosedIcon as EyeClosedSolid } from "@solar-icons/react/bold/eye-closed";
+import { GalleryIcon as GalleryOutline } from "@solar-icons/react/outline/gallery";
+import { GalleryIcon as GallerySolid } from "@solar-icons/react/bold/gallery";
+import { SortVerticalIcon as SortVerticalOutline } from "@solar-icons/react/outline/sort-vertical";
+import { SortVerticalIcon as SortVerticalSolid } from "@solar-icons/react/bold/sort-vertical";
+import { Tuning2Icon as Tuning2Outline } from "@solar-icons/react/outline/tuning-2";
+import { Tuning2Icon as Tuning2Solid } from "@solar-icons/react/bold/tuning-2";
+import { UploadMinimalisticIcon as UploadMinimalisticOutline } from "@solar-icons/react/outline/upload-minimalistic";
+import { UploadMinimalisticIcon as UploadMinimalisticSolid } from "@solar-icons/react/bold/upload-minimalistic";
 
 const icons = [
   { name: "alt-arrow-down", outline: AltArrowDownOutline, solid: AltArrowDownSolid },
@@ -129,7 +145,12 @@ const icons = [
   { name: "danger-circle", outline: DangerCircleOutline, solid: DangerCircleSolid },
   { name: "danger-triangle", outline: DangerTriangleOutline, solid: DangerTriangleSolid },
   { name: "database", outline: DatabaseOutline, solid: DatabaseSolid },
+  { name: "document-text", outline: DocumentTextOutline, solid: DocumentTextSolid },
+  { name: "double-alt-arrow-left", outline: DoubleAltArrowLeftOutline, solid: DoubleAltArrowLeftSolid },
+  { name: "double-alt-arrow-right", outline: DoubleAltArrowRightOutline, solid: DoubleAltArrowRightSolid },
+  { name: "eye-closed", outline: EyeClosedOutline, solid: EyeClosedSolid },
   { name: "folder", outline: FolderOutline, solid: FolderSolid },
+  { name: "gallery", outline: GalleryOutline, solid: GallerySolid },
   { name: "git-branch", outline: GitBranchOutline, solid: GitBranchSolid },
   { name: "git-commit", outline: GitCommitOutline, solid: GitCommitSolid },
   { name: "git-pull-request", outline: GitPullRequestOutline, solid: GitPullRequestSolid },
@@ -154,9 +175,12 @@ const icons = [
   { name: "settings", outline: SettingsOutline, solid: SettingsSolid },
   { name: "shield-check", outline: ShieldCheckOutline, solid: ShieldCheckSolid },
   { name: "shield-keyhole", outline: ShieldKeyholeOutline, solid: ShieldKeyholeSolid },
+  { name: "sort-vertical", outline: SortVerticalOutline, solid: SortVerticalSolid },
   { name: "stars", outline: StarsOutline, solid: StarsSolid },
   { name: "structure", outline: StructureOutline, solid: StructureSolid },
   { name: "trash-bin-minimalistic", outline: TrashBinMinimalisticOutline, solid: TrashBinMinimalisticSolid },
+  { name: "tuning-2", outline: Tuning2Outline, solid: Tuning2Solid },
+  { name: "upload-minimalistic", outline: UploadMinimalisticOutline, solid: UploadMinimalisticSolid },
   { name: "users-group-rounded", outline: UsersGroupRoundedOutline, solid: UsersGroupRoundedSolid },
   { name: "widget-2", outline: Widget2Outline, solid: Widget2Solid },
   { name: "wrench", outline: WrenchOutline, solid: WrenchSolid },

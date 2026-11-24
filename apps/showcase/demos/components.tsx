@@ -3,7 +3,7 @@
 import { Alert, AlertAction, AlertDescription, AlertMeta, AlertTitle } from "@workspace/ui/components/alert";
 import { CodeRef } from "@workspace/ui/components/code-ref";
 import { Avatar, AvatarFallback, AvatarGroup } from "@workspace/ui/components/avatar";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Item, ItemContent, ItemGroup, ItemMeta, ItemTitle } from "@workspace/ui/components/item";
 import { Badge } from "@workspace/ui/components/badge";
 import { Mark } from "@workspace/ui/components/mark";
@@ -37,12 +37,18 @@ import {
 } from "@workspace/ui/components/dialog";
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
 import { Input } from "@workspace/ui/components/input";
@@ -436,6 +442,46 @@ export function MenusDemo() {
           </DropdownMenuContent>
         </DropdownMenu>
       </Specimen>
+      <Specimen title="Checkbox items" note="Toggles that keep the menu open, for showing and hiding things.">
+        <MenuCheckboxes />
+      </Specimen>
+      <Specimen title="Radio items" note="One choice from a set. The menu shows the current pick.">
+        <MenuRadios />
+      </Specimen>
+      <Specimen title="Sub-menu" note="A row that opens a second menu, for a set of choices that would crowd the first.">
+        <DropdownMenu>
+          <DropdownMenuTrigger render={<Button variant="secondary" />}>Thread actions</DropdownMenuTrigger>
+          <DropdownMenuContent className="w-52">
+            <DropdownMenuItem>
+              <PenIcon /> Rename
+            </DropdownMenuItem>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <BellOffIcon /> Mute for
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent className="w-40">
+                <DropdownMenuItem>1 hour</DropdownMenuItem>
+                <DropdownMenuItem>Until tomorrow</DropdownMenuItem>
+                <DropdownMenuItem>Until I unmute</DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <InfoCircleIcon /> Move to
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent className="w-44">
+                <DropdownMenuItem>#outfitter</DropdownMenuItem>
+                <DropdownMenuItem>#toolkit</DropdownMenuItem>
+                <DropdownMenuItem>#signals</DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem tone="destructive">
+              <TrashBinMinimalisticIcon /> Delete thread
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </Specimen>
       <Specimen title="Dialog">
         <Dialog>
           <DialogTrigger render={<Button tone="destructive" variant="tint" />}>Revoke credential</DialogTrigger>
@@ -462,6 +508,57 @@ export function MenusDemo() {
         </Tooltip>
       </Specimen>
     </>
+  );
+}
+
+function MenuCheckboxes() {
+  const [shown, setShown] = useState({ deliveries: true, approvals: true, digests: false });
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger render={<Button variant="secondary" />}>Show in feed</DropdownMenuTrigger>
+      <DropdownMenuContent className="w-48">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Events</DropdownMenuLabel>
+          <DropdownMenuCheckboxItem
+            checked={shown.deliveries}
+            onCheckedChange={(checked) => setShown({ ...shown, deliveries: checked })}
+          >
+            Deliveries
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem
+            checked={shown.approvals}
+            onCheckedChange={(checked) => setShown({ ...shown, approvals: checked })}
+          >
+            Approvals
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem
+            checked={shown.digests}
+            onCheckedChange={(checked) => setShown({ ...shown, digests: checked })}
+          >
+            Digests
+          </DropdownMenuCheckboxItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function MenuRadios() {
+  const [mode, setMode] = useState("live");
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger render={<Button variant="secondary" />}>Rex&rsquo;s mode</DropdownMenuTrigger>
+      <DropdownMenuContent className="w-48">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Mode</DropdownMenuLabel>
+          <DropdownMenuRadioGroup value={mode} onValueChange={(value) => setMode(String(value))}>
+            <DropdownMenuRadioItem value="live">Live</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="digest">Digest only</DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="muted">Muted</DropdownMenuRadioItem>
+          </DropdownMenuRadioGroup>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
