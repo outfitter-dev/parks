@@ -14,6 +14,7 @@ import { Widget2Icon } from "@solar-icons/react/outline/widget-2";
 import { Widget2Icon as Widget2Bold } from "@solar-icons/react/bold/widget-2";
 import { AppFrame } from "../app-frame";
 import { outpostNavigation } from "../outpost-navigation";
+import { StatusDot } from "@workspace/ui/components/status-dot";
 import { HaloSignal, Signal, Viewport } from "../kit";
 import {
   Timeline,
@@ -135,9 +136,10 @@ export function BoardSurface() {
         title="Overview"
         actions={
           <>
-            <Badge tone="success" icon={<HaloSignal size={12} label="Syncing" className="text-tone-mark" />}>
-              Board synced
-            </Badge>
+            <span className="flex items-center gap-2 text-sm text-muted-foreground">
+              <StatusDot tone="success" />
+              Synced
+            </span>
             <Button size="sm">New task</Button>
           </>
         }
