@@ -30,6 +30,7 @@ function Progress({
   className,
   children,
   value,
+  min = 0,
   max = 100,
   tone,
   segments,
@@ -38,20 +39,22 @@ function Progress({
 }: ProgressProps) {
   const count =
     segments === true ? max : typeof segments === "number" ? segments : 0;
-  const current = value ?? 0;
-  const filled =
-    count > 0
-      ? Math.round((Math.min(Math.max(current, 0), max) / max) * count)
-      : 0;
+  const current = value ?? min;
+  const span = max - min;
+  // How far through the range the value is, from 0 to 1.
+  const fraction =
+    span > 0 ? (Math.min(Math.max(current, min), max) - min) / span : 0;
+  const filled = count > 0 ? Math.round(fraction * count) : 0;
   const valueLabel =
     showValue === true
       ? count > 0
         ? `${current}/${max}`
-        : `${Math.round((current / max) * 100)}%`
+        : `${Math.round(fraction * 100)}%`
       : showValue || null;
   return (
     <ProgressPrimitive.Root
       value={value}
+      min={min}
       max={max}
       data-slot="progress"
       data-tone={isTone(tone) ? tone : "neutral"}
