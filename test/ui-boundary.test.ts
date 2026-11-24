@@ -11,7 +11,7 @@ const root = join(import.meta.dirname, "../packages/parks");
 const manifest: {
   dependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
-  imports?: Record<string, string>;
+  imports?: Record<string, string | Record<string, string>>;
 } = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
 const declared = new Set([
   ...Object.keys(manifest.dependencies ?? {}),
@@ -49,13 +49,18 @@ describe("packages/parks boundary", () => {
     expect(sources.length).toBeGreaterThan(0);
   });
 
-  for (const [alias, mapped] of aliases) {
+  for (const [alias, mapping] of aliases) {
+    // An alias maps to one path, or to one path per condition (types, default).
+    const targets =
+      typeof mapping === "string" ? [mapping] : Object.values(mapping);
     it(`alias ${alias} maps inside the package`, () => {
-      expect(mapped.startsWith("./"), `${alias} -> ${mapped}`).toBe(true);
-      expect(
-        relative(root, join(root, mapped)).startsWith(".."),
-        `${alias} -> ${mapped}`
-      ).toBe(false);
+      for (const mapped of targets) {
+        expect(mapped.startsWith("./"), `${alias} -> ${mapped}`).toBe(true);
+        expect(
+          relative(root, join(root, mapped)).startsWith(".."),
+          `${alias} -> ${mapped}`
+        ).toBe(false);
+      }
     });
   }
 

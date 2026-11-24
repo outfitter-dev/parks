@@ -1,0 +1,7 @@
+/*
+ * The Parks stylesheet with Outfitter's default theme. Import this once from
+ * the app's root CSS. To tune the theme, set seed variables (see
+ * src/themes/outfitter.css) in a :root rule after this import.
+ */
+@import "./globals.css";
+@import "../themes/outfitter.css";

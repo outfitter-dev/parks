@@ -1,6 +1,6 @@
 # Showcase
 
-A preview app for `packages/parks`. It shows full screen compositions, single components and the primitives they are built from. The DialKit panel in the corner tunes the design tokens live and switches between the Luma tuned and Linear-like presets.
+A preview app for `packages/parks`. It shows full screen compositions, single components and the primitives they are built from. The DialKit panel in the corner tunes the design tokens live and switches between the Outfitter default and Linear-like presets.
 
 The showcase depends only on `@outfitter/parks` and needs no secrets. Everything in this repo is public, so fixtures only.
 
@@ -21,7 +21,7 @@ Fixtures in `lib/fixtures.ts` are made up. Never load live product data here.
 
 ## Tokens
 
-`lib/theme.ts` holds the presets and compiles them to the CSS variables that `packages/parks` reads. "Copy tokens" in the panel copies that CSS. The corner model: `--radius` is the inner radius, `--pad` is a frame's padding, and a frame's radius is their sum (`rounded-frame`). Frame padding is even on every side so pills, buttons and glyphs sit concentric in the corners; text blocks add `--inset` on the left and right (`px-inset`, `ps-inset`, `pe-inset`) so they don't read top-heavy. The `frame` and `panel` utilities in `packages/parks` publish their own padding, radius and inset to their children, and `--inset` is `--inset-ratio` times the nearest container's padding, so smaller or nested containers get a smaller inset on their own. Resize one with `--frame-pad` or `--panel-pad` on that element. Buttons and badges use `text-trim` (CSS `text-box`) so a single line centres on its cap height.
+`@outfitter/parks/lib/theme` holds the presets and compiles them to the CSS variables that `packages/parks` reads. "Copy tokens" in the panel copies that CSS. The corner model: `--radius` is the inner radius, `--pad` is a frame's padding, and a frame's radius is their sum (`rounded-frame`). Frame padding is even on every side so pills, buttons and glyphs sit concentric in the corners; text blocks add `--inset` on the left and right (`px-inset`, `ps-inset`, `pe-inset`) so they don't read top-heavy. The `frame` and `panel` utilities in `packages/parks` publish their own padding, radius and inset to their children, and `--inset` is `--inset-ratio` times the nearest container's padding, so smaller or nested containers get a smaller inset on their own. Resize one with `--frame-pad` or `--panel-pad` on that element. Buttons and badges use `text-trim` (CSS `text-box`) so a single line centres on its cap height.
 
 ## Icons and components
 
