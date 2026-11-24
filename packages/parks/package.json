@@ -42,6 +42,7 @@
     },
     "#rules/*": {
       "types": "./src/rules/*.ts",
+      "bun": "./src/rules/*.ts",
       "default": "./dist/rules/*.js"
     }
   },
