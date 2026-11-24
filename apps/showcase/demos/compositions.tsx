@@ -268,7 +268,9 @@ function TrayFooter({ hint, onReply }: { hint: string | undefined; onReply: (tex
     setText("");
   };
   return (
-    <div className="grid gap-2 px-frame pb-1 text-muted-foreground" aria-live="polite">
+    // The tray is a smaller frame than the card it holds, so the footer takes
+    // the card's padding to line up with the card's text.
+    <div className="grid gap-2 px-(--pad) pb-1" aria-live="polite">
       {replying ? (
         <div className="flex items-center gap-2">
           <Input
@@ -290,7 +292,7 @@ function TrayFooter({ hint, onReply }: { hint: string | undefined; onReply: (tex
           </Button>
         </div>
       ) : (
-        <p>
+        <p className="text-blend-subtle">
           {hint ?? (
             <>
               Or just{" "}

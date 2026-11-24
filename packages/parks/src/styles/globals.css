@@ -436,6 +436,18 @@
   padding-inline-end: var(--inset);
 }
 
+/* Quiet text that blends into the surface under it, like a system vibrancy
+   label: the subtle ink darkens a light surface and lightens a dark one, so
+   it reads as the same weight on a card, a tray or the page. Blend modes
+   can't go in light-dark(), so the dark mode swaps the operator here. */
+@utility text-blend-subtle {
+  color: var(--fg-subtle);
+  mix-blend-mode: plus-darker;
+  @variant dark {
+    mix-blend-mode: plus-lighter;
+  }
+}
+
 @utility text-ui-label {
   font-size: var(--text-xs);
   line-height: var(--text-xs--line-height);
