@@ -36,4 +36,11 @@ if [[ -L node_modules ]]; then
 fi
 
 bun install --frozen-lockfile
+
+# Bun skips dependency lifecycle scripts, so lefthook's own postinstall never
+# registers the Git hooks. Register them here, except in CI, which runs the
+# check directly.
+if [[ -z "${CI:-}" ]]; then
+  bun run lefthook install
+fi
 echo "Parks dependencies are ready. Run bun run check to verify this checkout."
