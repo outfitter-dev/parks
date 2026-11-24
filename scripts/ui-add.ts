@@ -59,9 +59,16 @@ export function rewrite(source: string): { code: string; missing: string[] } {
     .map(([component, solar]) => `import { ${component} } from "@solar-icons/react/${solar}"`);
   if (imports.length > 0) {
     const lines = code.split("\n");
+    // Insert after the line that ends the last import statement, so a
+    // multi-line `import {\n  A,\n} from "x"` is never split.
     let last = -1;
+    let open = false;
     lines.forEach((line, index) => {
-      if (/^import\s/.test(line)) last = index;
+      if (/^import\s/.test(line)) open = true;
+      if (open && /(from\s+)?["'][^"']+["'];?\s*$/.test(line)) {
+        last = index;
+        open = false;
+      }
     });
     lines.splice(last + 1, 0, ...imports);
     code = lines.join("\n");

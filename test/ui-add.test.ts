@@ -25,6 +25,25 @@ describe("ui:add icon rewrite", () => {
     expect(code).not.toContain("IconPlaceholder");
   });
 
+  it("puts new imports after a multi-line import, not inside it", () => {
+    const source = [
+      'import { cn } from "#lib/utils"',
+      "import {",
+      "  InputGroup,",
+      "  InputGroupAddon,",
+      '} from "#components/input-group"',
+      "",
+      'export const A = () => <IconPlaceholder lucide="ChevronDownIcon" className="size-4" />',
+    ].join("\n");
+    const { code } = rewrite(source);
+    expect(code).toContain(
+      [
+        '} from "#components/input-group"',
+        'import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down"',
+      ].join("\n")
+    );
+  });
+
   it("reports a Lucide name with no mapping and leaves it in place", () => {
     const source = '<IconPlaceholder lucide="NotARealIcon" />';
     const { code, missing } = rewrite(source);
