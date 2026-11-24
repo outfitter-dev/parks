@@ -59,8 +59,10 @@ export function InstallDemo() {
         <Prose size="sm">
           <p>
             <code>bunx parks check</code> flags colours and lengths that drift
-            off the theme. <code>bunx parks contrast</code> scores every text
-            role on its surface in light and dark.
+            off the theme. <code>bunx parks contrast app.css</code> scores every
+            text role in your compiled stylesheet in light and dark; it needs{" "}
+            <code>playwright-core</code> and Chromium, as the package README
+            shows.
           </p>
         </Prose>
       </Specimen>
