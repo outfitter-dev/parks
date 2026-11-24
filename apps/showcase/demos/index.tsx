@@ -31,6 +31,7 @@ import { FormsDemo } from "./forms";
 import { IconsDemo } from "./icons";
 import { OverlaysDemo } from "./overlays";
 import { ColorDemo, ShapeDemo, TypeDemo } from "./primitives";
+import { InstallDemo, RegistryDemo } from "./start";
 import { AssistantSurface } from "./surfaces/assistant";
 import { BlogSurface } from "./surfaces/blog";
 import { BoardSurface } from "./surfaces/board";
@@ -40,6 +41,8 @@ import { TrailsSurface } from "./surfaces/trails";
 
 /** Keyed by `section/slug` from lib/nav.ts. */
 export const demos: Record<string, ComponentType> = {
+  "start/install": InstallDemo,
+  "start/registry": RegistryDemo,
   "compositions/needs-you": NeedsYouComposition,
   "compositions/agents": AgentsComposition,
   "compositions/admin": AdminComposition,

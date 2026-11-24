@@ -8,6 +8,7 @@
 import { spawnSync } from "node:child_process";
 import {
   cpSync,
+  mkdirSync,
   mkdtempSync,
   readdirSync,
   readFileSync,
@@ -59,6 +60,13 @@ writeFileSync(
 );
 run("bun", ["install"], app);
 run("node", ["render.mjs"], app);
+// The registry's blocks build on the packed package as an app would copy them.
+mkdirSync(path.join(app, "src/parks"), { recursive: true });
+cpSync(
+  path.join(repo, "apps/showcase/registry/ask/ask.tsx"),
+  path.join(app, "src/parks/ask.tsx")
+);
+run("bun", ["render-ask.tsx"], app);
 run("bunx", ["@tailwindcss/cli", "-i", "app.css", "-o", "out.css"], app);
 
 // The shipped rules pass the fixture's own source, and fail once a

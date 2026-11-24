@@ -1,4 +1,9 @@
-export type Section = "primitives" | "components" | "compositions" | "surfaces";
+export type Section =
+  | "start"
+  | "primitives"
+  | "components"
+  | "compositions"
+  | "surfaces";
 
 export type Entry = {
   section: Section;
@@ -8,6 +13,7 @@ export type Entry = {
 };
 
 export const sections: { id: Section; title: string }[] = [
+  { id: "start", title: "Start here" },
   { id: "compositions", title: "Compositions" },
   { id: "surfaces", title: "Surfaces" },
   { id: "components", title: "Components" },
@@ -15,6 +21,19 @@ export const sections: { id: Section; title: string }[] = [
 ];
 
 export const entries: Entry[] = [
+  {
+    section: "start",
+    slug: "install",
+    title: "Install",
+    summary:
+      "Add @outfitter/parks to an app, import the stylesheet and tune the theme.",
+  },
+  {
+    section: "start",
+    slug: "registry",
+    title: "Registry",
+    summary: "Copy-in blocks from the @outfitter shadcn registry.",
+  },
   {
     section: "compositions",
     slug: "needs-you",

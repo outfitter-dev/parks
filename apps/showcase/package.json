@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "bun run --cwd ../../packages/parks build && bun run dev:app",
-    "build": "bun run --cwd ../../packages/parks build && next build",
+    "build": "bun run --cwd ../../packages/parks build && bun run --cwd ../.. registry:build && next build",
     "start": "next start --port 3100",
     "typecheck": "bun run --cwd ../../packages/parks build && next typegen && tsc --noEmit",
     "dev:app": "next dev --port 3100"
