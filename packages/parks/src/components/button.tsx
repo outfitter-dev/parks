@@ -20,7 +20,7 @@ import { cnState } from "#lib/utils"
  * neutral solid is the primary button), `tint` is a soft tonal fill, and
  * outline, secondary, ghost and link keep their neutral chrome but take the
  * tone's text colour. shadcn's `default` and `destructive` stay as aliases
- * for solid and for a destructive tint.
+ * for the neutral solid and the destructive solid.
  *
  * Pill is the default. Rect fits a button embedded in a row or field; see
  * `rounded-inset-action` for one that sits concentric inside its row.
@@ -81,7 +81,7 @@ type Emphasis = NonNullable<VariantProps<typeof buttonVariants>["variant"]>
 /** shadcn's variant names, kept as aliases for a tone plus emphasis. */
 const variantAliases = {
   default: { tone: "neutral", variant: "solid" },
-  destructive: { tone: "destructive", variant: "tint" },
+  destructive: { tone: "destructive", variant: "solid" },
 } as const satisfies Record<string, { tone: Tone; variant: Emphasis }>
 
 type ButtonVariant = Emphasis | keyof typeof variantAliases
