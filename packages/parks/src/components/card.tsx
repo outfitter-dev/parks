@@ -75,14 +75,26 @@ function Card({
   interactive,
   disabled = false,
   render,
+  onClick,
   ...props
 }: CardProps) {
   const isInteractive = interactive ?? Boolean(render);
+  // A disabled card that is a link or button can't be focused or activated.
+  const blocked = disabled && isInteractive;
+  const isButton = React.isValidElement(render) && render.type === "button";
   return useRender({
     defaultTagName: "div",
     props: mergeProps<"div">(
       { className: cnState(cardVariants({ variant }), className) },
-      props
+      props,
+      blocked
+        ? {
+            "aria-disabled": true,
+            tabIndex: -1,
+            ...(isButton && { disabled: true }),
+            onClick: (event) => event.preventDefault(),
+          }
+        : { onClick }
     ),
     render,
     state: {
