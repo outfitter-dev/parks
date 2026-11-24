@@ -18,7 +18,7 @@ import {
   useRef,
   useState,
 } from "react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import { SidebarPanel, SidebarRail } from "./app-sidebar";
 import type { AppNavigation } from "./app-sidebar";
@@ -167,6 +167,9 @@ export function AppFrame({
   const openerRef = useRef<HTMLElement | null>(null);
   const inset = shell.style === "inset";
   const flush = shell.gutter === 0;
+  const gutterStyle: CSSProperties & { "--shell-gutter": string } = {
+    "--shell-gutter": `${shell.gutter}px`,
+  };
   const [wide, setWide] = useState(true);
   const [expanded, setExpanded] = useState(true);
   // Transitions start after the first measurement, so a narrow frame doesn't animate closed on load.
@@ -261,11 +264,12 @@ export function AppFrame({
       <div
         ref={frameRef}
         data-shell={shell.style}
+        style={gutterStyle}
         className={cn(
           "text-foreground relative flex min-h-160 overflow-hidden",
-          // --g is the container's gutter: the theme's value, or nothing on a phone.
+          // --g is the container's gutter: the shell's value, or nothing on a phone.
           inset
-            ? "bg-canvas [--g:var(--shell-gutter,--spacing(2))] @max-md:[--g:--spacing(0)]"
+            ? "bg-canvas [--g:var(--shell-gutter)] @max-md:[--g:--spacing(0)]"
             : "bg-background"
         )}
       >
