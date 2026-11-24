@@ -221,11 +221,13 @@ function AskOptions({
   if (look.style === "tray") {
     return (
       <Questionnaire shortcuts={shortcuts} onSubmit={(event) => event.preventDefault()} className="mt-5">
-        <Card variant="outline" className="gap-0 px-frame pt-frame pb-3">
-          <QuestionnaireItem name={ask.id} multiple={look.multi} className="gap-0">
-            <QuestionnaireTitle className="mb-1!">{ask.title}</QuestionnaireTitle>
-            {choices}
-          </QuestionnaireItem>
+        <Card variant="tray" className="grid">
+          <Card variant="outline" className="gap-0 px-frame pt-frame pb-1">
+            <QuestionnaireItem name={ask.id} multiple={look.multi} className="gap-0">
+              <QuestionnaireTitle className="mb-1!">{ask.title}</QuestionnaireTitle>
+              {choices}
+            </QuestionnaireItem>
+          </Card>
           <TrayFooter hint={picked.length > 0 ? hint : undefined} onReply={(text) => onPick([text])} />
         </Card>
       </Questionnaire>
@@ -258,7 +260,7 @@ function TrayFooter({ hint, onReply }: { hint: string | undefined; onReply: (tex
     setText("");
   };
   return (
-    <div className="mt-2 grid gap-2 text-muted-foreground" aria-live="polite">
+    <div className="grid gap-2 px-frame pb-1 text-muted-foreground" aria-live="polite">
       {replying ? (
         <div className="flex items-center gap-2">
           <Input
