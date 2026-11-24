@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "#components/dropdown-menu";
-import { fitBreadcrumb, hiddenByLimit } from "#lib/breadcrumb-fit";
+import { fitBreadcrumb, hiddenByLimit, pathWidths } from "#lib/breadcrumb-fit";
 import { cnState } from "#lib/utils";
 
 /*
@@ -258,21 +258,15 @@ function BreadcrumbPath({
       if (available === 0) {
         return;
       }
-      const start = sample.getBoundingClientRect().left;
-      const ends = Array.from(
-        sample.querySelectorAll<HTMLElement>("[data-measure]"),
-        (el) => el.getBoundingClientRect().right
+      const { widths, overflowWidth } = pathWidths(
+        sample.getBoundingClientRect(),
+        Array.from(
+          sample.querySelectorAll<HTMLElement>("[data-measure]"),
+          (el) => el.getBoundingClientRect()
+        ),
+        getComputedStyle(sample).direction === "rtl"
       );
-      const overflowEnd = ends.pop() ?? 0;
-      const widths = ends.map(
-        (end, index) => end - (index === 0 ? start : (ends[index - 1] ?? start))
-      );
-      const next = fitBreadcrumb(
-        widths,
-        overflowEnd - (ends.at(-1) ?? start),
-        available,
-        rootHasIcon
-      );
+      const next = fitBreadcrumb(widths, overflowWidth, available, rootHasIcon);
       setFit((last) =>
         last.hidden === next.hidden && last.compactRoot === next.compactRoot
           ? last

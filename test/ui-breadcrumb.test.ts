@@ -6,6 +6,7 @@ import { BreadcrumbPath } from "../packages/parks/src/components/breadcrumb";
 import {
   fitBreadcrumb,
   hiddenByLimit,
+  pathWidths,
 } from "../packages/parks/src/lib/breadcrumb-fit";
 
 describe("fitBreadcrumb", () => {
@@ -94,5 +95,32 @@ describe("BreadcrumbPath", () => {
     expect(visible).toContain('aria-label="Show 2 hidden breadcrumbs"');
     expect(visible).not.toContain("/skillset");
     expect(visible).toContain('href="/"');
+  });
+});
+
+describe("pathWidths", () => {
+  // Root 80, ancestor 100, current 120, then a 30-wide overflow trigger.
+  const expected = { widths: [80, 100, 120], overflowWidth: 30 };
+
+  it("measures a left-to-right path from its left edge", () => {
+    const list = { left: 10, right: 400 };
+    const items = [
+      { left: 10, right: 90 },
+      { left: 90, right: 190 },
+      { left: 190, right: 310 },
+      { left: 310, right: 340 },
+    ];
+    expect(pathWidths(list, items, false)).toEqual(expected);
+  });
+
+  it("measures a right-to-left path from its right edge", () => {
+    const list = { left: 10, right: 400 };
+    const items = [
+      { left: 320, right: 400 },
+      { left: 220, right: 320 },
+      { left: 100, right: 220 },
+      { left: 70, right: 100 },
+    ];
+    expect(pathWidths(list, items, true)).toEqual(expected);
   });
 });

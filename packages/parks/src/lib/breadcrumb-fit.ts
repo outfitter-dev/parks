@@ -47,3 +47,28 @@ export function hiddenByLimit(count: number, maxItems: number): number {
   const limit = Math.max(3, Math.floor(maxItems) || 3);
   return count > limit ? count - limit + 1 : 0;
 }
+
+/** The horizontal edges of a laid-out box. */
+export type Edges = { left: number; right: number };
+
+/**
+ * Turns a measured path into the widths `fitBreadcrumb` takes, reading in the
+ * list's direction so right-to-left paths measure the same as left-to-right.
+ *
+ * @param list the measuring list's box
+ * @param items each item's box in DOM order, the overflow trigger last
+ * @param rtl whether the list lays out right to left
+ */
+export function pathWidths(
+  list: Edges,
+  items: readonly Edges[],
+  rtl: boolean
+): { widths: number[]; overflowWidth: number } {
+  // Distance from the list's start edge to each item's end edge.
+  const ends = items.map((item) =>
+    rtl ? list.right - item.left : item.right - list.left
+  );
+  const overflowEnd = ends.pop() ?? 0;
+  const widths = ends.map((end, index) => end - (ends[index - 1] ?? 0));
+  return { widths, overflowWidth: overflowEnd - (ends.at(-1) ?? 0) };
+}
