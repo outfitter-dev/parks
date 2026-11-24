@@ -302,139 +302,137 @@ export function AskQueue({
     view === "answered" ? asks.filter((item) => isAnswered(item.id)) : asks;
 
   return (
-    <div
-      className={cn(
-        "@container grid h-full @3xl:grid-cols-[minmax(--spacing(64),--spacing(88))_1fr]",
-        className
-      )}
-    >
-      <div
-        className={cn(
-          "flex flex-col @3xl:border-r",
-          screen === "ask" && "@max-3xl:hidden"
-        )}
-      >
-        <div className="flex min-h-14 items-center gap-1.5 ps-3 pe-2">
-          {start}
-          <h2 className="min-w-0 truncate font-semibold">{title}</h2>
-          <ToggleGroup
-            aria-label="Show"
-            className="ms-auto"
-            value={[view]}
-            onValueChange={(next) => {
-              if (next[0] === "open" || next[0] === "answered") {
-                setView(next[0]);
-              }
-            }}
-          >
-            <ToggleGroupItem value="open">Open</ToggleGroupItem>
-            <ToggleGroupItem value="answered">Answered</ToggleGroupItem>
-          </ToggleGroup>
-        </div>
-        {shown.length === 0 ? (
-          <Empty>
-            <EmptyHeader>
-              <EmptyTitle>
-                {view === "answered"
-                  ? "Nothing answered yet"
-                  : "Nothing waiting"}
-              </EmptyTitle>
-              <EmptyDescription>
-                {view === "answered"
-                  ? "Asks you answer move here, with the answer attached."
-                  : "New asks appear here."}
-              </EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        ) : (
-          <>
-            <p className="text-muted-foreground px-4 pb-2 text-xs tabular-nums @3xl:hidden">
-              {done} of {asks.length} answered
-            </p>
-            <div className="p-2 pt-0">
-              {shown.map((item) => (
-                <QueueRow
-                  key={item.id}
-                  ask={item}
-                  active={item.id === ask?.id}
-                  answered={isAnswered(item.id)}
-                  onSelect={() => open(asks.indexOf(item))}
-                />
-              ))}
-            </div>
-          </>
-        )}
-      </div>
-      {ask ? (
+    // The query container wraps the grid: an element can't query its own width.
+    <div className={cn("@container h-full", className)}>
+      <div className="grid h-full @3xl:grid-cols-[minmax(--spacing(64),--spacing(88))_1fr]">
         <div
           className={cn(
-            "flex min-h-160 flex-col @3xl:min-h-0",
-            screen === "list" && "@max-3xl:hidden"
+            "flex flex-col @3xl:border-r",
+            screen === "ask" && "@max-3xl:hidden"
           )}
         >
-          <div className="grid gap-3 px-2 pb-3 @3xl:hidden">
-            <div className="flex h-14 items-center gap-1">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setScreen("list")}
-              >
-                <AltArrowLeftIcon data-icon="inline-start" />
-                All asks
-              </Button>
-              <span className="text-muted-foreground ml-auto pe-2 tabular-nums">
-                {index + 1} of {asks.length}
-              </span>
+          <div className="flex min-h-14 items-center gap-1.5 ps-3 pe-2">
+            {start}
+            <h2 className="min-w-0 truncate font-semibold">{title}</h2>
+            <ToggleGroup
+              aria-label="Show"
+              className="ms-auto"
+              value={[view]}
+              onValueChange={(next) => {
+                if (next[0] === "open" || next[0] === "answered") {
+                  setView(next[0]);
+                }
+              }}
+            >
+              <ToggleGroupItem value="open">Open</ToggleGroupItem>
+              <ToggleGroupItem value="answered">Answered</ToggleGroupItem>
+            </ToggleGroup>
+          </div>
+          {shown.length === 0 ? (
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>
+                  {view === "answered"
+                    ? "Nothing answered yet"
+                    : "Nothing waiting"}
+                </EmptyTitle>
+                <EmptyDescription>
+                  {view === "answered"
+                    ? "Asks you answer move here, with the answer attached."
+                    : "New asks appear here."}
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          ) : (
+            <>
+              <p className="text-muted-foreground px-4 pb-2 text-xs tabular-nums @3xl:hidden">
+                {done} of {asks.length} answered
+              </p>
+              <div className="p-2 pt-0">
+                {shown.map((item) => (
+                  <QueueRow
+                    key={item.id}
+                    ask={item}
+                    active={item.id === ask?.id}
+                    answered={isAnswered(item.id)}
+                    onSelect={() => open(asks.indexOf(item))}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+        {ask ? (
+          <div
+            className={cn(
+              "flex min-h-160 flex-col @3xl:min-h-0",
+              screen === "list" && "@max-3xl:hidden"
+            )}
+          >
+            <div className="grid gap-3 px-2 pb-3 @3xl:hidden">
+              <div className="flex h-14 items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setScreen("list")}
+                >
+                  <AltArrowLeftIcon data-icon="inline-start" />
+                  All asks
+                </Button>
+                <span className="text-muted-foreground ml-auto pe-2 tabular-nums">
+                  {index + 1} of {asks.length}
+                </span>
+              </div>
+              <div className="px-2">
+                <QueueProgress
+                  asks={asks}
+                  current={index}
+                  answers={answers}
+                  onJump={open}
+                />
+              </div>
             </div>
-            <div className="px-2">
-              <QueueProgress
-                asks={asks}
-                current={index}
-                answers={answers}
-                onJump={open}
+            <div className="flex-1">
+              <QueueDetail
+                key={ask.id}
+                ask={ask}
+                answer={answers[ask.id] ?? []}
+                layout={layout}
+                shortcuts={shortcuts}
+                onAnswer={(next) => answer(ask.id, next)}
               />
             </div>
-          </div>
-          <div className="flex-1">
-            <QueueDetail
-              key={ask.id}
-              ask={ask}
-              answer={answers[ask.id] ?? []}
-              layout={layout}
-              shortcuts={shortcuts}
-              onAnswer={(next) => answer(ask.id, next)}
-            />
-          </div>
-          <div className="bg-background sticky bottom-0 flex items-center gap-2 border-t p-2 @3xl:hidden">
-            <Button
-              variant="ghost"
-              disabled={index === 0}
-              onClick={() => open(index - 1)}
-            >
-              <AltArrowLeftIcon data-icon="inline-start" />
-              Previous
-            </Button>
-            {last ? (
+            <div className="bg-background sticky bottom-0 flex items-center gap-2 border-t p-2 @3xl:hidden">
               <Button
-                className="ml-auto"
-                variant={answered ? "default" : "secondary"}
-                onClick={() => setScreen("list")}
+                variant="ghost"
+                disabled={index === 0}
+                onClick={() => open(index - 1)}
               >
-                {done === asks.length ? "Done" : "Back to list"}
+                <AltArrowLeftIcon data-icon="inline-start" />
+                Previous
               </Button>
-            ) : (
-              <Button
-                className="ml-auto"
-                variant={answered ? "default" : "secondary"}
-                onClick={() => open(index + 1)}
-              >
-                {answered ? "Next" : "Skip"}
-                <AltArrowRightIcon data-icon="inline-end" />
-              </Button>
-            )}
+              {last ? (
+                <Button
+                  className="ml-auto"
+                  variant={answered ? "default" : "secondary"}
+                  onClick={() => setScreen("list")}
+                >
+                  {done === asks.length ? "Done" : "Back to list"}
+                </Button>
+              ) : (
+                <Button
+                  className="ml-auto"
+                  variant={answered ? "default" : "secondary"}
+                  onClick={() => open(index + 1)}
+                >
+                  {answered ? "Next" : "Skip"}
+                  <AltArrowRightIcon data-icon="inline-end" />
+                </Button>
+              )}
+            </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
     </div>
   );
 }
