@@ -88,7 +88,8 @@ function AskRow({
 type OptionStyle = "cards" | "stacked" | "tray";
 type OptionMark = "none" | "glyph" | "letter" | "number" | "yn";
 type OptionTone = "neutral" | "coded";
-type OptionLook = { style: OptionStyle; mark: OptionMark; tone: OptionTone; multi: boolean };
+type OptionHeader = "page" | "box";
+type OptionLook = { style: OptionStyle; mark: OptionMark; tone: OptionTone; multi: boolean; header: OptionHeader };
 type MarkTone = Extract<Tone, "neutral" | "success" | "warning" | "destructive" | "info" | "brand">;
 
 /**
@@ -137,26 +138,14 @@ function markFor(mark: OptionMark, label: string, index: number, count: number):
   }
 }
 
-/** Where each layout puts its choices: cards in a grid, rows in one card, or cards in a tray. */
-const choicesClass: Record<OptionStyle, string> = {
-  cards: "",
-  stacked: "gap-0 overflow-hidden rounded-lg border border-border-muted bg-card",
-  tray: "gap-0 p-1",
-};
-const choiceClass: Record<OptionStyle, string> = {
-  cards: "",
-  stacked:
-    "rounded-none border-x-0 border-t-0 border-b-border-muted last:border-b-0 px-frame py-frame data-checked:border-b-border-muted data-checked:bg-brand-fill data-checked:ring-0 hover:data-checked:bg-brand-fill",
-  // Rows inset in the card, concentric with it: text lines up with the
-  // header, hover sinks the row like the old tray cards, the picked row takes
-  // the brand ring, and the inset rule hides beside either so it never meets them.
-  tray: [
-    "rounded-[calc((var(--tray-radius)-var(--spacing))*var(--corner-scale))] border-0 bg-transparent px-[calc(var(--frame-space)-var(--spacing))] ring-0",
-    "hover:bg-ghost-hover data-checked:bg-card data-checked:ring-1 data-checked:ring-brand hover:data-checked:bg-card",
-    "before:pointer-events-none before:absolute before:inset-x-[calc(var(--frame-space)-var(--spacing))] before:top-0 before:h-px before:bg-border-muted first:before:hidden",
-    "hover:before:opacity-0 data-checked:before:opacity-0 [&:hover+*]:before:opacity-0 [&[data-checked]+*]:before:opacity-0",
-  ].join(" "),
-};
+/**
+ * Where each layout puts its choices: cards in a grid, or rows in one box.
+ * Tray is the stacked box set in a muted tray, so it takes the stacked rows.
+ */
+const stackedBox = "gap-0 overflow-hidden rounded-lg border border-border-muted bg-card";
+const stackedRow =
+  "rounded-none border-x-0 border-t-0 border-b-border-muted last:border-b-0 data-checked:border-b-border-muted data-checked:bg-brand-fill data-checked:ring-0 hover:data-checked:bg-brand-fill";
+const choiceClass: Record<OptionStyle, string> = { cards: "", stacked: stackedRow, tray: stackedRow };
 
 function OptionText({ option }: { option: Ask["options"][number] }) {
   return (
@@ -195,13 +184,17 @@ function AskOptions({
         : [label],
     );
   const shortcuts = look.mark === "letter" ? "letters" : look.mark === "number" ? "numbers" : undefined;
+  const boxed = look.style !== "cards";
+  const inBox = boxed && look.header === "box";
   const choices = (
-    <QuestionnaireChoices aria-label="Options" className={choicesClass[look.style]}>
+    <QuestionnaireChoices aria-label="Options" className={boxed && !inBox ? stackedBox : boxed ? "gap-0" : undefined}>
       {ask.options.map((option, index) => {
         const mark = markFor(look.mark, option.label, index, ask.options.length);
         const tone = mark && look.tone === "coded" ? mark.tone : "neutral";
         const passMark = mark !== null && shortcuts === undefined;
         return (
+          // Every option leads with a box: its mark, or a radio or checkbox
+          // when there is none, so the rows never read as more header.
           <QuestionnaireChoice
             key={option.label}
             value={option.label}
@@ -209,7 +202,6 @@ function AskOptions({
             onChange={() => toggle(option.label)}
             mark={passMark ? mark.content : undefined}
             tone={tone}
-            indicator={false}
             className={choiceClass[look.style]}
           >
             <OptionText option={option} />
@@ -226,39 +218,54 @@ function AskOptions({
         : look.multi
           ? "Pick any that apply."
           : "Pick an option to answer.";
-  if (look.style === "tray") {
-    return (
-      <Questionnaire shortcuts={shortcuts} onSubmit={(event) => event.preventDefault()} className="mt-5">
-        <Card variant="tray" className="grid">
-          <Card variant="outline" className="gap-0 p-0">
-            <QuestionnaireItem name={ask.id} multiple={look.multi} className="gap-0">
-              <QuestionnaireTitle className="mb-0! w-full border-b border-border-muted px-(--frame-space) py-3">{ask.title}</QuestionnaireTitle>
-              {choices}
-            </QuestionnaireItem>
-          </Card>
-          <TrayFooter hint={picked.length > 0 ? hint : undefined} onReply={(text) => onPick([text])} />
-        </Card>
-      </Questionnaire>
-    );
-  }
+  const body = inBox ? (
+    // The header sits in the box above the rows, divided by a full-width rule.
+    <div className={stackedBox}>
+      <QuestionnaireTitle className="mb-0! w-full border-b border-border px-3 py-2.5">{ask.title}</QuestionnaireTitle>
+      {choices}
+    </div>
+  ) : (
+    <>
+      <QuestionnaireTitle className="sr-only">{ask.title}</QuestionnaireTitle>
+      {choices}
+    </>
+  );
+  const subtext = <AskSubtext hint={hint} boxed={boxed} reply={picked.length === 0} onReply={(text) => onPick([text])} />;
   return (
     <Questionnaire shortcuts={shortcuts} onSubmit={(event) => event.preventDefault()} className="mt-5 gap-2">
       <QuestionnaireItem name={ask.id} multiple={look.multi} className="gap-2">
-        <QuestionnaireTitle className="sr-only">{ask.title}</QuestionnaireTitle>
-        {choices}
+        {look.style === "tray" ? (
+          <Card variant="tray" className="grid">
+            {body}
+            {subtext}
+          </Card>
+        ) : (
+          <>
+            {body}
+            {subtext}
+          </>
+        )}
       </QuestionnaireItem>
-      <p className="mt-1 text-muted-foreground" aria-live="polite">
-        {hint}
-      </p>
     </Questionnaire>
   );
 }
 
 /**
- * The tray's last line: quiet text and inline actions under the options, after
- * Claude's own question cards. "reply in chat" opens a one-line reply in place.
+ * The line under the options: the hint, then an inline "reply in chat" that
+ * opens a one-line reply in place. Under a box its text starts where the
+ * rows' text starts (their padding plus the box's 1px border).
  */
-function TrayFooter({ hint, onReply }: { hint: string | undefined; onReply: (text: string) => void }) {
+function AskSubtext({
+  hint,
+  boxed,
+  reply,
+  onReply,
+}: {
+  hint: string;
+  boxed: boolean;
+  reply: boolean;
+  onReply: (text: string) => void;
+}) {
   const [replying, setReplying] = useState(false);
   const [text, setText] = useState("");
   const send = () => {
@@ -267,48 +274,47 @@ function TrayFooter({ hint, onReply }: { hint: string | undefined; onReply: (tex
     setReplying(false);
     setText("");
   };
+  if (replying) {
+    return (
+      <div className="flex items-center gap-2">
+        <Input
+          autoFocus
+          size="sm"
+          placeholder="Reply in the thread…"
+          value={text}
+          onChange={(event) => setText(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") send();
+            if (event.key === "Escape") setReplying(false);
+          }}
+        />
+        <Button size="sm" variant="ghost" onClick={() => setReplying(false)}>
+          Cancel
+        </Button>
+        <Button size="sm" disabled={text.trim() === ""} onClick={send}>
+          Send
+        </Button>
+      </div>
+    );
+  }
   return (
-    // The tray is a smaller frame than the card it holds, so the footer takes
-    // the card's padding to line up with the card's text.
-    <div className="grid gap-2 px-(--pad) pb-1" aria-live="polite">
-      {replying ? (
-        <div className="flex items-center gap-2">
-          <Input
-            autoFocus
-            size="sm"
-            placeholder="Reply in the thread…"
-            value={text}
-            onChange={(event) => setText(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") send();
-              if (event.key === "Escape") setReplying(false);
-            }}
-          />
-          <Button size="sm" variant="ghost" onClick={() => setReplying(false)}>
-            Cancel
-          </Button>
-          <Button size="sm" disabled={text.trim() === ""} onClick={send}>
-            Send
-          </Button>
-        </div>
-      ) : (
-        <p className="text-blend-subtle">
-          {hint ?? (
-            <>
-              Or just{" "}
-              <button
-                type="button"
-                onClick={() => setReplying(true)}
-                className="text-foreground underline decoration-border-strong underline-offset-4 hover:decoration-foreground"
-              >
-                reply in chat
-              </button>
-              .
-            </>
-          )}
-        </p>
-      )}
-    </div>
+    <p className={cn("text-muted-foreground", boxed && "ps-[calc(var(--spacing)*3+1px)]")} aria-live="polite">
+      {hint}
+      {reply ? (
+        <>
+          {" "}
+          Or{" "}
+          <button
+            type="button"
+            onClick={() => setReplying(true)}
+            className="text-foreground underline decoration-border-strong underline-offset-4 hover:decoration-foreground"
+          >
+            reply in chat
+          </button>
+          .
+        </>
+      ) : null}
+    </p>
   );
 }
 
@@ -334,8 +340,8 @@ function AskDetail({
           {ask.agent} asked {ask.age} ago
         </span>
       </p>
-      {look.style === "tray" && ask.kind !== "input" ? (
-        // The tray card carries the question as its header, so the page keeps only the context.
+      {look.style !== "cards" && look.header === "box" && ask.kind !== "input" ? (
+        // The box carries the question as its header, so the page keeps only the context.
         <p className="mt-3 text-pretty text-muted-foreground">{ask.context}</p>
       ) : (
         <SectionHeader size="lg" className="mt-3">
@@ -454,7 +460,7 @@ export function NeedsYouComposition() {
   /** Which of the two phone screens shows. Wider frames show both columns. */
   const [screen, setScreen] = useState<"list" | "ask">("list");
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
-  const [look, setLook] = useState<OptionLook>({ style: "cards", mark: "none", tone: "neutral", multi: false });
+  const [look, setLook] = useState<OptionLook>({ style: "cards", mark: "none", tone: "neutral", multi: false, header: "page" });
   const index = Math.max(0, asks.findIndex((item) => item.id === selected));
   const ask = asks[index];
   const done = asks.filter((item) => (answers[item.id] ?? []).length > 0).length;
@@ -478,6 +484,15 @@ export function NeedsYouComposition() {
             { value: "tray", label: "Tray" },
           ]}
           onChange={(style) => setLook({ ...look, style })}
+        />
+        <Choice
+          label="Header"
+          value={look.header}
+          options={[
+            { value: "page", label: "Page" },
+            { value: "box", label: "In box" },
+          ]}
+          onChange={(header) => setLook({ ...look, header })}
         />
         <Choice
           label="Tone"
