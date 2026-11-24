@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { MultiFileDiff } from "@pierre/diffs/react";
-import { Mark } from "@workspace/ui/components/mark";
 import { Card, CardHeader, CardLead, CardMeta, CardTitle } from "@workspace/ui/components/card";
 import { Badge } from "@workspace/ui/components/badge";
 import { Button } from "@workspace/ui/components/button";
@@ -17,10 +16,9 @@ import { PaperclipIcon } from "@solar-icons/react/bold/paperclip";
 import { PenIcon } from "@solar-icons/react/outline/pen";
 import { PenNewSquareIcon } from "@solar-icons/react/bold/pen-new-square";
 import { StarsIcon } from "@solar-icons/react/outline/stars";
-import { DotmCircular4 } from "../dotmatrix/dotm-circular-4";
 import { AppFrame } from "../app-frame";
 import type { AppNavigation } from "../app-sidebar";
-import { Viewport } from "../kit";
+import { HaloSignal, Viewport } from "../kit";
 import { FileType } from "../reui/file-type";
 import { CodeBlock, CodeFrame, Trace, TraceLine, Turn } from "./parts";
 
@@ -164,9 +162,7 @@ export function AssistantSurface() {
 
           <Turn from="agent" name="Donna">
             <span className="flex items-center gap-2 text-muted-foreground">
-              <Mark tone="brand" size="lg" shape="circle">
-                <DotmCircular4 size={20} dotSize={3} ariaLabel="Working" />
-              </Mark>
+              <HaloSignal size={20} label="Working" className="text-brand" />
               Adding the alias and a deprecation header
             </span>
           </Turn>

@@ -14,8 +14,6 @@ import { Widget2Icon } from "@solar-icons/react/outline/widget-2";
 import { Widget2Icon as Widget2Bold } from "@solar-icons/react/bold/widget-2";
 import { AppFrame } from "../app-frame";
 import { outpostNavigation } from "../outpost-navigation";
-import { DotmCircular4 } from "../dotmatrix/dotm-circular-4";
-import { DotmHex4 } from "../dotmatrix/dotm-hex-4";
 import { HaloSignal, Signal, Viewport } from "../kit";
 import {
   Timeline,
@@ -137,7 +135,7 @@ export function BoardSurface() {
         title="Overview"
         actions={
           <>
-            <Badge tone="success" icon={<DotmHex4 size={12} dotSize={2} ariaLabel="Syncing" />}>
+            <Badge tone="success" icon={<HaloSignal size={12} label="Syncing" className="text-tone-mark" />}>
               Board synced
             </Badge>
             <Button size="sm">New task</Button>
@@ -206,7 +204,7 @@ export function BoardSurface() {
                     <ItemMedia variant="icon"><CodeSquareIcon className="text-muted-foreground" /></ItemMedia>
                     <ItemContent><ItemTitle className="font-normal">CI · check</ItemTitle></ItemContent>
                     <ItemActions>
-                      <Badge tone="info" icon={<DotmCircular4 size={12} dotSize={2} ariaLabel="Running" />}>2 of 4</Badge>
+                      <Badge tone="info" icon={<HaloSignal size={12} label="Running" className="text-tone-mark" />}>2 of 4</Badge>
                     </ItemActions>
                   </Item>
                   <Item size="xs" className="px-0">
