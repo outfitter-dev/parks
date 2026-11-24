@@ -6,12 +6,13 @@ on:
   # Publishing to npm only ever starts by hand, from main.
   workflow_dispatch:
 permissions: {}
-concurrency:
-  group: release
-  cancel-in-progress: false
 jobs:
   version:
     if: github.event_name == 'push'
+    # Only the newest push needs a version PR.
+    concurrency:
+      group: release-version
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     timeout-minutes: 10
     # The Outfitter app's token does the writing.
@@ -52,6 +53,10 @@ jobs:
 
   publish:
     if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    # Its own group, so a push to main can't replace a queued publish.
+    concurrency:
+      group: release-publish
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
