@@ -48,7 +48,7 @@ function ButtonTones() {
   return (
     <Specimen
       title="Tones"
-      note="`tone` picks the colour and `variant` the emphasis. Outline, secondary, ghost and link keep neutral chrome and take the tone's text. shadcn's `destructive` is a destructive tint."
+      note="`tone` picks the colour and `variant` the emphasis. Outline, secondary, ghost and link keep neutral chrome and take the tone's text. shadcn's `destructive` is a destructive solid."
     >
       <Table aria-label="Button tones by variant">
         <TableHeader>
