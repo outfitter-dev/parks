@@ -207,9 +207,27 @@ export function AppFrame({
   const motion = ready ? sidebarMotion : "transition-none";
   const hide = () => setExpanded(false);
 
-  // Opened over the page, the sidebar is modal: focus moves into it, the page
-  // and rail behind it are inert, Escape closes it from anywhere, and focus
-  // returns to whatever opened it.
+  // Opened over the page, the sidebar is modal: focus moves into it and Tab
+  // cycles inside it, the page and rail behind it are inert, Escape closes it
+  // from anywhere, and focus returns to whatever opened it.
+  const trapTab = (event: KeyboardEvent) => {
+    const aside = asideRef.current;
+    const items = Array.from(
+      aside?.querySelectorAll<HTMLElement>(focusable) ?? []
+    );
+    const first = items[0];
+    const last = items.at(-1);
+    if (!aside || !first || !last) {
+      return;
+    }
+    const current = document.activeElement;
+    const edge = event.shiftKey ? first : last;
+    if (current === edge || !aside.contains(current)) {
+      event.preventDefault();
+      (event.shiftKey ? last : first).focus();
+    }
+  };
+
   useEffect(() => {
     if (!overlay) {
       return;
@@ -220,6 +238,8 @@ export function AppFrame({
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setExpanded(false);
+      } else if (event.key === "Tab") {
+        trapTab(event);
       }
     };
     document.addEventListener("keydown", onKey);
