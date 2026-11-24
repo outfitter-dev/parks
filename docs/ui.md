@@ -75,9 +75,21 @@ These come from shadcn as is, tuned to the tokens above. The workbench shows eac
 
 - **Forms.** `Field` wraps a label, control, description and `FieldError`. Over a text control (Input, Textarea, InputGroup, Select, Combobox chips) the label and hint start at `ps-field`, where the control's text starts. Only `FieldError` turns red; the label and input text stay neutral. A radio choice with a description is a choice card, and the checked card takes the brand ring. `InputGroup`, `InputOTP` and `Combobox` draw at `--control-h` on the `field` fill.
 - **Overlays.** `AlertDialog` confirms what can't be undone; its Cancel is a secondary button and it has no close button. `Sheet` slides in from an edge for the small-screen nav overlay or a detail panel. `HoverCard` previews an agent, person or PR.
-- **Palette and toasts.** `Command` (cmdk) is the command palette and quick switcher; `CommandDialog` opens it in a dialog. `Toaster` and `toast` come from `#components/sonner`, not from sonner directly. The theme follows the system, with no next-themes, and like Alert only the glyph takes the tone. cmdk brings in a few Radix packages as its own dependencies; nothing else in `packages/ui` uses Radix.
+- **Palette and toasts.** `Command` (cmdk) is the command palette and quick switcher; `CommandDialog` opens it in a dialog. `Toaster` and `toast` come from `#components/toast`, built on Base UI's Toast (Sonner is gone). Call `toast.add({ type, title, description, actionProps })` or `toast.promise(p, { loading, success, error })`; like Alert only the glyph takes the tone. cmdk brings in a few Radix packages as its own dependencies; nothing else in `packages/ui` uses Radix.
 - **Rows in popups.** Combobox and Command rows use `popupRow` from `lib/row.ts`, the same shape as menu rows, with their own state classes: `comboboxRowState` keys on `data-highlighted`, and `commandRowState` on `data-[selected=true]`, because cmdk always sets `data-selected`.
 - **Disclosure and groups.** `Collapsible` opens one block in place; `Accordion` stacks sections. `ButtonGroup` joins buttons into one control. In `Pagination` the current page is a secondary button.
+
+- **Menus.** `DropdownMenu` covers plain items, checkbox items, radio groups and sub-menus (`DropdownMenuSub`, `DropdownMenuSubTrigger`, `DropdownMenuSubContent`).
+
+## Data, content and layout
+
+- **Data table.** `#components/data-table` follows shadcn's TanStack Table v9 guide on our `Table`. `useDataTable` and `dataTableColumns` share one feature set (filtering, sorting, visibility, selection, pagination); add `dataTableSelectColumn`, `DataTableColumnHeader`, `DataTableToolbar` and `DataTablePagination` as needed. Read state from `table.state`; v9 has no `getState()`.
+- **Questionnaire.** From `@shadcn/react`. `Questionnaire` with `shortcuts` (`letters` or `numbers`) makes A–D or 1–9 real keys while focus is in the form; `QuestionnaireItem` takes `name` and `multiple`. The Needs you asks are built on it. Radio and checkbox indicators are separate elements because anything with `rounded-full` is forced round.
+- **Trace.** Tool activity in an assistant thread: `TraceLine`, `TraceDescription`, `status`, and `TraceCollapsible` for lines with detail.
+- **Attachment.** An uploaded file, with idle, uploading, done and error states. Context chips in the composer stay as Badges.
+- **Resizable.** `ResizablePanelGroup`, `ResizablePanel` and `ResizableHandle` on react-resizable-panels; sizes are percentage strings.
+- **Prose.** Our own wrapper for rendered Markdown, after shadcn's Typography page (which ships no component). `size="sm"` tightens it for cards and bubbles. Long-form text only.
+- **Utilities.** `styles/shadcn-utilities.css` holds the small shadcn utility classes these components expect; `globals.css` imports it.
 
 ## Icons
 

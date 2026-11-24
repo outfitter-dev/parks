@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "./palette.css";
+@import "./shadcn-utilities.css";
 
 /* Scan the shared components wherever this stylesheet is imported from. */
 @source "../";

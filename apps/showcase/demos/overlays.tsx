@@ -38,7 +38,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@workspace/ui/components/sheet";
-import { Toaster, toast } from "@workspace/ui/components/sonner";
+import { Toaster, toast } from "@workspace/ui/components/toast";
 import { BellOffIcon } from "@solar-icons/react/outline/bell-off";
 import { HomeIcon } from "@solar-icons/react/outline/home";
 import { InboxIcon } from "@solar-icons/react/outline/inbox";
@@ -139,19 +139,29 @@ export function OverlaysDemo() {
       </Specimen>
 
       <Specimen title="Toast" note="Confirms an action without interrupting. Like Alert, only the glyph takes the tone.">
-        <Toaster position="bottom-right" />
-        <Button variant="secondary" onClick={() => toast.success("Rex muted", { description: "No deliveries until you unmute it." })}>
+        <Toaster />
+        <Button
+          variant="secondary"
+          onClick={() => toast.add({ type: "success", title: "Rex muted", description: "No deliveries until you unmute it." })}
+        >
           Success
         </Button>
-        <Button variant="secondary" onClick={() => toast.info("Routing v12 is live")}>
+        <Button variant="secondary" onClick={() => toast.add({ type: "info", title: "Routing v12 is live" })}>
           Info
         </Button>
-        <Button variant="secondary" onClick={() => toast.warning("Elevation ends in 2 minutes")}>
+        <Button variant="secondary" onClick={() => toast.add({ type: "warning", title: "Elevation ends in 2 minutes" })}>
           Warning
         </Button>
         <Button
           variant="secondary"
-          onClick={() => toast.error("Delivery failed", { description: "forge webhook returned 502.", action: { label: "Retry", onClick: () => undefined } })}
+          onClick={() =>
+            toast.add({
+              type: "error",
+              title: "Delivery failed",
+              description: "forge webhook returned 502.",
+              actionProps: { children: "Retry", onClick: () => undefined },
+            })
+          }
         >
           Error
         </Button>
@@ -159,9 +169,9 @@ export function OverlaysDemo() {
           variant="secondary"
           onClick={() =>
             toast.promise(new Promise((resolve) => setTimeout(resolve, 1500)), {
-              loading: "Re-running delivery…",
-              success: "Delivered",
-              error: "Failed",
+              loading: { title: "Re-running delivery…" },
+              success: { title: "Delivered" },
+              error: { title: "Failed" },
             })
           }
         >
