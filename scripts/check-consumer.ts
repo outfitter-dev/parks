@@ -60,13 +60,40 @@ writeFileSync(
 );
 run("bun", ["install"], app);
 run("node", ["render.mjs"], app);
-// The registry's blocks build on the packed package as an app would copy them.
-mkdirSync(path.join(app, "src/parks"), { recursive: true });
-cpSync(
-  path.join(repo, "apps/showcase/registry/ask/ask.tsx"),
-  path.join(app, "src/parks/ask.tsx")
+// The registry's blocks build on the packed package as an app would copy
+// them: each file lands at its target, and each block's other dependencies
+// are installed at the versions the showcase uses.
+const registry: {
+  items: {
+    dependencies?: string[];
+    files: { path: string; target: string }[];
+  }[];
+} = JSON.parse(readFileSync(path.join(repo, "registry.json"), "utf8"));
+const showcase = JSON.parse(
+  readFileSync(path.join(repo, "apps/showcase/package.json"), "utf8")
 );
-run("bun", ["render-ask.tsx"], app);
+const parksDeps = JSON.parse(
+  readFileSync(path.join(pkg, "package.json"), "utf8")
+).dependencies;
+const blockDeps = new Set<string>();
+for (const item of registry.items) {
+  for (const file of item.files) {
+    mkdirSync(path.dirname(path.join(app, file.target)), { recursive: true });
+    cpSync(path.join(repo, file.path), path.join(app, file.target));
+  }
+  for (const dependency of item.dependencies ?? []) {
+    if (dependency !== "@outfitter/parks") {
+      blockDeps.add(dependency);
+    }
+  }
+}
+const pinned = [...blockDeps].map(
+  (name) => `${name}@${showcase.dependencies[name] ?? parksDeps[name]}`
+);
+if (pinned.length > 0) {
+  run("bun", ["add", ...pinned], app);
+}
+run("bun", ["render-blocks.tsx"], app);
 run("bunx", ["@tailwindcss/cli", "-i", "app.css", "-o", "out.css"], app);
 
 // The shipped rules pass the fixture's own source, and fail once a
