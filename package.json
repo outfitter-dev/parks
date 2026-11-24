@@ -1,0 +1,34 @@
+{
+  "name": "parks-workspace",
+  "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/outfitter-dev/parks.git"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "packageManager": "bun@1.4.4",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "bun run --cwd apps/showcase dev",
+    "build": "bun run --cwd apps/showcase build",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p . && bun run --cwd apps/showcase typecheck",
+    "check": "bun run typecheck && bun run test",
+    "ui:add": "bun scripts/ui-add.ts",
+    "ui:palette": "bun scripts/ui-palette.ts"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "typescript": "5.9.3",
+    "vitest": "5.1.1"
+  }
+}
