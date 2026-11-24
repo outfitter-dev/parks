@@ -35,10 +35,8 @@ describe("registry", () => {
       for (const file of item.files) {
         const text = readFileSync(path.join(repo, file.path), "utf8");
 
-        it(`${file.path} lives under apps/showcase/registry/${item.name}`, () => {
-          expect(
-            file.path.startsWith(`apps/showcase/registry/${item.name}/`)
-          ).toBe(true);
+        it(`${file.path} lives under apps/showcase/registry`, () => {
+          expect(file.path.startsWith("apps/showcase/registry/")).toBe(true);
         });
 
         it(`${file.path} imports Parks from the package, not copies`, () => {

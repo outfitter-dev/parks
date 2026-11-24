@@ -2,8 +2,14 @@
 
 import { Prose } from "@outfitter/parks/components/prose";
 
+import { asks } from "#lib/fixtures";
+
+import { AskQueue } from "../registry/ask-queue/ask-queue";
+import type { QueueAsk } from "../registry/ask-queue/ask-queue";
 import { Ask } from "../registry/ask/ask";
-import { Specimen } from "./kit";
+import { AppFrame, SidebarToggle } from "./app-frame";
+import { Specimen, Viewport } from "./kit";
+import { sequoiaNavigation } from "./sequoia-navigation";
 import { CodeBlock } from "./surfaces/parts";
 
 const install = `bun add @outfitter/parks`;
@@ -25,6 +31,18 @@ const registries = `{
   }
 }`;
 const add = `bunx shadcn add @outfitter/ask`;
+
+/** The showcase's asks as an Ask queue sees them. */
+const queueAsks: QueueAsk[] = asks.map((item) => ({
+  id: item.id,
+  title: item.title,
+  from: item.agent,
+  source: item.project,
+  age: item.age,
+  kind: item.kind,
+  context: item.context,
+  options: item.kind === "input" ? undefined : item.options,
+}));
 
 /** How an app installs Parks and themes it. */
 export function InstallDemo() {
@@ -100,6 +118,32 @@ export function RegistryDemo() {
           ]}
           layout="tray"
         />
+      </Specimen>
+      <Specimen
+        title="ask-queue"
+        note="A queue of asks: the list beside the open ask, or two screens with progress when narrow. Choice asks use the ask block; the rest take a written reply."
+        className="block"
+      >
+        <Viewport>
+          <AppFrame navigation={sequoiaNavigation} place="needs-you">
+            <AskQueue
+              asks={queueAsks}
+              title="Needs you"
+              start={<SidebarToggle />}
+              layout="tray"
+              shortcuts="letters"
+            />
+          </AppFrame>
+        </Viewport>
+      </Specimen>
+      <Specimen
+        title="app-shell"
+        note="The frame above: a sidebar that docks when wide and opens as a modal over the page when narrow, with a page bar and toggle. Try the Phone width."
+        className="block max-w-2xl"
+      >
+        <p className="text-muted-foreground">
+          <code>bunx shadcn add @outfitter/app-shell</code>
+        </p>
       </Specimen>
     </>
   );

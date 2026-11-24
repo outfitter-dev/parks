@@ -13,7 +13,7 @@
         {
           "path": "apps/showcase/registry/ask/ask.tsx",
           "type": "registry:component",
-          "target": "components/parks/ask.tsx"
+          "target": "components/parks/ask/ask.tsx"
         }
       ],
       "docs": "Import @outfitter/parks/styles.css once from your root stylesheet before using Parks blocks."
@@ -32,7 +32,7 @@
         {
           "path": "apps/showcase/registry/code-block/code-block.tsx",
           "type": "registry:component",
-          "target": "components/parks/code-block.tsx"
+          "target": "components/parks/code-block/code-block.tsx"
         }
       ],
       "docs": "Import @outfitter/parks/styles.css once from your root stylesheet before using Parks blocks."
@@ -53,6 +53,26 @@
           "path": "apps/showcase/registry/app-shell/app-sidebar.tsx",
           "type": "registry:component",
           "target": "components/parks/app-shell/app-sidebar.tsx"
+        }
+      ],
+      "docs": "Import @outfitter/parks/styles.css once from your root stylesheet before using Parks blocks."
+    },
+    {
+      "name": "ask-queue",
+      "type": "registry:block",
+      "title": "Ask queue",
+      "description": "A queue of questions waiting on a person: the list beside the open ask, or two screens with progress on narrow containers; choice asks via the Ask block, written replies otherwise; Open and Answered views.",
+      "dependencies": ["@outfitter/parks", "@solar-icons/react"],
+      "files": [
+        {
+          "path": "apps/showcase/registry/ask-queue/ask-queue.tsx",
+          "type": "registry:component",
+          "target": "components/parks/ask-queue/ask-queue.tsx"
+        },
+        {
+          "path": "apps/showcase/registry/ask/ask.tsx",
+          "type": "registry:component",
+          "target": "components/parks/ask/ask.tsx"
         }
       ],
       "docs": "Import @outfitter/parks/styles.css once from your root stylesheet before using Parks blocks."
