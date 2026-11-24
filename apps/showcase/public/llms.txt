@@ -1,0 +1,16 @@
+# Parks
+
+> Outfitter's design system for React and Tailwind CSS v4: tokens and theme CSS, components on Base UI, UI rules (`parks check`, `parks contrast`) and a shadcn registry of copy-in blocks.
+
+Install `@outfitter/parks`, import `@outfitter/parks/styles.css` once, and import components by path (`@outfitter/parks/components/button`). Components use colour roles and the Tailwind scale: no literal colours, palette steps, `/NN` opacity, `dark:` overrides or lengths beyond 1px and 2px.
+
+## Docs
+
+- [Install](https://parks.outfitter.dev/start/install): add the package, import the stylesheet, tune the theme seeds
+- [Registry](https://parks.outfitter.dev/start/registry): the `@outfitter` shadcn registry
+- [Source](https://github.com/outfitter-dev/parks): README, `docs/ui.md` (how tones, sizes, rows, cards and the theme fit together)
+
+## Registry
+
+- [registry.json](https://parks.outfitter.dev/r/registry.json): every item
+- [ask](https://parks.outfitter.dev/r/ask.json): a question with stacked choices, keyboard shortcuts and an optional tray

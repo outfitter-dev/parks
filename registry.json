@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "parks",
+  "homepage": "https://parks.outfitter.dev",
+  "items": [
+    {
+      "name": "ask",
+      "type": "registry:block",
+      "title": "Ask",
+      "description": "A question for a person with stacked choices, keyboard shortcuts and an optional tray, built on @outfitter/parks.",
+      "dependencies": ["@outfitter/parks"],
+      "files": [
+        {
+          "path": "apps/showcase/registry/ask/ask.tsx",
+          "type": "registry:component",
+          "target": "components/parks/ask.tsx"
+        }
+      ],
+      "docs": "Import @outfitter/parks/styles.css once from your root stylesheet before using Parks blocks."
+    }
+  ]
+}
