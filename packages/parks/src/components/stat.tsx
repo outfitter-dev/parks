@@ -25,7 +25,9 @@ function Stat({ label, value, note, className }: StatProps) {
     >
       <dt className="text-muted-foreground">{label}</dt>
       <dd className="text-2xl font-semibold tabular-nums">{value}</dd>
-      {note ? <dd className="text-muted-foreground text-xs">{note}</dd> : null}
+      {note === undefined || note === null || note === false ? null : (
+        <dd className="text-muted-foreground text-xs">{note}</dd>
+      )}
     </Card>
   );
 }
