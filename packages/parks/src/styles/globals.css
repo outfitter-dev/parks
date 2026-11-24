@@ -1,0 +1,649 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./palette.css";
+@import "./shadcn-utilities.css";
+
+/* Scan the shared components wherever this stylesheet is imported from. */
+@source "../";
+
+/* Dark follows the system unless the root carries .light or .dark. */
+@custom-variant dark {
+  &:where(.dark, .dark *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not(.light), :root:not(.light) *) {
+      @slot;
+    }
+  }
+}
+
+/*
+ * Structural tokens. Corners stay concentric at every depth:
+ *
+ *   frame (card, dialog)      radius = --radius + its padding
+ *   panel (row, inner box)    radius = --radius
+ *   piece inside a panel      radius = --radius - the panel's padding (min 2px)
+ *
+ * Every frame and panel pads evenly on all four sides, so pills, buttons and
+ * glyphs sit concentric in the corners. Text would read top-heavy with even
+ * padding (line height adds space above and below the glyphs), so text adds
+ * --inset on the left and right with px-inset. --inset is a fraction of the
+ * padding of the nearest frame or panel, so it shrinks inside smaller or
+ * nested containers on its own.
+ *
+ * The frame and panel utilities publish these values for their children.
+ * Set --frame-pad or --panel-pad on the element to resize one; the values do
+ * not inherit, so a nested container never picks up its parent's size.
+ */
+@property --frame-pad {
+  syntax: "*";
+  inherits: false;
+}
+@property --panel-pad {
+  syntax: "*";
+  inherits: false;
+}
+
+/*
+ * Seeds: the values a theme tunes, beside the palette seeds in palette.css. Everything below and every component
+ * derives from them, so a theme overrides seeds, never derived tokens, and
+ * components never restate a colour, radius or size.
+ */
+:root {
+  /* Shape */
+  --radius: 0.5rem;
+  --radius-step: 2px;
+  --radius-floor: var(--radius-step);
+  --field-radius: 0.5rem;
+  /* Corner curve as a superellipse exponent: 1 is a circular arc, 2 is the
+     iOS-style continuous "squircle". Browsers without corner-shape draw
+     ordinary round corners at the same radius. */
+  --corner-smoothing: 2;
+  /* Radii are authored as round-corner radii. --corner-scale (below) grows
+     the drawn radius so a smoothed corner cuts as deep as the round one. */
+  --corner-scale: 1;
+  --pad: 1rem;
+  --panel-pad-base: 0.5rem;
+  --inset-ratio: 0.4;
+  --corner-gap: 0.5rem;
+  --control-h: 2rem;
+
+  /* Type */
+  --text-control-small: 0.8rem;
+  --font-ui: ui-sans-serif, system-ui, sans-serif;
+  --font-code: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Colour. Every neutral is a lightness step on one hue and tint. */
+  --neutral-hue: 70;
+  --neutral-tint: 0.0015;
+  --border-strength: 0.5;
+  --shadow-level: 0;
+  /* The brand scale points at one palette (palette.css; a theme repoints
+     --color-brand-*), and the brand is its 500 step. */
+  --brand: var(--color-brand-500);
+  --overlay: oklch(0 0 0 / 0.1);
+}
+
+/* Derived shape tokens. */
+:root {
+  --inset: calc(var(--pad) * var(--inset-ratio));
+  --frame-radius: calc(var(--radius) + var(--pad));
+  --frame-pad-sm: calc(var(--pad) * 0.75);
+  --inner-radius: max(var(--radius-floor), calc(var(--radius) - var(--panel-pad-base)));
+}
+
+/*
+ * Derived colour tokens. Each neutral is oklch(lightness, tint × weight, hue), with
+ * the light value first and the dark value second. Foregrounds point at the
+ * surface text they share instead of repeating it.
+ *
+ * The block repeats on .light and .dark so a subtree that switches mode
+ * resolves its own values: Tailwind's CSS build turns light-dark() into
+ * variables that resolve where a token is declared, not where it is used.
+ */
+:root,
+.light,
+.dark {
+  --background: light-dark(oklch(0.992 calc(var(--neutral-tint) * 0.6) var(--neutral-hue)), oklch(0.165 calc(var(--neutral-tint) * 1.5) var(--neutral-hue)));
+  /* The window behind an app's sidebar and its inset main container: one step below the page surface. */
+  --canvas: light-dark(oklch(0.966 calc(var(--neutral-tint) * 1.2) var(--neutral-hue)), oklch(0.135 calc(var(--neutral-tint) * 1.4) var(--neutral-hue)));
+  --foreground: light-dark(oklch(0.18 calc(var(--neutral-tint) * 2) var(--neutral-hue)), oklch(0.965 calc(var(--neutral-tint) * 0.6) var(--neutral-hue)));
+  --card: light-dark(oklch(1 calc(var(--neutral-tint) * 0.2) var(--neutral-hue)), oklch(0.2 calc(var(--neutral-tint) * 1.6) var(--neutral-hue)));
+  --popover: light-dark(oklch(1 calc(var(--neutral-tint) * 0.2) var(--neutral-hue)), oklch(0.22 calc(var(--neutral-tint) * 1.6) var(--neutral-hue)));
+  --secondary: light-dark(oklch(0.942 calc(var(--neutral-tint) * 1.3) var(--neutral-hue)), oklch(0.275 calc(var(--neutral-tint) * 1.9) var(--neutral-hue)));
+  --accent: light-dark(oklch(0.952 calc(var(--neutral-tint) * 1.4) var(--neutral-hue)), oklch(0.27 calc(var(--neutral-tint) * 2) var(--neutral-hue)));
+  --ink: light-dark(oklch(0.21 calc(var(--neutral-tint) * 2) var(--neutral-hue)), var(--foreground));
+  --muted: light-dark(oklch(0.962 calc(var(--neutral-tint) * 1.2) var(--neutral-hue)), oklch(0.255 calc(var(--neutral-tint) * 1.8) var(--neutral-hue)));
+  --muted-foreground: light-dark(oklch(0.5 calc(var(--neutral-tint) * 2.5) var(--neutral-hue)), oklch(0.7 calc(var(--neutral-tint) * 2) var(--neutral-hue)));
+
+  /* A panel inside a card: an opaque step between the card and muted. */
+  --panel-fill: color-mix(in oklch, var(--muted) 60%, var(--card));
+  --card-foreground: var(--foreground);
+  --popover-foreground: var(--foreground);
+  /* Text on secondary, outline and ghost buttons: a step softer than ink. */
+  --secondary-foreground: light-dark(var(--color-neutral-700), var(--color-neutral-200));
+  --accent-foreground: var(--ink);
+
+  /* Translucent marks are the foreground at a named alpha, light value
+     first, so they keep the tint of whatever sits behind them. Use these,
+     never an ad hoc /NN opacity. Backgrounds and surfaces stay opaque.
+       fg-subtle      quiet marks: neutral dots, placeholder glyphs
+       fill-subtle    row hover, a band inside a surface
+       fill           neutral chips and badges, hover on a fill-subtle
+       fill-strong    hover or press on a fill, selected rows
+       border-muted   hairline edges around cards, menus and chips
+       border-strong  hover or selected edge on a card or option
+       inverse-muted  secondary text on a foreground-coloured surface
+       glass          a floating panel over content, under a backdrop blur */
+  --fg-subtle: light-dark(color-mix(in oklch, var(--foreground) 36%, transparent), color-mix(in oklch, var(--foreground) 40%, transparent));
+  --fill-subtle: light-dark(color-mix(in oklch, var(--foreground) 4%, transparent), color-mix(in oklch, var(--foreground) 6%, transparent));
+  --fill: light-dark(color-mix(in oklch, var(--foreground) 7%, transparent), color-mix(in oklch, var(--foreground) 10%, transparent));
+  --fill-strong: light-dark(color-mix(in oklch, var(--foreground) 11%, transparent), color-mix(in oklch, var(--foreground) 15%, transparent));
+  --border-muted: light-dark(color-mix(in oklch, var(--foreground) 9%, transparent), color-mix(in oklch, var(--foreground) 11%, transparent));
+  --border-strong: light-dark(color-mix(in oklch, var(--foreground) 24%, transparent), color-mix(in oklch, var(--foreground) 28%, transparent));
+  --inverse-muted: color-mix(in oklch, var(--background) 60%, transparent);
+  --glass: color-mix(in oklch, var(--muted) 85%, transparent);
+
+  /* Primary is ink unless a theme sets --primary-seed (e.g. var(--brand)). */
+  --primary: var(--primary-seed, light-dark(var(--ink), oklch(0.94 var(--neutral-tint) var(--neutral-hue))));
+  --primary-foreground: var(
+    --primary-foreground-seed,
+    light-dark(oklch(0.985 calc(var(--neutral-tint) * 0.3) var(--neutral-hue)), oklch(0.2 calc(var(--neutral-tint) * 2) var(--neutral-hue)))
+  );
+  --brand-foreground: oklch(from var(--brand) clamp(0.16, (0.7 - l) * 1000, 0.99) 0.01 h);
+
+  --border: light-dark(
+    oklch(calc(0.94 - var(--border-strength) * 0.08) calc(var(--neutral-tint) * 1.5) var(--neutral-hue)),
+    oklch(1 0 0 / calc(0.06 + var(--border-strength) * 0.08))
+  );
+  --input: light-dark(
+    oklch(calc(0.93 - var(--border-strength) * 0.08) calc(var(--neutral-tint) * 1.5) var(--neutral-hue)),
+    oklch(1 0 0 / calc(0.1 + var(--border-strength) * 0.08))
+  );
+  --ring: color-mix(in oklch, var(--brand) 70%, transparent);
+  /* The soft halo outside a focused control; --ring draws its edge. */
+  --focus-ring: color-mix(in oklch, var(--brand) 35%, transparent);
+  --primary-hover: color-mix(in oklch, var(--primary) 85%, var(--background));
+
+  /* Semantic roles. Each tone names a palette (palette.css) and picks the
+     same steps from it, light value first: base (solid marks, dots), strong
+     (titles, glyphs), foreground (tinted text), contrast (text on a solid
+     base), fill, fill-hover and border. Warning's base is a step lighter
+     because amber reads dim at 600, so its contrast text stays dark. */
+  --destructive: light-dark(var(--color-red-600), var(--color-red-400));
+  --destructive-strong: light-dark(var(--color-red-700), var(--color-red-300));
+  --destructive-foreground: light-dark(var(--color-red-800), var(--color-red-200));
+  --destructive-contrast: light-dark(var(--color-red-50), var(--color-red-950));
+  --destructive-fill: light-dark(color-mix(in oklch, var(--destructive) 10%, transparent), color-mix(in oklch, var(--destructive) 20%, transparent));
+  --destructive-fill-hover: light-dark(color-mix(in oklch, var(--destructive) 20%, transparent), color-mix(in oklch, var(--destructive) 30%, transparent));
+  --destructive-border: light-dark(color-mix(in oklch, var(--destructive) 30%, transparent), color-mix(in oklch, var(--destructive) 35%, transparent));
+  --warning: light-dark(var(--color-amber-500), var(--color-amber-400));
+  --warning-strong: light-dark(var(--color-amber-700), var(--color-amber-300));
+  --warning-foreground: light-dark(var(--color-amber-800), var(--color-amber-200));
+  --warning-contrast: var(--color-amber-950);
+  --warning-fill: light-dark(color-mix(in oklch, var(--warning) 10%, transparent), color-mix(in oklch, var(--warning) 20%, transparent));
+  --warning-fill-hover: light-dark(color-mix(in oklch, var(--warning) 20%, transparent), color-mix(in oklch, var(--warning) 30%, transparent));
+  --warning-border: light-dark(color-mix(in oklch, var(--warning) 30%, transparent), color-mix(in oklch, var(--warning) 35%, transparent));
+  --success: light-dark(var(--color-emerald-600), var(--color-emerald-400));
+  --success-strong: light-dark(var(--color-emerald-700), var(--color-emerald-300));
+  --success-foreground: light-dark(var(--color-emerald-800), var(--color-emerald-200));
+  --success-contrast: light-dark(var(--color-emerald-50), var(--color-emerald-950));
+  --success-fill: light-dark(color-mix(in oklch, var(--success) 10%, transparent), color-mix(in oklch, var(--success) 20%, transparent));
+  --success-fill-hover: light-dark(color-mix(in oklch, var(--success) 20%, transparent), color-mix(in oklch, var(--success) 30%, transparent));
+  --success-border: light-dark(color-mix(in oklch, var(--success) 30%, transparent), color-mix(in oklch, var(--success) 35%, transparent));
+  --info: light-dark(var(--color-blue-600), var(--color-blue-400));
+  --info-strong: light-dark(var(--color-blue-700), var(--color-blue-300));
+  --info-foreground: light-dark(var(--color-blue-800), var(--color-blue-200));
+  --info-contrast: light-dark(var(--color-blue-50), var(--color-blue-950));
+  --info-fill: light-dark(color-mix(in oklch, var(--info) 10%, transparent), color-mix(in oklch, var(--info) 20%, transparent));
+  --info-fill-hover: light-dark(color-mix(in oklch, var(--info) 20%, transparent), color-mix(in oklch, var(--info) 30%, transparent));
+  --info-border: light-dark(color-mix(in oklch, var(--info) 30%, transparent), color-mix(in oklch, var(--info) 35%, transparent));
+  /* Merged work (pull requests, stacks) reads purple. */
+  --merged: light-dark(var(--color-purple-600), var(--color-purple-400));
+  --merged-strong: light-dark(var(--color-purple-700), var(--color-purple-300));
+  --merged-foreground: light-dark(var(--color-purple-800), var(--color-purple-200));
+  --merged-contrast: light-dark(var(--color-purple-50), var(--color-purple-950));
+  --merged-fill: light-dark(color-mix(in oklch, var(--merged) 10%, transparent), color-mix(in oklch, var(--merged) 20%, transparent));
+  --merged-fill-hover: light-dark(color-mix(in oklch, var(--merged) 20%, transparent), color-mix(in oklch, var(--merged) 30%, transparent));
+  --merged-border: light-dark(color-mix(in oklch, var(--merged) 30%, transparent), color-mix(in oklch, var(--merged) 35%, transparent));
+  /* The brand as a tone, from the brand palette like the others. */
+  --brand-strong: light-dark(var(--color-brand-700), var(--color-brand-300));
+  --brand-on-tint: light-dark(var(--color-brand-800), var(--color-brand-200));
+  --brand-fill: light-dark(color-mix(in oklch, var(--brand) 12%, transparent), color-mix(in oklch, var(--brand) 22%, transparent));
+  --brand-fill-hover: light-dark(color-mix(in oklch, var(--brand) 22%, transparent), color-mix(in oklch, var(--brand) 32%, transparent));
+  --brand-border: light-dark(color-mix(in oklch, var(--brand) 30%, transparent), color-mix(in oklch, var(--brand) 35%, transparent));
+  /* "New" (unread, just arrived) borrows the info tone, so new things read blue. */
+  --new: var(--info);
+  --new-strong: var(--info-strong);
+  --new-fill: var(--info-fill);
+
+  /* State fills. Each pairs a light and a dark strength, so components
+     never restate a colour under dark:. */
+  --invalid-ring: light-dark(color-mix(in oklch, var(--destructive) 20%, transparent), color-mix(in oklch, var(--destructive) 40%, transparent));
+  --invalid-border: light-dark(var(--destructive), color-mix(in oklch, var(--destructive) 50%, transparent));
+  --ghost-hover: light-dark(var(--muted), color-mix(in oklch, var(--muted) 50%, transparent));
+  --secondary-hover: color-mix(in oklch, var(--secondary), var(--foreground) 5%);
+  --chip: light-dark(color-mix(in oklch, var(--background) 70%, transparent), color-mix(in oklch, var(--foreground) 8%, transparent));
+  --chip-ring: var(--border-muted);
+
+  /* Control fills: fields, outline buttons, switches, tabs. */
+  --field: light-dark(transparent, color-mix(in oklch, var(--input) 30%, transparent));
+  --field-hover: light-dark(transparent, color-mix(in oklch, var(--input) 50%, transparent));
+  --field-disabled: light-dark(color-mix(in oklch, var(--input) 50%, transparent), color-mix(in oklch, var(--input) 80%, transparent));
+  --control-outline: light-dark(var(--background), color-mix(in oklch, var(--input) 30%, transparent));
+  --control-outline-hover: light-dark(var(--muted), color-mix(in oklch, var(--input) 50%, transparent));
+  --control-outline-border: light-dark(var(--border), var(--input));
+  --switch-track: light-dark(var(--input), color-mix(in oklch, var(--input) 80%, transparent));
+  --switch-thumb: light-dark(var(--background), var(--foreground));
+  --switch-thumb-on: light-dark(var(--background), var(--primary-foreground));
+  --tab-text: light-dark(color-mix(in oklch, var(--foreground) 60%, transparent), var(--muted-foreground));
+  --tab-active: light-dark(var(--background), color-mix(in oklch, var(--input) 30%, transparent));
+  --tab-active-border: light-dark(transparent, var(--input));
+  --kbd-on-inverse: light-dark(color-mix(in oklch, var(--background) 20%, transparent), color-mix(in oklch, var(--background) 10%, transparent));
+
+  /* Lift grows with --shadow-level; dark surfaces add a top highlight. */
+  --shadow-color: light-dark(
+    oklch(0 0 0 / calc(0.035 * var(--shadow-level))),
+    oklch(0 0 0 / calc(0.22 * var(--shadow-level)))
+  );
+  --shadow-color-soft: light-dark(
+    oklch(0 0 0 / calc(0.035 * 0.8 * var(--shadow-level))),
+    oklch(0 0 0 / calc(0.22 * 0.8 * var(--shadow-level)))
+  );
+  --shadow-highlight: light-dark(transparent, oklch(1 0 0 / 0.05));
+  --shadow-frame:
+    0 1px 2px var(--shadow-color),
+    0 calc(var(--shadow-level) * 2px) calc(var(--shadow-level) * 6px) var(--shadow-color-soft),
+    inset 0 1px 0 var(--shadow-highlight);
+}
+
+/*
+ * The current tone. A component that takes `tone` sets data-tone, and its
+ * classes read --tone-* (bg-tone-fill, text-tone-foreground, ring-tone-border
+ * and so on), so its `variant` only picks emphasis. Every tone fills the same
+ * roles: base (solid fills), strong (titles, glyphs), foreground (text on a
+ * tint), contrast (text on a solid base), solid-hover, fill, fill-hover,
+ * border, and mark (status dots; quieter than the text for neutral).
+ */
+[data-tone="neutral"] {
+  --tone: var(--primary);
+  --tone-strong: var(--foreground);
+  --tone-foreground: var(--muted-foreground);
+  --tone-contrast: var(--primary-foreground);
+  --tone-solid-hover: var(--primary-hover);
+  --tone-fill: var(--fill);
+  --tone-fill-hover: var(--fill-strong);
+  --tone-border: var(--border-muted);
+  --tone-mark: var(--fg-subtle);
+}
+[data-tone="info"],
+[data-tone="success"],
+[data-tone="warning"],
+[data-tone="destructive"],
+[data-tone="merged"] {
+  --tone-solid-hover: color-mix(in oklch, var(--tone) 85%, var(--background));
+  --tone-mark: var(--tone);
+}
+[data-tone="info"] {
+  --tone: var(--info);
+  --tone-strong: var(--info-strong);
+  --tone-foreground: var(--info-foreground);
+  --tone-contrast: var(--info-contrast);
+  --tone-fill: var(--info-fill);
+  --tone-fill-hover: var(--info-fill-hover);
+  --tone-border: var(--info-border);
+}
+[data-tone="success"] {
+  --tone: var(--success);
+  --tone-strong: var(--success-strong);
+  --tone-foreground: var(--success-foreground);
+  --tone-contrast: var(--success-contrast);
+  --tone-fill: var(--success-fill);
+  --tone-fill-hover: var(--success-fill-hover);
+  --tone-border: var(--success-border);
+}
+[data-tone="warning"] {
+  --tone: var(--warning);
+  --tone-strong: var(--warning-strong);
+  --tone-foreground: var(--warning-foreground);
+  --tone-contrast: var(--warning-contrast);
+  --tone-fill: var(--warning-fill);
+  --tone-fill-hover: var(--warning-fill-hover);
+  --tone-border: var(--warning-border);
+}
+[data-tone="destructive"] {
+  --tone: var(--destructive);
+  --tone-strong: var(--destructive-strong);
+  --tone-foreground: var(--destructive-foreground);
+  --tone-contrast: var(--destructive-contrast);
+  --tone-fill: var(--destructive-fill);
+  --tone-fill-hover: var(--destructive-fill-hover);
+  --tone-border: var(--destructive-border);
+}
+[data-tone="merged"] {
+  --tone: var(--merged);
+  --tone-strong: var(--merged-strong);
+  --tone-foreground: var(--merged-foreground);
+  --tone-contrast: var(--merged-contrast);
+  --tone-fill: var(--merged-fill);
+  --tone-fill-hover: var(--merged-fill-hover);
+  --tone-border: var(--merged-border);
+}
+[data-tone="brand"] {
+  --tone: var(--brand);
+  --tone-strong: var(--brand-strong);
+  --tone-foreground: var(--brand-on-tint);
+  --tone-contrast: var(--brand-foreground);
+  --tone-solid-hover: color-mix(in oklch, var(--brand) 85%, var(--background));
+  --tone-fill: var(--brand-fill);
+  --tone-fill-hover: var(--brand-fill-hover);
+  --tone-border: var(--brand-border);
+  --tone-mark: var(--brand);
+}
+
+/* A frame: the outer padded surface. Its radius is --radius plus its padding. */
+@utility frame {
+  --frame-space: var(--frame-pad, var(--pad));
+  --frame-radius: calc(var(--radius) + var(--frame-space));
+  --inset: calc(var(--frame-space) * var(--inset-ratio));
+  border-radius: calc(var(--frame-radius) * var(--corner-scale));
+}
+
+/* A tray of controls along a frame's bottom edge. A control in a corner
+   shares the corner's centre, so it sits --corner-gap in from both edges and
+   its height is 2 × (frame radius − gap). Pill controls then stay concentric. */
+@utility corner-tray {
+  --corner-control-h: max(--spacing(6), calc(2 * (var(--frame-radius) - var(--corner-gap))));
+  padding: 0 var(--corner-gap) var(--corner-gap);
+}
+
+/* Card content sits one --corner-gap in, flush with the footer's pills. Its
+   single-line pieces (inputs, rows) are not near a corner, so they take the
+   flatter --field-radius. Text keeps the title's column: bare text uses
+   ps-text, rows and panels use px-text, and inputs inset so their box edge
+   sits on that column. */
+@utility pe-text {
+  padding-inline-end: var(--text-offset, 0);
+}
+@utility ps-text {
+  padding-inline-start: var(--text-offset, 0);
+}
+/* A field's label and hint start where the input's text starts: the input's
+   inline padding plus its 1px border. */
+@utility ps-field {
+  padding-inline-start: calc(var(--spacing) * 2.5 + 1px);
+}
+/* A hint under a field: a step smaller than body text, tucked close. */
+@utility field-hint {
+  font-size: var(--text-control-small);
+  margin-top: calc(var(--spacing) * -0.5);
+  padding-inline-start: calc(var(--spacing) * 2.5 + 1px);
+}
+
+/* A row or panel inside card content: its text lines up with the card title
+   on the left and the same distance in on the right. */
+@utility px-text {
+  padding-inline: var(--text-offset, 0);
+}
+
+/* A container that groups several pieces inside card content and spans its
+   width takes the concentric radius (frame radius − corner gap). */
+@utility concentric {
+  --radius: calc(var(--frame-radius) - var(--corner-gap));
+}
+
+/* An action inset in a rounded row (a repair button at a row's end): its
+   radius is the row's minus the inset and the 1px border, so the two
+   corners share a centre. The row sets --row-action-inset and pads by it. */
+@utility rounded-inset-action {
+  border-radius: calc(max(var(--radius-floor), var(--radius) - var(--row-action-inset) - 1px) * var(--corner-scale));
+}
+
+/* A leading slot at a rounded element's start corner: a square as tall as
+   the element (--lead-size), with its glyph centred, so the glyph sits on
+   the corner's centre. The parent drops its start padding. */
+@utility lead {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: var(--lead-size);
+  height: var(--lead-size);
+}
+
+/* Even padding for a frame that lays out its own content. */
+@utility p-frame {
+  padding: var(--frame-space, var(--pad));
+}
+
+/* A panel: a surface inside a frame. Its radius is the frame's inner radius. */
+@utility panel {
+  --panel-space: var(--panel-pad, var(--panel-pad-base));
+  --inner-radius: max(var(--radius-floor), calc(var(--radius) - var(--panel-space)));
+  --inset: calc(var(--panel-space) * var(--inset-ratio));
+  border-radius: calc(var(--radius) * var(--corner-scale));
+  padding: var(--panel-space);
+}
+
+/* Extra inline padding for text inside a frame or panel. See --inset above. */
+@utility px-inset {
+  padding-inline: var(--inset);
+}
+@utility ps-inset {
+  padding-inline-start: var(--inset);
+}
+@utility pe-inset {
+  padding-inline-end: var(--inset);
+}
+
+@utility text-ui-label {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-ui-label);
+  text-transform: uppercase;
+}
+
+/*
+ * Trims the line-height space above the cap height and below the baseline,
+ * so a single line centres optically in a fixed-height control.
+ */
+@utility text-trim {
+  text-box: trim-both cap alphabetic;
+}
+
+/*
+ * Trims only the space above the cap height. Use it on text that clips
+ * (truncate, overflow-hidden), where trimming the bottom would cut descenders.
+ */
+@utility text-trim-start {
+  text-box: trim-start cap alphabetic;
+}
+
+@theme {
+  --tracking-ui-title: -0.025em;
+  --tracking-ui-heading: -0.012em;
+  --tracking-ui-body: 0em;
+  --tracking-ui-small: 0.02em;
+  --tracking-ui-label: 0.075em;
+
+  /* Live badge dots expand and fade. Reduced motion disables the animation. */
+  --animate-live: live 1.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+
+  @keyframes live {
+    0% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    70%,
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-canvas: var(--canvas);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-panel-fill: var(--panel-fill);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-strong: var(--destructive-strong);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-contrast: var(--destructive-contrast);
+  --color-destructive-fill: var(--destructive-fill);
+  --color-destructive-fill-hover: var(--destructive-fill-hover);
+  --color-destructive-border: var(--destructive-border);
+  --color-warning: var(--warning);
+  --color-warning-strong: var(--warning-strong);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-contrast: var(--warning-contrast);
+  --color-warning-fill: var(--warning-fill);
+  --color-warning-fill-hover: var(--warning-fill-hover);
+  --color-warning-border: var(--warning-border);
+  --color-success: var(--success);
+  --color-success-strong: var(--success-strong);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-contrast: var(--success-contrast);
+  --color-success-fill: var(--success-fill);
+  --color-success-fill-hover: var(--success-fill-hover);
+  --color-success-border: var(--success-border);
+  --color-info: var(--info);
+  --color-info-strong: var(--info-strong);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-contrast: var(--info-contrast);
+  --color-info-fill: var(--info-fill);
+  --color-info-fill-hover: var(--info-fill-hover);
+  --color-info-border: var(--info-border);
+  --color-merged: var(--merged);
+  --color-merged-strong: var(--merged-strong);
+  --color-merged-foreground: var(--merged-foreground);
+  --color-merged-contrast: var(--merged-contrast);
+  --color-merged-fill: var(--merged-fill);
+  --color-merged-fill-hover: var(--merged-fill-hover);
+  --color-merged-border: var(--merged-border);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-on-tint: var(--brand-on-tint);
+  --color-brand-fill: var(--brand-fill);
+  --color-brand-fill-hover: var(--brand-fill-hover);
+  --color-brand-border: var(--brand-border);
+  --color-tone: var(--tone);
+  --color-tone-strong: var(--tone-strong);
+  --color-tone-foreground: var(--tone-foreground);
+  --color-tone-contrast: var(--tone-contrast);
+  --color-tone-solid-hover: var(--tone-solid-hover);
+  --color-tone-fill: var(--tone-fill);
+  --color-tone-fill-hover: var(--tone-fill-hover);
+  --color-tone-border: var(--tone-border);
+  --color-tone-mark: var(--tone-mark);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-fill-subtle: var(--fill-subtle);
+  --color-fill: var(--fill);
+  --color-fill-strong: var(--fill-strong);
+  --color-border-muted: var(--border-muted);
+  --color-border-strong: var(--border-strong);
+  --color-inverse-muted: var(--inverse-muted);
+  --color-glass: var(--glass);
+  --color-focus-ring: var(--focus-ring);
+  --color-primary-hover: var(--primary-hover);
+  --color-new: var(--new);
+  --color-new-strong: var(--new-strong);
+  --color-new-fill: var(--new-fill);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-invalid-ring: var(--invalid-ring);
+  --color-invalid-border: var(--invalid-border);
+  --color-ghost-hover: var(--ghost-hover);
+  --color-chip: var(--chip);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-chip-ring: var(--chip-ring);
+  --color-field: var(--field);
+  --color-field-hover: var(--field-hover);
+  --color-field-disabled: var(--field-disabled);
+  --color-control-outline: var(--control-outline);
+  --color-control-outline-hover: var(--control-outline-hover);
+  --color-control-outline-border: var(--control-outline-border);
+  --color-switch-track: var(--switch-track);
+  --color-switch-thumb: var(--switch-thumb);
+  --color-switch-thumb-on: var(--switch-thumb-on);
+  --color-tab-text: var(--tab-text);
+  --color-tab-active: var(--tab-active);
+  --color-tab-active-border: var(--tab-active-border);
+  --color-kbd-on-inverse: var(--kbd-on-inverse);
+  --color-overlay: var(--overlay);
+  --radius-2xs: calc(var(--radius-step) * var(--corner-scale));
+  --radius-xs: calc(calc(var(--radius-step) * 2) * var(--corner-scale));
+  --radius-sm: calc(calc(var(--radius) - var(--radius-step) * 2) * var(--corner-scale));
+  --radius-md: calc(calc(var(--radius) - var(--radius-step)) * var(--corner-scale));
+  --radius-lg: calc(var(--radius) * var(--corner-scale));
+  --radius-xl: calc(calc(var(--radius) + var(--radius-step) * 2) * var(--corner-scale));
+  --radius-frame: calc(var(--frame-radius) * var(--corner-scale));
+  --radius-inner: calc(var(--inner-radius) * var(--corner-scale));
+  --font-sans: var(--font-ui);
+  --font-mono: var(--font-code);
+}
+
+/* A round corner of radius r dips (sqrt(2) - 1) * r from the corner along
+   the diagonal; superellipse(n) of radius R dips sqrt(2) * (1 - 2^(-1/2^n)) * R.
+   Equal dips give the scale. Unlayered so it beats the seed default. */
+@supports (corner-shape: superellipse(2)) {
+  :root {
+    --corner-scale: calc((sqrt(2) - 1) / (sqrt(2) * (1 - pow(2, -1 / pow(2, var(--corner-smoothing))))));
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-focus-ring;
+  }
+  /* Smooth corners everywhere a radius is set. Full pills and dots stay
+     true capsules and circles. */
+  @supports (corner-shape: superellipse(2)) {
+    *,
+    ::before,
+    ::after {
+      corner-shape: superellipse(var(--corner-smoothing));
+    }
+    [class*="rounded-full"],
+    [class*="rounded-full"]::before,
+    [class*="rounded-full"]::after {
+      corner-shape: round;
+    }
+  }
+  /* Colour tokens use light-dark(), so color-scheme picks the mode. A
+     .light or .dark element switches its own subtree. */
+  html {
+    color-scheme: light dark;
+  }
+  .light {
+    color-scheme: light;
+  }
+  .dark {
+    color-scheme: dark;
+  }
+  /* A mode subtree also resets its text colour, which it would otherwise
+     inherit from the other mode. */
+  .light,
+  .dark {
+    color: var(--foreground);
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
