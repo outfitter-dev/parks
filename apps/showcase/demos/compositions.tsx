@@ -3,6 +3,7 @@
 import { useState, type ReactNode } from "react";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemHeader, ItemMedia, ItemMeta, ItemTitle } from "@workspace/ui/components/item";
 import { Badge } from "@workspace/ui/components/badge";
+import { SectionHeader, SectionHeaderDescription, SectionHeaderTitle } from "@workspace/ui/components/section-header";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@workspace/ui/components/empty";
 import { Mark } from "@workspace/ui/components/mark";
 import { Button } from "@workspace/ui/components/button";
@@ -291,8 +292,10 @@ function AskDetail({
           {ask.agent} asked {ask.age} ago
         </span>
       </p>
-      <h2 className="mt-3 text-lg font-semibold tracking-tight">{ask.title}</h2>
-      <p className="mt-2 text-muted-foreground">{ask.context}</p>
+      <SectionHeader size="lg" className="mt-3">
+        <SectionHeaderTitle>{ask.title}</SectionHeaderTitle>
+        <SectionHeaderDescription className="mt-2">{ask.context}</SectionHeaderDescription>
+      </SectionHeader>
       {ask.kind === "input" ? (
         <div className="mt-5 grid gap-2">
           <Label htmlFor="reply">Your reply</Label>
