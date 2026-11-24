@@ -12,9 +12,9 @@ import {
   AlertDialogMedia,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@workspace/ui/components/alert-dialog";
-import { Avatar, AvatarFallback } from "@workspace/ui/components/avatar";
-import { Button } from "@workspace/ui/components/button";
+} from "@outfitter/parks/components/alert-dialog";
+import { Avatar, AvatarFallback } from "@outfitter/parks/components/avatar";
+import { Button } from "@outfitter/parks/components/button";
 import {
   CommandDialog,
   Command,
@@ -25,9 +25,9 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "@workspace/ui/components/command";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@workspace/ui/components/hover-card";
-import { Kbd } from "@workspace/ui/components/kbd";
+} from "@outfitter/parks/components/command";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@outfitter/parks/components/hover-card";
+import { Kbd } from "@outfitter/parks/components/kbd";
 import {
   Sheet,
   SheetClose,
@@ -37,8 +37,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@workspace/ui/components/sheet";
-import { Toaster, toast } from "@workspace/ui/components/toast";
+} from "@outfitter/parks/components/sheet";
+import { Toaster, toast } from "@outfitter/parks/components/toast";
 import { BellOffIcon } from "@solar-icons/react/outline/bell-off";
 import { HomeIcon } from "@solar-icons/react/outline/home";
 import { InboxIcon } from "@solar-icons/react/outline/inbox";

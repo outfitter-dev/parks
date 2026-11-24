@@ -1,9 +1,9 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
-import { isTone, tones } from "../packages/ui/src/lib/tone";
+import { isTone, tones } from "../packages/parks/src/lib/tone";
 
-const css = readFileSync(join(import.meta.dirname, "../packages/ui/src/styles/globals.css"), "utf8");
+const css = readFileSync(join(import.meta.dirname, "../packages/parks/src/styles/globals.css"), "utf8");
 const roles = ["", "-strong", "-foreground", "-contrast", "-solid-hover", "-fill", "-fill-hover", "-border", "-mark"];
 
 /** Every custom property set by rules whose selector names this tone. */

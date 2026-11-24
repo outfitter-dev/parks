@@ -3,7 +3,7 @@
 // Description: Shadcn file type icon in brand and family colors, outline, solid, light and mono variants, sizes down to 18px for data grid rows, and resolution from a file name or MIME type.
 import type { ComponentProps, CSSProperties, ReactNode } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "@workspace/ui/lib/utils"
+import { cn } from "@outfitter/parks/lib/utils"
 
 /* -------------------------------------------------------------------------- */
 /*                                    Types                                   */

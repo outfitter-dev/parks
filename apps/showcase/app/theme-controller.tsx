@@ -4,7 +4,7 @@ import { DialRoot, useDialKitController, type DialConfig } from "dialkit";
 import "dialkit/styles.css";
 import { useEffect, useMemo, useRef } from "react";
 import { defaultShell, isShellStyle, setShell } from "#lib/shell";
-import { isPaletteName, paletteNames } from "@workspace/ui/lib/palette";
+import { isPaletteName, paletteNames } from "@outfitter/parks/lib/palette";
 import { compileTheme, presets, type Mode, type PresetId, type PresetValues } from "#lib/theme";
 
 const start = presets.luma.values;
@@ -89,7 +89,7 @@ export function ThemeController() {
   // Presets load only from an explicit click. Watching a select value would
   // also fire when DialKit restores saved values on reload and wipe edits.
   const dial = useDialKitController("Theme", config, {
-    persist: { key: "outpost-workbench-theme" },
+    persist: { key: "parks-showcase-theme" },
     onAction: (action) => {
       if (action === "copy") {
         void navigator.clipboard.writeText(cssRef.current);

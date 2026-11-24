@@ -1,10 +1,10 @@
 "use client";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@workspace/ui/components/accordion";
-import { Button } from "@workspace/ui/components/button";
-import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@workspace/ui/components/button-group";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@workspace/ui/components/collapsible";
-import { Item, ItemContent, ItemGroup, ItemMeta, ItemTitle } from "@workspace/ui/components/item";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@outfitter/parks/components/accordion";
+import { Button } from "@outfitter/parks/components/button";
+import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@outfitter/parks/components/button-group";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@outfitter/parks/components/collapsible";
+import { Item, ItemContent, ItemGroup, ItemMeta, ItemTitle } from "@outfitter/parks/components/item";
 import {
   Pagination,
   PaginationContent,
@@ -13,7 +13,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@workspace/ui/components/pagination";
+} from "@outfitter/parks/components/pagination";
 import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
 import { versions } from "#lib/fixtures";
 import { Specimen } from "./kit";

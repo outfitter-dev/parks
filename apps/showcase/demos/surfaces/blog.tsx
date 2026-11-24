@@ -1,10 +1,10 @@
 "use client";
 
-import { Avatar, AvatarFallback } from "@workspace/ui/components/avatar";
-import { Badge } from "@workspace/ui/components/badge";
-import { Button } from "@workspace/ui/components/button";
-import { Input } from "@workspace/ui/components/input";
-import { cn } from "@workspace/ui/lib/utils";
+import { Avatar, AvatarFallback } from "@outfitter/parks/components/avatar";
+import { Badge } from "@outfitter/parks/components/badge";
+import { Button } from "@outfitter/parks/components/button";
+import { Input } from "@outfitter/parks/components/input";
+import { cn } from "@outfitter/parks/lib/utils";
 import { Viewport } from "../kit";
 import { CodeBlock } from "./parts";
 

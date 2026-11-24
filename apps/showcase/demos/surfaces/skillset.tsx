@@ -1,13 +1,13 @@
 "use client";
 
 import { FileTree, useFileTree, useFileTreeSelection } from "@pierre/trees/react";
-import { Item, ItemGroup, ItemMeta } from "@workspace/ui/components/item";
-import { Badge } from "@workspace/ui/components/badge";
-import { SectionHeader, SectionHeaderAction, SectionHeaderDescription, SectionHeaderTitle } from "@workspace/ui/components/section-header";
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@workspace/ui/components/empty";
-import { Button } from "@workspace/ui/components/button";
-import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@workspace/ui/components/tooltip";
+import { Item, ItemGroup, ItemMeta } from "@outfitter/parks/components/item";
+import { Badge } from "@outfitter/parks/components/badge";
+import { SectionHeader, SectionHeaderAction, SectionHeaderDescription, SectionHeaderTitle } from "@outfitter/parks/components/section-header";
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@outfitter/parks/components/empty";
+import { Button } from "@outfitter/parks/components/button";
+import { ToggleGroup, ToggleGroupItem } from "@outfitter/parks/components/toggle-group";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@outfitter/parks/components/tooltip";
 import { BoxIcon } from "@solar-icons/react/outline/box";
 import { BoxIcon as BoxBold } from "@solar-icons/react/bold/box";
 import { ChecklistIcon } from "@solar-icons/react/outline/checklist";

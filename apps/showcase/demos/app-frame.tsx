@@ -1,8 +1,8 @@
 "use client";
 
 import { createContext, useContext, useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { Button } from "@workspace/ui/components/button";
-import { cn } from "@workspace/ui/lib/utils";
+import { Button } from "@outfitter/parks/components/button";
+import { cn } from "@outfitter/parks/lib/utils";
 import { PanelLeftCloseIcon } from "@solar-icons/react/outline/panel-left-close";
 import { PanelLeftOpenIcon } from "@solar-icons/react/outline/panel-left-open";
 

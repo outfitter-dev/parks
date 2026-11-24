@@ -1,8 +1,8 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { BreadcrumbPath } from "../packages/ui/src/components/breadcrumb";
-import { fitBreadcrumb, hiddenByLimit } from "../packages/ui/src/lib/breadcrumb-fit";
+import { BreadcrumbPath } from "../packages/parks/src/components/breadcrumb";
+import { fitBreadcrumb, hiddenByLimit } from "../packages/parks/src/lib/breadcrumb-fit";
 
 describe("fitBreadcrumb", () => {
   // Root, three ancestors, current. The overflow trigger costs 30.

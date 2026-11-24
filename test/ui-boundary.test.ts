@@ -3,9 +3,9 @@ import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 import { colourOpacity } from "./ui-rules";
 
-// packages/ui is meant to move to a shared repo, so it may only use
+// packages/parks is published for other apps, so it may only use
 // its own files and the packages it declares. It must not reach into the app.
-const root = join(import.meta.dirname, "../packages/ui");
+const root = join(import.meta.dirname, "../packages/parks");
 const manifest: {
   dependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
@@ -35,7 +35,7 @@ function aliasFor(target: string) {
   return aliases.find(([key]) => (key.endsWith("*") ? target.startsWith(key.slice(0, -1)) : target === key));
 }
 
-describe("packages/ui boundary", () => {
+describe("packages/parks boundary", () => {
   it("has sources to check", () => {
     expect(sources.length).toBeGreaterThan(0);
   });

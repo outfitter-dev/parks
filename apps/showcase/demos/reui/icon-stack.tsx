@@ -2,7 +2,7 @@
 // Title: Icon Stack
 // Description: Layered icon illustration container
 
-import { cn } from "@workspace/ui/lib/utils"
+import { cn } from "@outfitter/parks/lib/utils"
 
 type IconStackProps = React.ComponentProps<"div">
 

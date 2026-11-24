@@ -1,15 +1,15 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Mark } from "@workspace/ui/components/mark";
-import { GroupLabel } from "@workspace/ui/components/group-label";
-import { Card } from "@workspace/ui/components/card";
-import { NavItem } from "@workspace/ui/components/nav-item";
-import { Alert, AlertDescription, AlertTitle } from "@workspace/ui/components/alert";
-import { Button } from "@workspace/ui/components/button";
-import { Kbd } from "@workspace/ui/components/kbd";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
-import { cn } from "@workspace/ui/lib/utils";
+import { Mark } from "@outfitter/parks/components/mark";
+import { GroupLabel } from "@outfitter/parks/components/group-label";
+import { Card } from "@outfitter/parks/components/card";
+import { NavItem } from "@outfitter/parks/components/nav-item";
+import { Alert, AlertDescription, AlertTitle } from "@outfitter/parks/components/alert";
+import { Button } from "@outfitter/parks/components/button";
+import { Kbd } from "@outfitter/parks/components/kbd";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@outfitter/parks/components/tabs";
+import { cn } from "@outfitter/parks/lib/utils";
 import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left";
 import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
 import { InfoCircleIcon } from "@solar-icons/react/outline/info-circle";

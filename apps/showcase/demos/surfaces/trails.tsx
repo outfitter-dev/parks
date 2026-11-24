@@ -1,12 +1,12 @@
 "use client";
 
-import { Badge } from "@workspace/ui/components/badge";
-import { SectionHeader, SectionHeaderDescription, SectionHeaderTitle } from "@workspace/ui/components/section-header";
-import { GroupLabel } from "@workspace/ui/components/group-label";
-import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card";
-import { NavItem } from "@workspace/ui/components/nav-item";
-import { Button } from "@workspace/ui/components/button";
-import { InlineCode } from "@workspace/ui/components/inline-code";
+import { Badge } from "@outfitter/parks/components/badge";
+import { SectionHeader, SectionHeaderDescription, SectionHeaderTitle } from "@outfitter/parks/components/section-header";
+import { GroupLabel } from "@outfitter/parks/components/group-label";
+import { Card, CardContent, CardHeader, CardTitle } from "@outfitter/parks/components/card";
+import { NavItem } from "@outfitter/parks/components/nav-item";
+import { Button } from "@outfitter/parks/components/button";
+import { InlineCode } from "@outfitter/parks/components/inline-code";
 import {
   Table,
   TableBody,
@@ -14,8 +14,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@workspace/ui/components/table";
-import type { Tone } from "@workspace/ui/lib/tone";
+} from "@outfitter/parks/components/table";
+import type { Tone } from "@outfitter/parks/lib/tone";
 import { ArrowRightIcon } from "@solar-icons/react/outline/arrow-right";
 import { BoltIcon } from "@solar-icons/react/outline/bolt";
 import { BoltIcon as BoltBold } from "@solar-icons/react/bold/bolt";

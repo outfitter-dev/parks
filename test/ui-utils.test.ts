@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { cn, cnState } from "../packages/ui/src/lib/utils";
+import { cn, cnState } from "../packages/parks/src/lib/utils";
 
-describe("packages/ui cn", () => {
+describe("packages/parks cn", () => {
   it("keeps custom utilities that tailwind-merge does not know", () => {
     expect(cn("text-trim", "text-sm", "text-primary-foreground")).toBe("text-trim text-sm text-primary-foreground");
   });
@@ -18,7 +18,7 @@ describe("packages/ui cn", () => {
   });
 });
 
-describe("packages/ui cnState", () => {
+describe("packages/parks cnState", () => {
   it("merges a string className like cn", () => {
     expect(cnState("p-2 text-trim", "p-4")).toBe("text-trim p-4");
   });

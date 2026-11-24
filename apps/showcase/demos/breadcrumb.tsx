@@ -6,7 +6,7 @@ import {
   BreadcrumbPage,
   BreadcrumbPath,
   BreadcrumbSeparator,
-} from "@workspace/ui/components/breadcrumb";
+} from "@outfitter/parks/components/breadcrumb";
 import { HomeIcon } from "@solar-icons/react/outline/home";
 import { FolderIcon } from "@solar-icons/react/outline/folder";
 

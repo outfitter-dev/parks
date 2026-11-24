@@ -4,9 +4,10 @@ import { describe, expect, it } from "vitest";
 import { colourOpacity } from "./ui-rules";
 
 // The workbench demos are how we try the design system, so they follow the
-// same colour rules as packages/ui: roles for translucency and one token for
+// same colour rules as packages/parks: roles for translucency and one token for
 // light and dark. reui is vendored and keeps its own styles.
-const root = join(import.meta.dirname, "../apps/workbench");
+const root = join(import.meta.dirname, "../apps/showcase");
+
 const vendored = new Set(["reui", "node_modules", ".next"]);
 
 function files(dir: string): string[] {
