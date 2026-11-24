@@ -73,6 +73,11 @@
   --text-control-small: 0.8rem;
   --font-ui: ui-sans-serif, system-ui, sans-serif;
   --font-code: ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Body text size, the ROND axis for fonts that have one (Allo), and the
+     size of code relative to the text around it. */
+  --text-ui: 0.875rem;
+  --rond: 0;
+  --mono-scale: 1;
 
   /* Colour. Every neutral is a lightness step on one hue and tint. */
   --neutral-hue: 70;
@@ -850,5 +855,14 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: var(--font-ui);
+    font-size: var(--text-ui);
+    font-variation-settings: "ROND" var(--rond);
+  }
+  code,
+  kbd,
+  samp,
+  .font-mono {
+    font-size: calc(var(--mono-scale) * 1em);
   }
 }

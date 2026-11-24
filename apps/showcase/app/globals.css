@@ -6,25 +6,10 @@
 @source "../";
 @source inline("bg-{brand,neutral,slate,gray,zinc,stone,red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose}-{50,{100..900..100},950}");
 
-/* Type seeds the theme panel tunes. */
-:root {
-  --text-ui: 14px;
-  --rond: 50;
-  --mono-scale: 1;
-}
-
+/* Stylistic sets for the showcase fonts. Type size and ROND come from the theme. */
 @layer base {
   body {
-    font-family: var(--font-ui);
-    font-size: var(--text-ui);
-    font-variation-settings: "ROND" var(--rond);
     font-feature-settings: "cv11", "ss01";
-  }
-  code,
-  kbd,
-  samp,
-  .font-mono {
-    font-size: calc(var(--mono-scale) * 1em);
   }
 }
 
