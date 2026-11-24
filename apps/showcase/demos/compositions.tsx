@@ -615,9 +615,8 @@ export function NeedsYouComposition() {
     asks.findIndex((item) => item.id === selected)
   );
   const ask = asks[index];
-  const done = asks.filter(
-    (item) => (answers[item.id] ?? []).length > 0
-  ).length;
+  const replied = asks.filter((item) => (answers[item.id] ?? []).length > 0);
+  const done = replied.length;
   const open = (next: number) => {
     const target = asks[next];
     if (!target) {
@@ -707,7 +706,23 @@ export function NeedsYouComposition() {
                   <ToggleGroupItem value="answered">Answered</ToggleGroupItem>
                 </ToggleGroup>
               </PageBar>
-              {view === "answered" ? (
+              {view === "answered" && done > 0 ? (
+                <div className="p-2 pt-0">
+                  {replied.map((item) => (
+                    <AskRow
+                      key={item.id}
+                      ask={item}
+                      active={false}
+                      answered
+                      onSelect={() => {
+                        setView("open");
+                        open(asks.indexOf(item));
+                      }}
+                    />
+                  ))}
+                </div>
+              ) : null}
+              {view === "answered" && done === 0 ? (
                 <Empty>
                   <EmptyHeader>
                     <EmptyMedia>
@@ -721,7 +736,8 @@ export function NeedsYouComposition() {
                     </EmptyDescription>
                   </EmptyHeader>
                 </Empty>
-              ) : (
+              ) : null}
+              {view === "open" ? (
                 <>
                   <p className="text-muted-foreground px-4 pb-2 text-xs tabular-nums @3xl:hidden">
                     {done} of {asks.length} answered
@@ -738,7 +754,7 @@ export function NeedsYouComposition() {
                     ))}
                   </div>
                 </>
-              )}
+              ) : null}
             </div>
             {view === "open" && ask ? (
               <div
