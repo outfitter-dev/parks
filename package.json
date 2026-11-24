@@ -23,6 +23,7 @@
     "dev": "bun scripts/dev.ts",
     "build": "bun run --cwd apps/showcase build",
     "changeset": "changeset",
+    "version": "changeset version && bun install",
     "ui:add": "bun scripts/ui-add.ts",
     "ui:palette": "bun scripts/ui-palette.ts",
     "check:consumer": "bun scripts/check-consumer.ts",

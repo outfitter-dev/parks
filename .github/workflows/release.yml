@@ -1,0 +1,142 @@
+name: Release
+on:
+  # Every push to main refreshes the "Version Packages" pull request.
+  push:
+    branches: [main]
+  # Publishing to npm only ever starts by hand, from main.
+  workflow_dispatch:
+permissions: {}
+jobs:
+  version:
+    if: github.event_name == 'push'
+    # Only the newest push needs a version PR.
+    concurrency:
+      group: release-version
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # The Outfitter app's token does the writing.
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version-file: .bun-version
+      - run: ./scripts/bootstrap.sh
+      - name: Require the Outfitter app secrets
+        env:
+          APP_ID: ${{ secrets.OUTFITTER_APP_ID }}
+          APP_KEY: ${{ secrets.OUTFITTER_APP_PRIVATE_KEY }}
+        run: |
+          if [ -z "$APP_ID" ] || [ -z "$APP_KEY" ]; then
+            echo "::error::Set the OUTFITTER_APP_ID and OUTFITTER_APP_PRIVATE_KEY repository secrets. The version pull request needs the Outfitter app's token so CI runs on it."
+            exit 1
+          fi
+      # A PR opened with GITHUB_TOKEN doesn't trigger CI; one opened with the app's token does.
+      - uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        id: app-token
+        with:
+          app-id: ${{ secrets.OUTFITTER_APP_ID }}
+          private-key: ${{ secrets.OUTFITTER_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+      # Opens or updates the version pull request; never publishes.
+      - uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          version-script: bun run version
+          # Draft until CI passes (AGENTS.md); new version commits put it back in draft.
+          pr-draft: always
+          commit-message: "chore: version packages"
+          pr-title: "chore: version packages"
+
+  publish:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    # Its own group, so a push to main can't replace a queued publish.
+    concurrency:
+      group: release-publish
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      id-token: write
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version-file: .bun-version
+      # Staged publishing through trusted publishing (OIDC) needs npm 11.15.0 or later.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24.22.3"
+          package-manager-cache: false
+      - run: ./scripts/bootstrap.sh
+      - name: Refuse unreleased changesets
+        run: |
+          pending=$(find .changeset -name '*.md' ! -name README.md | wc -l)
+          if [ "$pending" -ne 0 ]; then
+            echo "There are $pending changesets on main. Merge the version pull request first."
+            exit 1
+          fi
+      - name: Check npm supports staged publishing
+        run: |
+          version=$(npm --version)
+          if [ "$(printf '%s\n' 11.15.0 "$version" | sort -V | head -1)" != 11.15.0 ]; then
+            echo "npm $version can't stage a publish; it needs 11.15.0 or later."
+            exit 1
+          fi
+      - name: Read the release version
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(jq -er .version packages/parks/package.json)
+          tag="@outfitter/parks@$version"
+          if [ "$version" = 0.0.0 ]; then
+            echo "packages/parks is still 0.0.0. Merge the version pull request first."
+            exit 1
+          fi
+          if gh release view "$tag" > /dev/null 2>&1; then
+            echo "$tag already has a GitHub release, so it has been staged before."
+            exit 1
+          fi
+          printf 'version=%s\ntag=%s\n' "$version" "$tag" >> "$GITHUB_OUTPUT"
+      - run: bun run check
+      - run: bun run check:consumer
+      # Stages the package for a maintainer to approve with 2FA; nothing is installable until then.
+      # `prepack` copies the notices and builds dist.
+      - name: Stage on npm
+        working-directory: packages/parks
+        run: npm stage publish --provenance --access public
+      - name: Tag and create the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          awk -v heading="## $VERSION" '
+            $0 == heading { found = 1; next }
+            found && /^## / { exit }
+            found { print }
+          ' packages/parks/CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+          gh release create "$TAG" --target "$GITHUB_SHA" --title "$TAG" --notes-file "$RUNNER_TEMP/notes.md"
+      - name: Ask for approval
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          {
+            echo "## Approve @outfitter/parks@$VERSION on npm"
+            echo
+            echo "It is staged, not published. Approve it with 2FA to make it installable:"
+            echo
+            echo "- on npmjs.com: https://www.npmjs.com/package/@outfitter/parks (staged versions), or"
+            echo "- from a terminal: \`npm stage list @outfitter/parks\`, then \`npm stage approve <stage-id>\`."
+          } >> "$GITHUB_STEP_SUMMARY"
