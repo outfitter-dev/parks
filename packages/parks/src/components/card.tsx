@@ -94,7 +94,11 @@ function Card({
             "aria-disabled": true,
             tabIndex: -1,
             ...(isButton && { disabled: true }),
-            onClick: (event) => event.preventDefault(),
+            // Capture runs before any handler on the rendered element.
+            onClickCapture: (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+            },
           }
         : { onClick }
     ),
