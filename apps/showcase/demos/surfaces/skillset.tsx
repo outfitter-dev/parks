@@ -3,6 +3,7 @@
 import { FileTree, useFileTree, useFileTreeSelection } from "@pierre/trees/react";
 import { Item, ItemGroup, ItemMeta } from "@workspace/ui/components/item";
 import { Badge } from "@workspace/ui/components/badge";
+import { SectionHeader, SectionHeaderAction, SectionHeaderDescription, SectionHeaderTitle } from "@workspace/ui/components/section-header";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@workspace/ui/components/empty";
 import { Button } from "@workspace/ui/components/button";
 import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
@@ -158,18 +159,18 @@ export function SkillsetSurface() {
 function LandingDetails() {
   return (
     <>
-      <div className="flex flex-wrap items-start gap-3">
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-lg font-semibold">landing</h2>
-            <Badge mono>.md</Badge>
-          </div>
-          <p className="text-muted-foreground">
-            Merge a reviewed, green change or stack under existing authority, bottom-up, and confirm what landed.
-          </p>
-        </div>
-        <Badge tone="warning">1 output drifted</Badge>
-      </div>
+      <SectionHeader size="lg">
+        <SectionHeaderTitle>
+          landing
+          <Badge mono>.md</Badge>
+        </SectionHeaderTitle>
+        <SectionHeaderDescription>
+          Merge a reviewed, green change or stack under existing authority, bottom-up, and confirm what landed.
+        </SectionHeaderDescription>
+        <SectionHeaderAction>
+          <Badge tone="warning">1 output drifted</Badge>
+        </SectionHeaderAction>
+      </SectionHeader>
 
       <ToggleGroup aria-label="Show" defaultValue={["outputs"]}>
         <ToggleGroupItem value="outputs">Outputs</ToggleGroupItem>
