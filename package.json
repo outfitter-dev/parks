@@ -26,7 +26,8 @@
     "ui:add": "bun scripts/ui-add.ts",
     "ui:palette": "bun scripts/ui-palette.ts",
     "check:consumer": "bun scripts/check-consumer.ts",
-    "ui:theme": "bun scripts/ui-theme.ts"
+    "ui:theme": "bun scripts/ui-theme.ts",
+    "check:contrast": "bun scripts/check-contrast.ts"
   },
   "devDependencies": {
     "@changesets/cli": "3.0.3",
@@ -36,6 +37,7 @@
     "lefthook": "2.2.2",
     "oxfmt": "0.80.0",
     "oxlint": "1.95.0",
+    "playwright-core": "1.65.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "tailwindcss": "4.3.5",

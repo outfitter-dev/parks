@@ -3,7 +3,7 @@ import { join, relative } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { colourOpacity } from "./ui-rules";
+import { checkSource } from "../packages/parks/src/rules/source";
 
 // The workbench demos are how we try the design system, so they follow the
 // same colour rules as packages/parks: roles for translucency and one token for
@@ -35,8 +35,10 @@ describe("workbench colour roles", () => {
     const name = relative(root, path);
     const text = readFileSync(path, "utf8");
     it(`${name} uses roles, not /NN opacity or dark: overrides`, () => {
-      expect(text.match(colourOpacity) ?? [], name).toEqual([]);
-      expect(text.match(/\bdark:[^\s"'`]+/g) ?? [], name).toEqual([]);
+      expect(
+        checkSource(text, ["colour-opacity", "dark-variant"]),
+        name
+      ).toEqual([]);
     });
   }
 });

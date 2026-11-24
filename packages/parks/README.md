@@ -46,3 +46,29 @@ A theme sets seeds and the stylesheet derives every colour, radius and shadow fr
 Import `@outfitter/parks/globals.css` instead of `styles.css` to start from the plain defaults with no theme.
 
 Dark mode follows the system unless the root element carries `.light` or `.dark`; either class also switches a subtree.
+
+## Check your UI against the Parks rules
+
+The package ships a `parks` command. Add it to your checks:
+
+```sh
+bunx parks check            # scans ./src, ./app and ./components
+bunx parks check apps/web   # or the paths you name
+```
+
+It flags class names that drift off the theme:
+
+- `colour-opacity`: an ad hoc `/NN` opacity such as `bg-foreground/10`. Use a translucent role such as `fill-subtle` or `border-muted`.
+- `dark-variant`: a colour restated under `dark:`. Roles already carry light and dark values through `light-dark()`.
+- `literal-colour` and `palette-colour`: a literal colour or a palette step such as `red-500`. Use a colour role.
+- `literal-length`: a bracketed length other than 1px or 2px. Use the Tailwind scale or a token.
+- `lone-outline-button`: an outline `Button` with no solid partner. Use `variant="secondary"` on its own.
+
+To keep a deliberate exception, put `// parks-ignore <rule>: <reason>` on the line above or on the same line.
+
+`parks contrast <compiled.css>` scores every text role on its surface, in light and dark, against WCAG's 4.5:1. That includes each tone's text on its tint and on its solid fill. It renders the roles in Chromium, so it needs `playwright-core` and its browser:
+
+```sh
+bunx playwright-core install chromium-headless-shell
+bunx parks contrast dist/app.css
+```

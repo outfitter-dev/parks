@@ -3,7 +3,7 @@ import { join, relative } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { colourOpacity } from "./ui-rules";
+import { checkSource } from "../packages/parks/src/rules/source";
 
 // packages/parks is published for other apps, so it may only use
 // its own files and the packages it declares. It must not reach into the app.
@@ -85,6 +85,9 @@ describe("packages/parks boundary", () => {
           ).toBe(false);
           continue;
         }
+        if (target.startsWith("node:")) {
+          continue;
+        }
         expect(declared.has(packageName(target)), `${name} -> ${target}`).toBe(
           true
         );
@@ -96,44 +99,11 @@ describe("packages/parks boundary", () => {
     });
 
     if (name.endsWith(".tsx")) {
-      // Components derive every colour and size from globals.css tokens or
-      // the Tailwind scale. Only 1px and 2px hairline offsets may be literal.
-      it(`${name} hard-codes no colours or sizes`, () => {
-        expect(text, "literal colour").not.toMatch(
-          /oklch\(|rgba?\(|hsla?\(|#[0-9a-f]{3,8}\b/i
-        );
-        expect(text, "Tailwind palette colour").not.toMatch(
-          /\b(?:bg|text|border|ring|fill|stroke|outline|shadow|from|to)-(?:white|black|(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d+)\b/
-        );
-        for (const [value] of text.matchAll(
-          /\[[^\]]*\d(?:\.\d+)?(?:px|rem|em)[^\]]*\]/g
-        )) {
-          const lengths = value.match(/\d+(?:\.\d+)?(?:px|rem|em)/g) ?? [];
-          expect(
-            lengths.every((length) => length === "1px" || length === "2px"),
-            `${name}: ${value}`
-          ).toBe(true);
-        }
-      });
-
-      // Translucent colours are named roles in globals.css (fill-subtle,
-      // border-muted, focus-ring and so on), never an ad hoc /NN opacity.
-      it(`${name} uses colour roles, not /NN opacity`, () => {
-        expect(text.match(colourOpacity) ?? [], name).toEqual([]);
-      });
-
-      // Light and dark values live in one token via light-dark(), so a
-      // component never restates a colour under dark:. Blend modes can't go
-      // through light-dark(), which is why avatar's edge keeps one override.
-      it(`${name} has no dark: overrides`, () => {
-        const overrides = text.match(/\bdark:[^\s"'`]+/g) ?? [];
-        const allowed = name.endsWith("avatar.tsx")
-          ? ["dark:after:mix-blend-lighten"]
-          : [];
-        expect(
-          overrides.filter((cls) => !allowed.includes(cls)),
-          name
-        ).toEqual([]);
+      // The shipped source rules (packages/parks/src/rules/source.ts): colour
+      // roles, no /NN opacity, no dark: overrides, no literal lengths beyond
+      // 1px and 2px hairlines, no lone outline button.
+      it(`${name} passes the Parks source rules`, () => {
+        expect(checkSource(text), name).toEqual([]);
       });
 
       // Base UI passes className as a function of state; cn() would drop it.
