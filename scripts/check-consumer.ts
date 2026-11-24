@@ -61,6 +61,23 @@ run("bun", ["install"], app);
 run("node", ["render.mjs"], app);
 run("bunx", ["@tailwindcss/cli", "-i", "app.css", "-o", "out.css"], app);
 
+// The shipped rules pass the fixture's own source, and fail once a
+// component restates a colour under dark:.
+run("bunx", ["parks", "check", "src"], app);
+writeFileSync(
+  path.join(app, "src/bad.tsx"),
+  'export const Bad = () => <p className="bg-card dark:bg-black">x</p>;\n'
+);
+const bad = spawnSync("bunx", ["parks", "check", "src"], {
+  cwd: app,
+  encoding: "utf8",
+});
+if (bad.status !== 1 || !bad.stdout.includes("dark-variant")) {
+  throw new Error(
+    `parks check did not flag a dark: override:\n${bad.stdout}${bad.stderr}`
+  );
+}
+
 const css = readFileSync(path.join(app, "out.css"), "utf8");
 const checks: [string, boolean][] = [
   ["default theme radius", css.includes("--radius: 13px")],
