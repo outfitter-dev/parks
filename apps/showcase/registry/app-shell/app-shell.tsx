@@ -224,10 +224,14 @@ export function AppFrame({
       document.removeEventListener("keydown", onKey);
       const opener = openerRef.current;
       openerRef.current = null;
+      // Wait a frame and a task, so the page is no longer inert and the
+      // browser has finished moving focus off the now-inert sidebar.
       requestAnimationFrame(() => {
-        if (opener?.isConnected) {
-          opener.focus();
-        }
+        setTimeout(() => {
+          if (opener?.isConnected) {
+            opener.focus();
+          }
+        }, 0);
       });
     };
   }, [overlay]);
