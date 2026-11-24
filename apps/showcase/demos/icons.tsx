@@ -13,6 +13,7 @@ import { CheckIcon as CheckOutline } from "@solar-icons/react/outline/check";
 import { CheckCircleIcon as CheckCircleOutline } from "@solar-icons/react/outline/check-circle";
 import { ChecklistIcon as ChecklistOutline } from "@solar-icons/react/outline/checklist";
 import { CloseIcon as CloseOutline } from "@solar-icons/react/outline/close";
+import { CloseCircleIcon as CloseCircleOutline } from "@solar-icons/react/outline/close-circle";
 import { CodeSquareIcon as CodeSquareOutline } from "@solar-icons/react/outline/code-square";
 import { CopyIcon as CopyOutline } from "@solar-icons/react/outline/copy";
 import { DangerCircleIcon as DangerCircleOutline } from "@solar-icons/react/outline/danger-circle";
@@ -29,6 +30,8 @@ import { InfoCircleIcon as InfoCircleOutline } from "@solar-icons/react/outline/
 import { KeyIcon as KeyOutline } from "@solar-icons/react/outline/key";
 import { LayersMinimalisticIcon as LayersMinimalisticOutline } from "@solar-icons/react/outline/layers-minimalistic";
 import { MagnifierIcon as MagnifierOutline } from "@solar-icons/react/outline/magnifier";
+import { MenuDotsIcon as MenuDotsOutline } from "@solar-icons/react/outline/menu-dots";
+import { MinusIcon as MinusOutline } from "@solar-icons/react/outline/minus";
 import { PanelLeftCloseIcon as PanelLeftCloseOutline } from "@solar-icons/react/outline/panel-left-close";
 import { PanelLeftOpenIcon as PanelLeftOpenOutline } from "@solar-icons/react/outline/panel-left-open";
 import { PaperclipIcon as PaperclipOutline } from "@solar-icons/react/outline/paperclip";
@@ -62,6 +65,7 @@ import { CheckIcon as CheckSolid } from "@solar-icons/react/bold/check";
 import { CheckCircleIcon as CheckCircleSolid } from "@solar-icons/react/bold/check-circle";
 import { ChecklistIcon as ChecklistSolid } from "@solar-icons/react/bold/checklist";
 import { CloseIcon as CloseSolid } from "@solar-icons/react/bold/close";
+import { CloseCircleIcon as CloseCircleSolid } from "@solar-icons/react/bold/close-circle";
 import { CodeSquareIcon as CodeSquareSolid } from "@solar-icons/react/bold/code-square";
 import { CopyIcon as CopySolid } from "@solar-icons/react/bold/copy";
 import { DangerCircleIcon as DangerCircleSolid } from "@solar-icons/react/bold/danger-circle";
@@ -78,6 +82,8 @@ import { InfoCircleIcon as InfoCircleSolid } from "@solar-icons/react/bold/info-
 import { KeyIcon as KeySolid } from "@solar-icons/react/bold/key";
 import { LayersMinimalisticIcon as LayersMinimalisticSolid } from "@solar-icons/react/bold/layers-minimalistic";
 import { MagnifierIcon as MagnifierSolid } from "@solar-icons/react/bold/magnifier";
+import { MenuDotsIcon as MenuDotsSolid } from "@solar-icons/react/bold/menu-dots";
+import { MinusIcon as MinusSolid } from "@solar-icons/react/bold/minus";
 import { PanelLeftCloseIcon as PanelLeftCloseSolid } from "@solar-icons/react/bold/panel-left-close";
 import { PanelLeftOpenIcon as PanelLeftOpenSolid } from "@solar-icons/react/bold/panel-left-open";
 import { PaperclipIcon as PaperclipSolid } from "@solar-icons/react/bold/paperclip";
@@ -117,6 +123,7 @@ const icons = [
   { name: "check-circle", outline: CheckCircleOutline, solid: CheckCircleSolid },
   { name: "checklist", outline: ChecklistOutline, solid: ChecklistSolid },
   { name: "close", outline: CloseOutline, solid: CloseSolid },
+  { name: "close-circle", outline: CloseCircleOutline, solid: CloseCircleSolid },
   { name: "code-square", outline: CodeSquareOutline, solid: CodeSquareSolid },
   { name: "copy", outline: CopyOutline, solid: CopySolid },
   { name: "danger-circle", outline: DangerCircleOutline, solid: DangerCircleSolid },
@@ -133,6 +140,8 @@ const icons = [
   { name: "key", outline: KeyOutline, solid: KeySolid },
   { name: "layers-minimalistic", outline: LayersMinimalisticOutline, solid: LayersMinimalisticSolid },
   { name: "magnifier", outline: MagnifierOutline, solid: MagnifierSolid },
+  { name: "menu-dots", outline: MenuDotsOutline, solid: MenuDotsSolid },
+  { name: "minus", outline: MinusOutline, solid: MinusSolid },
   { name: "panel-left-close", outline: PanelLeftCloseOutline, solid: PanelLeftCloseSolid },
   { name: "panel-left-open", outline: PanelLeftOpenOutline, solid: PanelLeftOpenSolid },
   { name: "paperclip", outline: PaperclipOutline, solid: PaperclipSolid },
