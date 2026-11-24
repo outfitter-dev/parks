@@ -1,8 +1,8 @@
 "use client";
 
 import { RulerIcon } from "@solar-icons/react/outline/ruler";
-import { Toggle } from "@workspace/ui/components/toggle";
-import { cn } from "@workspace/ui/lib/utils";
+import { Toggle } from "@outfitter/parks/components/toggle";
+import { cn } from "@outfitter/parks/lib/utils";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 const buttonSelector = "button[data-slot=button]";

@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const config: NextConfig = {
-  transpilePackages: ["@workspace/ui"],
+  transpilePackages: ["@outfitter/parks"],
 };
 
 export default config;

@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 // Solar is the one icon library. Every icon is imported on its own from a
 // style subpath, such as @solar-icons/react/outline/bell, so bundles stay small.
 const repo = join(import.meta.dirname, "..");
-const gallery = join(repo, "apps/workbench/demos/icons.tsx");
+const gallery = join(repo, "apps/showcase/demos/icons.tsx");
 const scanned = ["app", "apps", "cli", "lib", "packages", "plugins"];
 const skip = new Set(["node_modules", ".next", ".turbo", "dist"]);
 

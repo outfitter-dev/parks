@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, type ComponentProps, type ReactNode } from "react";
-import { Badge } from "@workspace/ui/components/badge";
-import { Item, ItemContent, ItemGroup, ItemMedia, ItemMeta, ItemTitle } from "@workspace/ui/components/item";
-import { SectionHeader, SectionHeaderDescription, SectionHeaderTitle } from "@workspace/ui/components/section-header";
-import { StatusDot } from "@workspace/ui/components/status-dot";
-import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
-import type { Tone as UiTone } from "@workspace/ui/lib/tone";
-import { cn } from "@workspace/ui/lib/utils";
+import { Badge } from "@outfitter/parks/components/badge";
+import { Item, ItemContent, ItemGroup, ItemMedia, ItemMeta, ItemTitle } from "@outfitter/parks/components/item";
+import { SectionHeader, SectionHeaderDescription, SectionHeaderTitle } from "@outfitter/parks/components/section-header";
+import { StatusDot } from "@outfitter/parks/components/status-dot";
+import { ToggleGroup, ToggleGroupItem } from "@outfitter/parks/components/toggle-group";
+import type { Tone as UiTone } from "@outfitter/parks/lib/tone";
+import { cn } from "@outfitter/parks/lib/utils";
 import { versions, type Tone } from "#lib/fixtures";
 
 /** A titled example on a plain canvas. */

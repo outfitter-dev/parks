@@ -6,16 +6,16 @@ import { CopyIcon } from "@solar-icons/react/outline/copy";
 import { PenIcon as PenBoldIcon } from "@solar-icons/react/bold/pen";
 import { PenIcon } from "@solar-icons/react/outline/pen";
 import { WrenchIcon } from "@solar-icons/react/outline/wrench";
-import { Button } from "@workspace/ui/components/button";
-import { cn } from "@workspace/ui/lib/utils";
+import { Button } from "@outfitter/parks/components/button";
+import { cn } from "@outfitter/parks/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@workspace/ui/components/dropdown-menu";
-import { Spinner } from "@workspace/ui/components/spinner";
+} from "@outfitter/parks/components/dropdown-menu";
+import { Spinner } from "@outfitter/parks/components/spinner";
 import {
   Table,
   TableBody,
@@ -23,7 +23,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@workspace/ui/components/table";
+} from "@outfitter/parks/components/table";
 import { ButtonInspector } from "./button-inspector";
 import { Specimen } from "./kit";
 

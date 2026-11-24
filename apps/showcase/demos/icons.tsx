@@ -104,7 +104,7 @@ import { Widget2Icon as Widget2Solid } from "@solar-icons/react/bold/widget-2";
 import { WrenchIcon as WrenchSolid } from "@solar-icons/react/bold/wrench";
 
 import { InboxIcon as InboxDuotone } from "@solar-icons/react/bold-duotone/inbox";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@workspace/ui/components/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@outfitter/parks/components/table";
 import { Specimen } from "./kit";
 import { DocumentTextIcon as DocumentTextOutline } from "@solar-icons/react/outline/document-text";
 import { DocumentTextIcon as DocumentTextSolid } from "@solar-icons/react/bold/document-text";

@@ -1,5 +1,5 @@
 /**
- * Adds shadcn components to packages/ui with Solar icons.
+ * Adds shadcn components to packages/parks with Solar icons.
  *
  *   bun run ui:add accordion dialog
  *   bun run ui:add --fix-only [dir]   # rewrite files already on disk
@@ -7,14 +7,14 @@
  * The shadcn CLI has no Solar support. With `iconLibrary: "solar"` in
  * components.json it leaves each icon as an <IconPlaceholder lucide="…" …/>.
  * This script swaps every placeholder for the Solar icon named in
- * packages/ui/icons.json, and fixes the CLI's `from "cn"` import.
+ * packages/parks/icons.json, and fixes the CLI's `from "cn"` import.
  */
 import { spawnSync } from "node:child_process";
 import { readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 
 const repo = join(import.meta.dirname, "..");
-const ui = join(repo, "packages/ui");
+const ui = join(repo, "packages/parks");
 const shadcn = "shadcn@4.23.0";
 const iconLibraries = ["lucide", "tabler", "hugeicons", "phosphor", "remixicon", "radix"];
 const strayPackages = ["cn", "lucide-react"];
@@ -108,7 +108,7 @@ async function main() {
       console.error("Usage: bun run ui:add <component...>");
       process.exit(2);
     }
-    const run = spawnSync("bunx", ["--bun", shadcn, "add", ...args, "-c", "packages/ui"], {
+    const run = spawnSync("bunx", ["--bun", shadcn, "add", ...args, "-c", "packages/parks"], {
       cwd: repo,
       stdio: "inherit",
     });
@@ -120,7 +120,7 @@ async function main() {
   console.log(`Rewrote ${changed} file(s) to Solar icons.`);
   if (removed.length > 0) console.log(`Removed stray dependencies: ${removed.join(", ")}. Run bun install.`);
   if (missing.size > 0) {
-    console.error("These Lucide icons have no Solar mapping. Add them to packages/ui/icons.json and rerun with --fix-only:");
+    console.error("These Lucide icons have no Solar mapping. Add them to packages/parks/icons.json and rerun with --fix-only:");
     for (const [path, names] of missing) console.error(`  ${path}: ${[...new Set(names)].join(", ")}`);
     process.exit(1);
   }

@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, type ComponentType, type RefObject } from "react";
-import { Mark } from "@workspace/ui/components/mark";
-import { NavItem } from "@workspace/ui/components/nav-item";
-import { StatusDot } from "@workspace/ui/components/status-dot";
-import { Badge } from "@workspace/ui/components/badge";
-import { Button } from "@workspace/ui/components/button";
-import { Kbd } from "@workspace/ui/components/kbd";
-import { Popover, PopoverContent, PopoverTrigger } from "@workspace/ui/components/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@workspace/ui/components/tooltip";
-import { cn } from "@workspace/ui/lib/utils";
+import { Mark } from "@outfitter/parks/components/mark";
+import { NavItem } from "@outfitter/parks/components/nav-item";
+import { StatusDot } from "@outfitter/parks/components/status-dot";
+import { Badge } from "@outfitter/parks/components/badge";
+import { Button } from "@outfitter/parks/components/button";
+import { Kbd } from "@outfitter/parks/components/kbd";
+import { Popover, PopoverContent, PopoverTrigger } from "@outfitter/parks/components/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@outfitter/parks/components/tooltip";
+import { cn } from "@outfitter/parks/lib/utils";
 import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
 import { MagnifierIcon } from "@solar-icons/react/outline/magnifier";
 import { PanelLeftCloseIcon } from "@solar-icons/react/outline/panel-left-close";

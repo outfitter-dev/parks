@@ -10,8 +10,8 @@ import {
   AttachmentGroup,
   AttachmentMedia,
   AttachmentTitle,
-} from "@workspace/ui/components/attachment";
-import { Prose } from "@workspace/ui/components/prose";
+} from "@outfitter/parks/components/attachment";
+import { Prose } from "@outfitter/parks/components/prose";
 import {
   Questionnaire,
   QuestionnaireActions,
@@ -27,9 +27,9 @@ import {
   QuestionnaireSkip,
   QuestionnaireSubmit,
   QuestionnaireTitle,
-} from "@workspace/ui/components/questionnaire";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@workspace/ui/components/resizable";
-import { Spinner } from "@workspace/ui/components/spinner";
+} from "@outfitter/parks/components/questionnaire";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@outfitter/parks/components/resizable";
+import { Spinner } from "@outfitter/parks/components/spinner";
 import {
   Trace,
   TraceCollapsible,
@@ -39,7 +39,7 @@ import {
   TraceIcon,
   TraceLine,
   TraceTitle,
-} from "@workspace/ui/components/trace";
+} from "@outfitter/parks/components/trace";
 import { CloseIcon } from "@solar-icons/react/bold/close";
 import { RefreshIcon } from "@solar-icons/react/bold/refresh";
 import { CodeSquareIcon } from "@solar-icons/react/outline/code-square";

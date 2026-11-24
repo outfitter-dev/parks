@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Checkbox } from "@workspace/ui/components/checkbox";
+import { Checkbox } from "@outfitter/parks/components/checkbox";
 import {
   Combobox,
   ComboboxChip,
@@ -14,7 +14,7 @@ import {
   ComboboxList,
   ComboboxValue,
   useComboboxAnchor,
-} from "@workspace/ui/components/combobox";
+} from "@outfitter/parks/components/combobox";
 import {
   Field,
   FieldContent,
@@ -25,19 +25,19 @@ import {
   FieldLegend,
   FieldSet,
   FieldTitle,
-} from "@workspace/ui/components/field";
-import { Input } from "@workspace/ui/components/input";
+} from "@outfitter/parks/components/field";
+import { Input } from "@outfitter/parks/components/input";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
   InputGroupText,
-} from "@workspace/ui/components/input-group";
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@workspace/ui/components/input-otp";
-import { Kbd } from "@workspace/ui/components/kbd";
-import { RadioGroup, RadioGroupItem } from "@workspace/ui/components/radio-group";
-import { Textarea } from "@workspace/ui/components/textarea";
+} from "@outfitter/parks/components/input-group";
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@outfitter/parks/components/input-otp";
+import { Kbd } from "@outfitter/parks/components/kbd";
+import { RadioGroup, RadioGroupItem } from "@outfitter/parks/components/radio-group";
+import { Textarea } from "@outfitter/parks/components/textarea";
 import { CopyIcon } from "@solar-icons/react/outline/copy";
 import { MagnifierIcon } from "@solar-icons/react/outline/magnifier";
 import { agents } from "#lib/fixtures";

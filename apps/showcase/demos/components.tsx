@@ -1,18 +1,18 @@
 "use client";
 
-import { Alert, AlertAction, AlertDescription, AlertMeta, AlertTitle } from "@workspace/ui/components/alert";
-import { CodeRef } from "@workspace/ui/components/code-ref";
-import { Avatar, AvatarFallback, AvatarGroup } from "@workspace/ui/components/avatar";
+import { Alert, AlertAction, AlertDescription, AlertMeta, AlertTitle } from "@outfitter/parks/components/alert";
+import { CodeRef } from "@outfitter/parks/components/code-ref";
+import { Avatar, AvatarFallback, AvatarGroup } from "@outfitter/parks/components/avatar";
 import { Fragment, useState } from "react";
-import { Item, ItemContent, ItemGroup, ItemMeta, ItemTitle } from "@workspace/ui/components/item";
-import { Badge } from "@workspace/ui/components/badge";
-import { Mark } from "@workspace/ui/components/mark";
-import { StatusDot } from "@workspace/ui/components/status-dot";
-import { tones } from "@workspace/ui/lib/tone";
-import { ScrollArea } from "@workspace/ui/components/scroll-area";
-import { Separator } from "@workspace/ui/components/separator";
-import { Button } from "@workspace/ui/components/button";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@workspace/ui/components/empty";
+import { Item, ItemContent, ItemGroup, ItemMeta, ItemTitle } from "@outfitter/parks/components/item";
+import { Badge } from "@outfitter/parks/components/badge";
+import { Mark } from "@outfitter/parks/components/mark";
+import { StatusDot } from "@outfitter/parks/components/status-dot";
+import { tones } from "@outfitter/parks/lib/tone";
+import { ScrollArea } from "@outfitter/parks/components/scroll-area";
+import { Separator } from "@outfitter/parks/components/separator";
+import { Button } from "@outfitter/parks/components/button";
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@outfitter/parks/components/empty";
 import {
   Card,
   CardAction,
@@ -23,8 +23,8 @@ import {
   CardLead,
   CardMeta,
   CardTitle,
-} from "@workspace/ui/components/card";
-import { Checkbox } from "@workspace/ui/components/checkbox";
+} from "@outfitter/parks/components/card";
+import { Checkbox } from "@outfitter/parks/components/checkbox";
 import {
   Dialog,
   DialogClose,
@@ -34,7 +34,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@workspace/ui/components/dialog";
+} from "@outfitter/parks/components/dialog";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -50,21 +50,21 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@workspace/ui/components/dropdown-menu";
-import { Input } from "@workspace/ui/components/input";
-import { Kbd, KbdGroup } from "@workspace/ui/components/kbd";
-import { Label } from "@workspace/ui/components/label";
-import { Progress } from "@workspace/ui/components/progress";
+} from "@outfitter/parks/components/dropdown-menu";
+import { Input } from "@outfitter/parks/components/input";
+import { Kbd, KbdGroup } from "@outfitter/parks/components/kbd";
+import { Label } from "@outfitter/parks/components/label";
+import { Progress } from "@outfitter/parks/components/progress";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@workspace/ui/components/select";
-import { Skeleton } from "@workspace/ui/components/skeleton";
-import { Spinner } from "@workspace/ui/components/spinner";
-import { Switch } from "@workspace/ui/components/switch";
+} from "@outfitter/parks/components/select";
+import { Skeleton } from "@outfitter/parks/components/skeleton";
+import { Spinner } from "@outfitter/parks/components/spinner";
+import { Switch } from "@outfitter/parks/components/switch";
 import {
   Table,
   TableBody,
@@ -72,12 +72,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@workspace/ui/components/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
-import { Textarea } from "@workspace/ui/components/textarea";
-import { Toggle } from "@workspace/ui/components/toggle";
-import { ToggleGroup, ToggleGroupItem } from "@workspace/ui/components/toggle-group";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@workspace/ui/components/tooltip";
+} from "@outfitter/parks/components/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@outfitter/parks/components/tabs";
+import { Textarea } from "@outfitter/parks/components/textarea";
+import { Toggle } from "@outfitter/parks/components/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@outfitter/parks/components/toggle-group";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@outfitter/parks/components/tooltip";
 import { BellOffIcon } from "@solar-icons/react/outline/bell-off";
 import { InboxIcon as InboxDuotone } from "@solar-icons/react/bold-duotone/inbox";
 import { CheckCircleIcon } from "@solar-icons/react/outline/check-circle";
