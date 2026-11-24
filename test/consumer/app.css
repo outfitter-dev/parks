@@ -1,0 +1,6 @@
+@import "@outfitter/parks/styles.css";
+
+/* An app tunes one seed after the default theme. */
+:root {
+  --neutral-hue: 250;
+}
