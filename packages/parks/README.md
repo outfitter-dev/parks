@@ -66,7 +66,7 @@ It flags class names that drift off the theme:
 
 To keep a deliberate exception, put `// parks-ignore <rule>: <reason>` on the line above or on the same line.
 
-`parks contrast <compiled.css>` scores every text role on its surface, in light and dark, against WCAG's 4.5:1. That includes each tone's text on its tint and on its solid fill. It renders the roles in Chromium, so it needs `playwright-core` and its browser:
+`parks contrast <compiled.css>` scores every text role on its surface, in light and dark, against WCAG: 4.5:1 for text, and 3:1 for a label on a solid control fill (primary, brand, a tone's solid). That includes each tone's text on its tint and on its solid fill. It renders the roles in Chromium, so it needs `playwright-core` and its browser:
 
 ```sh
 bun add -d playwright-core

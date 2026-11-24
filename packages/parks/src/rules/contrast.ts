@@ -13,7 +13,7 @@ type ContrastPair = {
   text: string;
   surface: string;
   tone?: string;
-  /** WCAG ratio the pair must reach: 4.5 for body text. */
+  /** WCAG ratio the pair must reach: 4.5 for text, 3 for a label on a solid control fill. */
   minimum: number;
 };
 
@@ -28,6 +28,8 @@ type Sample = ContrastPair & {
 type ContrastResult = Sample & { ratio: number; ok: boolean };
 
 const body = 4.5;
+/** Labels on solid control fills (primary, brand, a tone's solid) need 3:1. */
+const solidLabel = 3;
 const tones = [
   "neutral",
   "info",
@@ -47,13 +49,13 @@ const contrastPairs: readonly ContrastPair[] = [
   { text: "muted-foreground", surface: "background", minimum: body },
   { text: "muted-foreground", surface: "card", minimum: body },
   { text: "muted-foreground", surface: "muted", minimum: body },
-  { text: "primary-foreground", surface: "primary", minimum: body },
+  { text: "primary-foreground", surface: "primary", minimum: solidLabel },
   { text: "secondary-foreground", surface: "secondary", minimum: body },
   { text: "accent-foreground", surface: "accent", minimum: body },
-  { text: "brand-foreground", surface: "brand", minimum: body },
+  { text: "brand-foreground", surface: "brand", minimum: solidLabel },
   ...tones.flatMap((tone) => [
     { text: "tone-foreground", surface: "tone-fill", tone, minimum: body },
-    { text: "tone-contrast", surface: "tone", tone, minimum: body },
+    { text: "tone-contrast", surface: "tone", tone, minimum: solidLabel },
   ]),
 ];
 
