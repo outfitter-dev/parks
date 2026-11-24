@@ -1,20 +1,20 @@
 "use client";
 
 import { isPaletteName, paletteNames } from "@outfitter/parks/lib/palette";
-import { DialRoot, useDialKitController } from "dialkit";
+import { compileTheme, presets } from "@outfitter/parks/lib/theme";
 
 import "dialkit/styles.css";
+import type { Mode, PresetId, PresetValues } from "@outfitter/parks/lib/theme";
+import { DialRoot, useDialKitController } from "dialkit";
 import type { DialConfig } from "dialkit";
 import { useEffect, useMemo, useRef } from "react";
 
 import { defaultShell, isShellStyle, setShell } from "#lib/shell";
-import { compileTheme, presets } from "#lib/theme";
-import type { Mode, PresetId, PresetValues } from "#lib/theme";
 
-const start = presets.luma.values;
+const start = presets.outfitter.values;
 
 const config = {
-  loadLuma: { type: "action", label: `Load ${presets.luma.label}` },
+  loadDefault: { type: "action", label: `Load ${presets.outfitter.label}` },
   loadLinear: { type: "action", label: `Load ${presets.linear.label}` },
   mode: {
     type: "select",
@@ -81,7 +81,7 @@ const config = {
 } satisfies DialConfig;
 
 const presetActions: Record<string, PresetId> = {
-  loadLuma: "luma",
+  loadDefault: "outfitter",
   loadLinear: "linear",
 };
 

@@ -1,17 +1,69 @@
 {
   "name": "@outfitter/parks",
-  "private": true,
+  "version": "0.0.0",
+  "description": "Outfitter's design system: tokens, theme CSS, components and UI rules for React and Tailwind CSS v4.",
+  "homepage": "https://parks.outfitter.dev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/outfitter-dev/parks.git",
+    "directory": "packages/parks"
+  },
+  "files": [
+    "dist",
+    "src",
+    "icons.json",
+    "README.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
   "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "imports": {
-    "#components/*": "./src/components/*.tsx",
-    "#lib/*": "./src/lib/*.ts",
-    "#hooks/*": "./src/hooks/*.ts"
+    "#components/*": {
+      "types": "./src/components/*.tsx",
+      "bun": "./src/components/*.tsx",
+      "default": "./dist/components/*.js"
+    },
+    "#lib/*": {
+      "types": "./src/lib/*.ts",
+      "bun": "./src/lib/*.ts",
+      "default": "./dist/lib/*.js"
+    },
+    "#hooks/*": {
+      "types": "./src/hooks/*.ts",
+      "bun": "./src/hooks/*.ts",
+      "default": "./dist/hooks/*.js"
+    }
   },
   "exports": {
+    "./styles.css": "./src/styles/styles.css",
     "./globals.css": "./src/styles/globals.css",
-    "./components/*": "./src/components/*.tsx",
-    "./lib/*": "./src/lib/*.ts",
-    "./hooks/*": "./src/hooks/*.ts"
+    "./themes/*.css": "./src/themes/*.css",
+    "./components/*": {
+      "types": "./dist/components/*.d.ts",
+      "default": "./dist/components/*.js"
+    },
+    "./lib/*": {
+      "types": "./dist/lib/*.d.ts",
+      "default": "./dist/lib/*.js"
+    },
+    "./hooks/*": {
+      "types": "./dist/hooks/*.d.ts",
+      "default": "./dist/hooks/*.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "prepack": "cp ../../THIRD_PARTY_NOTICES.md . && bun run build"
   },
   "dependencies": {
     "@base-ui/react": "1.9.0",

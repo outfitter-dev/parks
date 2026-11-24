@@ -1,13 +1,14 @@
 /**
- * Theme presets and the CSS they compile to. The workbench writes this CSS
- * into a <style> tag so every component reads the same variables that
- * packages/parks defines. "Copy tokens" copies the same string.
+ * Theme presets and the CSS they compile to. A theme sets only seeds; the
+ * stylesheet derives every colour, radius and shadow from them in light and
+ * dark. `outfitter` is the default theme: `themes/outfitter.css` is compiled
+ * from it (`bun run ui:theme`) and `styles.css` applies it.
  */
 
-import { steps } from "@outfitter/parks/lib/palette";
-import type { PaletteName } from "@outfitter/parks/lib/palette";
+import { steps } from "#lib/palette";
+import type { PaletteName } from "#lib/palette";
 
-export type PresetId = "luma" | "linear";
+export type PresetId = "outfitter" | "linear";
 export type Mode = "system" | "light" | "dark";
 export type UiFont = "allo" | "inter";
 export type MonoFont = "jetbrains";
@@ -42,8 +43,8 @@ export const presets: Record<
   PresetId,
   { label: string; values: PresetValues }
 > = {
-  luma: {
-    label: "Luma tuned",
+  outfitter: {
+    label: "Outfitter (default)",
     values: {
       shape: {
         radius: 13,
@@ -110,9 +111,8 @@ const monoFonts: Record<
 };
 
 /**
- * The theme only sets seeds. packages/parks derives every colour, radius and
- * shadow from them, in light and dark, so the workbench never restates a
- * derived value.
+ * Compiles a preset to the seed variables, as one `:root` rule. Apps that
+ * tune a theme override these same variables after `styles.css`.
  */
 export function compileTheme(tokens: PresetValues): string {
   const { shape, type, color } = tokens;
@@ -150,3 +150,6 @@ export function compileTheme(tokens: PresetValues): string {
     .join("\n");
   return `:root {\n${body}\n}`;
 }
+
+/** The theme `styles.css` applies unless an app overrides its seeds. */
+export const defaultTheme = presets.outfitter.values;
