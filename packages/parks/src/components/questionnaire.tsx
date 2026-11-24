@@ -42,6 +42,7 @@ function QuestionnaireProgress({
     <QuestionnairePrimitive.Progress
       data-slot="questionnaire-progress"
       className={cnState(
+        // parks-ignore literal-length: a choice column sized in characters fits its label.
         "min-h-lh w-fit min-w-[14ch] text-xs font-medium text-muted-foreground tabular-nums",
         className
       )}

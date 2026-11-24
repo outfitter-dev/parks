@@ -85,8 +85,13 @@
   --border-strength: 0.5;
   --shadow-level: 0;
   /* The brand scale points at one palette (palette.css; a theme repoints
-     --color-brand-*), and the brand is its 500 step. */
-  --brand: var(--color-brand-500);
+     --color-brand-*). The brand is its 500 step nudged 15% toward 600, just
+     enough for a label on a solid brand fill to reach 3:1. */
+  --brand: color-mix(
+    in oklch,
+    var(--color-brand-600) 15%,
+    var(--color-brand-500)
+  );
   --overlay: oklch(0 0 0 / 0.1);
 }
 
@@ -282,7 +287,11 @@
     color-mix(in oklch, var(--warning) 30%, transparent),
     color-mix(in oklch, var(--warning) 35%, transparent)
   );
-  --success: light-dark(var(--color-emerald-600), var(--color-emerald-400));
+  /* Light mode nudges 600 15% toward 700 so a label on a solid success fill reaches 3:1. */
+  --success: light-dark(
+    color-mix(in oklch, var(--color-emerald-700) 15%, var(--color-emerald-600)),
+    var(--color-emerald-400)
+  );
   --success-strong: light-dark(
     var(--color-emerald-700),
     var(--color-emerald-300)

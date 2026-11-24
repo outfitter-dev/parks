@@ -24,3 +24,9 @@ jobs:
       - run: ./scripts/bootstrap.sh
       - run: bun run check
       - run: bun run check:consumer
+      # Report-only: contrast findings warn but do not block a merge.
+      - name: Contrast (report only)
+        continue-on-error: true
+        run: |
+          bunx playwright-core install --with-deps chromium-headless-shell
+          bun run check:contrast
