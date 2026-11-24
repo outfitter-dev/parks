@@ -7,7 +7,16 @@ import { SectionHeader, SectionHeaderAction, SectionHeaderTitle } from "@workspa
 import { Button } from "@workspace/ui/components/button";
 import { Card } from "@workspace/ui/components/card";
 import { cn } from "@workspace/ui/lib/utils";
-import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
+import {
+  Trace as TracePart,
+  TraceCollapsible,
+  TraceCollapsibleContent,
+  TraceCollapsibleTrigger,
+  TraceDescription,
+  TraceIcon,
+  TraceLine as TraceLinePart,
+  TraceTitle,
+} from "@workspace/ui/components/trace";
 import { CheckIcon } from "@solar-icons/react/outline/check";
 import { CopyIcon } from "@solar-icons/react/outline/copy";
 
@@ -76,7 +85,10 @@ export function CodeBlock({ code, label, language = "text", numbers = false, cla
   );
 }
 
-/** One step an agent took: an icon, what happened, and a short result. */
+/**
+ * One step of a tool trace, on the shared Trace parts. A step with children
+ * opens to show them; `tone` colours its detail (ok) or the whole line (fail).
+ */
 export function TraceLine({
   icon: LineIcon,
   title,
@@ -92,41 +104,27 @@ export function TraceLine({
   defaultOpen?: boolean;
   tone?: "ok" | "fail";
 }) {
-  const [open, setOpen] = useState(defaultOpen);
-  const row = (
-    <span className="flex min-w-0 items-center gap-2 py-1">
-      <LineIcon className="size-4 shrink-0 text-muted-foreground" />
-      <span className="truncate">{title}</span>
-      {detail ? (
-        <span
-          className={cn(
-            "shrink-0 text-muted-foreground",
-            tone === "ok" && "text-success-foreground",
-            tone === "fail" && "text-destructive-foreground",
-          )}
-        >
-          {detail}
-        </span>
-      ) : null}
-      {children ? (
-        <AltArrowRightIcon className={cn("ml-auto size-3.5 shrink-0 text-muted-foreground transition-transform", open && "rotate-90")} />
-      ) : null}
-    </span>
+  const line = (
+    <TraceLinePart status={tone === "fail" ? "error" : undefined}>
+      <TraceIcon>
+        <LineIcon />
+      </TraceIcon>
+      <TraceTitle>{title}</TraceTitle>
+      {detail ? <TraceDescription className={cn(tone === "ok" && "text-success")}>{detail}</TraceDescription> : null}
+    </TraceLinePart>
   );
-  if (!children) return <li>{row}</li>;
+  if (!children) return line;
   return (
-    <li>
-      <button type="button" aria-expanded={open} onClick={() => setOpen(!open)} className="w-full rounded-md text-left hover:bg-ghost-hover">
-        {row}
-      </button>
-      {open ? <div className="mt-1 mb-2 ml-6">{children}</div> : null}
-    </li>
+    <TraceCollapsible defaultOpen={defaultOpen}>
+      <TraceCollapsibleTrigger>{line}</TraceCollapsibleTrigger>
+      <TraceCollapsibleContent>{children}</TraceCollapsibleContent>
+    </TraceCollapsible>
   );
 }
 
-/** A list of trace lines joined by a thin rail. */
+/** A list of tool steps. */
 export function Trace({ children, className }: { children: ReactNode; className?: string }) {
-  return <ul className={cn("flex flex-col text-sm", className)}>{children}</ul>;
+  return <TracePart className={className}>{children}</TracePart>;
 }
 
 /** A chat turn. Your turns sit on the right in a filled bubble; agent turns read as plain text. */

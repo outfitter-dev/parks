@@ -15,6 +15,8 @@ import { DisclosureDemo, GroupsDemo } from "./disclosure";
 import { FormsDemo } from "./forms";
 import { OverlaysDemo } from "./overlays";
 import { DotMatrixDemo } from "./dot-matrix";
+import { DataTableDemo } from "./data-table";
+import { AttachmentDemo, ProseDemo, QuestionnaireDemo, ResizableDemo, TraceDemo } from "./content";
 import {
   AdminComposition,
   AgentsComposition,
@@ -52,6 +54,12 @@ export const demos: Record<string, ComponentType> = {
   "components/menus": MenusDemo,
   "components/overlays": OverlaysDemo,
   "components/table": TableDemo,
+  "components/data-table": DataTableDemo,
+  "components/questionnaire": QuestionnaireDemo,
+  "components/trace": TraceDemo,
+  "components/attachment": AttachmentDemo,
+  "components/resizable": ResizableDemo,
+  "components/prose": ProseDemo,
   "components/feedback": FeedbackDemo,
   "components/dot-matrix": DotMatrixDemo,
   "components/layout": LayoutDemo,

@@ -6,6 +6,14 @@ import { Badge } from "@workspace/ui/components/badge";
 import { SectionHeader, SectionHeaderDescription, SectionHeaderTitle } from "@workspace/ui/components/section-header";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@workspace/ui/components/empty";
 import { Mark } from "@workspace/ui/components/mark";
+import {
+  Questionnaire,
+  QuestionnaireChoice,
+  QuestionnaireChoiceDescription,
+  QuestionnaireChoices,
+  QuestionnaireItem,
+  QuestionnaireTitle,
+} from "@workspace/ui/components/questionnaire";
 import { Button } from "@workspace/ui/components/button";
 import {
   Card,
@@ -129,86 +137,36 @@ function markFor(mark: OptionMark, label: string, index: number, count: number):
   }
 }
 
-/**
- * Tiles read the tone roles, so light and dark come from the theme.
- * Unpicked is the tone's fill with its foreground mark; picked is the strong
- * tone with its contrast mark. Neutral is used when marks are not colour
- * coded: a fainter fill, and the brand once picked.
- */
-/** A bounded tile in the option's top-left corner, light until its option is picked. */
-function OptionTile({ picked, tone, children }: { picked: boolean; tone: MarkTone; children: ReactNode }) {
-  return (
-    <Mark
-      aria-hidden
-      tone={picked && tone === "neutral" ? "brand" : tone}
-      selected={picked}
-      className={cn(!picked && tone === "neutral" && "bg-fill-subtle")}
-    >
-      {children}
-    </Mark>
-  );
-}
-
-/** The options container: a grid of cards, one card of stacked rows, or a tray of cards. */
-function OptionGroup({ style, label, role, children }: { style: OptionStyle; label: string; role: "group" | "radiogroup"; children: ReactNode }) {
-  if (style === "stacked") {
-    return <Card role={role} aria-label={label} className="gap-0 divide-y py-0">{children}</Card>;
-  }
-  if (style === "tray") {
-    return <Card variant="tray" role={role} aria-label={label} className="grid">{children}</Card>;
-  }
-  return <div role={role} aria-label={label} className="grid gap-2">{children}</div>;
-}
-
-/** One option: a selectable Card, or a row inside the stacked card. */
-function OptionButton({
-  stacked,
-  picked,
-  role,
-  onClick,
-  children,
-}: {
-  stacked: boolean;
-  picked: boolean;
-  role: "checkbox" | "radio";
-  onClick: () => void;
-  children: ReactNode;
-}) {
-  if (stacked) {
-    return (
-      <button
-        type="button"
-        role={role}
-        aria-checked={picked}
-        onClick={onClick}
-        className={cn("flex w-full items-start gap-3 p-frame text-left hover:bg-ghost-hover", picked && "bg-brand-fill hover:bg-brand-fill")}
-      >
-        {children}
-      </button>
-    );
-  }
-  return (
-    <Card render={<button type="button" />} role={role} aria-checked={picked} onClick={onClick} selected={picked} className="flex-row items-start gap-3">
-      {children}
-    </Card>
-  );
-}
+/** Where each layout puts its choices: cards in a grid, rows in one card, or cards in a tray. */
+const choicesClass: Record<OptionStyle, string> = {
+  cards: "",
+  stacked: "gap-0 overflow-hidden rounded-lg border border-border-muted bg-card",
+  tray: "",
+};
+const choiceClass: Record<OptionStyle, string> = {
+  cards: "",
+  stacked:
+    "rounded-none border-x-0 border-t-0 border-b-border-muted last:border-b-0 px-frame py-frame data-checked:border-b-border-muted data-checked:bg-brand-fill data-checked:ring-0 hover:data-checked:bg-brand-fill",
+  tray: "",
+};
 
 function OptionText({ option }: { option: Ask["options"][number] }) {
   return (
-    // The label row is as tall as the corner tile, which adds 2px above the
-    // label's text; pb-0.5 adds the same below the detail so the option looks
-    // evenly padded.
-    <span className="grid min-w-0 gap-0.5 pb-0.5">
+    <>
       <span className="flex min-h-6 items-center gap-2 font-medium">
         {option.label}
         {option.recommended ? <Badge>Recommended</Badge> : null}
       </span>
-      <span className="text-muted-foreground">{option.detail}</span>
-    </span>
+      <QuestionnaireChoiceDescription>{option.detail}</QuestionnaireChoiceDescription>
+    </>
   );
 }
 
+/**
+ * The ask's options on shadcn's Questionnaire. Letters and numbers come from
+ * the questionnaire's shortcuts, so pressing the key picks the option; glyph
+ * and Y/N marks are passed in. The demo strip picks the layout and marks.
+ */
 function AskOptions({
   ask,
   look,
@@ -228,45 +186,52 @@ function AskOptions({
           : [...picked, label]
         : [label],
     );
-  const stacked = look.style === "stacked";
+  const shortcuts = look.mark === "letter" ? "letters" : look.mark === "number" ? "numbers" : undefined;
+  const choices = (
+    <QuestionnaireChoices aria-label="Options" className={choicesClass[look.style]}>
+      {ask.options.map((option, index) => {
+        const mark = markFor(look.mark, option.label, index, ask.options.length);
+        const tone = mark && look.tone === "coded" ? mark.tone : "neutral";
+        const passMark = mark !== null && shortcuts === undefined;
+        return (
+          <QuestionnaireChoice
+            key={option.label}
+            value={option.label}
+            checked={picked.includes(option.label)}
+            onChange={() => toggle(option.label)}
+            mark={passMark ? mark.content : undefined}
+            tone={tone}
+            indicator={false}
+            className={choiceClass[look.style]}
+          >
+            <OptionText option={option} />
+          </QuestionnaireChoice>
+        );
+      })}
+    </QuestionnaireChoices>
+  );
   return (
-    <div className="mt-5 grid gap-2">
-      <OptionGroup style={look.style} label="Options" role={look.multi ? "group" : "radiogroup"}>
-        {ask.options.map((option, index) => {
-          const isPicked = picked.includes(option.label);
-          const mark = markFor(look.mark, option.label, index, ask.options.length);
-          return (
-            <OptionButton
-              key={option.label}
-              stacked={stacked}
-              picked={isPicked}
-              role={look.multi ? "checkbox" : "radio"}
-              onClick={() => toggle(option.label)}
-            >
-              {mark === null ? (
-                <span className="px-inset">
-                  <OptionText option={option} />
-                </span>
-              ) : (
-                <>
-                  <OptionTile picked={isPicked} tone={look.tone === "coded" ? mark.tone : "neutral"}>
-                    {mark.content}
-                  </OptionTile>
-                  <OptionText option={option} />
-                </>
-              )}
-            </OptionButton>
-          );
-        })}
-      </OptionGroup>
+    <Questionnaire shortcuts={shortcuts} onSubmit={(event) => event.preventDefault()} className="mt-5 gap-2">
+      <QuestionnaireItem name={ask.id} multiple={look.multi} className="gap-2">
+        <QuestionnaireTitle className="sr-only">{ask.title}</QuestionnaireTitle>
+        {look.style === "tray" ? (
+          <Card variant="tray" className="grid">
+            {choices}
+          </Card>
+        ) : (
+          choices
+        )}
+      </QuestionnaireItem>
       <p className="mt-1 text-muted-foreground" aria-live="polite">
         {picked.length > 0
           ? `Posts “${picked.join(", ")}” to the thread as you.`
-          : look.multi
-            ? "Pick any that apply."
-            : "Pick an option to answer."}
+          : shortcuts
+            ? `Pick an option, or press its ${shortcuts === "letters" ? "letter" : "number"}.`
+            : look.multi
+              ? "Pick any that apply."
+              : "Pick an option to answer."}
       </p>
-    </div>
+    </Questionnaire>
   );
 }
 
