@@ -1,0 +1,78 @@
+name: Release
+on:
+  # Every push to main refreshes the "Version Packages" pull request.
+  push:
+    branches: [main]
+  # Publishing to npm only ever starts by hand, from main.
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: release
+  cancel-in-progress: false
+jobs:
+  version:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version-file: .bun-version
+      - run: ./scripts/bootstrap.sh
+      # Opens or updates the version pull request; never publishes.
+      - uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          version-script: bun run version
+          commit-message: "chore: version packages"
+          pr-title: "chore: version packages"
+
+  publish:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      id-token: write
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version-file: .bun-version
+      # npm publishes through trusted publishing (OIDC), which needs npm 11.5.1 or later.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24.22.3"
+          package-manager-cache: false
+      - run: ./scripts/bootstrap.sh
+      - name: Refuse unreleased changesets
+        run: |
+          pending=$(find .changeset -name '*.md' ! -name README.md | wc -l)
+          if [ "$pending" -ne 0 ]; then
+            echo "There are $pending changesets on main. Merge the version pull request first."
+            exit 1
+          fi
+      - name: Check npm supports trusted publishing
+        run: |
+          version=$(npm --version)
+          if [ "$(printf '%s\n' 11.5.1 "$version" | sort -V | head -1)" != 11.5.1 ]; then
+            echo "npm $version can't use trusted publishing; it needs 11.5.1 or later."
+            exit 1
+          fi
+      - run: bun run check
+      - run: bun run check:consumer
+      # Publishes any version not yet on npm, then tags it and creates its GitHub release.
+      - uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          publish-script: bun run release
+        env:
+          NPM_CONFIG_PROVENANCE: "true"
