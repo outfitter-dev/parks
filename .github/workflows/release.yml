@@ -14,9 +14,9 @@ jobs:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    # The Outfitter app's token does the writing.
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -25,9 +25,27 @@ jobs:
         with:
           bun-version-file: .bun-version
       - run: ./scripts/bootstrap.sh
+      - name: Require the Outfitter app secrets
+        env:
+          APP_ID: ${{ secrets.OUTFITTER_APP_ID }}
+          APP_KEY: ${{ secrets.OUTFITTER_APP_PRIVATE_KEY }}
+        run: |
+          if [ -z "$APP_ID" ] || [ -z "$APP_KEY" ]; then
+            echo "::error::Set the OUTFITTER_APP_ID and OUTFITTER_APP_PRIVATE_KEY repository secrets. The version pull request needs the Outfitter app's token so CI runs on it."
+            exit 1
+          fi
+      # A PR opened with GITHUB_TOKEN doesn't trigger CI; one opened with the app's token does.
+      - uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        id: app-token
+        with:
+          app-id: ${{ secrets.OUTFITTER_APP_ID }}
+          private-key: ${{ secrets.OUTFITTER_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
       # Opens or updates the version pull request; never publishes.
       - uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
+          github-token: ${{ steps.app-token.outputs.token }}
           version-script: bun run version
           commit-message: "chore: version packages"
           pr-title: "chore: version packages"
