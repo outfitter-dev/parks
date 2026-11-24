@@ -1,0 +1,235 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@workspace/ui/components/alert-dialog";
+import { Avatar, AvatarFallback } from "@workspace/ui/components/avatar";
+import { Button } from "@workspace/ui/components/button";
+import {
+  CommandDialog,
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@workspace/ui/components/command";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@workspace/ui/components/hover-card";
+import { Kbd } from "@workspace/ui/components/kbd";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@workspace/ui/components/sheet";
+import { Toaster, toast } from "@workspace/ui/components/sonner";
+import { BellOffIcon } from "@solar-icons/react/outline/bell-off";
+import { HomeIcon } from "@solar-icons/react/outline/home";
+import { InboxIcon } from "@solar-icons/react/outline/inbox";
+import { RoutingIcon } from "@solar-icons/react/outline/routing";
+import { SettingsIcon } from "@solar-icons/react/outline/settings";
+import { TrashBinMinimalisticIcon } from "@solar-icons/react/bold-duotone/trash-bin-minimalistic";
+import { UsersGroupRoundedIcon } from "@solar-icons/react/outline/users-group-rounded";
+
+import { agents } from "#lib/fixtures";
+import { AgentModeBadge, Specimen } from "./kit";
+
+export function OverlaysDemo() {
+  return (
+    <>
+      <Specimen title="Alert dialog" note="Confirms an action that can't be undone. It has no close button: the person cancels or confirms.">
+        <AlertDialog>
+          <AlertDialogTrigger render={<Button tone="destructive" variant="tint" />}>Remove agent</AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Remove Rex?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Rex stops receiving deliveries and leaves every channel. Its history stays in the audit log.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Keep Rex</AlertDialogCancel>
+              <AlertDialogAction tone="destructive">Remove</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+        <AlertDialog>
+          <AlertDialogTrigger render={<Button variant="secondary" />}>Small, with media</AlertDialogTrigger>
+          <AlertDialogContent size="sm">
+            <AlertDialogHeader>
+              <AlertDialogMedia className="text-destructive">
+                <TrashBinMinimalisticIcon />
+              </AlertDialogMedia>
+              <AlertDialogTitle>Delete 3 drafts?</AlertDialogTitle>
+              <AlertDialogDescription>Drafts aren&rsquo;t sent anywhere, so nobody loses a message.</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction tone="destructive">Delete</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </Specimen>
+
+      <Specimen title="Sheet" note="A panel from an edge: the phone and tablet nav overlay, or a detail view beside a list.">
+        {(["right", "left", "bottom"] as const).map((side) => (
+          <Sheet key={side}>
+            <SheetTrigger render={<Button variant="secondary" />}>
+              {side === "right" ? "Agent detail" : side === "left" ? "Nav overlay" : "From the bottom"}
+            </SheetTrigger>
+            <SheetContent side={side}>
+              <SheetHeader>
+                <SheetTitle>Donna</SheetTitle>
+                <SheetDescription>Devin · webhook · last seen 2 min ago</SheetDescription>
+              </SheetHeader>
+              <div className="px-4 text-sm text-muted-foreground">Recent deliveries and settings go here.</div>
+              <SheetFooter>
+                <SheetClose render={<Button variant="secondary" />}>Close</SheetClose>
+              </SheetFooter>
+            </SheetContent>
+          </Sheet>
+        ))}
+      </Specimen>
+
+      <Specimen title="Hover card" note="A preview of an agent, person or PR on hover, without leaving the page.">
+        <p className="text-sm">
+          Waiting on{" "}
+          <HoverCard>
+            <HoverCardTrigger render={<a href="#agent" className="font-medium underline underline-offset-3" />}>
+              @donna
+            </HoverCardTrigger>
+            <HoverCardContent className="w-64">
+              <div className="flex gap-3">
+                <Avatar>
+                  <AvatarFallback>DO</AvatarFallback>
+                </Avatar>
+                <div className="grid gap-1">
+                  <p className="font-medium">Donna</p>
+                  <p className="text-muted-foreground">{agents[0]?.runtime} · {agents[0]?.destination}</p>
+                  <AgentModeBadge tone="live" mode="Live" className="w-fit" />
+                </div>
+              </div>
+            </HoverCardContent>
+          </HoverCard>{" "}
+          to approve the release.
+        </p>
+      </Specimen>
+
+      <Specimen title="Command" note="The command palette and quick switcher. Rows share the menu row recipe." className="block">
+        <Command className="max-w-md rounded-lg ring-1 ring-border-muted">
+          <PaletteBody />
+        </Command>
+        <PaletteDialog />
+      </Specimen>
+
+      <Specimen title="Toast" note="Confirms an action without interrupting. Like Alert, only the glyph takes the tone.">
+        <Toaster position="bottom-right" />
+        <Button variant="secondary" onClick={() => toast.success("Rex muted", { description: "No deliveries until you unmute it." })}>
+          Success
+        </Button>
+        <Button variant="secondary" onClick={() => toast.info("Routing v12 is live")}>
+          Info
+        </Button>
+        <Button variant="secondary" onClick={() => toast.warning("Elevation ends in 2 minutes")}>
+          Warning
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={() => toast.error("Delivery failed", { description: "forge webhook returned 502.", action: { label: "Retry", onClick: () => undefined } })}
+        >
+          Error
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={() =>
+            toast.promise(new Promise((resolve) => setTimeout(resolve, 1500)), {
+              loading: "Re-running delivery…",
+              success: "Delivered",
+              error: "Failed",
+            })
+          }
+        >
+          Loading
+        </Button>
+      </Specimen>
+    </>
+  );
+}
+
+function PaletteBody() {
+  return (
+    <>
+      <CommandInput placeholder="Search or jump to…" />
+      <CommandList>
+        <CommandEmpty>Nothing matches.</CommandEmpty>
+        <CommandGroup heading="Go to">
+          <CommandItem>
+            <HomeIcon /> Mission control
+          </CommandItem>
+          <CommandItem>
+            <InboxIcon /> Needs you
+            <CommandShortcut>G N</CommandShortcut>
+          </CommandItem>
+          <CommandItem>
+            <UsersGroupRoundedIcon /> Agents
+            <CommandShortcut>G A</CommandShortcut>
+          </CommandItem>
+          <CommandItem>
+            <RoutingIcon /> Routing
+          </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup heading="Actions">
+          <CommandItem>
+            <BellOffIcon /> Mute an agent…
+          </CommandItem>
+          <CommandItem disabled>
+            <SettingsIcon /> Elevate to admin
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </>
+  );
+}
+
+function PaletteDialog() {
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "k" && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        setOpen((value) => !value);
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+  return (
+    <>
+      <Button variant="secondary" className="mt-3" onClick={() => setOpen(true)}>
+        Open palette <Kbd>⌘K</Kbd>
+      </Button>
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <Command>
+          <PaletteBody />
+        </Command>
+      </CommandDialog>
+    </>
+  );
+}

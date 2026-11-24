@@ -69,6 +69,16 @@ There is one segmented control (`packages/ui/src/lib/segment.ts`): a muted track
 
 A chip is a `Badge`: `size` (`xs`, `sm`, `default`, `lg`) and `mono` for code, paths and identifiers, with `icon` for a file type or graph glyph. File chips in the composer and nodes in the Trails graph use `variant="outline" size="lg" mono`.
 
+## Forms, overlays and lists
+
+These come from shadcn as is, tuned to the tokens above. The workbench shows each one under Components: Forms, Overlays and toasts, Disclosure, and Groups and pages.
+
+- **Forms.** `Field` wraps a label, control, description and `FieldError`. Over a text control (Input, Textarea, InputGroup, Select, Combobox chips) the label and hint start at `ps-field`, where the control's text starts. Only `FieldError` turns red; the label and input text stay neutral. A radio choice with a description is a choice card, and the checked card takes the brand ring. `InputGroup`, `InputOTP` and `Combobox` draw at `--control-h` on the `field` fill.
+- **Overlays.** `AlertDialog` confirms what can't be undone; its Cancel is a secondary button and it has no close button. `Sheet` slides in from an edge for the small-screen nav overlay or a detail panel. `HoverCard` previews an agent, person or PR.
+- **Palette and toasts.** `Command` (cmdk) is the command palette and quick switcher; `CommandDialog` opens it in a dialog. `Toaster` and `toast` come from `#components/sonner`, not from sonner directly. The theme follows the system, with no next-themes, and like Alert only the glyph takes the tone. cmdk brings in a few Radix packages as its own dependencies; nothing else in `packages/ui` uses Radix.
+- **Rows in popups.** Combobox and Command rows use `popupRow` from `lib/row.ts`, the same shape as menu rows, with their own state classes: `comboboxRowState` keys on `data-highlighted`, and `commandRowState` on `data-[selected=true]`, because cmdk always sets `data-selected`.
+- **Disclosure and groups.** `Collapsible` opens one block in place; `Accordion` stacks sections. `ButtonGroup` joins buttons into one control. In `Pagination` the current page is a secondary button.
+
 ## Icons
 
 Solar (`@solar-icons/react`) is the only icon library. Import each icon on its own from a style subpath, never from the package root:

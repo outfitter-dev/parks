@@ -5,9 +5,28 @@
  * size and the highlighted state cannot drift apart.
  */
 
+/**
+ * The shape of a row in a popup list, without its highlighted or disabled
+ * state. Lists mark those states differently, so each list adds its own:
+ * `menuRow` for menus and selects (focus), `comboboxRowState` for Base UI
+ * Combobox (data-highlighted), `commandRowState` for cmdk (data-selected).
+ */
+export const popupRow =
+  "relative flex w-full cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm font-normal outline-hidden select-none data-indent:ps-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+
 /** A row in a popup list: menu items, sub-menu triggers and select items. */
-export const menuRow =
-  "relative flex w-full cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm font-normal outline-hidden select-none focus:bg-accent focus:text-accent-foreground data-indent:ps-7 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+export const menuRow = [
+  popupRow,
+  "focus:bg-accent focus:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50",
+].join(" ")
+
+/** Combobox items keep focus in the input and mark the active row with data-highlighted. */
+export const comboboxRowState =
+  "data-highlighted:bg-accent data-highlighted:text-accent-foreground data-highlighted:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50"
+
+/** cmdk always sets data-selected and data-disabled, to "true" or "false". */
+export const commandRowState =
+  "data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground data-[selected=true]:**:text-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50"
 
 /**
  * Muted children (icons, shortcuts) follow the row's text on highlight.

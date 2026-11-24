@@ -11,6 +11,9 @@ import {
   TabsDemo,
 } from "./components";
 import { BreadcrumbDemo } from "./breadcrumb";
+import { DisclosureDemo, GroupsDemo } from "./disclosure";
+import { FormsDemo } from "./forms";
+import { OverlaysDemo } from "./overlays";
 import {
   AdminComposition,
   AgentsComposition,
@@ -43,11 +46,15 @@ export const demos: Record<string, ComponentType> = {
   "components/breadcrumb": BreadcrumbDemo,
   "components/card": CardDemo,
   "components/inputs": InputsDemo,
+  "components/forms": FormsDemo,
   "components/tabs": TabsDemo,
   "components/menus": MenusDemo,
+  "components/overlays": OverlaysDemo,
   "components/table": TableDemo,
   "components/feedback": FeedbackDemo,
   "components/layout": LayoutDemo,
+  "components/disclosure": DisclosureDemo,
+  "components/groups": GroupsDemo,
   "primitives/color": ColorDemo,
   "primitives/type": TypeDemo,
   "primitives/shape": ShapeDemo,
