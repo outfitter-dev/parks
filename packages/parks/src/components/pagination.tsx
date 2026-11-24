@@ -1,10 +1,10 @@
-import * as React from "react"
-import { cnState } from "#lib/utils"
+import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left";
+import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
+import { MenuDotsIcon } from "@solar-icons/react/outline/menu-dots";
+import * as React from "react";
 
-import { Button } from "#components/button"
-import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left"
-import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right"
-import { MenuDotsIcon } from "@solar-icons/react/outline/menu-dots"
+import { Button } from "#components/button";
+import { cnState } from "#lib/utils";
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -15,7 +15,7 @@ function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
       className={cnState("mx-auto flex w-full justify-center", className)}
       {...props}
     />
-  )
+  );
 }
 
 function PaginationContent({
@@ -28,17 +28,17 @@ function PaginationContent({
       className={cnState("flex items-center gap-0.5", className)}
       {...props}
     />
-  )
+  );
 }
 
 function PaginationItem({ ...props }: React.ComponentProps<"li">) {
-  return <li data-slot="pagination-item" {...props} />
+  return <li data-slot="pagination-item" {...props} />;
 }
 
 type PaginationLinkProps = {
-  isActive?: boolean
+  isActive?: boolean;
 } & Pick<React.ComponentProps<typeof Button>, "size"> &
-  React.ComponentProps<"a">
+  React.ComponentProps<"a">;
 
 function PaginationLink({
   className,
@@ -61,7 +61,7 @@ function PaginationLink({
         />
       }
     />
-  )
+  );
 }
 
 function PaginationPrevious({
@@ -76,12 +76,10 @@ function PaginationPrevious({
       className={cnState("pl-1.5!", className)}
       {...props}
     >
-      <AltArrowLeftIcon
-        data-icon="inline-start"
-      />
+      <AltArrowLeftIcon data-icon="inline-start" />
       <span className="hidden sm:block">{text}</span>
     </PaginationLink>
-  )
+  );
 }
 
 function PaginationNext({
@@ -97,11 +95,9 @@ function PaginationNext({
       {...props}
     >
       <span className="hidden sm:block">{text}</span>
-      <AltArrowRightIcon
-        data-icon="inline-end"
-      />
+      <AltArrowRightIcon data-icon="inline-end" />
     </PaginationLink>
-  )
+  );
 }
 
 function PaginationEllipsis({
@@ -118,11 +114,10 @@ function PaginationEllipsis({
       )}
       {...props}
     >
-      <MenuDotsIcon
-      />
+      <MenuDotsIcon />
       <span className="sr-only">More pages</span>
     </span>
-  )
+  );
 }
 
 export {
@@ -133,4 +128,4 @@ export {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-}
+};

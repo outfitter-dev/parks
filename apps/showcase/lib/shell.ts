@@ -23,9 +23,13 @@ let current = defaultShell;
 const listeners = new Set<() => void>();
 
 export function setShell(next: Shell) {
-  if (next.style === current.style && next.gutter === current.gutter) return;
+  if (next.style === current.style && next.gutter === current.gutter) {
+    return;
+  }
   current = next;
-  for (const listener of listeners) listener();
+  for (const listener of listeners) {
+    listener();
+  }
 }
 
 function subscribe(listener: () => void) {
@@ -36,7 +40,11 @@ function subscribe(listener: () => void) {
 }
 
 export function useShell(): Shell {
-  return useSyncExternalStore(subscribe, () => current, () => defaultShell);
+  return useSyncExternalStore(
+    subscribe,
+    () => current,
+    () => defaultShell
+  );
 }
 
 export function isShellStyle(value: string): value is ShellStyle {

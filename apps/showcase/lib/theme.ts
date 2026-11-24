@@ -4,7 +4,8 @@
  * packages/parks defines. "Copy tokens" copies the same string.
  */
 
-import { steps, type PaletteName } from "@outfitter/parks/lib/palette";
+import { steps } from "@outfitter/parks/lib/palette";
+import type { PaletteName } from "@outfitter/parks/lib/palette";
 
 export type PresetId = "luma" | "linear";
 export type Mode = "system" | "light" | "dark";
@@ -14,7 +15,15 @@ export type PrimaryStyle = "ink" | "brand";
 
 export type ThemeTokens = {
   mode: Mode;
-  shape: { radius: number; pad: number; panelPad: number; textInset: number; control: number; field: number; smooth: number };
+  shape: {
+    radius: number;
+    pad: number;
+    panelPad: number;
+    textInset: number;
+    control: number;
+    field: number;
+    smooth: number;
+  };
   type: { font: UiFont; size: number; rond: number; mono: MonoFont };
   color: {
     /** A Tailwind palette name; the brand scale is that palette, and the brand its 500 step. */
@@ -29,11 +38,22 @@ export type ThemeTokens = {
 
 export type PresetValues = Omit<ThemeTokens, "mode">;
 
-export const presets: Record<PresetId, { label: string; values: PresetValues }> = {
+export const presets: Record<
+  PresetId,
+  { label: string; values: PresetValues }
+> = {
   luma: {
     label: "Luma tuned",
     values: {
-      shape: { radius: 13, pad: 12, panelPad: 8, textInset: 0.4, control: 34, field: 8, smooth: 2 },
+      shape: {
+        radius: 13,
+        pad: 12,
+        panelPad: 8,
+        textInset: 0.4,
+        control: 34,
+        field: 8,
+        smooth: 2,
+      },
       type: { font: "allo", size: 14, rond: 50, mono: "jetbrains" },
       color: {
         brand: "orange",
@@ -48,7 +68,15 @@ export const presets: Record<PresetId, { label: string; values: PresetValues }> 
   linear: {
     label: "Linear-like",
     values: {
-      shape: { radius: 6, pad: 8, panelPad: 6, textInset: 0.4, control: 28, field: 6, smooth: 2 },
+      shape: {
+        radius: 6,
+        pad: 8,
+        panelPad: 6,
+        textInset: 0.4,
+        control: 28,
+        field: 6,
+        smooth: 2,
+      },
       type: { font: "inter", size: 13, rond: 0, mono: "jetbrains" },
       color: {
         brand: "indigo",
@@ -71,8 +99,14 @@ const uiFonts: Record<UiFont, string> = {
  * Each mono font's size relative to the UI font beside it, so code and text
  * share an x-height. At equal sizes JetBrains Mono and Allo already match.
  */
-const monoFonts: Record<MonoFont, { stack: string; scale: Record<UiFont, number> }> = {
-  jetbrains: { stack: `"JetBrains Mono Variable", ui-monospace, monospace`, scale: { allo: 1, inter: 0.88 } },
+const monoFonts: Record<
+  MonoFont,
+  { stack: string; scale: Record<UiFont, number> }
+> = {
+  jetbrains: {
+    stack: `"JetBrains Mono Variable", ui-monospace, monospace`,
+    scale: { allo: 1, inter: 0.88 },
+  },
 };
 
 /**
@@ -96,7 +130,12 @@ export function compileTheme(tokens: PresetValues): string {
     "--text-ui": `${type.size}px`,
     "--rond": `${type.rond}`,
     "--mono-scale": `${mono.scale[type.font]}`,
-    ...Object.fromEntries(steps.map((step) => [`--color-brand-${step}`, `var(--color-${color.brand}-${step})`])),
+    ...Object.fromEntries(
+      steps.map((step) => [
+        `--color-brand-${step}`,
+        `var(--color-${color.brand}-${step})`,
+      ])
+    ),
     "--neutral-hue": `${color.hue}`,
     "--neutral-tint": `${color.tint}`,
     "--border-strength": `${color.border}`,

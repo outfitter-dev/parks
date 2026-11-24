@@ -1,14 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Toggle as TogglePrimitive } from "@base-ui/react/toggle"
-import { ToggleGroup as ToggleGroupPrimitive } from "@base-ui/react/toggle-group"
-import { type VariantProps } from "class-variance-authority"
-import { type buttonVariants } from "#components/button"
-import { toggleVariants, type ToggleVariant } from "#components/toggle"
-import { segmentItem, segmentTrack } from "#lib/segment"
-import { type ControlSize } from "#lib/size"
-import { cnState } from "#lib/utils"
+import { Toggle as TogglePrimitive } from "@base-ui/react/toggle";
+import { ToggleGroup as ToggleGroupPrimitive } from "@base-ui/react/toggle-group";
+import type { VariantProps } from "class-variance-authority";
+import * as React from "react";
+
+import type { buttonVariants } from "#components/button";
+import { toggleVariants } from "#components/toggle";
+import type { ToggleVariant } from "#components/toggle";
+import { segmentItem, segmentTrack } from "#lib/segment";
+import type { ControlSize } from "#lib/size";
+import { cnState } from "#lib/utils";
 
 /*
  * Two looks, from shadcn's ToggleGroup:
@@ -23,19 +25,19 @@ import { cnState } from "#lib/utils"
  * `size` is the control scale (xs, sm, default, lg); a row of separate
  * toggles also takes the icon sizes.
  */
-type ToggleGroupVariant = "segmented" | ToggleVariant
+type ToggleGroupVariant = "segmented" | ToggleVariant;
 
 type ToggleGroupStyle = {
-  variant: ToggleGroupVariant
+  variant: ToggleGroupVariant;
   /** The control scale; separate toggles also take the icon sizes. */
-  size: ControlSize | "icon" | "icon-xs" | "icon-sm" | "icon-lg"
-  shape?: VariantProps<typeof buttonVariants>["shape"]
-}
+  size: ControlSize | "icon" | "icon-xs" | "icon-sm" | "icon-lg";
+  shape?: VariantProps<typeof buttonVariants>["shape"];
+};
 
 const ToggleGroupContext = React.createContext<ToggleGroupStyle>({
   variant: "segmented",
   size: "default",
-})
+});
 
 function ToggleGroup({
   className,
@@ -49,10 +51,10 @@ function ToggleGroup({
 }: ToggleGroupPrimitive.Props &
   Partial<ToggleGroupStyle> & {
     /** Gap between separate toggles, in spacing steps. The segmented look ignores it. */
-    spacing?: number
-    orientation?: "horizontal" | "vertical"
+    spacing?: number;
+    orientation?: "horizontal" | "vertical";
   }) {
-  const segmented = variant === "segmented"
+  const segmented = variant === "segmented";
   return (
     <ToggleGroupPrimitive
       data-slot="toggle-group"
@@ -60,7 +62,9 @@ function ToggleGroup({
       data-size={size}
       data-orientation={orientation}
       orientation={orientation}
-      style={segmented ? undefined : ({ "--gap": spacing } as React.CSSProperties)}
+      style={
+        segmented ? undefined : ({ "--gap": spacing } as React.CSSProperties)
+      }
       className={cnState(
         segmented
           ? segmentTrack
@@ -69,14 +73,16 @@ function ToggleGroup({
       )}
       {...props}
     >
-      <ToggleGroupContext.Provider value={{ variant, size, shape }}>{children}</ToggleGroupContext.Provider>
+      <ToggleGroupContext.Provider value={{ variant, size, shape }}>
+        {children}
+      </ToggleGroupContext.Provider>
     </ToggleGroupPrimitive>
-  )
+  );
 }
 
 function ToggleGroupItem({ className, ...props }: TogglePrimitive.Props) {
-  const { variant, size, shape } = React.useContext(ToggleGroupContext)
-  const segmented = variant === "segmented"
+  const { variant, size, shape } = React.useContext(ToggleGroupContext);
+  const segmented = variant === "segmented";
   return (
     <TogglePrimitive
       data-slot="toggle-group-item"
@@ -88,8 +94,8 @@ function ToggleGroupItem({ className, ...props }: TogglePrimitive.Props) {
       )}
       {...props}
     />
-  )
+  );
 }
 
-export { ToggleGroup, ToggleGroupItem }
-export type { ToggleGroupVariant }
+export { ToggleGroup, ToggleGroupItem };
+export type { ToggleGroupVariant };

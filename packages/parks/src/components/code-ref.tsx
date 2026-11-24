@@ -1,17 +1,18 @@
-import * as React from "react"
-import { GitBranchIcon } from "@solar-icons/react/outline/git-branch"
-import { GitCommitIcon } from "@solar-icons/react/outline/git-commit"
-import { GitPullRequestIcon } from "@solar-icons/react/outline/git-pull-request"
-import { cnState } from "#lib/utils"
+import { GitBranchIcon } from "@solar-icons/react/outline/git-branch";
+import { GitCommitIcon } from "@solar-icons/react/outline/git-commit";
+import { GitPullRequestIcon } from "@solar-icons/react/outline/git-pull-request";
+import * as React from "react";
+
+import { cnState } from "#lib/utils";
 
 const glyphs = {
   pr: GitPullRequestIcon,
   branch: GitBranchIcon,
   commit: GitCommitIcon,
-} as const
+} as const;
 
 /** Where the referenced change stands. The glyph carries the colour; the text stays neutral. */
-type CodeRefState = "open" | "draft" | "merged" | "closed" | "failing"
+type CodeRefState = "open" | "draft" | "merged" | "closed" | "failing";
 
 const stateColor: Record<CodeRefState, string> = {
   open: "text-success-strong",
@@ -19,7 +20,7 @@ const stateColor: Record<CodeRefState, string> = {
   merged: "text-merged-strong",
   closed: "text-muted-foreground",
   failing: "text-destructive-strong",
-}
+};
 
 /**
  * An inline reference to a pull request, branch or commit, such as `repo#47`:
@@ -35,10 +36,10 @@ function CodeRef({
   children,
   ...props
 }: React.ComponentProps<"span"> & {
-  kind?: keyof typeof glyphs
-  state?: CodeRefState
+  kind?: keyof typeof glyphs;
+  state?: CodeRefState;
 }) {
-  const Glyph = glyphs[kind]
+  const Glyph = glyphs[kind];
   return (
     <span
       data-slot="code-ref"
@@ -58,7 +59,7 @@ function CodeRef({
       />
       {children}
     </span>
-  )
+  );
 }
 
-export { CodeRef, type CodeRefState }
+export { CodeRef, type CodeRefState };

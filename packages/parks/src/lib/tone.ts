@@ -12,10 +12,20 @@
  * <Badge tone="warning" variant="solid">Blocked</Badge>
  * <Button tone="destructive" variant="tint">Delete</Button>
  */
-export const tones = ["neutral", "info", "success", "warning", "destructive", "brand", "merged"] as const
+export const tones = [
+  "neutral",
+  "info",
+  "success",
+  "warning",
+  "destructive",
+  "brand",
+  "merged",
+] as const;
 
-export type Tone = (typeof tones)[number]
+export type Tone = (typeof tones)[number];
 
 export function isTone(value: unknown): value is Tone {
-  return typeof value === "string" && (tones as readonly string[]).includes(value)
+  return (
+    typeof value === "string" && (tones as readonly string[]).includes(value)
+  );
 }

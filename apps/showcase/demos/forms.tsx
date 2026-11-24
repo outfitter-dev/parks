@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Checkbox } from "@outfitter/parks/components/checkbox";
 import {
   Combobox,
@@ -34,17 +33,35 @@ import {
   InputGroupInput,
   InputGroupText,
 } from "@outfitter/parks/components/input-group";
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@outfitter/parks/components/input-otp";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@outfitter/parks/components/input-otp";
 import { Kbd } from "@outfitter/parks/components/kbd";
-import { RadioGroup, RadioGroupItem } from "@outfitter/parks/components/radio-group";
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@outfitter/parks/components/radio-group";
 import { Textarea } from "@outfitter/parks/components/textarea";
 import { CopyIcon } from "@solar-icons/react/outline/copy";
 import { MagnifierIcon } from "@solar-icons/react/outline/magnifier";
+import { useState } from "react";
+
 import { agents } from "#lib/fixtures";
+
 import { Specimen } from "./kit";
 
 const agentNames = agents.map((agent) => agent.name);
-const channels = ["outfitter", "toolkit", "signals", "forge", "ranger", "test-routing"];
+const channels = [
+  "outfitter",
+  "toolkit",
+  "signals",
+  "forge",
+  "ranger",
+  "test-routing",
+];
 
 export function FormsDemo() {
   return (
@@ -62,7 +79,11 @@ export function FormsDemo() {
           </Field>
           <Field data-invalid>
             <FieldLabel htmlFor="field-url">Webhook URL</FieldLabel>
-            <Input id="field-url" aria-invalid defaultValue="http://not-https.example" />
+            <Input
+              id="field-url"
+              aria-invalid
+              defaultValue="http://not-https.example"
+            />
             <FieldError>Use an https URL.</FieldError>
           </Field>
           <Field>
@@ -73,13 +94,19 @@ export function FormsDemo() {
             <Checkbox id="field-digest" />
             <FieldContent>
               <FieldLabel htmlFor="field-digest">Digest instead</FieldLabel>
-              <FieldDescription>Collect mentions and send them once an hour.</FieldDescription>
+              <FieldDescription>
+                Collect mentions and send them once an hour.
+              </FieldDescription>
             </FieldContent>
           </Field>
         </FieldGroup>
       </Specimen>
 
-      <Specimen title="Radio group" note="A set of choices in a FieldSet. A choice with a description is a choice card; the checked card takes the brand edge." className="block">
+      <Specimen
+        title="Radio group"
+        note="A set of choices in a FieldSet. A choice with a description is a choice card; the checked card takes the brand edge."
+        className="block"
+      >
         <div className="grid max-w-3xl gap-8 sm:grid-cols-2">
           <FieldSet>
             <FieldLegend variant="label">Wake on</FieldLegend>
@@ -90,8 +117,14 @@ export function FormsDemo() {
                 { value: "never", label: "Never" },
               ].map((option) => (
                 <Field key={option.value} orientation="horizontal">
-                  <RadioGroupItem id={`wake-${option.value}`} value={option.value} />
-                  <FieldLabel htmlFor={`wake-${option.value}`} className="font-normal">
+                  <RadioGroupItem
+                    id={`wake-${option.value}`}
+                    value={option.value}
+                  />
+                  <FieldLabel
+                    htmlFor={`wake-${option.value}`}
+                    className="font-normal"
+                  >
                     {option.label}
                   </FieldLabel>
                 </Field>
@@ -102,16 +135,30 @@ export function FormsDemo() {
             <FieldLegend variant="label">Delivery</FieldLegend>
             <RadioGroup defaultValue="webhook">
               {[
-                { value: "webhook", label: "Webhook", detail: "POST each delivery to the agent's URL." },
-                { value: "mcp", label: "MCP inbox", detail: "The agent reads its inbox when it runs." },
+                {
+                  value: "webhook",
+                  label: "Webhook",
+                  detail: "POST each delivery to the agent's URL.",
+                },
+                {
+                  value: "mcp",
+                  label: "MCP inbox",
+                  detail: "The agent reads its inbox when it runs.",
+                },
               ].map((option) => (
-                <FieldLabel key={option.value} htmlFor={`delivery-${option.value}`}>
+                <FieldLabel
+                  key={option.value}
+                  htmlFor={`delivery-${option.value}`}
+                >
                   <Field orientation="horizontal">
                     <FieldContent>
                       <FieldTitle>{option.label}</FieldTitle>
                       <FieldDescription>{option.detail}</FieldDescription>
                     </FieldContent>
-                    <RadioGroupItem id={`delivery-${option.value}`} value={option.value} />
+                    <RadioGroupItem
+                      id={`delivery-${option.value}`}
+                      value={option.value}
+                    />
                   </Field>
                 </FieldLabel>
               ))}
@@ -120,9 +167,16 @@ export function FormsDemo() {
         </div>
       </Specimen>
 
-      <Specimen title="Input group" note="An input with addons inside its edge: an icon, a unit, a shortcut or a button." className="grid max-w-md grid-cols-1 items-stretch">
+      <Specimen
+        title="Input group"
+        note="An input with addons inside its edge: an icon, a unit, a shortcut or a button."
+        className="grid max-w-md grid-cols-1 items-stretch"
+      >
         <InputGroup>
-          <InputGroupInput placeholder="Search agents" aria-label="Search agents" />
+          <InputGroupInput
+            placeholder="Search agents"
+            aria-label="Search agents"
+          />
           <InputGroupAddon>
             <MagnifierIcon />
           </InputGroupAddon>
@@ -131,7 +185,12 @@ export function FormsDemo() {
           </InputGroupAddon>
         </InputGroup>
         <InputGroup>
-          <InputGroupInput readOnly defaultValue="opt_live_7Hq2…f9Kc" className="font-mono" aria-label="Token" />
+          <InputGroupInput
+            readOnly
+            defaultValue="opt_live_7Hq2…f9Kc"
+            className="font-mono"
+            aria-label="Token"
+          />
           <InputGroupAddon align="inline-end">
             <InputGroupButton size="icon-xs" aria-label="Copy token">
               <CopyIcon />
@@ -139,14 +198,21 @@ export function FormsDemo() {
           </InputGroupAddon>
         </InputGroup>
         <InputGroup>
-          <InputGroupInput type="number" defaultValue={15} aria-label="Elevation window" />
+          <InputGroupInput
+            type="number"
+            defaultValue={15}
+            aria-label="Elevation window"
+          />
           <InputGroupAddon align="inline-end">
             <InputGroupText>minutes</InputGroupText>
           </InputGroupAddon>
         </InputGroup>
       </Specimen>
 
-      <Specimen title="Input OTP" note="Entering a device or verification code. Slots are one control high.">
+      <Specimen
+        title="Input OTP"
+        note="Entering a device or verification code. Slots are one control high."
+      >
         <InputOTP maxLength={8} aria-label="Device code">
           <InputOTPGroup>
             <InputOTPSlot index={0} />
@@ -164,7 +230,11 @@ export function FormsDemo() {
         </InputOTP>
       </Specimen>
 
-      <Specimen title="Combobox" note="Pick from a long list by typing. Rows share the menu row recipe; chips are Badge-sized." className="grid max-w-md grid-cols-1 items-stretch">
+      <Specimen
+        title="Combobox"
+        note="Pick from a long list by typing. Rows share the menu row recipe; chips are Badge-sized."
+        className="grid max-w-md grid-cols-1 items-stretch"
+      >
         <Combobox items={agentNames}>
           <ComboboxInput placeholder="Choose an agent" aria-label="Agent" />
           <ComboboxContent>
@@ -192,7 +262,9 @@ function ChannelPicker() {
       <ComboboxChips ref={anchor}>
         <ComboboxValue>
           {(selected: string[]) =>
-            selected.map((channel) => <ComboboxChip key={channel}>{channel}</ComboboxChip>)
+            selected.map((channel) => (
+              <ComboboxChip key={channel}>{channel}</ComboboxChip>
+            ))
           }
         </ComboboxValue>
         <ComboboxChipsInput placeholder="Add a channel" aria-label="Channels" />

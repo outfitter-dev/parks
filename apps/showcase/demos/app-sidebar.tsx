@@ -1,20 +1,29 @@
 "use client";
 
-import { useState, type ComponentType, type RefObject } from "react";
-import { Mark } from "@outfitter/parks/components/mark";
-import { NavItem } from "@outfitter/parks/components/nav-item";
-import { StatusDot } from "@outfitter/parks/components/status-dot";
 import { Badge } from "@outfitter/parks/components/badge";
 import { Button } from "@outfitter/parks/components/button";
 import { Kbd } from "@outfitter/parks/components/kbd";
-import { Popover, PopoverContent, PopoverTrigger } from "@outfitter/parks/components/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@outfitter/parks/components/tooltip";
+import { Mark } from "@outfitter/parks/components/mark";
+import { NavItem } from "@outfitter/parks/components/nav-item";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@outfitter/parks/components/popover";
+import { StatusDot } from "@outfitter/parks/components/status-dot";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@outfitter/parks/components/tooltip";
 import { cn } from "@outfitter/parks/lib/utils";
 import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
 import { MagnifierIcon } from "@solar-icons/react/outline/magnifier";
 import { PanelLeftCloseIcon } from "@solar-icons/react/outline/panel-left-close";
 import { PanelLeftOpenIcon } from "@solar-icons/react/outline/panel-left-open";
 import { SettingsIcon } from "@solar-icons/react/outline/settings";
+import { useState } from "react";
+import type { ComponentType, RefObject } from "react";
 
 type NavIcon = ComponentType<{ className?: string }>;
 
@@ -43,7 +52,9 @@ function NavDot() {
 
 function Brand({ mark }: { mark: string }) {
   return (
-    <Mark tone="brand" variant="solid" className="font-normal">{mark}</Mark>
+    <Mark tone="brand" variant="solid" className="font-normal">
+      {mark}
+    </Mark>
   );
 }
 
@@ -69,7 +80,13 @@ export function SidebarPanel({
 }) {
   const { name, mark, items, account } = navigation;
   const hide = onDock ? (
-    <Button variant="ghost" size="icon-sm" aria-label="Dock sidebar" onClick={onDock} className="-me-1 ml-auto">
+    <Button
+      variant="ghost"
+      size="icon-sm"
+      aria-label="Dock sidebar"
+      onClick={onDock}
+      className="-me-1 ml-auto"
+    >
       <PanelLeftOpenIcon />
     </Button>
   ) : (
@@ -96,7 +113,7 @@ export function SidebarPanel({
       </div>
       <button
         type="button"
-        className="mt-3 mb-2 flex h-(--control-h) items-center gap-2 rounded-lg border bg-background ps-[calc(--spacing(2)-1px)] pe-2 text-muted-foreground"
+        className="bg-background text-muted-foreground mt-3 mb-2 flex h-(--control-h) items-center gap-2 rounded-lg border ps-[calc(--spacing(2)-1px)] pe-2"
       >
         <MagnifierIcon className="size-4 shrink-0" />
         Search
@@ -106,16 +123,33 @@ export function SidebarPanel({
         {items.map(({ id, label, icon: Line, solid: Solid, count, dot }) => {
           const Icon = id === place ? Solid : Line;
           return (
-            <NavItem key={id} href="#" current={id === place} className="rounded-lg">
+            <NavItem
+              key={id}
+              href="#"
+              current={id === place}
+              className="rounded-lg"
+            >
               <Icon />
               <span className="truncate">{label}</span>
-              {count ? <Badge count={count} shape="rect" variant="plain" className="ms-auto" /> : dot ? <NavDot /> : null}
+              {count ? (
+                <Badge
+                  count={count}
+                  shape="rect"
+                  variant="plain"
+                  className="ms-auto"
+                />
+              ) : dot ? (
+                <NavDot />
+              ) : null}
             </NavItem>
           );
         })}
       </nav>
       {account ? (
-        <NavItem render={<button type="button" />} className="mt-auto rounded-lg">
+        <NavItem
+          render={<button type="button" />}
+          className="mt-auto rounded-lg"
+        >
           <SettingsIcon />
           <span className="truncate">{account}</span>
           <AltArrowDownIcon className="ms-auto" />
@@ -162,7 +196,8 @@ export function SidebarRail({
   const { name, mark, items, account } = navigation;
   const [open, setOpen] = useState(false);
   const margin = Math.max(gutter, POPOVER_MARGIN);
-  const item = "relative grid size-9 place-items-center rounded-lg text-muted-foreground hover:bg-fill-subtle hover:text-foreground";
+  const item =
+    "relative grid size-9 place-items-center rounded-lg text-muted-foreground hover:bg-fill-subtle hover:text-foreground";
   return (
     <>
       <Popover open={open} onOpenChange={setOpen}>
@@ -171,7 +206,7 @@ export function SidebarRail({
           delay={0}
           closeDelay={200}
           aria-label="Show sidebar"
-          className="grid size-9 place-items-center rounded-lg hover:bg-fill-subtle data-popup-open:bg-fill-subtle"
+          className="hover:bg-fill-subtle data-popup-open:bg-fill-subtle grid size-9 place-items-center rounded-lg"
         >
           <Brand mark={mark} />
         </PopoverTrigger>
@@ -185,12 +220,15 @@ export function SidebarRail({
           style={{
             // Vertical padding puts the items at the docked sidebar's height; never tighter than the margin.
             paddingTop: Math.max(gutter + SIDEBAR_TOP - margin, POPOVER_MARGIN),
-            paddingBottom: Math.max(gutter + SIDEBAR_BOTTOM - margin, POPOVER_MARGIN),
+            paddingBottom: Math.max(
+              gutter + SIDEBAR_BOTTOM - margin,
+              POPOVER_MARGIN
+            ),
             height: `calc(var(--anchor-height) - ${margin * 2}px)`,
             width: SIDEBAR_WIDTH,
           }}
           // Inherit the page type, not the popover's text-sm, so rows keep the docked line height.
-          className="gap-0 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] bg-popover px-2 text-[length:inherit] leading-[inherit] shadow-(--shadow-frame) data-open:zoom-in-100 data-closed:zoom-out-100 data-closed:slide-out-to-left-2"
+          className="bg-popover data-open:zoom-in-100 data-closed:zoom-out-100 data-closed:slide-out-to-left-2 gap-0 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] px-2 text-[length:inherit] leading-[inherit] shadow-(--shadow-frame)"
         >
           <SidebarPanel
             navigation={navigation}
@@ -205,7 +243,15 @@ export function SidebarRail({
         </PopoverContent>
       </Popover>
       <Tooltip>
-        <TooltipTrigger render={<button type="button" aria-label="Search" className={cn(item, "mt-3")} />}>
+        <TooltipTrigger
+          render={
+            <button
+              type="button"
+              aria-label="Search"
+              className={cn(item, "mt-3")}
+            />
+          }
+        >
           <MagnifierIcon className="size-5 shrink-0" />
         </TooltipTrigger>
         <TooltipContent side="right">
@@ -231,12 +277,17 @@ export function SidebarRail({
               >
                 <Icon className="size-5 shrink-0" />
                 {count || dot ? (
-                  <StatusDot size="xs" className="absolute top-1.5 end-1.5 bg-tone-strong ring-2 ring-canvas" />
+                  <StatusDot
+                    size="xs"
+                    className="bg-tone-strong ring-canvas absolute end-1.5 top-1.5 ring-2"
+                  />
                 ) : null}
               </TooltipTrigger>
               <TooltipContent side="right">
                 {label}
-                {count ? <span className="text-inverse-muted">{count}</span> : null}
+                {count ? (
+                  <span className="text-inverse-muted">{count}</span>
+                ) : null}
               </TooltipContent>
             </Tooltip>
           );
@@ -244,7 +295,15 @@ export function SidebarRail({
       </nav>
       {account ? (
         <Tooltip>
-          <TooltipTrigger render={<button type="button" aria-label="Account" className={cn(item, "mt-auto")} />}>
+          <TooltipTrigger
+            render={
+              <button
+                type="button"
+                aria-label="Account"
+                className={cn(item, "mt-auto")}
+              />
+            }
+          >
             <SettingsIcon className="size-5 shrink-0" />
           </TooltipTrigger>
           <TooltipContent side="right">{account}</TooltipContent>

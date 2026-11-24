@@ -7,8 +7,8 @@ import {
   BreadcrumbPath,
   BreadcrumbSeparator,
 } from "@outfitter/parks/components/breadcrumb";
-import { HomeIcon } from "@solar-icons/react/outline/home";
 import { FolderIcon } from "@solar-icons/react/outline/folder";
+import { HomeIcon } from "@solar-icons/react/outline/home";
 
 import { Specimen } from "./kit";
 
@@ -29,13 +29,23 @@ export function BreadcrumbDemo() {
       <Specimen title="Deep path">
         <BreadcrumbPath className="w-full" items={path} />
       </Specimen>
-      <Specimen title="Narrow container" note="The width folds ancestors into the menu even when the item limit allows the full path.">
-        <BreadcrumbPath className="w-full max-w-64" items={[...path.slice(0, -1), { label: "Landing" }]} maxItems={5} />
+      <Specimen
+        title="Narrow container"
+        note="The width folds ancestors into the menu even when the item limit allows the full path."
+      >
+        <BreadcrumbPath
+          className="w-full max-w-64"
+          items={[...path.slice(0, -1), { label: "Landing" }]}
+          maxItems={5}
+        />
       </Specimen>
       <Specimen title="Slash separators">
         <BreadcrumbPath items={path.slice(0, 3)} separator="slash" />
       </Specimen>
-      <Specimen title="Composed parts" note="The shadcn parts, for a path that isn't a list of entries. BreadcrumbPath is built from these.">
+      <Specimen
+        title="Composed parts"
+        note="The shadcn parts, for a path that isn't a list of entries. BreadcrumbPath is built from these."
+      >
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -43,7 +53,9 @@ export function BreadcrumbDemo() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/surfaces/skillset">Skillset</BreadcrumbLink>
+              <BreadcrumbLink href="/surfaces/skillset">
+                Skillset
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>

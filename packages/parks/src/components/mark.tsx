@@ -1,8 +1,11 @@
-import { mergeProps } from "@base-ui/react/merge-props"
-import { useRender } from "@base-ui/react/use-render"
-import { cva, type VariantProps } from "class-variance-authority"
-import { isTone, type Tone } from "#lib/tone"
-import { cnState } from "#lib/utils"
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+
+import { isTone } from "#lib/tone";
+import type { Tone } from "#lib/tone";
+import { cnState } from "#lib/utils";
 
 /*
  * A bounded glyph tile: an icon, letter or number on a tonal ground. Brand
@@ -42,15 +45,15 @@ const markVariants = cva(
       shape: "rect",
     },
   }
-)
+);
 
 type MarkProps = useRender.ComponentProps<"span"> &
   VariantProps<typeof markVariants> & {
     /** The colour role. Defaults to neutral. */
-    tone?: Tone
+    tone?: Tone;
     /** Lights the mark up: a tint becomes solid. */
-    selected?: boolean
-  }
+    selected?: boolean;
+  };
 
 /**
  * @example
@@ -58,14 +61,26 @@ type MarkProps = useRender.ComponentProps<"span"> &
  * <Mark tone="success" selected={picked}>A</Mark>
  * <Mark tone="brand" size="xl" shape="circle"><ShieldIcon /></Mark>
  */
-function Mark({ className, tone, variant, size, shape, selected, render, ...props }: MarkProps) {
-  const resolvedTone = isTone(tone) ? tone : "neutral"
-  const resolvedVariant = selected ? "solid" : (variant ?? "tint")
+function Mark({
+  className,
+  tone,
+  variant,
+  size,
+  shape,
+  selected,
+  render,
+  ...props
+}: MarkProps) {
+  const resolvedTone = isTone(tone) ? tone : "neutral";
+  const resolvedVariant = selected ? "solid" : (variant ?? "tint");
   return useRender({
     defaultTagName: "span",
     props: mergeProps<"span">(
       {
-        className: cnState(markVariants({ variant: resolvedVariant, size, shape }), className),
+        className: cnState(
+          markVariants({ variant: resolvedVariant, size, shape }),
+          className
+        ),
         ...{
           "data-tone": resolvedTone,
           "data-variant": resolvedVariant,
@@ -76,9 +91,14 @@ function Mark({ className, tone, variant, size, shape, selected, render, ...prop
       props
     ),
     render,
-    state: { slot: "mark", tone: resolvedTone, variant: resolvedVariant, selected: Boolean(selected) },
-  })
+    state: {
+      slot: "mark",
+      tone: resolvedTone,
+      variant: resolvedVariant,
+      selected: Boolean(selected),
+    },
+  });
 }
 
-export { Mark, markVariants }
-export type { MarkProps }
+export { Mark, markVariants };
+export type { MarkProps };

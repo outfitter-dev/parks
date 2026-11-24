@@ -1,6 +1,8 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
+
 import { describe, expect, it } from "vitest";
+
 import { colourOpacity } from "./ui-rules";
 
 // packages/parks is published for other apps, so it may only use
@@ -10,9 +12,11 @@ const manifest: {
   dependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
   imports?: Record<string, string>;
-} =
-  JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
-const declared = new Set([...Object.keys(manifest.dependencies ?? {}), ...Object.keys(manifest.peerDependencies ?? {})]);
+} = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+const declared = new Set([
+  ...Object.keys(manifest.dependencies ?? {}),
+  ...Object.keys(manifest.peerDependencies ?? {}),
+]);
 
 function files(dir: string): string[] {
   return readdirSync(dir).flatMap((name) => {
@@ -26,13 +30,18 @@ function packageName(specifier: string) {
   return specifier.startsWith("@") ? parts.slice(0, 2).join("/") : parts[0];
 }
 
-const sources = files(join(root, "src")).filter((path) => /\.(tsx?|css)$/.test(path));
-const specifier = /(?:from|import)\s*\(?\s*["']([^"']+)["']|@import\s+["']([^"']+)["']/g;
+const sources = files(join(root, "src")).filter((path) =>
+  /\.(tsx?|css)$/.test(path)
+);
+const specifier =
+  /(?:from|import)\s*\(?\s*["']([^"']+)["']|@import\s+["']([^"']+)["']/g;
 
 const aliases = Object.entries(manifest.imports ?? {});
 
 function aliasFor(target: string) {
-  return aliases.find(([key]) => (key.endsWith("*") ? target.startsWith(key.slice(0, -1)) : target === key));
+  return aliases.find(([key]) =>
+    key.endsWith("*") ? target.startsWith(key.slice(0, -1)) : target === key
+  );
 }
 
 describe("packages/parks boundary", () => {
@@ -43,7 +52,10 @@ describe("packages/parks boundary", () => {
   for (const [alias, mapped] of aliases) {
     it(`alias ${alias} maps inside the package`, () => {
       expect(mapped.startsWith("./"), `${alias} -> ${mapped}`).toBe(true);
-      expect(relative(root, join(root, mapped)).startsWith(".."), `${alias} -> ${mapped}`).toBe(false);
+      expect(
+        relative(root, join(root, mapped)).startsWith(".."),
+        `${alias} -> ${mapped}`
+      ).toBe(false);
     });
   }
 
@@ -55,14 +67,22 @@ describe("packages/parks boundary", () => {
       for (const match of text.matchAll(specifier)) {
         const target = match[1] ?? match[2] ?? "";
         if (target.startsWith("#")) {
-          expect(aliasFor(target), `${name} -> ${target} has no alias in package.json imports`).toBeDefined();
+          expect(
+            aliasFor(target),
+            `${name} -> ${target} has no alias in package.json imports`
+          ).toBeDefined();
           continue;
         }
         if (target.startsWith(".")) {
-          expect(relative(root, join(path, "..", target)).startsWith(".."), `${name} -> ${target}`).toBe(false);
+          expect(
+            relative(root, join(path, "..", target)).startsWith(".."),
+            `${name} -> ${target}`
+          ).toBe(false);
           continue;
         }
-        expect(declared.has(packageName(target)), `${name} -> ${target}`).toBe(true);
+        expect(declared.has(packageName(target)), `${name} -> ${target}`).toBe(
+          true
+        );
       }
     });
 
@@ -74,13 +94,20 @@ describe("packages/parks boundary", () => {
       // Components derive every colour and size from globals.css tokens or
       // the Tailwind scale. Only 1px and 2px hairline offsets may be literal.
       it(`${name} hard-codes no colours or sizes`, () => {
-        expect(text, "literal colour").not.toMatch(/oklch\(|rgba?\(|hsla?\(|#[0-9a-f]{3,8}\b/i);
-        expect(text, "Tailwind palette colour").not.toMatch(
-          /\b(?:bg|text|border|ring|fill|stroke|outline|shadow|from|to)-(?:white|black|(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d+)\b/,
+        expect(text, "literal colour").not.toMatch(
+          /oklch\(|rgba?\(|hsla?\(|#[0-9a-f]{3,8}\b/i
         );
-        for (const [value] of text.matchAll(/\[[^\]]*\d(?:\.\d+)?(?:px|rem|em)[^\]]*\]/g)) {
+        expect(text, "Tailwind palette colour").not.toMatch(
+          /\b(?:bg|text|border|ring|fill|stroke|outline|shadow|from|to)-(?:white|black|(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d+)\b/
+        );
+        for (const [value] of text.matchAll(
+          /\[[^\]]*\d(?:\.\d+)?(?:px|rem|em)[^\]]*\]/g
+        )) {
           const lengths = value.match(/\d+(?:\.\d+)?(?:px|rem|em)/g) ?? [];
-          expect(lengths.every((length) => length === "1px" || length === "2px"), `${name}: ${value}`).toBe(true);
+          expect(
+            lengths.every((length) => length === "1px" || length === "2px"),
+            `${name}: ${value}`
+          ).toBe(true);
         }
       });
 
@@ -95,8 +122,13 @@ describe("packages/parks boundary", () => {
       // through light-dark(), which is why avatar's edge keeps one override.
       it(`${name} has no dark: overrides`, () => {
         const overrides = text.match(/\bdark:[^\s"'`]+/g) ?? [];
-        const allowed = name.endsWith("avatar.tsx") ? ["dark:after:mix-blend-lighten"] : [];
-        expect(overrides.filter((cls) => !allowed.includes(cls)), name).toEqual([]);
+        const allowed = name.endsWith("avatar.tsx")
+          ? ["dark:after:mix-blend-lighten"]
+          : [];
+        expect(
+          overrides.filter((cls) => !allowed.includes(cls)),
+          name
+        ).toEqual([]);
       });
 
       // Base UI passes className as a function of state; cn() would drop it.

@@ -1,16 +1,17 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Popover as PopoverPrimitive } from "@base-ui/react/popover"
-import { header, headerDescription, headerTitle } from "#lib/header"
-import { cnState } from "#lib/utils"
+import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
+import * as React from "react";
+
+import { header, headerDescription, headerTitle } from "#lib/header";
+import { cnState } from "#lib/utils";
 
 function Popover({ ...props }: PopoverPrimitive.Root.Props) {
-  return <PopoverPrimitive.Root data-slot="popover" {...props} />
+  return <PopoverPrimitive.Root data-slot="popover" {...props} />;
 }
 
 function PopoverTrigger({ ...props }: PopoverPrimitive.Trigger.Props) {
-  return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />
+  return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />;
 }
 
 function PopoverContent({
@@ -46,7 +47,7 @@ function PopoverContent({
         />
       </PopoverPrimitive.Positioner>
     </PopoverPrimitive.Portal>
-  )
+  );
 }
 
 function PopoverHeader({ className, ...props }: React.ComponentProps<"div">) {
@@ -56,7 +57,7 @@ function PopoverHeader({ className, ...props }: React.ComponentProps<"div">) {
       className={cnState(header, "text-sm", className)}
       {...props}
     />
-  )
+  );
 }
 
 function PopoverTitle({ className, ...props }: PopoverPrimitive.Title.Props) {
@@ -66,7 +67,7 @@ function PopoverTitle({ className, ...props }: PopoverPrimitive.Title.Props) {
       className={cnState(headerTitle, "font-medium", className)}
       {...props}
     />
-  )
+  );
 }
 
 function PopoverDescription({
@@ -79,7 +80,7 @@ function PopoverDescription({
       className={cnState(headerDescription, "mt-0.5", className)}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -89,4 +90,4 @@ export {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-}
+};

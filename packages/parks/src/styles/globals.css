@@ -90,7 +90,10 @@
   --inset: calc(var(--pad) * var(--inset-ratio));
   --frame-radius: calc(var(--radius) + var(--pad));
   --frame-pad-sm: calc(var(--pad) * 0.75);
-  --inner-radius: max(var(--radius-floor), calc(var(--radius) - var(--panel-pad-base)));
+  --inner-radius: max(
+    var(--radius-floor),
+    calc(var(--radius) - var(--panel-pad-base))
+  );
 }
 
 /*
@@ -105,24 +108,57 @@
 :root,
 .light,
 .dark {
-  --background: light-dark(oklch(0.992 calc(var(--neutral-tint) * 0.6) var(--neutral-hue)), oklch(0.165 calc(var(--neutral-tint) * 1.5) var(--neutral-hue)));
+  --background: light-dark(
+    oklch(0.992 calc(var(--neutral-tint) * 0.6) var(--neutral-hue)),
+    oklch(0.165 calc(var(--neutral-tint) * 1.5) var(--neutral-hue))
+  );
   /* The window behind an app's sidebar and its inset main container: one step below the page surface. */
-  --canvas: light-dark(oklch(0.966 calc(var(--neutral-tint) * 1.2) var(--neutral-hue)), oklch(0.135 calc(var(--neutral-tint) * 1.4) var(--neutral-hue)));
-  --foreground: light-dark(oklch(0.18 calc(var(--neutral-tint) * 2) var(--neutral-hue)), oklch(0.965 calc(var(--neutral-tint) * 0.6) var(--neutral-hue)));
-  --card: light-dark(oklch(1 calc(var(--neutral-tint) * 0.2) var(--neutral-hue)), oklch(0.2 calc(var(--neutral-tint) * 1.6) var(--neutral-hue)));
-  --popover: light-dark(oklch(1 calc(var(--neutral-tint) * 0.2) var(--neutral-hue)), oklch(0.22 calc(var(--neutral-tint) * 1.6) var(--neutral-hue)));
-  --secondary: light-dark(oklch(0.942 calc(var(--neutral-tint) * 1.3) var(--neutral-hue)), oklch(0.275 calc(var(--neutral-tint) * 1.9) var(--neutral-hue)));
-  --accent: light-dark(oklch(0.952 calc(var(--neutral-tint) * 1.4) var(--neutral-hue)), oklch(0.27 calc(var(--neutral-tint) * 2) var(--neutral-hue)));
-  --ink: light-dark(oklch(0.21 calc(var(--neutral-tint) * 2) var(--neutral-hue)), var(--foreground));
-  --muted: light-dark(oklch(0.962 calc(var(--neutral-tint) * 1.2) var(--neutral-hue)), oklch(0.255 calc(var(--neutral-tint) * 1.8) var(--neutral-hue)));
-  --muted-foreground: light-dark(oklch(0.5 calc(var(--neutral-tint) * 2.5) var(--neutral-hue)), oklch(0.7 calc(var(--neutral-tint) * 2) var(--neutral-hue)));
+  --canvas: light-dark(
+    oklch(0.966 calc(var(--neutral-tint) * 1.2) var(--neutral-hue)),
+    oklch(0.135 calc(var(--neutral-tint) * 1.4) var(--neutral-hue))
+  );
+  --foreground: light-dark(
+    oklch(0.18 calc(var(--neutral-tint) * 2) var(--neutral-hue)),
+    oklch(0.965 calc(var(--neutral-tint) * 0.6) var(--neutral-hue))
+  );
+  --card: light-dark(
+    oklch(1 calc(var(--neutral-tint) * 0.2) var(--neutral-hue)),
+    oklch(0.2 calc(var(--neutral-tint) * 1.6) var(--neutral-hue))
+  );
+  --popover: light-dark(
+    oklch(1 calc(var(--neutral-tint) * 0.2) var(--neutral-hue)),
+    oklch(0.22 calc(var(--neutral-tint) * 1.6) var(--neutral-hue))
+  );
+  --secondary: light-dark(
+    oklch(0.942 calc(var(--neutral-tint) * 1.3) var(--neutral-hue)),
+    oklch(0.275 calc(var(--neutral-tint) * 1.9) var(--neutral-hue))
+  );
+  --accent: light-dark(
+    oklch(0.952 calc(var(--neutral-tint) * 1.4) var(--neutral-hue)),
+    oklch(0.27 calc(var(--neutral-tint) * 2) var(--neutral-hue))
+  );
+  --ink: light-dark(
+    oklch(0.21 calc(var(--neutral-tint) * 2) var(--neutral-hue)),
+    var(--foreground)
+  );
+  --muted: light-dark(
+    oklch(0.962 calc(var(--neutral-tint) * 1.2) var(--neutral-hue)),
+    oklch(0.255 calc(var(--neutral-tint) * 1.8) var(--neutral-hue))
+  );
+  --muted-foreground: light-dark(
+    oklch(0.5 calc(var(--neutral-tint) * 2.5) var(--neutral-hue)),
+    oklch(0.7 calc(var(--neutral-tint) * 2) var(--neutral-hue))
+  );
 
   /* A panel inside a card: an opaque step between the card and muted. */
   --panel-fill: color-mix(in oklch, var(--muted) 60%, var(--card));
   --card-foreground: var(--foreground);
   --popover-foreground: var(--foreground);
   /* Text on secondary, outline and ghost buttons: a step softer than ink. */
-  --secondary-foreground: light-dark(var(--color-neutral-700), var(--color-neutral-200));
+  --secondary-foreground: light-dark(
+    var(--color-neutral-700),
+    var(--color-neutral-200)
+  );
   --accent-foreground: var(--ink);
 
   /* Translucent marks are the foreground at a named alpha, light value
@@ -136,29 +172,61 @@
        border-strong  hover or selected edge on a card or option
        inverse-muted  secondary text on a foreground-coloured surface
        glass          a floating panel over content, under a backdrop blur */
-  --fg-subtle: light-dark(color-mix(in oklch, var(--foreground) 36%, transparent), color-mix(in oklch, var(--foreground) 40%, transparent));
-  --fill-subtle: light-dark(color-mix(in oklch, var(--foreground) 4%, transparent), color-mix(in oklch, var(--foreground) 6%, transparent));
-  --fill: light-dark(color-mix(in oklch, var(--foreground) 7%, transparent), color-mix(in oklch, var(--foreground) 10%, transparent));
-  --fill-strong: light-dark(color-mix(in oklch, var(--foreground) 11%, transparent), color-mix(in oklch, var(--foreground) 15%, transparent));
-  --border-muted: light-dark(color-mix(in oklch, var(--foreground) 9%, transparent), color-mix(in oklch, var(--foreground) 11%, transparent));
-  --border-strong: light-dark(color-mix(in oklch, var(--foreground) 24%, transparent), color-mix(in oklch, var(--foreground) 28%, transparent));
+  --fg-subtle: light-dark(
+    color-mix(in oklch, var(--foreground) 36%, transparent),
+    color-mix(in oklch, var(--foreground) 40%, transparent)
+  );
+  --fill-subtle: light-dark(
+    color-mix(in oklch, var(--foreground) 4%, transparent),
+    color-mix(in oklch, var(--foreground) 6%, transparent)
+  );
+  --fill: light-dark(
+    color-mix(in oklch, var(--foreground) 7%, transparent),
+    color-mix(in oklch, var(--foreground) 10%, transparent)
+  );
+  --fill-strong: light-dark(
+    color-mix(in oklch, var(--foreground) 11%, transparent),
+    color-mix(in oklch, var(--foreground) 15%, transparent)
+  );
+  --border-muted: light-dark(
+    color-mix(in oklch, var(--foreground) 9%, transparent),
+    color-mix(in oklch, var(--foreground) 11%, transparent)
+  );
+  --border-strong: light-dark(
+    color-mix(in oklch, var(--foreground) 24%, transparent),
+    color-mix(in oklch, var(--foreground) 28%, transparent)
+  );
   --inverse-muted: color-mix(in oklch, var(--background) 60%, transparent);
   --glass: color-mix(in oklch, var(--muted) 85%, transparent);
 
   /* Primary is ink unless a theme sets --primary-seed (e.g. var(--brand)). */
-  --primary: var(--primary-seed, light-dark(var(--ink), oklch(0.94 var(--neutral-tint) var(--neutral-hue))));
+  --primary: var(
+    --primary-seed,
+    light-dark(var(--ink), oklch(0.94 var(--neutral-tint) var(--neutral-hue)))
+  );
   --primary-foreground: var(
     --primary-foreground-seed,
-    light-dark(oklch(0.985 calc(var(--neutral-tint) * 0.3) var(--neutral-hue)), oklch(0.2 calc(var(--neutral-tint) * 2) var(--neutral-hue)))
+    light-dark(
+      oklch(0.985 calc(var(--neutral-tint) * 0.3) var(--neutral-hue)),
+      oklch(0.2 calc(var(--neutral-tint) * 2) var(--neutral-hue))
+    )
   );
-  --brand-foreground: oklch(from var(--brand) clamp(0.16, (0.7 - l) * 1000, 0.99) 0.01 h);
+  --brand-foreground: oklch(
+    from var(--brand) clamp(0.16, (0.7 - l) * 1000, 0.99) 0.01 h
+  );
 
   --border: light-dark(
-    oklch(calc(0.94 - var(--border-strength) * 0.08) calc(var(--neutral-tint) * 1.5) var(--neutral-hue)),
+    oklch(
+      calc(0.94 - var(--border-strength) * 0.08) calc(var(--neutral-tint) * 1.5)
+        var(--neutral-hue)
+    ),
     oklch(1 0 0 / calc(0.06 + var(--border-strength) * 0.08))
   );
   --input: light-dark(
-    oklch(calc(0.93 - var(--border-strength) * 0.08) calc(var(--neutral-tint) * 1.5) var(--neutral-hue)),
+    oklch(
+      calc(0.93 - var(--border-strength) * 0.08) calc(var(--neutral-tint) * 1.5)
+        var(--neutral-hue)
+    ),
     oklch(1 0 0 / calc(0.1 + var(--border-strength) * 0.08))
   );
   --ring: color-mix(in oklch, var(--brand) 70%, transparent);
@@ -173,46 +241,121 @@
      because amber reads dim at 600, so its contrast text stays dark. */
   --destructive: light-dark(var(--color-red-600), var(--color-red-400));
   --destructive-strong: light-dark(var(--color-red-700), var(--color-red-300));
-  --destructive-foreground: light-dark(var(--color-red-800), var(--color-red-200));
+  --destructive-foreground: light-dark(
+    var(--color-red-800),
+    var(--color-red-200)
+  );
   --destructive-contrast: light-dark(var(--color-red-50), var(--color-red-950));
-  --destructive-fill: light-dark(color-mix(in oklch, var(--destructive) 10%, transparent), color-mix(in oklch, var(--destructive) 20%, transparent));
-  --destructive-fill-hover: light-dark(color-mix(in oklch, var(--destructive) 20%, transparent), color-mix(in oklch, var(--destructive) 30%, transparent));
-  --destructive-border: light-dark(color-mix(in oklch, var(--destructive) 30%, transparent), color-mix(in oklch, var(--destructive) 35%, transparent));
+  --destructive-fill: light-dark(
+    color-mix(in oklch, var(--destructive) 10%, transparent),
+    color-mix(in oklch, var(--destructive) 20%, transparent)
+  );
+  --destructive-fill-hover: light-dark(
+    color-mix(in oklch, var(--destructive) 20%, transparent),
+    color-mix(in oklch, var(--destructive) 30%, transparent)
+  );
+  --destructive-border: light-dark(
+    color-mix(in oklch, var(--destructive) 30%, transparent),
+    color-mix(in oklch, var(--destructive) 35%, transparent)
+  );
   --warning: light-dark(var(--color-amber-500), var(--color-amber-400));
   --warning-strong: light-dark(var(--color-amber-700), var(--color-amber-300));
-  --warning-foreground: light-dark(var(--color-amber-800), var(--color-amber-200));
+  --warning-foreground: light-dark(
+    var(--color-amber-800),
+    var(--color-amber-200)
+  );
   --warning-contrast: var(--color-amber-950);
-  --warning-fill: light-dark(color-mix(in oklch, var(--warning) 10%, transparent), color-mix(in oklch, var(--warning) 20%, transparent));
-  --warning-fill-hover: light-dark(color-mix(in oklch, var(--warning) 20%, transparent), color-mix(in oklch, var(--warning) 30%, transparent));
-  --warning-border: light-dark(color-mix(in oklch, var(--warning) 30%, transparent), color-mix(in oklch, var(--warning) 35%, transparent));
+  --warning-fill: light-dark(
+    color-mix(in oklch, var(--warning) 10%, transparent),
+    color-mix(in oklch, var(--warning) 20%, transparent)
+  );
+  --warning-fill-hover: light-dark(
+    color-mix(in oklch, var(--warning) 20%, transparent),
+    color-mix(in oklch, var(--warning) 30%, transparent)
+  );
+  --warning-border: light-dark(
+    color-mix(in oklch, var(--warning) 30%, transparent),
+    color-mix(in oklch, var(--warning) 35%, transparent)
+  );
   --success: light-dark(var(--color-emerald-600), var(--color-emerald-400));
-  --success-strong: light-dark(var(--color-emerald-700), var(--color-emerald-300));
-  --success-foreground: light-dark(var(--color-emerald-800), var(--color-emerald-200));
-  --success-contrast: light-dark(var(--color-emerald-50), var(--color-emerald-950));
-  --success-fill: light-dark(color-mix(in oklch, var(--success) 10%, transparent), color-mix(in oklch, var(--success) 20%, transparent));
-  --success-fill-hover: light-dark(color-mix(in oklch, var(--success) 20%, transparent), color-mix(in oklch, var(--success) 30%, transparent));
-  --success-border: light-dark(color-mix(in oklch, var(--success) 30%, transparent), color-mix(in oklch, var(--success) 35%, transparent));
+  --success-strong: light-dark(
+    var(--color-emerald-700),
+    var(--color-emerald-300)
+  );
+  --success-foreground: light-dark(
+    var(--color-emerald-800),
+    var(--color-emerald-200)
+  );
+  --success-contrast: light-dark(
+    var(--color-emerald-50),
+    var(--color-emerald-950)
+  );
+  --success-fill: light-dark(
+    color-mix(in oklch, var(--success) 10%, transparent),
+    color-mix(in oklch, var(--success) 20%, transparent)
+  );
+  --success-fill-hover: light-dark(
+    color-mix(in oklch, var(--success) 20%, transparent),
+    color-mix(in oklch, var(--success) 30%, transparent)
+  );
+  --success-border: light-dark(
+    color-mix(in oklch, var(--success) 30%, transparent),
+    color-mix(in oklch, var(--success) 35%, transparent)
+  );
   --info: light-dark(var(--color-blue-600), var(--color-blue-400));
   --info-strong: light-dark(var(--color-blue-700), var(--color-blue-300));
   --info-foreground: light-dark(var(--color-blue-800), var(--color-blue-200));
   --info-contrast: light-dark(var(--color-blue-50), var(--color-blue-950));
-  --info-fill: light-dark(color-mix(in oklch, var(--info) 10%, transparent), color-mix(in oklch, var(--info) 20%, transparent));
-  --info-fill-hover: light-dark(color-mix(in oklch, var(--info) 20%, transparent), color-mix(in oklch, var(--info) 30%, transparent));
-  --info-border: light-dark(color-mix(in oklch, var(--info) 30%, transparent), color-mix(in oklch, var(--info) 35%, transparent));
+  --info-fill: light-dark(
+    color-mix(in oklch, var(--info) 10%, transparent),
+    color-mix(in oklch, var(--info) 20%, transparent)
+  );
+  --info-fill-hover: light-dark(
+    color-mix(in oklch, var(--info) 20%, transparent),
+    color-mix(in oklch, var(--info) 30%, transparent)
+  );
+  --info-border: light-dark(
+    color-mix(in oklch, var(--info) 30%, transparent),
+    color-mix(in oklch, var(--info) 35%, transparent)
+  );
   /* Merged work (pull requests, stacks) reads purple. */
   --merged: light-dark(var(--color-purple-600), var(--color-purple-400));
   --merged-strong: light-dark(var(--color-purple-700), var(--color-purple-300));
-  --merged-foreground: light-dark(var(--color-purple-800), var(--color-purple-200));
-  --merged-contrast: light-dark(var(--color-purple-50), var(--color-purple-950));
-  --merged-fill: light-dark(color-mix(in oklch, var(--merged) 10%, transparent), color-mix(in oklch, var(--merged) 20%, transparent));
-  --merged-fill-hover: light-dark(color-mix(in oklch, var(--merged) 20%, transparent), color-mix(in oklch, var(--merged) 30%, transparent));
-  --merged-border: light-dark(color-mix(in oklch, var(--merged) 30%, transparent), color-mix(in oklch, var(--merged) 35%, transparent));
+  --merged-foreground: light-dark(
+    var(--color-purple-800),
+    var(--color-purple-200)
+  );
+  --merged-contrast: light-dark(
+    var(--color-purple-50),
+    var(--color-purple-950)
+  );
+  --merged-fill: light-dark(
+    color-mix(in oklch, var(--merged) 10%, transparent),
+    color-mix(in oklch, var(--merged) 20%, transparent)
+  );
+  --merged-fill-hover: light-dark(
+    color-mix(in oklch, var(--merged) 20%, transparent),
+    color-mix(in oklch, var(--merged) 30%, transparent)
+  );
+  --merged-border: light-dark(
+    color-mix(in oklch, var(--merged) 30%, transparent),
+    color-mix(in oklch, var(--merged) 35%, transparent)
+  );
   /* The brand as a tone, from the brand palette like the others. */
   --brand-strong: light-dark(var(--color-brand-700), var(--color-brand-300));
   --brand-on-tint: light-dark(var(--color-brand-800), var(--color-brand-200));
-  --brand-fill: light-dark(color-mix(in oklch, var(--brand) 12%, transparent), color-mix(in oklch, var(--brand) 22%, transparent));
-  --brand-fill-hover: light-dark(color-mix(in oklch, var(--brand) 22%, transparent), color-mix(in oklch, var(--brand) 32%, transparent));
-  --brand-border: light-dark(color-mix(in oklch, var(--brand) 30%, transparent), color-mix(in oklch, var(--brand) 35%, transparent));
+  --brand-fill: light-dark(
+    color-mix(in oklch, var(--brand) 12%, transparent),
+    color-mix(in oklch, var(--brand) 22%, transparent)
+  );
+  --brand-fill-hover: light-dark(
+    color-mix(in oklch, var(--brand) 22%, transparent),
+    color-mix(in oklch, var(--brand) 32%, transparent)
+  );
+  --brand-border: light-dark(
+    color-mix(in oklch, var(--brand) 30%, transparent),
+    color-mix(in oklch, var(--brand) 35%, transparent)
+  );
   /* "New" (unread, just arrived) borrows the info tone, so new things read blue. */
   --new: var(--info);
   --new-strong: var(--info-strong);
@@ -220,27 +363,70 @@
 
   /* State fills. Each pairs a light and a dark strength, so components
      never restate a colour under dark:. */
-  --invalid-ring: light-dark(color-mix(in oklch, var(--destructive) 20%, transparent), color-mix(in oklch, var(--destructive) 40%, transparent));
-  --invalid-border: light-dark(var(--destructive), color-mix(in oklch, var(--destructive) 50%, transparent));
-  --ghost-hover: light-dark(var(--muted), color-mix(in oklch, var(--muted) 50%, transparent));
-  --secondary-hover: color-mix(in oklch, var(--secondary), var(--foreground) 5%);
-  --chip: light-dark(color-mix(in oklch, var(--background) 70%, transparent), color-mix(in oklch, var(--foreground) 8%, transparent));
+  --invalid-ring: light-dark(
+    color-mix(in oklch, var(--destructive) 20%, transparent),
+    color-mix(in oklch, var(--destructive) 40%, transparent)
+  );
+  --invalid-border: light-dark(
+    var(--destructive),
+    color-mix(in oklch, var(--destructive) 50%, transparent)
+  );
+  --ghost-hover: light-dark(
+    var(--muted),
+    color-mix(in oklch, var(--muted) 50%, transparent)
+  );
+  --secondary-hover: color-mix(
+    in oklch,
+    var(--secondary),
+    var(--foreground) 5%
+  );
+  --chip: light-dark(
+    color-mix(in oklch, var(--background) 70%, transparent),
+    color-mix(in oklch, var(--foreground) 8%, transparent)
+  );
   --chip-ring: var(--border-muted);
 
   /* Control fills: fields, outline buttons, switches, tabs. */
-  --field: light-dark(transparent, color-mix(in oklch, var(--input) 30%, transparent));
-  --field-hover: light-dark(transparent, color-mix(in oklch, var(--input) 50%, transparent));
-  --field-disabled: light-dark(color-mix(in oklch, var(--input) 50%, transparent), color-mix(in oklch, var(--input) 80%, transparent));
-  --control-outline: light-dark(var(--background), color-mix(in oklch, var(--input) 30%, transparent));
-  --control-outline-hover: light-dark(var(--muted), color-mix(in oklch, var(--input) 50%, transparent));
+  --field: light-dark(
+    transparent,
+    color-mix(in oklch, var(--input) 30%, transparent)
+  );
+  --field-hover: light-dark(
+    transparent,
+    color-mix(in oklch, var(--input) 50%, transparent)
+  );
+  --field-disabled: light-dark(
+    color-mix(in oklch, var(--input) 50%, transparent),
+    color-mix(in oklch, var(--input) 80%, transparent)
+  );
+  --control-outline: light-dark(
+    var(--background),
+    color-mix(in oklch, var(--input) 30%, transparent)
+  );
+  --control-outline-hover: light-dark(
+    var(--muted),
+    color-mix(in oklch, var(--input) 50%, transparent)
+  );
   --control-outline-border: light-dark(var(--border), var(--input));
-  --switch-track: light-dark(var(--input), color-mix(in oklch, var(--input) 80%, transparent));
+  --switch-track: light-dark(
+    var(--input),
+    color-mix(in oklch, var(--input) 80%, transparent)
+  );
   --switch-thumb: light-dark(var(--background), var(--foreground));
   --switch-thumb-on: light-dark(var(--background), var(--primary-foreground));
-  --tab-text: light-dark(color-mix(in oklch, var(--foreground) 60%, transparent), var(--muted-foreground));
-  --tab-active: light-dark(var(--background), color-mix(in oklch, var(--input) 30%, transparent));
+  --tab-text: light-dark(
+    color-mix(in oklch, var(--foreground) 60%, transparent),
+    var(--muted-foreground)
+  );
+  --tab-active: light-dark(
+    var(--background),
+    color-mix(in oklch, var(--input) 30%, transparent)
+  );
   --tab-active-border: light-dark(transparent, var(--input));
-  --kbd-on-inverse: light-dark(color-mix(in oklch, var(--background) 20%, transparent), color-mix(in oklch, var(--background) 10%, transparent));
+  --kbd-on-inverse: light-dark(
+    color-mix(in oklch, var(--background) 20%, transparent),
+    color-mix(in oklch, var(--background) 10%, transparent)
+  );
 
   /* Lift grows with --shadow-level; dark surfaces add a top highlight. */
   --shadow-color: light-dark(
@@ -254,7 +440,8 @@
   --shadow-highlight: light-dark(transparent, oklch(1 0 0 / 0.05));
   --shadow-frame:
     0 1px 2px var(--shadow-color),
-    0 calc(var(--shadow-level) * 2px) calc(var(--shadow-level) * 6px) var(--shadow-color-soft),
+    0 calc(var(--shadow-level) * 2px) calc(var(--shadow-level) * 6px)
+      var(--shadow-color-soft),
     inset 0 1px 0 var(--shadow-highlight);
 }
 
@@ -354,7 +541,10 @@
    shares the corner's centre, so it sits --corner-gap in from both edges and
    its height is 2 × (frame radius − gap). Pill controls then stay concentric. */
 @utility corner-tray {
-  --corner-control-h: max(--spacing(6), calc(2 * (var(--frame-radius) - var(--corner-gap))));
+  --corner-control-h: max(
+    --spacing(6),
+    calc(2 * (var(--frame-radius) - var(--corner-gap)))
+  );
   padding: 0 var(--corner-gap) var(--corner-gap);
 }
 
@@ -397,7 +587,10 @@
    radius is the row's minus the inset and the 1px border, so the two
    corners share a centre. The row sets --row-action-inset and pads by it. */
 @utility rounded-inset-action {
-  border-radius: calc(max(var(--radius-floor), var(--radius) - var(--row-action-inset) - 1px) * var(--corner-scale));
+  border-radius: calc(
+    max(var(--radius-floor), var(--radius) - var(--row-action-inset) - 1px) *
+      var(--corner-scale)
+  );
 }
 
 /* A leading slot at a rounded element's start corner: a square as tall as
@@ -419,7 +612,10 @@
 /* A panel: a surface inside a frame. Its radius is the frame's inner radius. */
 @utility panel {
   --panel-space: var(--panel-pad, var(--panel-pad-base));
-  --inner-radius: max(var(--radius-floor), calc(var(--radius) - var(--panel-space)));
+  --inner-radius: max(
+    var(--radius-floor),
+    calc(var(--radius) - var(--panel-space))
+  );
   --inset: calc(var(--panel-space) * var(--inset-ratio));
   border-radius: calc(var(--radius) * var(--corner-scale));
   padding: var(--panel-space);
@@ -589,10 +785,16 @@
   --color-overlay: var(--overlay);
   --radius-2xs: calc(var(--radius-step) * var(--corner-scale));
   --radius-xs: calc(calc(var(--radius-step) * 2) * var(--corner-scale));
-  --radius-sm: calc(calc(var(--radius) - var(--radius-step) * 2) * var(--corner-scale));
-  --radius-md: calc(calc(var(--radius) - var(--radius-step)) * var(--corner-scale));
+  --radius-sm: calc(
+    calc(var(--radius) - var(--radius-step) * 2) * var(--corner-scale)
+  );
+  --radius-md: calc(
+    calc(var(--radius) - var(--radius-step)) * var(--corner-scale)
+  );
   --radius-lg: calc(var(--radius) * var(--corner-scale));
-  --radius-xl: calc(calc(var(--radius) + var(--radius-step) * 2) * var(--corner-scale));
+  --radius-xl: calc(
+    calc(var(--radius) + var(--radius-step) * 2) * var(--corner-scale)
+  );
   --radius-frame: calc(var(--frame-radius) * var(--corner-scale));
   --radius-inner: calc(var(--inner-radius) * var(--corner-scale));
   --font-sans: var(--font-ui);
@@ -604,7 +806,10 @@
    Equal dips give the scale. Unlayered so it beats the seed default. */
 @supports (corner-shape: superellipse(2)) {
   :root {
-    --corner-scale: calc((sqrt(2) - 1) / (sqrt(2) * (1 - pow(2, -1 / pow(2, var(--corner-smoothing))))));
+    --corner-scale: calc(
+      (sqrt(2) - 1) /
+        (sqrt(2) * (1 - pow(2, -1 / pow(2, var(--corner-smoothing)))))
+    );
   }
 }
 

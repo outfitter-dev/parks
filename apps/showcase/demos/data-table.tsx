@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@outfitter/parks/components/dropdown-menu";
 import { MenuDotsIcon } from "@solar-icons/react/bold/menu-dots";
+
 import { Specimen } from "./kit";
 
 type Delivery = {
@@ -39,7 +40,14 @@ const statusTone = {
 
 const agentsCycle = ["Donna", "Rex", "Forge", "Ranger", "Climb"];
 const channelsCycle = ["outfitter", "toolkit", "signals", "test-outpost"];
-const statusCycle: Delivery["status"][] = ["delivered", "delivered", "queued", "retrying", "delivered", "failed"];
+const statusCycle: Delivery["status"][] = [
+  "delivered",
+  "delivered",
+  "queued",
+  "retrying",
+  "delivered",
+  "failed",
+];
 
 // Fixtures only: 23 deliveries so the table has three pages at ten rows.
 const deliveries: Delivery[] = Array.from({ length: 23 }, (_, index) => ({
@@ -51,34 +59,70 @@ const deliveries: Delivery[] = Array.from({ length: 23 }, (_, index) => ({
   at: `2026-11-24T${String(7 + Math.floor((index * 13) / 60)).padStart(2, "0")}:${String((index * 13) % 60).padStart(2, "0")}:00`,
 }));
 
-const columnLabels = { agent: "Agent", channel: "Channel", status: "Status", attempts: "Attempts", at: "Sent" };
+const columnLabels = {
+  agent: "Agent",
+  channel: "Channel",
+  status: "Status",
+  attempts: "Attempts",
+  at: "Sent",
+};
 
 const helper = dataTableColumns<Delivery>();
 const columns = helper.columns([
   dataTableSelectColumn<Delivery>(),
   helper.accessor("agent", {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Agent" />,
-    cell: ({ row }) => <span className="font-medium">{row.original.agent}</span>,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Agent" />
+    ),
+    cell: ({ row }) => (
+      <span className="font-medium">{row.original.agent}</span>
+    ),
   }),
   helper.accessor("channel", {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Channel" />,
-    cell: ({ row }) => <span className="font-mono text-muted-foreground">#{row.original.channel}</span>,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Channel" />
+    ),
+    cell: ({ row }) => (
+      <span className="text-muted-foreground font-mono">
+        #{row.original.channel}
+      </span>
+    ),
   }),
   helper.accessor("status", {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
     cell: ({ row }) => (
-      <Badge tone={statusTone[row.original.status]} variant="tint" className="capitalize">
+      <Badge
+        tone={statusTone[row.original.status]}
+        variant="tint"
+        className="capitalize"
+      >
         {row.original.status}
       </Badge>
     ),
   }),
   helper.accessor("attempts", {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Attempts" className="justify-end" />,
-    cell: ({ row }) => <div className="text-right tabular-nums">{row.original.attempts}</div>,
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Attempts"
+        className="justify-end"
+      />
+    ),
+    cell: ({ row }) => (
+      <div className="text-right tabular-nums">{row.original.attempts}</div>
+    ),
   }),
   helper.accessor("at", {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Sent" />,
-    cell: ({ row }) => <span className="text-muted-foreground tabular-nums">{row.original.at.slice(11, 16)}</span>,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Sent" />
+    ),
+    cell: ({ row }) => (
+      <span className="text-muted-foreground tabular-nums">
+        {row.original.at.slice(11, 16)}
+      </span>
+    ),
   }),
   helper.display({
     id: "actions",
@@ -86,7 +130,15 @@ const columns = helper.columns([
     cell: () => (
       <div className="flex justify-end">
         <DropdownMenu>
-          <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" aria-label="Delivery actions" />}>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Delivery actions"
+              />
+            }
+          >
             <MenuDotsIcon />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
@@ -102,14 +154,23 @@ const columns = helper.columns([
 ]);
 
 export function DataTableDemo() {
-  const table = useDataTable({ data: deliveries, columns, getRowId: (row) => row.id });
+  const table = useDataTable({
+    data: deliveries,
+    columns,
+    getRowId: (row) => row.id,
+  });
   return (
     <Specimen
       title="Deliveries"
       note="TanStack Table v9 on our Table, after shadcn's guide. Sort or hide a column from its header, filter by agent, pick rows, and page through."
       className="block space-y-3"
     >
-      <DataTableToolbar table={table} filterColumn="agent" filterPlaceholder="Filter agents…" labels={columnLabels} />
+      <DataTableToolbar
+        table={table}
+        filterColumn="agent"
+        filterPlaceholder="Filter agents…"
+        labels={columnLabels}
+      />
       <DataTable table={table} empty="No deliveries match." />
       <DataTablePagination table={table} />
     </Specimen>

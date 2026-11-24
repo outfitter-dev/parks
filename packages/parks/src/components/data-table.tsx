@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 /*
  * Data table: our Table rendered from a TanStack Table v9 instance, after
@@ -15,7 +15,15 @@
  *   <DataTablePagination table={table} />
  */
 
-import * as React from "react"
+import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
+import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left";
+import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
+import { AltArrowUpIcon } from "@solar-icons/react/outline/alt-arrow-up";
+import { DoubleAltArrowLeftIcon } from "@solar-icons/react/outline/double-alt-arrow-left";
+import { DoubleAltArrowRightIcon } from "@solar-icons/react/outline/double-alt-arrow-right";
+import { EyeClosedIcon } from "@solar-icons/react/outline/eye-closed";
+import { SortVerticalIcon } from "@solar-icons/react/outline/sort-vertical";
+import { Tuning2Icon } from "@solar-icons/react/outline/tuning-2";
 import {
   columnFilteringFeature,
   columnVisibilityFeature,
@@ -33,23 +41,17 @@ import {
   sortFn_text,
   tableFeatures,
   useTable,
-  type Column,
-  type ReactTable,
-  type RowData,
-  type TableOptions,
-} from "@tanstack/react-table"
-import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down"
-import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left"
-import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right"
-import { AltArrowUpIcon } from "@solar-icons/react/outline/alt-arrow-up"
-import { DoubleAltArrowLeftIcon } from "@solar-icons/react/outline/double-alt-arrow-left"
-import { DoubleAltArrowRightIcon } from "@solar-icons/react/outline/double-alt-arrow-right"
-import { EyeClosedIcon } from "@solar-icons/react/outline/eye-closed"
-import { SortVerticalIcon } from "@solar-icons/react/outline/sort-vertical"
-import { Tuning2Icon } from "@solar-icons/react/outline/tuning-2"
-import { cnState } from "#lib/utils"
-import { Button } from "#components/button"
-import { Checkbox } from "#components/checkbox"
+} from "@tanstack/react-table";
+import type {
+  Column,
+  ReactTable,
+  RowData,
+  TableOptions,
+} from "@tanstack/react-table";
+import * as React from "react";
+
+import { Button } from "#components/button";
+import { Checkbox } from "#components/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -59,15 +61,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "#components/dropdown-menu"
-import { Input } from "#components/input"
+} from "#components/dropdown-menu";
+import { Input } from "#components/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "#components/select"
+} from "#components/select";
 import {
   Table,
   TableBody,
@@ -75,7 +77,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "#components/table"
+} from "#components/table";
+import { cnState } from "#lib/utils";
 
 const dataTableFeatures = tableFeatures({
   columnFilteringFeature,
@@ -93,21 +96,21 @@ const dataTableFeatures = tableFeatures({
     datetime: sortFn_datetime,
     text: sortFn_text,
   },
-})
+});
 
-type DataTableFeatures = typeof dataTableFeatures
+type DataTableFeatures = typeof dataTableFeatures;
 type DataTableInstance<TData extends RowData> = ReactTable<
   DataTableFeatures,
   TData
->
+>;
 type DataTableOptions<TData extends RowData> = Omit<
   TableOptions<DataTableFeatures, TData>,
   "features"
->
+>;
 
 /** A column helper typed against the shared features. */
 function dataTableColumns<TData extends RowData>() {
-  return createColumnHelper<DataTableFeatures, TData>()
+  return createColumnHelper<DataTableFeatures, TData>();
 }
 
 /** useTable with the shared features. Keep data and columns stable. */
@@ -117,7 +120,7 @@ function useDataTable<TData extends RowData>(
   return useTable<DataTableFeatures, TData>({
     features: dataTableFeatures,
     ...options,
-  })
+  });
 }
 
 /** The select column: a header checkbox for the page and one per row. */
@@ -143,23 +146,23 @@ function dataTableSelectColumn<TData extends RowData>() {
     ),
     enableSorting: false,
     enableHiding: false,
-  })
+  });
 }
 
 type DataTableProps<TData extends RowData> = {
-  table: DataTableInstance<TData>
+  table: DataTableInstance<TData>;
   /** Shown in one full-width row when no rows match. */
-  empty?: React.ReactNode
-  className?: string
-}
+  empty?: React.ReactNode;
+  className?: string;
+};
 
 function DataTable<TData extends RowData>({
   table,
   empty = "No results.",
   className,
 }: DataTableProps<TData>) {
-  const rows = table.getRowModel().rows
-  const columnCount = table.getVisibleLeafColumns().length
+  const { rows } = table.getRowModel();
+  const columnCount = table.getVisibleLeafColumns().length;
   return (
     <Table data-slot="data-table" className={cnState(className)}>
       <TableHeader>
@@ -193,7 +196,7 @@ function DataTable<TData extends RowData>({
           <TableRow>
             <TableCell
               colSpan={columnCount}
-              className="h-24 text-center whitespace-normal text-muted-foreground"
+              className="text-muted-foreground h-24 text-center whitespace-normal"
             >
               {empty}
             </TableCell>
@@ -201,14 +204,14 @@ function DataTable<TData extends RowData>({
         )}
       </TableBody>
     </Table>
-  )
+  );
 }
 
 type DataTableColumnHeaderProps<TData extends RowData, TValue> = {
-  column: Column<DataTableFeatures, TData, TValue>
-  title: string
-  className?: string
-}
+  column: Column<DataTableFeatures, TData, TValue>;
+  title: string;
+  className?: string;
+};
 
 /** A header that sorts and hides its column from a small menu. */
 function DataTableColumnHeader<TData extends RowData, TValue>({
@@ -217,15 +220,15 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
   className,
 }: DataTableColumnHeaderProps<TData, TValue>) {
   if (!column.getCanSort() && !column.getCanHide()) {
-    return <div className={cnState(className)}>{title}</div>
+    return <div className={cnState(className)}>{title}</div>;
   }
-  const sorted = column.getIsSorted()
+  const sorted = column.getIsSorted();
   const SortIcon =
     sorted === "desc"
       ? AltArrowDownIcon
       : sorted === "asc"
         ? AltArrowUpIcon
-        : SortVerticalIcon
+        : SortVerticalIcon;
   return (
     <div
       data-slot="data-table-column-header"
@@ -237,7 +240,7 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
             <Button
               variant="ghost"
               size="sm"
-              className="-ml-2 data-popup-open:bg-ghost-hover"
+              className="data-popup-open:bg-ghost-hover -ml-2"
             />
           }
         >
@@ -269,14 +272,14 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
-  )
+  );
 }
 
 type DataTableViewOptionsProps<TData extends RowData> = {
-  table: DataTableInstance<TData>
+  table: DataTableInstance<TData>;
   /** Column labels for the menu; the column id is used otherwise. */
-  labels?: Partial<Record<string, string>>
-}
+  labels?: Partial<Record<string, string>>;
+};
 
 /** A menu that shows and hides the table's hideable columns. */
 function DataTableViewOptions<TData extends RowData>({
@@ -309,19 +312,19 @@ function DataTableViewOptions<TData extends RowData>({
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
 
 type DataTableToolbarProps<TData extends RowData> = {
-  table: DataTableInstance<TData>
+  table: DataTableInstance<TData>;
   /** The column the search box filters. Leave out for no search box. */
-  filterColumn?: string
-  filterPlaceholder?: string
-  labels?: Partial<Record<string, string>>
+  filterColumn?: string;
+  filterPlaceholder?: string;
+  labels?: Partial<Record<string, string>>;
   /** Extra controls between the search box and the view menu. */
-  children?: React.ReactNode
-  className?: string
-}
+  children?: React.ReactNode;
+  className?: string;
+};
 
 /** A search box for one column, any extra controls, and the view menu. */
 function DataTableToolbar<TData extends RowData>({
@@ -332,8 +335,8 @@ function DataTableToolbar<TData extends RowData>({
   children,
   className,
 }: DataTableToolbarProps<TData>) {
-  const column = filterColumn ? table.getColumn(filterColumn) : undefined
-  const value = column?.getFilterValue()
+  const column = filterColumn ? table.getColumn(filterColumn) : undefined;
+  const value = column?.getFilterValue();
   return (
     <div
       data-slot="data-table-toolbar"
@@ -352,17 +355,17 @@ function DataTableToolbar<TData extends RowData>({
       {children}
       <DataTableViewOptions table={table} labels={labels} />
     </div>
-  )
+  );
 }
 
-const pageSizes = [10, 20, 50] as const
+const pageSizes = [10, 20, 50] as const;
 
 type DataTablePaginationProps<TData extends RowData> = {
-  table: DataTableInstance<TData>
+  table: DataTableInstance<TData>;
   /** Show the selected-row count. On when the table has a select column. */
-  showSelection?: boolean
-  className?: string
-}
+  showSelection?: boolean;
+  className?: string;
+};
 
 /** The selection count, rows per page, page position and page buttons. */
 function DataTablePagination<TData extends RowData>({
@@ -370,11 +373,11 @@ function DataTablePagination<TData extends RowData>({
   showSelection = table.getColumn("select") !== undefined,
   className,
 }: DataTablePaginationProps<TData>) {
-  const { pageIndex, pageSize } = table.state.pagination
+  const { pageIndex, pageSize } = table.state.pagination;
   const sizes = pageSizes.map((size) => ({
     value: String(size),
     label: String(size),
-  }))
+  }));
   return (
     <div
       data-slot="data-table-pagination"
@@ -383,7 +386,7 @@ function DataTablePagination<TData extends RowData>({
         className
       )}
     >
-      <div className="flex-1 text-muted-foreground">
+      <div className="text-muted-foreground flex-1">
         {showSelection
           ? `${table.getFilteredSelectedRowModel().rows.length} of ${table.getFilteredRowModel().rows.length} selected`
           : null}
@@ -453,7 +456,7 @@ function DataTablePagination<TData extends RowData>({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export {
@@ -466,5 +469,5 @@ export {
   dataTableFeatures,
   dataTableSelectColumn,
   useDataTable,
-}
-export type { DataTableFeatures, DataTableInstance, DataTableOptions }
+};
+export type { DataTableFeatures, DataTableInstance, DataTableOptions };

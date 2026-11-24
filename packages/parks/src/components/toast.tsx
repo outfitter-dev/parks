@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Toast as ToastPrimitive } from "@base-ui/react/toast"
-import { cnState } from "#lib/utils"
+import { Toast as ToastPrimitive } from "@base-ui/react/toast";
+import { CheckCircleIcon } from "@solar-icons/react/bold/check-circle";
+import { CloseIcon } from "@solar-icons/react/bold/close";
+import { CloseCircleIcon } from "@solar-icons/react/bold/close-circle";
+import { DangerTriangleIcon } from "@solar-icons/react/bold/danger-triangle";
+import { InfoCircleIcon } from "@solar-icons/react/bold/info-circle";
+import * as React from "react";
 
-import { Button } from "#components/button"
-import { Spinner } from "#components/spinner"
-import { CloseIcon } from "@solar-icons/react/bold/close"
-import { CheckCircleIcon } from "@solar-icons/react/bold/check-circle"
-import { InfoCircleIcon } from "@solar-icons/react/bold/info-circle"
-import { DangerTriangleIcon } from "@solar-icons/react/bold/danger-triangle"
-import { CloseCircleIcon } from "@solar-icons/react/bold/close-circle"
+import { Button } from "#components/button";
+import { Spinner } from "#components/spinner";
+import { cnState } from "#lib/utils";
 
 /*
  * shadcn's Base UI toast, the one toast in this package. Like Alert, a toast colours
@@ -18,14 +18,14 @@ import { CloseCircleIcon } from "@solar-icons/react/bold/close-circle"
  * Call `toast.add({ title, description, type })` from anywhere under
  * <Toaster>; `toast.promise(promise, { loading, success, error })` tracks one.
  */
-const toast = ToastPrimitive.createToastManager()
+const toast = ToastPrimitive.createToastManager();
 
 function ToastProvider({ ...props }: ToastPrimitive.Provider.Props) {
-  return <ToastPrimitive.Provider {...props} />
+  return <ToastPrimitive.Provider {...props} />;
 }
 
 function ToastPortal({ ...props }: ToastPrimitive.Portal.Props) {
-  return <ToastPrimitive.Portal data-slot="toast-portal" {...props} />
+  return <ToastPrimitive.Portal data-slot="toast-portal" {...props} />;
 }
 
 function ToastViewport({ className, ...props }: ToastPrimitive.Viewport.Props) {
@@ -38,7 +38,7 @@ function ToastViewport({ className, ...props }: ToastPrimitive.Viewport.Props) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function Toast({ className, ...props }: ToastPrimitive.Root.Props) {
@@ -65,7 +65,7 @@ function Toast({ className, ...props }: ToastPrimitive.Root.Props) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function ToastContent({ className, ...props }: ToastPrimitive.Content.Props) {
@@ -78,7 +78,7 @@ function ToastContent({ className, ...props }: ToastPrimitive.Content.Props) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function ToastTitle({ className, ...props }: ToastPrimitive.Title.Props) {
@@ -88,7 +88,7 @@ function ToastTitle({ className, ...props }: ToastPrimitive.Title.Props) {
       className={cnState("text-sm font-medium", className)}
       {...props}
     />
-  )
+  );
 }
 
 function ToastDescription({
@@ -101,7 +101,7 @@ function ToastDescription({
       className={cnState("text-sm text-muted-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
 function ToastAction({
@@ -116,7 +116,7 @@ function ToastAction({
       className={cnState("shrink-0", className)}
       {...props}
     />
-  )
+  );
 }
 
 function ToastClose({
@@ -136,13 +136,9 @@ function ToastClose({
       )}
       {...props}
     >
-      {children ?? (
-        <CloseIcon
-          aria-hidden="true"
-        />
-      )}
+      {children ?? <CloseIcon aria-hidden="true" />}
     </ToastPrimitive.Close>
-  )
+  );
 }
 
 const toastIcons: Record<string, React.ReactNode> = {
@@ -151,11 +147,13 @@ const toastIcons: Record<string, React.ReactNode> = {
   warning: <DangerTriangleIcon className="text-warning" aria-hidden="true" />,
   error: <CloseCircleIcon className="text-destructive" aria-hidden="true" />,
   loading: <Spinner className="text-muted-foreground" />,
-}
+};
 
 function ToastIcon({ type }: { type: string | undefined }) {
-  const icon = type ? toastIcons[type] : undefined
-  if (!icon) return null
+  const icon = type ? toastIcons[type] : undefined;
+  if (!icon) {
+    return null;
+  }
   return (
     <span
       data-slot="toast-icon"
@@ -163,11 +161,11 @@ function ToastIcon({ type }: { type: string | undefined }) {
     >
       {icon}
     </span>
-  )
+  );
 }
 
 function ToastList() {
-  const { toasts } = ToastPrimitive.useToastManager()
+  const { toasts } = ToastPrimitive.useToastManager();
 
   return toasts.map((toastItem) => (
     <Toast key={toastItem.id} toast={toastItem}>
@@ -181,7 +179,7 @@ function ToastList() {
         <ToastClose />
       </ToastContent>
     </Toast>
-  ))
+  ));
 }
 
 function Toaster({
@@ -198,11 +196,11 @@ function Toaster({
         </ToastViewport>
       </ToastPortal>
     </ToastProvider>
-  )
+  );
 }
 
-const createToastManager = ToastPrimitive.createToastManager
-const useToastManager = ToastPrimitive.useToastManager
+const { createToastManager } = ToastPrimitive;
+const { useToastManager } = ToastPrimitive;
 
 export {
   Toaster,
@@ -218,4 +216,4 @@ export {
   createToastManager,
   toast,
   useToastManager,
-}
+};

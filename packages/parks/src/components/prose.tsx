@@ -1,5 +1,6 @@
-import * as React from "react"
-import { cnState } from "#lib/utils"
+import * as React from "react";
+
+import { cnState } from "#lib/utils";
 
 /*
  * Prose: styles plain rendered HTML, such as Markdown output, after the
@@ -34,12 +35,12 @@ const proseClasses = [
   "[&_td]:border-b [&_td]:border-border-muted [&_td]:px-2 [&_td]:py-1.5",
   "[&_img]:my-4 [&_img]:rounded-lg",
   "[&_kbd]:rounded-sm [&_kbd]:border [&_kbd]:border-border [&_kbd]:bg-fill-subtle [&_kbd]:px-1 [&_kbd]:font-mono [&_kbd]:text-xs",
-].join(" ")
+].join(" ");
 
 type ProseProps = React.ComponentProps<"div"> & {
   /** Tighter rhythm for prose inside cards, bubbles and panels. */
-  size?: "default" | "sm"
-}
+  size?: "default" | "sm";
+};
 
 function Prose({ className, size = "default", ...props }: ProseProps) {
   return (
@@ -53,8 +54,8 @@ function Prose({ className, size = "default", ...props }: ProseProps) {
       )}
       {...props}
     />
-  )
+  );
 }
 
-export { Prose }
-export type { ProseProps }
+export { Prose };
+export type { ProseProps };

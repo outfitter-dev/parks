@@ -17,15 +17,23 @@ const storageKey = "workbench.annotations.endpoint";
  */
 function resolveEndpoint(): string | undefined {
   const configured = process.env.NEXT_PUBLIC_AGENTATION_ENDPOINT;
-  if (configured) return configured;
+  if (configured) {
+    return configured;
+  }
 
   const { hostname, search } = window.location;
-  if (hostname === "localhost" || hostname === "127.0.0.1") return localEndpoint;
+  if (hostname === "localhost" || hostname === "127.0.0.1") {
+    return localEndpoint;
+  }
 
   const choice = new URLSearchParams(search).get("annotations");
   try {
-    if (choice === "mcp") window.localStorage.setItem(storageKey, localEndpoint);
-    if (choice === "off") window.localStorage.removeItem(storageKey);
+    if (choice === "mcp") {
+      window.localStorage.setItem(storageKey, localEndpoint);
+    }
+    if (choice === "off") {
+      window.localStorage.removeItem(storageKey);
+    }
     return window.localStorage.getItem(storageKey) ?? undefined;
   } catch {
     return choice === "mcp" ? localEndpoint : undefined;
@@ -46,6 +54,8 @@ export function Annotations() {
     setReady(true);
   }, []);
 
-  if (!ready) return null;
+  if (!ready) {
+    return null;
+  }
   return <Agentation appName="Parks showcase" endpoint={endpoint} />;
 }

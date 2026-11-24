@@ -1,9 +1,18 @@
-import * as React from "react"
-import { mergeProps } from "@base-ui/react/merge-props"
-import { useRender } from "@base-ui/react/use-render"
-import { cva, type VariantProps } from "class-variance-authority"
-import { header, headerAction, headerDescription, headerLead, headerMeta, headerTitle } from "#lib/header"
-import { cnState } from "#lib/utils"
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import * as React from "react";
+
+import {
+  header,
+  headerAction,
+  headerDescription,
+  headerLead,
+  headerMeta,
+  headerTitle,
+} from "#lib/header";
+import { cnState } from "#lib/utils";
 
 /*
  * Started from shadcn's Card (base flavour). Additions:
@@ -21,31 +30,33 @@ import { cnState } from "#lib/utils"
  *   (#lib/header).
  */
 const cardVariants = cva(
-  "group/card frame flex flex-col gap-(--frame-space) overflow-hidden py-(--frame-space) text-sm text-card-foreground outline-none not-has-[>[data-slot^=card-]]:px-(--frame-space) has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 focus-visible:ring-2 focus-visible:ring-focus-ring data-[size=lg]:[--frame-pad:calc(var(--pad)*1.5)] data-[size=sm]:[--frame-pad:var(--frame-pad-sm)] data-disabled:pointer-events-none data-disabled:opacity-50 data-interactive:cursor-pointer data-interactive:text-start data-selected:ring-2 data-selected:ring-brand data-selected:hover:ring-brand *:[img:first-child]:rounded-t-frame *:[img:last-child]:rounded-b-frame",
+  "group/card frame text-card-foreground focus-visible:ring-focus-ring data-selected:ring-brand data-selected:hover:ring-brand *:[img:first-child]:rounded-t-frame *:[img:last-child]:rounded-b-frame flex flex-col gap-(--frame-space) overflow-hidden py-(--frame-space) text-sm outline-none not-has-[>[data-slot^=card-]]:px-(--frame-space) focus-visible:ring-2 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-disabled:pointer-events-none data-disabled:opacity-50 data-interactive:cursor-pointer data-interactive:text-start data-selected:ring-2 data-[size=lg]:[--frame-pad:calc(var(--pad)*1.5)] data-[size=sm]:[--frame-pad:var(--frame-pad-sm)]",
   {
     variants: {
       variant: {
-        raised: "bg-card shadow-(--shadow-frame) ring-1 ring-border-muted data-interactive:hover:ring-border-strong",
-        outline: "bg-card ring-1 ring-border data-interactive:hover:ring-border-strong",
+        raised:
+          "bg-card ring-border-muted data-interactive:hover:ring-border-strong shadow-(--shadow-frame) ring-1",
+        outline:
+          "bg-card ring-border data-interactive:hover:ring-border-strong ring-1",
         filled: "bg-panel-fill data-interactive:hover:bg-fill",
-        tray: "gap-(--frame-space) bg-muted [--frame-pad:--spacing(1.5)] [--tray-radius:calc(var(--frame-radius)-var(--frame-space))] **:data-[slot=card]:rounded-[calc(var(--tray-radius)*var(--corner-scale))]",
+        tray: "bg-muted gap-(--frame-space) [--frame-pad:--spacing(1.5)] [--tray-radius:calc(var(--frame-radius)-var(--frame-space))] **:data-[slot=card]:rounded-[calc(var(--tray-radius)*var(--corner-scale))]",
       },
     },
     defaultVariants: {
       variant: "raised",
     },
   }
-)
+);
 
 type CardProps = useRender.ComponentProps<"div"> &
   VariantProps<typeof cardVariants> & {
-    size?: "sm" | "default" | "lg"
+    size?: "sm" | "default" | "lg";
     /** The one selected look: a brand ring. */
-    selected?: boolean
+    selected?: boolean;
     /** Hover feedback for a card that is a link or button. */
-    interactive?: boolean
-    disabled?: boolean
-  }
+    interactive?: boolean;
+    disabled?: boolean;
+  };
 
 /**
  * @example
@@ -66,7 +77,7 @@ function Card({
   render,
   ...props
 }: CardProps) {
-  const isInteractive = interactive ?? Boolean(render)
+  const isInteractive = interactive ?? Boolean(render);
   return useRender({
     defaultTagName: "div",
     props: mergeProps<"div">(
@@ -82,7 +93,7 @@ function Card({
       interactive: isInteractive,
       disabled,
     },
-  })
+  });
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
@@ -96,7 +107,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CardLead({ className, ...props }: React.ComponentProps<"div">) {
@@ -106,7 +117,7 @@ function CardLead({ className, ...props }: React.ComponentProps<"div">) {
       className={cnState(headerLead, "ps-inset", className)}
       {...props}
     />
-  )
+  );
 }
 
 function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
@@ -120,7 +131,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
@@ -130,7 +141,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
       className={cnState(headerDescription, "px-inset text-sm", className)}
       {...props}
     />
-  )
+  );
 }
 
 function CardMeta({ className, ...props }: React.ComponentProps<"div">) {
@@ -140,7 +151,7 @@ function CardMeta({ className, ...props }: React.ComponentProps<"div">) {
       className={cnState(headerMeta, "pe-inset", className)}
       {...props}
     />
-  )
+  );
 }
 
 function CardAction({ className, ...props }: React.ComponentProps<"div">) {
@@ -150,7 +161,7 @@ function CardAction({ className, ...props }: React.ComponentProps<"div">) {
       className={cnState(headerAction, className)}
       {...props}
     />
-  )
+  );
 }
 
 function CardContent({ className, ...props }: React.ComponentProps<"div">) {
@@ -163,7 +174,7 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
@@ -176,7 +187,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -191,4 +202,4 @@ export {
   CardContent,
   cardVariants,
   type CardProps,
-}
+};

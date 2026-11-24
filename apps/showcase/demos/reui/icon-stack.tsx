@@ -2,9 +2,9 @@
 // Title: Icon Stack
 // Description: Layered icon illustration container
 
-import { cn } from "@outfitter/parks/lib/utils"
+import { cn } from "@outfitter/parks/lib/utils";
 
-type IconStackProps = React.ComponentProps<"div">
+type IconStackProps = React.ComponentProps<"div">;
 
 function IconStack({ className, children, style, ...props }: IconStackProps) {
   return (
@@ -53,7 +53,7 @@ function IconStack({ className, children, style, ...props }: IconStackProps) {
         </div>
       ) : null}
     </div>
-  )
+  );
 }
 
 function IconStackLayer({
@@ -62,10 +62,10 @@ function IconStackLayer({
   x = 0,
   y = 0,
 }: {
-  active?: boolean
-  opacity: string
-  x?: number
-  y?: number
+  active?: boolean;
+  opacity: string;
+  x?: number;
+  y?: number;
 }) {
   return (
     <g opacity={opacity} transform={`translate(${x} ${y})`}>
@@ -88,7 +88,7 @@ function IconStackLayer({
         strokeLinejoin="round"
       />
     </g>
-  )
+  );
 }
 
-export { IconStack, type IconStackProps }
+export { IconStack, type IconStackProps };

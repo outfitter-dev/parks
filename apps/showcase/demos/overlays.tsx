@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,7 +25,11 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@outfitter/parks/components/command";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@outfitter/parks/components/hover-card";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@outfitter/parks/components/hover-card";
 import { Kbd } from "@outfitter/parks/components/kbd";
 import {
   Sheet,
@@ -39,28 +42,38 @@ import {
   SheetTrigger,
 } from "@outfitter/parks/components/sheet";
 import { Toaster, toast } from "@outfitter/parks/components/toast";
+import { TrashBinMinimalisticIcon } from "@solar-icons/react/bold-duotone/trash-bin-minimalistic";
 import { BellOffIcon } from "@solar-icons/react/outline/bell-off";
 import { HomeIcon } from "@solar-icons/react/outline/home";
 import { InboxIcon } from "@solar-icons/react/outline/inbox";
 import { RoutingIcon } from "@solar-icons/react/outline/routing";
 import { SettingsIcon } from "@solar-icons/react/outline/settings";
-import { TrashBinMinimalisticIcon } from "@solar-icons/react/bold-duotone/trash-bin-minimalistic";
 import { UsersGroupRoundedIcon } from "@solar-icons/react/outline/users-group-rounded";
+import { useEffect, useState } from "react";
 
 import { agents } from "#lib/fixtures";
+
 import { AgentModeBadge, Specimen } from "./kit";
 
 export function OverlaysDemo() {
   return (
     <>
-      <Specimen title="Alert dialog" note="Confirms an action that can't be undone. It has no close button: the person cancels or confirms.">
+      <Specimen
+        title="Alert dialog"
+        note="Confirms an action that can't be undone. It has no close button: the person cancels or confirms."
+      >
         <AlertDialog>
-          <AlertDialogTrigger render={<Button tone="destructive" variant="tint" />}>Remove agent</AlertDialogTrigger>
+          <AlertDialogTrigger
+            render={<Button tone="destructive" variant="tint" />}
+          >
+            Remove agent
+          </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Remove Rex?</AlertDialogTitle>
               <AlertDialogDescription>
-                Rex stops receiving deliveries and leaves every channel. Its history stays in the audit log.
+                Rex stops receiving deliveries and leaves every channel. Its
+                history stays in the audit log.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -70,14 +83,18 @@ export function OverlaysDemo() {
           </AlertDialogContent>
         </AlertDialog>
         <AlertDialog>
-          <AlertDialogTrigger render={<Button variant="secondary" />}>Small, with media</AlertDialogTrigger>
+          <AlertDialogTrigger render={<Button variant="secondary" />}>
+            Small, with media
+          </AlertDialogTrigger>
           <AlertDialogContent size="sm">
             <AlertDialogHeader>
               <AlertDialogMedia className="text-destructive">
                 <TrashBinMinimalisticIcon />
               </AlertDialogMedia>
               <AlertDialogTitle>Delete 3 drafts?</AlertDialogTitle>
-              <AlertDialogDescription>Drafts aren&rsquo;t sent anywhere, so nobody loses a message.</AlertDialogDescription>
+              <AlertDialogDescription>
+                Drafts aren&rsquo;t sent anywhere, so nobody loses a message.
+              </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -87,31 +104,54 @@ export function OverlaysDemo() {
         </AlertDialog>
       </Specimen>
 
-      <Specimen title="Sheet" note="A panel from an edge: the phone and tablet nav overlay, or a detail view beside a list.">
+      <Specimen
+        title="Sheet"
+        note="A panel from an edge: the phone and tablet nav overlay, or a detail view beside a list."
+      >
         {(["right", "left", "bottom"] as const).map((side) => (
           <Sheet key={side}>
             <SheetTrigger render={<Button variant="secondary" />}>
-              {side === "right" ? "Agent detail" : side === "left" ? "Nav overlay" : "From the bottom"}
+              {side === "right"
+                ? "Agent detail"
+                : side === "left"
+                  ? "Nav overlay"
+                  : "From the bottom"}
             </SheetTrigger>
             <SheetContent side={side}>
               <SheetHeader>
                 <SheetTitle>Donna</SheetTitle>
-                <SheetDescription>Devin · webhook · last seen 2 min ago</SheetDescription>
+                <SheetDescription>
+                  Devin · webhook · last seen 2 min ago
+                </SheetDescription>
               </SheetHeader>
-              <div className="px-4 text-sm text-muted-foreground">Recent deliveries and settings go here.</div>
+              <div className="text-muted-foreground px-4 text-sm">
+                Recent deliveries and settings go here.
+              </div>
               <SheetFooter>
-                <SheetClose render={<Button variant="secondary" />}>Close</SheetClose>
+                <SheetClose render={<Button variant="secondary" />}>
+                  Close
+                </SheetClose>
               </SheetFooter>
             </SheetContent>
           </Sheet>
         ))}
       </Specimen>
 
-      <Specimen title="Hover card" note="A preview of an agent, person or PR on hover, without leaving the page.">
+      <Specimen
+        title="Hover card"
+        note="A preview of an agent, person or PR on hover, without leaving the page."
+      >
         <p className="text-sm">
           Waiting on{" "}
           <HoverCard>
-            <HoverCardTrigger render={<a href="#agent" className="font-medium underline underline-offset-3" />}>
+            <HoverCardTrigger
+              render={
+                <a
+                  href="#agent"
+                  className="font-medium underline underline-offset-3"
+                />
+              }
+            >
               @donna
             </HoverCardTrigger>
             <HoverCardContent className="w-64">
@@ -121,7 +161,9 @@ export function OverlaysDemo() {
                 </Avatar>
                 <div className="grid gap-1">
                   <p className="font-medium">Donna</p>
-                  <p className="text-muted-foreground">{agents[0]?.runtime} · {agents[0]?.destination}</p>
+                  <p className="text-muted-foreground">
+                    {agents[0]?.runtime} · {agents[0]?.destination}
+                  </p>
                   <AgentModeBadge tone="live" mode="Live" className="w-fit" />
                 </div>
               </div>
@@ -131,25 +173,48 @@ export function OverlaysDemo() {
         </p>
       </Specimen>
 
-      <Specimen title="Command" note="The command palette and quick switcher. Rows share the menu row recipe." className="block">
-        <Command className="max-w-md rounded-lg ring-1 ring-border-muted">
+      <Specimen
+        title="Command"
+        note="The command palette and quick switcher. Rows share the menu row recipe."
+        className="block"
+      >
+        <Command className="ring-border-muted max-w-md rounded-lg ring-1">
           <PaletteBody />
         </Command>
         <PaletteDialog />
       </Specimen>
 
-      <Specimen title="Toast" note="Confirms an action without interrupting. Like Alert, only the glyph takes the tone.">
+      <Specimen
+        title="Toast"
+        note="Confirms an action without interrupting. Like Alert, only the glyph takes the tone."
+      >
         <Toaster />
         <Button
           variant="secondary"
-          onClick={() => toast.add({ type: "success", title: "Rex muted", description: "No deliveries until you unmute it." })}
+          onClick={() =>
+            toast.add({
+              type: "success",
+              title: "Rex muted",
+              description: "No deliveries until you unmute it.",
+            })
+          }
         >
           Success
         </Button>
-        <Button variant="secondary" onClick={() => toast.add({ type: "info", title: "Routing v12 is live" })}>
+        <Button
+          variant="secondary"
+          onClick={() =>
+            toast.add({ type: "info", title: "Routing v12 is live" })
+          }
+        >
           Info
         </Button>
-        <Button variant="secondary" onClick={() => toast.add({ type: "warning", title: "Elevation ends in 2 minutes" })}>
+        <Button
+          variant="secondary"
+          onClick={() =>
+            toast.add({ type: "warning", title: "Elevation ends in 2 minutes" })
+          }
+        >
           Warning
         </Button>
         <Button
@@ -159,7 +224,7 @@ export function OverlaysDemo() {
               type: "error",
               title: "Delivery failed",
               description: "forge webhook returned 502.",
-              actionProps: { children: "Retry", onClick: () => undefined },
+              actionProps: { children: "Retry", onClick: () => {} },
             })
           }
         >
@@ -232,7 +297,11 @@ function PaletteDialog() {
   }, []);
   return (
     <>
-      <Button variant="secondary" className="mt-3" onClick={() => setOpen(true)}>
+      <Button
+        variant="secondary"
+        className="mt-3"
+        onClick={() => setOpen(true)}
+      >
         Open palette <Kbd>⌘K</Kbd>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>

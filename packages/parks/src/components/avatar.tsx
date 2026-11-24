@@ -1,16 +1,18 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
-import { isTone, type Tone } from "#lib/tone"
-import { cnState } from "#lib/utils"
+import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar";
+import * as React from "react";
+
+import { isTone } from "#lib/tone";
+import type { Tone } from "#lib/tone";
+import { cnState } from "#lib/utils";
 
 function Avatar({
   className,
   size = "default",
   ...props
 }: AvatarPrimitive.Root.Props & {
-  size?: "xs" | "sm" | "default" | "lg"
+  size?: "xs" | "sm" | "default" | "lg";
 }) {
   return (
     <AvatarPrimitive.Root
@@ -22,7 +24,7 @@ function Avatar({
       )}
       {...props}
     />
-  )
+  );
 }
 
 function AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {
@@ -35,7 +37,7 @@ function AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function AvatarFallback({
@@ -51,7 +53,7 @@ function AvatarFallback({
       )}
       {...props}
     />
-  )
+  );
 }
 
 /**
@@ -61,7 +63,11 @@ function AvatarFallback({
  * @example
  * <AvatarBadge tone="success" />
  */
-function AvatarBadge({ className, tone, ...props }: React.ComponentProps<"span"> & { tone?: Tone }) {
+function AvatarBadge({
+  className,
+  tone,
+  ...props
+}: React.ComponentProps<"span"> & { tone?: Tone }) {
   return (
     <span
       data-slot="avatar-badge"
@@ -75,7 +81,7 @@ function AvatarBadge({ className, tone, ...props }: React.ComponentProps<"span">
       )}
       {...props}
     />
-  )
+  );
 }
 
 function AvatarGroup({ className, ...props }: React.ComponentProps<"div">) {
@@ -88,7 +94,7 @@ function AvatarGroup({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function AvatarGroupCount({
@@ -104,7 +110,7 @@ function AvatarGroupCount({
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -114,4 +120,4 @@ export {
   AvatarGroup,
   AvatarGroupCount,
   AvatarBadge,
-}
+};

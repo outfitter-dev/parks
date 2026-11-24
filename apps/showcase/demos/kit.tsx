@@ -1,14 +1,31 @@
 "use client";
 
-import { useState, type ComponentProps, type ReactNode } from "react";
 import { Badge } from "@outfitter/parks/components/badge";
-import { Item, ItemContent, ItemGroup, ItemMedia, ItemMeta, ItemTitle } from "@outfitter/parks/components/item";
-import { SectionHeader, SectionHeaderDescription, SectionHeaderTitle } from "@outfitter/parks/components/section-header";
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemMedia,
+  ItemMeta,
+  ItemTitle,
+} from "@outfitter/parks/components/item";
+import {
+  SectionHeader,
+  SectionHeaderDescription,
+  SectionHeaderTitle,
+} from "@outfitter/parks/components/section-header";
 import { StatusDot } from "@outfitter/parks/components/status-dot";
-import { ToggleGroup, ToggleGroupItem } from "@outfitter/parks/components/toggle-group";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@outfitter/parks/components/toggle-group";
 import type { Tone as UiTone } from "@outfitter/parks/lib/tone";
 import { cn } from "@outfitter/parks/lib/utils";
-import { versions, type Tone } from "#lib/fixtures";
+import { useState } from "react";
+import type { ComponentProps, ReactNode } from "react";
+
+import { versions } from "#lib/fixtures";
+import type { Tone } from "#lib/fixtures";
 
 /** A titled example on a plain canvas. */
 export function Specimen({
@@ -26,12 +43,14 @@ export function Specimen({
     <section className="mb-8">
       <SectionHeader>
         <SectionHeaderTitle>{title}</SectionHeaderTitle>
-        {note ? <SectionHeaderDescription>{note}</SectionHeaderDescription> : null}
+        {note ? (
+          <SectionHeaderDescription>{note}</SectionHeaderDescription>
+        ) : null}
       </SectionHeader>
       <div
         className={cn(
-          "mt-3 flex flex-wrap items-center gap-3 frame p-frame border border-dashed bg-background",
-          className,
+          "frame p-frame bg-background mt-3 flex flex-wrap items-center gap-3 border border-dashed",
+          className
         )}
       >
         {children}
@@ -70,7 +89,9 @@ export function Viewport({ children }: { children: ReactNode }) {
           value={[width]}
           onValueChange={(value) => {
             const next = value[0];
-            if (isWidth(next)) setWidth(next);
+            if (isWidth(next)) {
+              setWidth(next);
+            }
           }}
         >
           {Object.keys(widths).map((key) => (
@@ -80,9 +101,9 @@ export function Viewport({ children }: { children: ReactNode }) {
           ))}
         </ToggleGroup>
       </div>
-      <div className="overflow-x-auto rounded-frame border bg-fill-subtle p-2">
+      <div className="rounded-frame bg-fill-subtle overflow-x-auto border p-2">
         <div
-          className="@container mx-auto overflow-hidden rounded-xl bg-background ring-1 ring-border-muted transition-[max-width] duration-300"
+          className="bg-background ring-border-muted @container mx-auto overflow-hidden rounded-xl ring-1 transition-[max-width] duration-300"
           style={{ maxWidth: widths[width] }}
         >
           {children}
@@ -105,8 +126,20 @@ const agentModeTones = {
   off: "neutral",
 } as const satisfies Record<Tone, UiTone>;
 
-export function AgentModeBadge({ tone, mode, className }: { tone: Tone; mode: string; className?: string }) {
-  return <Badge tone={agentModeTones[tone]} dot className={className}>{mode}</Badge>;
+export function AgentModeBadge({
+  tone,
+  mode,
+  className,
+}: {
+  tone: Tone;
+  mode: string;
+  className?: string;
+}) {
+  return (
+    <Badge tone={agentModeTones[tone]} dot className={className}>
+      {mode}
+    </Badge>
+  );
 }
 
 /**
@@ -135,7 +168,11 @@ export function HaloSignal({
       height={size}
       viewBox="0 0 16 16"
       data-tone={tone ? agentModeTones[tone] : undefined}
-      className={cn("shrink-0", tone ? "text-tone-mark" : "text-muted-foreground", className)}
+      className={cn(
+        "shrink-0",
+        tone ? "text-tone-mark" : "text-muted-foreground",
+        className
+      )}
     >
       <circle
         cx="8"
@@ -144,7 +181,15 @@ export function HaloSignal({
         fill="currentColor"
         className="in-data-[slot=badge-icon]:[r:calc(10px/3)]"
       />
-      <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" strokeOpacity="0.18" strokeWidth="1.5" />
+      <circle
+        cx="8"
+        cy="8"
+        r="7"
+        fill="none"
+        stroke="currentColor"
+        strokeOpacity="0.18"
+        strokeWidth="1.5"
+      />
       <circle
         cx="8"
         cy="8"
@@ -165,17 +210,28 @@ export function HaloSignal({
  * first, the live one marked. `list` is the open form, `bounded` sits in a
  * panel; the rows are the same either way.
  */
-export function VersionRows({ variant = "list", className }: { variant?: "list" | "bounded"; className?: string }) {
+export function VersionRows({
+  variant = "list",
+  className,
+}: {
+  variant?: "list" | "bounded";
+  className?: string;
+}) {
   return (
-    <ItemGroup variant={variant} className={cn(variant === "bounded" && "concentric", className)}>
+    <ItemGroup
+      variant={variant}
+      className={cn(variant === "bounded" && "concentric", className)}
+    >
       {versions.map((item, index) => (
         <Item key={item.version} size="xs">
-          <ItemMedia className="w-8 justify-start font-mono text-muted-foreground tabular-nums">v{item.version}</ItemMedia>
+          <ItemMedia className="text-muted-foreground w-8 justify-start font-mono tabular-nums">
+            v{item.version}
+          </ItemMedia>
           <ItemContent>
             <ItemTitle className="font-normal">{item.change}</ItemTitle>
           </ItemContent>
           {index === 0 ? (
-            <ItemMeta className="flex items-center gap-2 font-medium text-success-strong">
+            <ItemMeta className="text-success-strong flex items-center gap-2 font-medium">
               <StatusDot tone="success" />
               Live
             </ItemMeta>
