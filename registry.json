@@ -17,6 +17,25 @@
         }
       ],
       "docs": "Import @outfitter/parks/styles.css once from your root stylesheet before using Parks blocks."
+    },
+    {
+      "name": "code-block",
+      "type": "registry:block",
+      "title": "Code block",
+      "description": "A bordered frame for code or a diff with a label and copy button, and a highlighted snippet on Pierre's renderer, themed by Parks roles.",
+      "dependencies": [
+        "@outfitter/parks",
+        "@pierre/diffs",
+        "@solar-icons/react"
+      ],
+      "files": [
+        {
+          "path": "apps/showcase/registry/code-block/code-block.tsx",
+          "type": "registry:component",
+          "target": "components/parks/code-block.tsx"
+        }
+      ],
+      "docs": "Import @outfitter/parks/styles.css once from your root stylesheet before using Parks blocks."
     }
   ]
 }
