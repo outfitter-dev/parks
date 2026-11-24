@@ -56,13 +56,16 @@ import { agents } from "#lib/fixtures";
 import { AgentModeBadge, Specimen } from "./kit";
 
 export function OverlaysDemo() {
+  // The action runs the change, then closes the dialog.
+  const [removing, setRemoving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   return (
     <>
       <Specimen
         title="Alert dialog"
         note="Confirms an action that can't be undone. It has no close button: the person cancels or confirms."
       >
-        <AlertDialog>
+        <AlertDialog open={removing} onOpenChange={setRemoving}>
           <AlertDialogTrigger
             render={<Button tone="destructive" variant="tint" />}
           >
@@ -78,11 +81,16 @@ export function OverlaysDemo() {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Keep Bartram</AlertDialogCancel>
-              <AlertDialogAction tone="destructive">Remove</AlertDialogAction>
+              <AlertDialogAction
+                tone="destructive"
+                onClick={() => setRemoving(false)}
+              >
+                Remove
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        <AlertDialog>
+        <AlertDialog open={deleting} onOpenChange={setDeleting}>
           <AlertDialogTrigger render={<Button variant="secondary" />}>
             Small, with media
           </AlertDialogTrigger>
@@ -98,7 +106,12 @@ export function OverlaysDemo() {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction tone="destructive">Delete</AlertDialogAction>
+              <AlertDialogAction
+                tone="destructive"
+                onClick={() => setDeleting(false)}
+              >
+                Delete
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
