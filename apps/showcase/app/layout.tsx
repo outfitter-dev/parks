@@ -1,7 +1,7 @@
 import { TooltipProvider } from "@outfitter/parks/components/tooltip";
 import type { ReactNode } from "react";
 
-import { Annotations } from "./annotations";
+import { DevAnnotations } from "./dev-annotations";
 import { Shell } from "./shell";
 import { ThemeController } from "./theme-controller";
 import { typingGuard } from "./typing-guard";
@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <TooltipProvider>
           <Shell>{children}</Shell>
         </TooltipProvider>
-        <Annotations />
+        <DevAnnotations />
       </body>
     </html>
   );

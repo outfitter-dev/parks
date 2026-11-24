@@ -29,4 +29,4 @@ All MIT unless noted: `@base-ui/react`, `@shadcn/react`, `@tanstack/react-table`
 
 ## Showcase-only dependencies
 
-Not published. `next`, `motion` and `dialkit` (MIT); `@pierre/diffs` and `@pierre/trees` (Apache-2.0); `agentation` (PolyForm Shield 1.0.0, a source-available licence) is a development tool for annotating the showcase locally and is not shipped.
+Not published. `next`, `motion` and `dialkit` (MIT); `@pierre/diffs` and `@pierre/trees` (Apache-2.0); `agentation` (PolyForm Shield 1.0.0, a source-available licence) is a development tool for annotating the showcase locally; it loads only under `next dev` and is left out of production builds.

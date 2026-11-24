@@ -31,10 +31,10 @@ New components may follow ReUI patterns. ReUI's free components are MIT but buil
 
 ## Annotations
 
-The [Agentation](https://www.agentation.com) toolbar (bottom right, desktop only) pins notes to elements. Each note records the element, its React component path and its computed styles.
+In development (`bun run dev`), the [Agentation](https://www.agentation.com) toolbar (bottom right, desktop only) pins notes to elements. Production builds leave it out. Each note records the element, its React component path and its computed styles.
 
-- **Copy:** press `C` or use the toolbar's Copy button to put every note on the page on your clipboard as markdown. This works everywhere, including Vercel previews, with nothing else running.
+- **Copy:** press `C` or use the toolbar's Copy button to put every note on the page on your clipboard as markdown. This works with nothing else running.
 - **Agents (MCP):** the repo's `.mcp.json` registers `agentation-mcp`, so Claude Code in this repo offers to start it. The server listens on `localhost:4747` and keeps notes in `~/.agentation/store.db` until an agent resolves them. Agents read them with `agentation_get_all_pending` and answer with `agentation_reply`, `agentation_resolve` or `agentation_dismiss`. Other agents can register the same command: `bunx agentation-mcp@1.3.2 server`.
 - **Scripts and the CLI:** the same server has an HTTP API, so `curl localhost:4747/pending` lists open notes and `curl -N localhost:4747/events` streams them as they arrive.
 
-On `localhost` the toolbar syncs to the server automatically. On a preview it stays copy-only until you open the page once with `?annotations=mcp`, because a public page reaching `localhost` makes the browser ask for local network access. `?annotations=off` turns it back off. The server only accepts browser origins listed in `AGENTATION_CORS_ORIGINS` in `.mcp.json`; add a branch preview's origin there if you annotate on it. `NEXT_PUBLIC_AGENTATION_ENDPOINT` overrides the endpoint entirely.
+On `localhost` the toolbar syncs to the server automatically. The server only accepts browser origins listed in `AGENTATION_CORS_ORIGINS` in `.mcp.json`. `NEXT_PUBLIC_AGENTATION_ENDPOINT` overrides the endpoint entirely.
