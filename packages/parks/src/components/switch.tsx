@@ -1,14 +1,15 @@
-"use client"
+"use client";
 
-import { Switch as SwitchPrimitive } from "@base-ui/react/switch"
-import { cnState } from "#lib/utils"
+import { Switch as SwitchPrimitive } from "@base-ui/react/switch";
+
+import { cnState } from "#lib/utils";
 
 function Switch({
   className,
   size = "default",
   ...props
 }: SwitchPrimitive.Root.Props & {
-  size?: "sm" | "default"
+  size?: "sm" | "default";
 }) {
   return (
     <SwitchPrimitive.Root
@@ -22,10 +23,10 @@ function Switch({
     >
       <SwitchPrimitive.Thumb
         data-slot="switch-thumb"
-        className="pointer-events-none block rounded-full bg-switch-thumb ring-0 data-checked:bg-switch-thumb-on transition-transform mx-px group-data-[size=default]/switch:size-3.5 group-data-[size=sm]/switch:size-2.5 group-data-[size=default]/switch:data-checked:translate-x-full group-data-[size=sm]/switch:data-checked:translate-x-full group-data-[size=default]/switch:data-unchecked:translate-x-0 group-data-[size=sm]/switch:data-unchecked:translate-x-0"
+        className="bg-switch-thumb data-checked:bg-switch-thumb-on pointer-events-none mx-px block rounded-full ring-0 transition-transform group-data-[size=default]/switch:size-3.5 group-data-[size=sm]/switch:size-2.5 group-data-[size=default]/switch:data-checked:translate-x-full group-data-[size=sm]/switch:data-checked:translate-x-full group-data-[size=default]/switch:data-unchecked:translate-x-0 group-data-[size=sm]/switch:data-unchecked:translate-x-0"
       />
     </SwitchPrimitive.Root>
-  )
+  );
 }
 
-export { Switch }
+export { Switch };

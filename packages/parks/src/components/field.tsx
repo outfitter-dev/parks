@@ -1,11 +1,12 @@
-"use client"
+"use client";
 
-import { useMemo } from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cnState } from "#lib/utils"
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import { useMemo } from "react";
 
-import { Label } from "#components/label"
-import { Separator } from "#components/separator"
+import { Label } from "#components/label";
+import { Separator } from "#components/separator";
+import { cnState } from "#lib/utils";
 
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
   return (
@@ -17,7 +18,7 @@ function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldLegend({
@@ -35,7 +36,7 @@ function FieldLegend({
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldGroup({ className, ...props }: React.ComponentProps<"div">) {
@@ -48,29 +49,26 @@ function FieldGroup({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
-const fieldVariants = cva(
-  "group/field flex w-full gap-2",
-  {
-    variants: {
-      orientation: {
-        // Over a text control, the label, hint and error start where the
-        // control's text starts (ps-field), as in docs/ui.md.
-        vertical:
-          "flex-col *:w-full [&>.sr-only]:w-auto has-[>[data-slot=input],>[data-slot=textarea],>[data-slot=input-group],>[data-slot=select-trigger],>[data-slot=combobox-chips]]:*:data-[slot=field-label]:ps-field has-[>[data-slot=input],>[data-slot=textarea],>[data-slot=input-group],>[data-slot=select-trigger],>[data-slot=combobox-chips]]:*:data-[slot=field-description]:ps-field has-[>[data-slot=input],>[data-slot=textarea],>[data-slot=input-group],>[data-slot=select-trigger],>[data-slot=combobox-chips]]:*:data-[slot=field-error]:ps-field",
-        horizontal:
-          "flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
-        responsive:
-          "flex-col *:w-full @md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto @md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:*:data-[slot=field-label]:flex-auto [&>.sr-only]:w-auto @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
-      },
+const fieldVariants = cva("group/field flex w-full gap-2", {
+  variants: {
+    orientation: {
+      // Over a text control, the label, hint and error start where the
+      // control's text starts (ps-field), as in docs/ui.md.
+      vertical:
+        "has-[>[data-slot=input],>[data-slot=textarea],>[data-slot=input-group],>[data-slot=select-trigger],>[data-slot=combobox-chips]]:*:data-[slot=field-label]:ps-field has-[>[data-slot=input],>[data-slot=textarea],>[data-slot=input-group],>[data-slot=select-trigger],>[data-slot=combobox-chips]]:*:data-[slot=field-description]:ps-field has-[>[data-slot=input],>[data-slot=textarea],>[data-slot=input-group],>[data-slot=select-trigger],>[data-slot=combobox-chips]]:*:data-[slot=field-error]:ps-field flex-col *:w-full [&>.sr-only]:w-auto",
+      horizontal:
+        "flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
+      responsive:
+        "flex-col *:w-full @md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto @md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:*:data-[slot=field-label]:flex-auto [&>.sr-only]:w-auto @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
     },
-    defaultVariants: {
-      orientation: "vertical",
-    },
-  }
-)
+  },
+  defaultVariants: {
+    orientation: "vertical",
+  },
+});
 
 function Field({
   className,
@@ -85,7 +83,7 @@ function Field({
       className={cnState(fieldVariants({ orientation }), className)}
       {...props}
     />
-  )
+  );
 }
 
 function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
@@ -98,7 +96,7 @@ function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldLabel({
@@ -115,7 +113,7 @@ function FieldLabel({
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldTitle({ className, ...props }: React.ComponentProps<"div">) {
@@ -128,7 +126,7 @@ function FieldTitle({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldDescription({ className, ...props }: React.ComponentProps<"p">) {
@@ -143,7 +141,7 @@ function FieldDescription({ className, ...props }: React.ComponentProps<"p">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function FieldSeparator({
@@ -151,7 +149,7 @@ function FieldSeparator({
   className,
   ...props
 }: React.ComponentProps<"div"> & {
-  children?: React.ReactNode
+  children?: React.ReactNode;
 }) {
   return (
     <div
@@ -166,14 +164,14 @@ function FieldSeparator({
       <Separator className="absolute inset-0 top-1/2" />
       {children && (
         <span
-          className="relative mx-auto block w-fit bg-background px-2 text-muted-foreground"
+          className="bg-background text-muted-foreground relative mx-auto block w-fit px-2"
           data-slot="field-separator-content"
         >
           {children}
         </span>
       )}
     </div>
-  )
+  );
 }
 
 function FieldError({
@@ -182,23 +180,23 @@ function FieldError({
   errors,
   ...props
 }: React.ComponentProps<"div"> & {
-  errors?: Array<{ message?: string } | undefined>
+  errors?: ({ message?: string } | undefined)[];
 }) {
   const content = useMemo(() => {
     if (children) {
-      return children
+      return children;
     }
 
     if (!errors?.length) {
-      return null
+      return null;
     }
 
     const uniqueErrors = [
       ...new Map(errors.map((error) => [error?.message, error])).values(),
-    ]
+    ];
 
     if (uniqueErrors?.length == 1) {
-      return uniqueErrors[0]?.message
+      return uniqueErrors[0]?.message;
     }
 
     return (
@@ -208,11 +206,11 @@ function FieldError({
             error?.message && <li key={index}>{error.message}</li>
         )}
       </ul>
-    )
-  }, [children, errors])
+    );
+  }, [children, errors]);
 
   if (!content) {
-    return null
+    return null;
   }
 
   return (
@@ -224,7 +222,7 @@ function FieldError({
     >
       {content}
     </div>
-  )
+  );
 }
 
 export {
@@ -238,4 +236,4 @@ export {
   FieldSet,
   FieldContent,
   FieldTitle,
-}
+};

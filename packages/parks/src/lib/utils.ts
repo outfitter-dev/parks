@@ -1,4 +1,5 @@
-import { type ClassValue, clsx } from "clsx";
+import { clsx } from "clsx";
+import type { ClassValue } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
 /**
@@ -26,7 +27,10 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /** A Base UI `className`: a string, or a function of the component's state. */
-export type StateClassName<State> = string | ((state: State) => string | undefined) | undefined;
+export type StateClassName<State> =
+  | string
+  | ((state: State) => string | undefined)
+  | undefined;
 
 /**
  * Merges a component's own classes with its `className` prop, which comes
@@ -34,12 +38,16 @@ export type StateClassName<State> = string | ((state: State) => string | undefin
  * function stays a function so Base UI can still call it. Components always
  * merge `className` through this, never through `cn`, which would drop it.
  */
-export function cnState(...inputs: [...ClassValue[], string | undefined]): string;
+export function cnState(
+  ...inputs: [...ClassValue[], string | undefined]
+): string;
 export function cnState<State>(
   ...inputs: [...ClassValue[], StateClassName<State>]
 ): string | ((state: State) => string);
-export function cnState<State>(...inputs: [...ClassValue[], StateClassName<State>]) {
-  const className = inputs[inputs.length - 1] as StateClassName<State>;
+export function cnState<State>(
+  ...inputs: [...ClassValue[], StateClassName<State>]
+) {
+  const className = inputs.at(-1) as StateClassName<State>;
   const base = inputs.slice(0, -1) as ClassValue[];
   if (typeof className === "function") {
     return (state: State) => cn(base, className(state));

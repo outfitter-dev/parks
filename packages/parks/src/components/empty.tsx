@@ -1,8 +1,10 @@
-import type * as React from "react"
-import { mergeProps } from "@base-ui/react/merge-props"
-import { useRender } from "@base-ui/react/use-render"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cnState } from "#lib/utils"
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import type * as React from "react";
+
+import { cnState } from "#lib/utils";
 
 /*
  * shadcn's Empty: the centred block for a list or page with nothing in it.
@@ -21,17 +23,20 @@ function Empty({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function EmptyHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="empty-header"
-      className={cnState("flex max-w-sm flex-col items-center gap-2", className)}
+      className={cnState(
+        "flex max-w-sm flex-col items-center gap-2",
+        className
+      )}
       {...props}
     />
-  )
+  );
 }
 
 const emptyMediaVariants = cva(
@@ -40,14 +45,14 @@ const emptyMediaVariants = cva(
     variants: {
       variant: {
         default: "bg-transparent",
-        icon: "flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground [&_svg:not([class*='size-'])]:size-4",
+        icon: "bg-muted text-foreground flex size-8 shrink-0 items-center justify-center rounded-lg [&_svg:not([class*='size-'])]:size-4",
       },
     },
     defaultVariants: {
       variant: "default",
     },
   }
-)
+);
 
 function EmptyMedia({
   className,
@@ -61,11 +66,15 @@ function EmptyMedia({
       className={cnState(emptyMediaVariants({ variant }), className)}
       {...props}
     />
-  )
+  );
 }
 
 /** Render it as a heading with `render={<h2 />}` when it titles a page or card. */
-function EmptyTitle({ className, render, ...props }: useRender.ComponentProps<"div">) {
+function EmptyTitle({
+  className,
+  render,
+  ...props
+}: useRender.ComponentProps<"div">) {
   return useRender({
     defaultTagName: "div",
     props: mergeProps<"div">(
@@ -76,7 +85,7 @@ function EmptyTitle({ className, render, ...props }: useRender.ComponentProps<"d
       props
     ),
     render,
-  })
+  });
 }
 
 function EmptyDescription({ className, ...props }: React.ComponentProps<"p">) {
@@ -89,7 +98,7 @@ function EmptyDescription({ className, ...props }: React.ComponentProps<"p">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function EmptyContent({ className, ...props }: React.ComponentProps<"div">) {
@@ -102,7 +111,7 @@ function EmptyContent({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -112,4 +121,4 @@ export {
   EmptyDescription,
   EmptyContent,
   EmptyMedia,
-}
+};

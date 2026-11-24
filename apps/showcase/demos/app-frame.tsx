@@ -1,19 +1,29 @@
 "use client";
 
-import { createContext, useContext, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@outfitter/parks/components/button";
 import { cn } from "@outfitter/parks/lib/utils";
 import { PanelLeftCloseIcon } from "@solar-icons/react/outline/panel-left-close";
 import { PanelLeftOpenIcon } from "@solar-icons/react/outline/panel-left-open";
+import {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import type { ReactNode } from "react";
 
 import { useShell } from "#lib/shell";
-import { SidebarPanel, SidebarRail, type AppNavigation } from "./app-sidebar";
+
+import { SidebarPanel, SidebarRail } from "./app-sidebar";
+import type { AppNavigation } from "./app-sidebar";
 
 /** Frame widths at or above this dock the sidebar; below it the sidebar opens over the page. Sits between the tablet (820px) and a laptop window with the workbench nav (~960px). */
 const DOCK_MIN_WIDTH = 896;
 
 /** Shared motion for the sidebar: where it sits and the space it takes. */
-const sidebarMotion = "duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none";
+const sidebarMotion =
+  "duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none";
 
 const SidebarContext = createContext<{
   expanded: boolean;
@@ -47,11 +57,22 @@ export function PageBar({
   children?: ReactNode;
 }) {
   return (
-    <header className={cn("flex min-h-14 shrink-0 items-center gap-1.5 ps-3 pe-4", className)}>
+    <header
+      className={cn(
+        "flex min-h-14 shrink-0 items-center gap-1.5 ps-3 pe-4",
+        className
+      )}
+    >
       {toggle ? <SidebarToggle /> : null}
-      {title == null ? null : <Title className="min-w-0 truncate font-semibold">{title}</Title>}
+      {title == null ? null : (
+        <Title className="min-w-0 truncate font-semibold">{title}</Title>
+      )}
       {start == null ? null : <div className="min-w-0 flex-1">{start}</div>}
-      {children ? <div className="ms-auto flex shrink-0 items-center gap-2">{children}</div> : null}
+      {children ? (
+        <div className="ms-auto flex shrink-0 items-center gap-2">
+          {children}
+        </div>
+      ) : null}
     </header>
   );
 }
@@ -64,7 +85,9 @@ export function PageBar({
  */
 export function SidebarToggle() {
   const sidebar = useContext(SidebarContext);
-  if (!sidebar) return null;
+  if (!sidebar) {
+    return null;
+  }
   const folded = sidebar.docked || sidebar.rail;
   return (
     <div
@@ -72,7 +95,7 @@ export function SidebarToggle() {
       className={cn(
         "flex shrink-0 overflow-hidden transition-[width,margin,opacity] ease-out motion-reduce:transition-none",
         sidebar.ready ? "duration-300" : "duration-0",
-        folded ? "ms-1 -me-1.5 w-0 opacity-0" : "w-7 opacity-100",
+        folded ? "ms-1 -me-1.5 w-0 opacity-0" : "w-7 opacity-100"
       )}
     >
       <Button
@@ -127,11 +150,15 @@ export function AppFrame({
 
   useLayoutEffect(() => {
     const frame = frameRef.current;
-    if (!frame) return;
+    if (!frame) {
+      return;
+    }
     const measure = () => {
       const next = frame.offsetWidth >= DOCK_MIN_WIDTH;
       setWide((previous) => {
-        if (previous !== next) setExpanded(next);
+        if (previous !== next) {
+          setExpanded(next);
+        }
         return next;
       });
     };
@@ -158,23 +185,32 @@ export function AppFrame({
       type="button"
       aria-label="Hide sidebar"
       onClick={hide}
-      className="absolute inset-0 z-20 bg-overlay animate-in fade-in-0 duration-300"
+      className="bg-overlay animate-in fade-in-0 absolute inset-0 z-20 duration-300"
     />
   ) : null;
 
-  const header = title == null ? null : (
-    <PageBar title={title}>{actions}</PageBar>
-  );
+  const header =
+    title == null ? null : <PageBar title={title}>{actions}</PageBar>;
 
   return (
-    <SidebarContext.Provider value={{ expanded, docked, rail, ready, toggle: () => setExpanded(!expanded) }}>
+    <SidebarContext.Provider
+      value={{
+        expanded,
+        docked,
+        rail,
+        ready,
+        toggle: () => setExpanded(!expanded),
+      }}
+    >
       <div
         ref={frameRef}
         data-shell={shell.style}
         className={cn(
-          "relative flex min-h-160 overflow-hidden text-foreground",
+          "text-foreground relative flex min-h-160 overflow-hidden",
           // --g is the container's gutter: the theme's value, or nothing on a phone.
-          inset ? "bg-canvas [--g:var(--shell-gutter,--spacing(2))] @max-md:[--g:0px]" : "bg-background",
+          inset
+            ? "bg-canvas [--g:var(--shell-gutter,--spacing(2))] @max-md:[--g:0px]"
+            : "bg-background"
         )}
       >
         {/* Holds the docked sidebar's width in the page flow, and gives it up as the sidebar shrinks. */}
@@ -183,7 +219,13 @@ export function AppFrame({
           className={cn(
             "shrink-0 transition-[width]",
             motion,
-            docked ? (inset ? "w-56" : "w-[calc(--spacing(56)+--spacing(2))]") : rail ? "w-14" : "w-0",
+            docked
+              ? inset
+                ? "w-56"
+                : "w-[calc(--spacing(56)+--spacing(2))]"
+              : rail
+                ? "w-14"
+                : "w-0"
           )}
         />
         {backdrop}
@@ -194,10 +236,16 @@ export function AppFrame({
             className={cn(
               "absolute inset-y-0 start-0 z-10 flex w-14 flex-col items-center pt-[calc(var(--g)+--spacing(2.5))] pb-(--g) transition-opacity",
               motion,
-              rail ? "opacity-100 delay-150" : "pointer-events-none opacity-0",
+              rail ? "opacity-100 delay-150" : "pointer-events-none opacity-0"
             )}
           >
-            <SidebarRail navigation={navigation} place={place} gutter={shell.gutter} anchor={railRef} onDock={() => setExpanded(true)} />
+            <SidebarRail
+              navigation={navigation}
+              place={place}
+              gutter={shell.gutter}
+              anchor={railRef}
+              onDock={() => setExpanded(true)}
+            />
           </div>
         ) : null}
         <aside
@@ -206,39 +254,50 @@ export function AppFrame({
           className={cn(
             "absolute z-30 flex w-56 flex-col transition-[translate,opacity,box-shadow]",
             motion,
-            expanded ? "translate-x-0 opacity-100" : "-translate-x-[calc(100%+--spacing(4))] opacity-0",
+            expanded
+              ? "translate-x-0 opacity-100"
+              : "-translate-x-[calc(100%+--spacing(4))] opacity-0",
             inset
               ? // Flush on the canvas. The brand row lines up with the page header,
                 // and opened over the page its hide button lands on the header toggle.
                 cn(
                   "inset-y-0 start-0 pe-2 pt-[calc(var(--g)+--spacing(4))] pb-[calc(var(--g)+--spacing(2))]",
-                  overlay ? "w-64 bg-canvas ps-[calc(var(--g)+--spacing(4))] shadow-xl" : "ps-2",
+                  overlay
+                    ? "bg-canvas w-64 ps-[calc(var(--g)+--spacing(4))] shadow-xl"
+                    : "ps-2"
                 )
               : cn(
-                  "inset-y-2 start-2 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] bg-glass p-2 shadow-(--shadow-frame) ring-1 ring-border-muted backdrop-blur-xl",
-                  overlay && "bg-muted shadow-xl",
-                ),
+                  "bg-glass ring-border-muted inset-y-2 start-2 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] p-2 shadow-(--shadow-frame) ring-1 backdrop-blur-xl",
+                  overlay && "bg-muted shadow-xl"
+                )
           )}
           onKeyDown={(event) => {
-            if (event.key === "Escape" && overlay) hide();
+            if (event.key === "Escape" && overlay) {
+              hide();
+            }
           }}
         >
-          <SidebarPanel navigation={navigation} place={place} onHide={hide} hideAt={wide ? "end" : "start"} />
+          <SidebarPanel
+            navigation={navigation}
+            place={place}
+            onHide={hide}
+            hideAt={wide ? "end" : "start"}
+          />
         </aside>
         <div
           className={cn(
             "flex min-w-0 flex-1 flex-col",
             inset &&
               cn(
-                "my-(--g) me-(--g) overflow-hidden bg-background shadow-(--shadow-frame) ring-1 ring-border-muted transition-[margin,border-radius]",
+                "bg-background ring-border-muted my-(--g) me-(--g) overflow-hidden shadow-(--shadow-frame) ring-1 transition-[margin,border-radius]",
                 motion,
                 // Beside the docked sidebar or its rail the container meets it; otherwise it holds the gutter on the left too.
                 docked || rail ? "ms-0" : "ms-(--g)",
-                "rounded-[calc(var(--radius)*var(--corner-scale))] @max-md:rounded-none @max-md:ring-0 @max-md:shadow-none",
+                "rounded-[calc(var(--radius)*var(--corner-scale))] @max-md:rounded-none @max-md:shadow-none @max-md:ring-0",
                 // At a gutter of 0 the container meets the window's edges and squares off there.
                 flush && "rounded-e-none",
-                flush && !docked && !rail && "rounded-s-none",
-              ),
+                flush && !docked && !rail && "rounded-s-none"
+              )
           )}
         >
           {header}

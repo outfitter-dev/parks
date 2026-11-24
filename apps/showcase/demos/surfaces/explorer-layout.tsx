@@ -1,6 +1,7 @@
-import type { ReactNode } from "react";
-import { PageBar } from "../app-frame";
 import { BreadcrumbPath } from "@outfitter/parks/components/breadcrumb";
+import type { ReactNode } from "react";
+
+import { PageBar } from "../app-frame";
 
 /** The browser pane owns navigation. The detail pane owns the selected item's path and actions. */
 export function ExplorerLayout({
@@ -24,7 +25,11 @@ export function ExplorerLayout({
       </div>
 
       <div className="min-w-0">
-        <PageBar toggle={false} className="gap-3 ps-4" start={<BreadcrumbPath items={path.map((label) => ({ label }))} />}>
+        <PageBar
+          toggle={false}
+          className="gap-3 ps-4"
+          start={<BreadcrumbPath items={path.map((label) => ({ label }))} />}
+        >
           {actions}
         </PageBar>
         <div className="flex min-w-0 flex-col gap-6 px-4 pb-4">{children}</div>

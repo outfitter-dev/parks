@@ -1,4 +1,4 @@
-import { cnState } from "#lib/utils"
+import { cnState } from "#lib/utils";
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -7,7 +7,7 @@ function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
       className={cnState("animate-pulse rounded-md bg-muted", className)}
       {...props}
     />
-  )
+  );
 }
 
-export { Skeleton }
+export { Skeleton };

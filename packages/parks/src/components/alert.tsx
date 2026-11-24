@@ -1,8 +1,16 @@
-import * as React from "react"
-import { cva } from "class-variance-authority"
-import { header, headerAction, headerDescription, headerMeta, headerTitle } from "#lib/header"
-import { isTone, type Tone } from "#lib/tone"
-import { cnState } from "#lib/utils"
+import { cva } from "class-variance-authority";
+import * as React from "react";
+
+import {
+  header,
+  headerAction,
+  headerDescription,
+  headerMeta,
+  headerTitle,
+} from "#lib/header";
+import { isTone } from "#lib/tone";
+import type { Tone } from "#lib/tone";
+import { cnState } from "#lib/utils";
 
 /*
  * `tone` colours only the glyph and title. The description stays muted, so a
@@ -16,10 +24,10 @@ import { cnState } from "#lib/utils"
  * both without them overlapping.
  */
 const alertGlyph =
-  "*:[svg]:col-start-1 *:[svg]:row-span-2 *:[svg]:row-start-1 *:[svg]:me-2 *:[svg]:self-start *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4"
+  "*:[svg]:col-start-1 *:[svg]:row-span-2 *:[svg]:row-start-1 *:[svg]:me-2 *:[svg]:self-start *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4";
 
 const alertVariants = cva(
-  `group/alert relative w-full rounded-lg border bg-card px-2.5 py-2 text-left text-sm text-card-foreground ${header}`,
+  `group/alert bg-card text-card-foreground relative w-full rounded-lg border px-2.5 py-2 text-left text-sm ${header}`,
   {
     variants: {
       toned: {
@@ -31,32 +39,36 @@ const alertVariants = cva(
       toned: false,
     },
   }
-)
+);
 
-type AlertVariant = "default" | Exclude<Tone, "neutral" | "brand" | "merged">
+type AlertVariant = "default" | Exclude<Tone, "neutral" | "brand" | "merged">;
 
 type AlertProps = React.ComponentProps<"div"> & {
   /** The colour of the glyph and title. Defaults to neutral. */
-  tone?: Tone
+  tone?: Tone;
   /** shadcn's `default`/`destructive`, or an older tone name: an alias for `tone`. */
-  variant?: AlertVariant | null
-}
+  variant?: AlertVariant | null;
+};
 
 function Alert({ className, variant, tone: toneProp, ...props }: AlertProps) {
   const tone: Tone = isTone(toneProp)
     ? toneProp
     : variant && variant !== "default"
       ? variant
-      : "neutral"
+      : "neutral";
   return (
     <div
       data-slot="alert"
       data-tone={tone}
       role="alert"
-      className={cnState(alertVariants({ toned: tone !== "neutral" }), alertGlyph, className)}
+      className={cnState(
+        alertVariants({ toned: tone !== "neutral" }),
+        alertGlyph,
+        className
+      )}
       {...props}
     />
-  )
+  );
 }
 
 function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
@@ -70,7 +82,7 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function AlertDescription({
@@ -87,7 +99,7 @@ function AlertDescription({
       )}
       {...props}
     />
-  )
+  );
 }
 
 /**
@@ -101,13 +113,10 @@ function AlertMeta({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="alert-meta"
-      className={cnState(
-        headerMeta,
-        className
-      )}
+      className={cnState(headerMeta, className)}
       {...props}
     />
-  )
+  );
 }
 
 function AlertAction({ className, ...props }: React.ComponentProps<"div">) {
@@ -117,8 +126,15 @@ function AlertAction({ className, ...props }: React.ComponentProps<"div">) {
       className={cnState(headerAction, "-my-0.5", className)}
       {...props}
     />
-  )
+  );
 }
 
-export { Alert, AlertTitle, AlertDescription, AlertAction, AlertMeta, alertVariants }
-export type { AlertProps, AlertVariant }
+export {
+  Alert,
+  AlertTitle,
+  AlertDescription,
+  AlertAction,
+  AlertMeta,
+  alertVariants,
+};
+export type { AlertProps, AlertVariant };

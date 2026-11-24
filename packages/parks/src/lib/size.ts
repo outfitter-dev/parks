@@ -13,6 +13,6 @@ export const controlSize = {
   sm: "[--size-h:--spacing(7)]",
   default: "[--size-h:var(--control-h)]",
   lg: "[--size-h:--spacing(9)]",
-} as const
+} as const;
 
-export type ControlSize = keyof typeof controlSize
+export type ControlSize = keyof typeof controlSize;

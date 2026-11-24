@@ -1,21 +1,28 @@
 "use client";
 
-import { useState } from "react";
-import { MultiFileDiff } from "@pierre/diffs/react";
-import { Card, CardHeader, CardLead, CardMeta, CardTitle } from "@outfitter/parks/components/card";
 import { Badge } from "@outfitter/parks/components/badge";
 import { Button } from "@outfitter/parks/components/button";
+import {
+  Card,
+  CardHeader,
+  CardLead,
+  CardMeta,
+  CardTitle,
+} from "@outfitter/parks/components/card";
 import { InlineCode } from "@outfitter/parks/components/inline-code";
 import { Textarea } from "@outfitter/parks/components/textarea";
+import { MultiFileDiff } from "@pierre/diffs/react";
 import { ArrowUpIcon } from "@solar-icons/react/bold/arrow-up";
-import { ChatRoundDotsIcon } from "@solar-icons/react/outline/chat-round-dots";
 import { ChatRoundDotsIcon as ChatRoundDotsBold } from "@solar-icons/react/bold/chat-round-dots";
+import { PaperclipIcon } from "@solar-icons/react/bold/paperclip";
+import { PenNewSquareIcon } from "@solar-icons/react/bold/pen-new-square";
+import { ChatRoundDotsIcon } from "@solar-icons/react/outline/chat-round-dots";
 import { CodeSquareIcon } from "@solar-icons/react/outline/code-square";
 import { MagnifierIcon } from "@solar-icons/react/outline/magnifier";
-import { PaperclipIcon } from "@solar-icons/react/bold/paperclip";
 import { PenIcon } from "@solar-icons/react/outline/pen";
-import { PenNewSquareIcon } from "@solar-icons/react/bold/pen-new-square";
 import { StarsIcon } from "@solar-icons/react/outline/stars";
+import { useState } from "react";
+
 import { AppFrame } from "../app-frame";
 import type { AppNavigation } from "../app-sidebar";
 import { HaloSignal, Viewport } from "../kit";
@@ -26,10 +33,30 @@ const navigation = {
   name: "Outpost",
   mark: "O",
   items: [
-    { id: "rename", label: "Rename the ask route", icon: ChatRoundDotsIcon, solid: ChatRoundDotsBold },
-    { id: "fleet", label: "Fleet digest, Friday", icon: ChatRoundDotsIcon, solid: ChatRoundDotsBold },
-    { id: "permit", label: "Permit for overnight merges", icon: ChatRoundDotsIcon, solid: ChatRoundDotsBold },
-    { id: "rex", label: "Why did Rex go quiet?", icon: ChatRoundDotsIcon, solid: ChatRoundDotsBold },
+    {
+      id: "rename",
+      label: "Rename the ask route",
+      icon: ChatRoundDotsIcon,
+      solid: ChatRoundDotsBold,
+    },
+    {
+      id: "fleet",
+      label: "Fleet digest, Friday",
+      icon: ChatRoundDotsIcon,
+      solid: ChatRoundDotsBold,
+    },
+    {
+      id: "permit",
+      label: "Permit for overnight merges",
+      icon: ChatRoundDotsIcon,
+      solid: ChatRoundDotsBold,
+    },
+    {
+      id: "rex",
+      label: "Why did Rex go quiet?",
+      icon: ChatRoundDotsIcon,
+      solid: ChatRoundDotsBold,
+    },
   ],
 } satisfies AppNavigation;
 
@@ -51,11 +78,23 @@ const after = {
 };
 `,
 };
-const diffOptions = { diffStyle: "unified", diffIndicators: "classic", disableFileHeader: true } as const;
+const diffOptions = {
+  diffStyle: "unified",
+  diffIndicators: "classic",
+  disableFileHeader: true,
+} as const;
 
 const options = [
-  { label: "Ship as /v1/asks", detail: "Plural, matches threads and agents. Keep /v1/ask as an alias for two weeks.", recommended: true },
-  { label: "Keep /v1/ask", detail: "No migration. The odd one out among the routes." },
+  {
+    label: "Ship as /v1/asks",
+    detail:
+      "Plural, matches threads and agents. Keep /v1/ask as an alias for two weeks.",
+    recommended: true,
+  },
+  {
+    label: "Keep /v1/ask",
+    detail: "No migration. The odd one out among the routes.",
+  },
   { label: "Both, no deadline", detail: "Least churn, but two names forever." },
 ];
 
@@ -64,8 +103,12 @@ function AskCard() {
   return (
     <Card variant="tray" className="gap-2">
       <CardHeader className="pt-1">
-        <CardLead><ChatRoundDotsIcon className="size-4 text-brand-strong" /></CardLead>
-        <CardTitle className="font-medium">Which route name should ship?</CardTitle>
+        <CardLead>
+          <ChatRoundDotsIcon className="text-brand-strong size-4" />
+        </CardLead>
+        <CardTitle className="font-medium">
+          Which route name should ship?
+        </CardTitle>
         <CardMeta>ask.choice@1</CardMeta>
       </CardHeader>
       <div className="grid gap-2 px-(--frame-space) @3xl:grid-cols-3">
@@ -78,27 +121,45 @@ function AskCard() {
             aria-pressed={picked === option.label}
             onClick={() => setPicked(option.label)}
             selected={picked === option.label}
-            className="gap-1 *:px-inset"
+            className="*:px-inset gap-1"
           >
             <span className="flex items-center gap-2 font-medium">
               {option.label}
-              {option.recommended ? <Badge className="ml-auto">Recommended</Badge> : null}
+              {option.recommended ? (
+                <Badge className="ml-auto">Recommended</Badge>
+              ) : null}
             </span>
             <span className="text-muted-foreground">{option.detail}</span>
           </Card>
         ))}
       </div>
-      {picked ? <p className="px-(--frame-space) text-xs text-muted-foreground *:px-inset"><span>Posts an answer@1 reply as you and wakes the agent.</span></p> : null}
+      {picked ? (
+        <p className="text-muted-foreground *:px-inset px-(--frame-space) text-xs">
+          <span>Posts an answer@1 reply as you and wakes the agent.</span>
+        </p>
+      ) : null}
     </Card>
   );
 }
 
 function Composer() {
   return (
-    <div className="rounded-2xl border bg-background p-2 shadow-xs focus-within:ring-2 focus-within:ring-focus-ring">
+    <div className="bg-background focus-within:ring-focus-ring rounded-2xl border p-2 shadow-xs focus-within:ring-2">
       <div className="flex flex-wrap gap-1.5 px-1 pb-2">
-        <Badge variant="outline" size="lg" mono icon={<FileType type="ts" size="mini" />}>routes.ts</Badge>
-        <Badge variant="outline" size="lg" mono icon={<FileType type="md" size="mini" />}></Badge>
+        <Badge
+          variant="outline"
+          size="lg"
+          mono
+          icon={<FileType type="ts" size="mini" />}
+        >
+          routes.ts
+        </Badge>
+        <Badge
+          variant="outline"
+          size="lg"
+          mono
+          icon={<FileType type="md" size="mini" />}
+        ></Badge>
       </div>
       <Textarea
         rows={2}
@@ -114,7 +175,11 @@ function Composer() {
           <StarsIcon data-icon="inline-start" />
           Donna · Devin
         </Button>
-        <Button size="icon-sm" className="ml-auto rounded-full" aria-label="Send">
+        <Button
+          size="icon-sm"
+          className="ml-auto rounded-full"
+          aria-label="Send"
+        >
           <ArrowUpIcon />
         </Button>
       </div>
@@ -137,23 +202,50 @@ export function AssistantSurface() {
         }
       >
         <div className="mx-auto flex min-h-full max-w-3xl flex-col gap-6 px-4 py-6">
-          <Turn from="you">Can you make the ask route plural like the others, and check nothing else calls it?</Turn>
+          <Turn from="you">
+            Can you make the ask route plural like the others, and check nothing
+            else calls it?
+          </Turn>
 
           <Turn from="agent" name="Donna">
             <Trace>
-              <TraceLine icon={MagnifierIcon} title="Searched for /v1/ask" detail="3 results" />
-              <TraceLine icon={PenIcon} title="Edited src/http/routes.ts" detail="+2 −1" defaultOpen>
+              <TraceLine
+                icon={MagnifierIcon}
+                title="Searched for /v1/ask"
+                detail="3 results"
+              />
+              <TraceLine
+                icon={PenIcon}
+                title="Edited src/http/routes.ts"
+                detail="+2 −1"
+                defaultOpen
+              >
                 <CodeFrame label={routeFile}>
-                  <MultiFileDiff oldFile={before} newFile={after} options={diffOptions} className="workbench-code" />
+                  <MultiFileDiff
+                    oldFile={before}
+                    newFile={after}
+                    options={diffOptions}
+                    className="workbench-code"
+                  />
                 </CodeFrame>
               </TraceLine>
-              <TraceLine icon={CodeSquareIcon} title="Ran bun run test routes" detail="18 passed" tone="ok">
-                <CodeBlock code={"✓ test/http/routes.test.ts (18)\nTests  18 passed"} label="Output" />
+              <TraceLine
+                icon={CodeSquareIcon}
+                title="Ran bun run test routes"
+                detail="18 passed"
+                tone="ok"
+              >
+                <CodeBlock
+                  code={"✓ test/http/routes.test.ts (18)\nTests  18 passed"}
+                  label="Output"
+                />
               </TraceLine>
             </Trace>
             <p>
-              The route is now <InlineCode>/v1/asks</InlineCode>. Two callers used the old name: the
-              CLI and the iOS share extension. The CLI is updated. The extension ships separately, so the old name has to keep working for a while.
+              The route is now <InlineCode>/v1/asks</InlineCode>. Two callers
+              used the old name: the CLI and the iOS share extension. The CLI is
+              updated. The extension ships separately, so the old name has to
+              keep working for a while.
             </p>
             <AskCard />
           </Turn>
@@ -161,13 +253,13 @@ export function AssistantSurface() {
           <Turn from="you">Go with the recommendation.</Turn>
 
           <Turn from="agent" name="Donna">
-            <span className="flex items-center gap-2 text-muted-foreground">
+            <span className="text-muted-foreground flex items-center gap-2">
               <HaloSignal size={20} label="Working" className="text-brand" />
               Adding the alias and a deprecation header
             </span>
           </Turn>
 
-          <div className="sticky bottom-0 mt-auto bg-background pt-2">
+          <div className="bg-background sticky bottom-0 mt-auto pt-2">
             <Composer />
           </div>
         </div>

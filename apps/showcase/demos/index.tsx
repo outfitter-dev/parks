@@ -1,5 +1,7 @@
-import { ButtonDemo } from "./button";
 import type { ComponentType } from "react";
+
+import { BreadcrumbDemo } from "./breadcrumb";
+import { ButtonDemo } from "./button";
 import {
   BadgeDemo,
   CardDemo,
@@ -10,26 +12,31 @@ import {
   TableDemo,
   TabsDemo,
 } from "./components";
-import { BreadcrumbDemo } from "./breadcrumb";
-import { DisclosureDemo, GroupsDemo } from "./disclosure";
-import { FormsDemo } from "./forms";
-import { OverlaysDemo } from "./overlays";
-import { DataTableDemo } from "./data-table";
-import { AttachmentDemo, ProseDemo, QuestionnaireDemo, ResizableDemo, TraceDemo } from "./content";
 import {
   AdminComposition,
   AgentsComposition,
   NeedsYouComposition,
   SignInComposition,
 } from "./compositions";
+import {
+  AttachmentDemo,
+  ProseDemo,
+  QuestionnaireDemo,
+  ResizableDemo,
+  TraceDemo,
+} from "./content";
+import { DataTableDemo } from "./data-table";
+import { DisclosureDemo, GroupsDemo } from "./disclosure";
+import { FormsDemo } from "./forms";
+import { IconsDemo } from "./icons";
+import { OverlaysDemo } from "./overlays";
+import { ColorDemo, ShapeDemo, TypeDemo } from "./primitives";
 import { AssistantSurface } from "./surfaces/assistant";
 import { BlogSurface } from "./surfaces/blog";
 import { BoardSurface } from "./surfaces/board";
 import { DocsSurface } from "./surfaces/docs";
 import { SkillsetSurface } from "./surfaces/skillset";
 import { TrailsSurface } from "./surfaces/trails";
-import { IconsDemo } from "./icons";
-import { ColorDemo, ShapeDemo, TypeDemo } from "./primitives";
 
 /** Keyed by `section/slug` from lib/nav.ts. */
 export const demos: Record<string, ComponentType> = {

@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Command as CommandPrimitive } from "cmdk"
-import { commandRowState, popupRow } from "#lib/row"
-import { cnState } from "#lib/utils"
+import { CheckIcon } from "@solar-icons/react/outline/check";
+import { MagnifierIcon } from "@solar-icons/react/outline/magnifier";
+import { Command as CommandPrimitive } from "cmdk";
+import * as React from "react";
 
 import {
   Dialog,
@@ -11,13 +11,10 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "#components/dialog"
-import {
-  InputGroup,
-  InputGroupAddon,
-} from "#components/input-group"
-import { MagnifierIcon } from "@solar-icons/react/outline/magnifier"
-import { CheckIcon } from "@solar-icons/react/outline/check"
+} from "#components/dialog";
+import { InputGroup, InputGroupAddon } from "#components/input-group";
+import { commandRowState, popupRow } from "#lib/row";
+import { cnState } from "#lib/utils";
 
 function Command({
   className,
@@ -32,7 +29,7 @@ function Command({
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CommandDialog({
@@ -43,11 +40,11 @@ function CommandDialog({
   showCloseButton = false,
   ...props
 }: Omit<React.ComponentProps<typeof Dialog>, "children"> & {
-  title?: string
-  description?: string
-  className?: string
-  showCloseButton?: boolean
-  children: React.ReactNode
+  title?: string;
+  description?: string;
+  className?: string;
+  showCloseButton?: boolean;
+  children: React.ReactNode;
 }) {
   return (
     <Dialog {...props}>
@@ -65,7 +62,7 @@ function CommandDialog({
         {children}
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 function CommandInput({
@@ -74,7 +71,7 @@ function CommandInput({
 }: React.ComponentProps<typeof CommandPrimitive.Input>) {
   return (
     <div data-slot="command-input-wrapper" className="p-1 pb-0">
-      <InputGroup className="h-(--control-h)! rounded-lg! border-transparent bg-fill-subtle shadow-none! *:data-[slot=input-group-addon]:pl-2!">
+      <InputGroup className="bg-fill-subtle h-(--control-h)! rounded-lg! border-transparent shadow-none! *:data-[slot=input-group-addon]:pl-2!">
         <CommandPrimitive.Input
           data-slot="command-input"
           className={cnState(
@@ -84,13 +81,11 @@ function CommandInput({
           {...props}
         />
         <InputGroupAddon>
-          <MagnifierIcon
-            className="size-4 shrink-0 opacity-50"
-          />
+          <MagnifierIcon className="size-4 shrink-0 opacity-50" />
         </InputGroupAddon>
       </InputGroup>
     </div>
-  )
+  );
 }
 
 function CommandList({
@@ -106,7 +101,7 @@ function CommandList({
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CommandEmpty({
@@ -119,7 +114,7 @@ function CommandEmpty({
       className={cnState("py-6 text-center text-sm", className)}
       {...props}
     />
-  )
+  );
 }
 
 function CommandGroup({
@@ -135,7 +130,7 @@ function CommandGroup({
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CommandSeparator({
@@ -148,7 +143,7 @@ function CommandSeparator({
       className={cnState("-mx-1 h-px bg-border", className)}
       {...props}
     />
-  )
+  );
 }
 
 function CommandItem({
@@ -168,11 +163,9 @@ function CommandItem({
       {...props}
     >
       {children}
-      <CheckIcon
-        className="ml-auto opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100"
-      />
+      <CheckIcon className="ml-auto opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100" />
     </CommandPrimitive.Item>
-  )
+  );
 }
 
 function CommandShortcut({
@@ -188,7 +181,7 @@ function CommandShortcut({
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -201,4 +194,4 @@ export {
   CommandItem,
   CommandShortcut,
   CommandSeparator,
-}
+};

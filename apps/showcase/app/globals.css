@@ -40,7 +40,9 @@
   --trees-selected-focused-border-color-override: var(--ring);
   --trees-font-family-override: var(--font-ui);
   --trees-font-size-override: var(--text-xs);
-  --trees-git-lane-width-override: calc(var(--trees-row-height) - 2 * var(--trees-item-padding-x));
+  --trees-git-lane-width-override: calc(
+    var(--trees-row-height) - 2 * var(--trees-item-padding-x)
+  );
   --trees-status-modified-override: var(--info-foreground);
   --trees-status-added-override: var(--success-foreground);
   --trees-status-deleted-override: var(--destructive-foreground);

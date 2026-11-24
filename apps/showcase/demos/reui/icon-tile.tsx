@@ -2,11 +2,10 @@
 // Title: Icon Tile
 // Description: Square container that gives icons a consistent surface
 
-import { mergeProps } from "@base-ui/react/merge-props"
-import { useRender } from "@base-ui/react/use-render"
-import { cva, type VariantProps } from "class-variance-authority"
-
-import { cn } from "@outfitter/parks/lib/utils"
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
+import { cn } from "@outfitter/parks/lib/utils";
+import { cva, type VariantProps } from "class-variance-authority";
 
 /**
  * CSS variable architecture:
@@ -38,18 +37,18 @@ const iconTileVariants = cva(
     variants: {
       variant: {
         /** Plain bordered surface. The quiet default for list rows and toolbars. */
-        outline: "border border-border bg-background dark:bg-input/32",
+        outline: "border-border bg-background dark:bg-input/32 border",
         /** Raised muted fill with a background-colored ring. Reads as a physical chip. */
         elevated:
-          "border-2 border-background bg-muted text-accent-foreground shadow-[0_1px_3px_0_rgb(0_0_0/0.14)] dark:border",
+          "border-background bg-muted text-accent-foreground border-2 shadow-[0_1px_3px_0_rgb(0_0_0/0.14)] dark:border",
         /**
          * Tinted double container: an opacity-filled outer ring with no border
          * around a bordered inner card, all derived from `currentColor`. The
          * quiet, colorful sibling of `frame`. Retint with a text color class.
          */
         soft: [
-          "isolate p-(--icon-tile-inset) text-primary bg-current/10",
-          "after:absolute after:-z-10 after:inset-(--icon-tile-inset)",
+          "text-primary isolate bg-current/10 p-(--icon-tile-inset)",
+          "after:absolute after:inset-(--icon-tile-inset) after:-z-10",
           "after:rounded-[calc(var(--icon-tile-radius,min(var(--radius-md),calc(var(--icon-tile-size)/3)))-var(--icon-tile-inset))]",
           "after:border after:border-current/20 after:bg-current/5",
         ],
@@ -57,19 +56,19 @@ const iconTileVariants = cva(
         solid: "bg-primary text-primary-foreground",
         /** Double container - a muted ring around an inset card, matching Frame. */
         frame: [
-          "isolate border border-border bg-muted/50 p-(--icon-tile-inset)",
-          "after:absolute after:-z-10 after:inset-(--icon-tile-inset)",
+          "border-border bg-muted/50 isolate border p-(--icon-tile-inset)",
+          "after:absolute after:inset-(--icon-tile-inset) after:-z-10",
           "after:rounded-[calc(var(--icon-tile-radius,min(var(--radius-md),calc(var(--icon-tile-size)/3)))-var(--icon-tile-inset))]",
-          "after:border after:border-border after:bg-card after:shadow-xs",
+          "after:border-border after:bg-card after:border after:shadow-xs",
         ],
       },
       size: {
-        xs: "[--icon-tile-size:--spacing(6)] [--icon-tile-icon-size:--spacing(3.5)] [--icon-tile-inset:--spacing(0.5)]",
-        sm: "[--icon-tile-size:--spacing(8)] [--icon-tile-icon-size:--spacing(4)] [--icon-tile-inset:--spacing(0.5)]",
+        xs: "[--icon-tile-icon-size:--spacing(3.5)] [--icon-tile-inset:--spacing(0.5)] [--icon-tile-size:--spacing(6)]",
+        sm: "[--icon-tile-icon-size:--spacing(4)] [--icon-tile-inset:--spacing(0.5)] [--icon-tile-size:--spacing(8)]",
         default:
-          "[--icon-tile-size:--spacing(10)] [--icon-tile-icon-size:--spacing(4.5)] [--icon-tile-inset:--spacing(0.75)]",
-        lg: "[--icon-tile-size:--spacing(12)] [--icon-tile-icon-size:--spacing(5.5)] [--icon-tile-inset:--spacing(0.75)]",
-        xl: "[--icon-tile-size:--spacing(14)] [--icon-tile-icon-size:--spacing(7)] [--icon-tile-inset:--spacing(1)]",
+          "[--icon-tile-icon-size:--spacing(4.5)] [--icon-tile-inset:--spacing(0.75)] [--icon-tile-size:--spacing(10)]",
+        lg: "[--icon-tile-icon-size:--spacing(5.5)] [--icon-tile-inset:--spacing(0.75)] [--icon-tile-size:--spacing(12)]",
+        xl: "[--icon-tile-icon-size:--spacing(7)] [--icon-tile-inset:--spacing(1)] [--icon-tile-size:--spacing(14)]",
       },
       /**
        * `default`: active style radius. `full`: circular.
@@ -97,12 +96,12 @@ const iconTileVariants = cva(
       radius: "default",
     },
   }
-)
+);
 
 interface IconTileProps extends useRender.ComponentProps<"span"> {
-  variant?: VariantProps<typeof iconTileVariants>["variant"]
-  size?: VariantProps<typeof iconTileVariants>["size"]
-  radius?: VariantProps<typeof iconTileVariants>["radius"]
+  variant?: VariantProps<typeof iconTileVariants>["variant"];
+  size?: VariantProps<typeof iconTileVariants>["size"];
+  radius?: VariantProps<typeof iconTileVariants>["radius"];
 }
 
 function IconTile({
@@ -118,13 +117,13 @@ function IconTile({
     "data-variant": variant,
     "data-size": size,
     className: cn(iconTileVariants({ variant, size, radius, className })),
-  }
+  };
 
   return useRender({
     defaultTagName: "span",
     render,
     props: mergeProps<"span">(defaultProps, props),
-  })
+  });
 }
 
-export { IconTile, iconTileVariants, type IconTileProps }
+export { IconTile, iconTileVariants, type IconTileProps };

@@ -5,9 +5,13 @@
  */
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
+
 import { renderPalette } from "../packages/parks/src/lib/palette";
 
-export const palettePath = join(import.meta.dirname, "../packages/parks/src/styles/palette.css");
+export const palettePath = join(
+  import.meta.dirname,
+  "../packages/parks/src/styles/palette.css"
+);
 
 if (import.meta.main) {
   writeFileSync(palettePath, renderPalette());

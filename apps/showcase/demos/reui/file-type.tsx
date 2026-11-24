@@ -1,9 +1,9 @@
+import { cn } from "@outfitter/parks/lib/utils";
+import { cva, type VariantProps } from "class-variance-authority";
 // From the ReUI registry (reui.io, base-nova style). Workbench exploration only.
 // Title: File Type
 // Description: Shadcn file type icon in brand and family colors, outline, solid, light and mono variants, sizes down to 18px for data grid rows, and resolution from a file name or MIME type.
-import type { ComponentProps, CSSProperties, ReactNode } from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "@outfitter/parks/lib/utils"
+import type { ComponentProps, CSSProperties, ReactNode } from "react";
 
 /* -------------------------------------------------------------------------- */
 /*                                    Types                                   */
@@ -24,15 +24,15 @@ type FileTypeCategory =
   | "image"
   | "presentation"
   | "spreadsheet"
-  | "video"
+  | "video";
 
 type FileTypeExtension = {
-  category: FileTypeCategory
+  category: FileTypeCategory;
   /** The format's text color class. */
-  color: string
+  color: string;
   /** A short label for a key too long for the band, as DOCK for Dockerfile. */
-  label?: string
-}
+  label?: string;
+};
 
 /* -------------------------------------------------------------------------- */
 /*                                 Type table                                 */
@@ -44,11 +44,11 @@ type FileTypeExtension = {
  * its glyph turns dark gray, where white would fade on the pale page.
  */
 const NEUTRAL =
-  "text-zinc-500 [--file-type-fill:color-mix(in_oklab,currentColor_45%,white)] [--file-type-glyph:color-mix(in_oklab,currentColor_80%,black)]"
+  "text-zinc-500 [--file-type-fill:color-mix(in_oklab,currentColor_45%,white)] [--file-type-glyph:color-mix(in_oklab,currentColor_80%,black)]";
 /** Yellow takes dark text, as the JavaScript logo does: white on it stays
  * under 3:1 until the 700 step. */
 const YELLOW =
-  "text-yellow-500 [--file-type-foreground:var(--color-yellow-950)]"
+  "text-yellow-500 [--file-type-foreground:var(--color-yellow-950)]";
 
 /** The family colors, which a format without a brand color of its own takes. */
 const CATEGORY_COLORS: Record<FileTypeCategory, string> = {
@@ -66,7 +66,7 @@ const CATEGORY_COLORS: Record<FileTypeCategory, string> = {
   presentation: "text-red-600",
   spreadsheet: "text-green-600",
   video: "text-blue-600",
-}
+};
 
 const CATEGORY_NAMES: Record<FileTypeCategory, string> = {
   archive: "Archive",
@@ -83,7 +83,7 @@ const CATEGORY_NAMES: Record<FileTypeCategory, string> = {
   presentation: "Presentation",
   spreadsheet: "Spreadsheet",
   video: "Video",
-}
+};
 
 /**
  * Known extensions. A format takes its brand's color (Word blue, Excel green,
@@ -277,7 +277,7 @@ const FILE_TYPE_EXTENSIONS = {
   otf: { category: "font", color: NEUTRAL },
   woff: { category: "font", color: NEUTRAL },
   woff2: { category: "font", color: NEUTRAL },
-} satisfies Record<string, FileTypeExtension>
+} satisfies Record<string, FileTypeExtension>;
 
 /** The families that can be passed as a `type` on their own, glyph only. */
 const FILE_TYPE_CATEGORIES = [
@@ -294,61 +294,61 @@ const FILE_TYPE_CATEGORIES = [
   "presentation",
   "spreadsheet",
   "video",
-] as const satisfies readonly FileTypeCategory[]
+] as const satisfies readonly FileTypeCategory[];
 
-type FileTypeExtensionName = keyof typeof FILE_TYPE_EXTENSIONS
+type FileTypeExtensionName = keyof typeof FILE_TYPE_EXTENSIONS;
 
 /** Every type the table knows. Any other string renders as a neutral file. */
 type FileTypeName =
   | FileTypeExtensionName
-  | (typeof FILE_TYPE_CATEGORIES)[number]
+  | (typeof FILE_TYPE_CATEGORIES)[number];
 
 const FILE_TYPE_EXTENSION_NAMES = Object.keys(
   FILE_TYPE_EXTENSIONS
-) as FileTypeExtensionName[]
+) as FileTypeExtensionName[];
 
 /* -------------------------------------------------------------------------- */
 /*                                 Resolution                                 */
 /* -------------------------------------------------------------------------- */
 
 type ResolvedFileType = {
-  type: string
-  category: FileTypeCategory
+  type: string;
+  category: FileTypeCategory;
   /** The extension label, or undefined for a family or an empty file. */
-  label?: string
-  color: string
-}
+  label?: string;
+  color: string;
+};
 
-const extensions: Record<string, FileTypeExtension> = FILE_TYPE_EXTENSIONS
+const extensions: Record<string, FileTypeExtension> = FILE_TYPE_EXTENSIONS;
 
 /** `Object.hasOwn` would fail to typecheck in an app below the ES2022 lib. */
 function has(record: object, key: string) {
-  return Object.prototype.hasOwnProperty.call(record, key)
+  return Object.prototype.hasOwnProperty.call(record, key);
 }
 
 function isCategory(value: string): value is FileTypeCategory {
-  return (FILE_TYPE_CATEGORIES as readonly string[]).includes(value)
+  return (FILE_TYPE_CATEGORIES as readonly string[]).includes(value);
 }
 
 function resolveFileType(type?: string): ResolvedFileType {
-  const key = (type ?? "").trim().toLowerCase().replace(/^\.+/, "")
+  const key = (type ?? "").trim().toLowerCase().replace(/^\.+/, "");
 
   if (!key || key === "empty") {
-    return { type: "empty", category: "empty", color: CATEGORY_COLORS.empty }
+    return { type: "empty", category: "empty", color: CATEGORY_COLORS.empty };
   }
 
-  const extension = has(extensions, key) ? extensions[key] : null
+  const extension = has(extensions, key) ? extensions[key] : null;
   if (extension) {
     return {
       type: key,
       category: extension.category,
       label: extension.label ?? key.toUpperCase(),
       color: extension.color,
-    }
+    };
   }
 
   if (isCategory(key)) {
-    return { type: key, category: key, color: CATEGORY_COLORS[key] }
+    return { type: key, category: key, color: CATEGORY_COLORS[key] };
   }
 
   return {
@@ -356,7 +356,7 @@ function resolveFileType(type?: string): ResolvedFileType {
     category: "file",
     label: key.toUpperCase(),
     color: CATEGORY_COLORS.file,
-  }
+  };
 }
 
 /**
@@ -460,7 +460,7 @@ const MIME_TYPES: Record<string, FileTypeName> = {
   "text/x-diff": "diff",
   "text/x-patch": "patch",
   "text/x-makefile": "makefile",
-}
+};
 
 /**
  * Names that carry their type with no extension of their own, or with one
@@ -519,7 +519,7 @@ const FILE_NAMES: Record<string, FileTypeName> = {
   ".ruby-version": "txt",
   ".tool-versions": "txt",
   ".terraform-version": "txt",
-}
+};
 
 /** Other extensions of a known type. */
 const EXTENSION_ALIASES: Record<string, FileTypeName> = {
@@ -527,7 +527,7 @@ const EXTENSION_ALIASES: Record<string, FileTypeName> = {
   mak: "makefile",
   mk: "makefile",
   sqlite3: "sqlite",
-}
+};
 
 /**
  * Name families, read only when the name does not end in a known extension:
@@ -538,7 +538,7 @@ const NAME_PATTERNS: [RegExp, FileTypeName][] = [
   [/^\.env\./, "env"],
   [/^(docker|container)file\./, "dockerfile"],
   [/^\.[\w-]+ignore$/, "ignore"],
-]
+];
 
 const MIME_FAMILIES: Record<string, FileTypeName> = {
   image: "image",
@@ -546,16 +546,16 @@ const MIME_FAMILIES: Record<string, FileTypeName> = {
   audio: "audio",
   font: "font",
   text: "txt",
-}
+};
 
 const MIME_PATTERN =
-  /^(application|audio|font|image|message|model|multipart|text|video)\/[\w.+-]+$/
-const URL_ORIGIN = /^[a-z][\w+.-]*:\/\/[^/]*/
+  /^(application|audio|font|image|message|model|multipart|text|video)\/[\w.+-]+$/;
+const URL_ORIGIN = /^[a-z][\w+.-]*:\/\/[^/]*/;
 /**
  * A value ending in an extension or a slash carries no query or hash. An
  * extension has a letter, so "?v=1.2" is still a query.
  */
-const NAME_END = /(\.\d*[a-z][a-z\d]*|[\\/])$/
+const NAME_END = /(\.\d*[a-z][a-z\d]*|[\\/])$/;
 
 /**
  * Resolves a file name, path, URL, bare extension or MIME type to a `type`.
@@ -565,27 +565,27 @@ const NAME_END = /(\.\d*[a-z][a-z\d]*|[\\/])$/
  * renders neutral.
  */
 function getFileType(value: string): FileTypeName | (string & {}) {
-  let input = value.trim().toLowerCase()
+  let input = value.trim().toLowerCase();
 
   // A URL is read by its path, so a bare host is not a ".com" file. A "?" or
   // "#" can be part of a plain name ("invoice #12.pdf"), so outside a URL it
   // starts a query only when the value does not already end like a name.
   if (URL_ORIGIN.test(input)) {
-    input = input.split(/[?#]/)[0].replace(URL_ORIGIN, "")
-    if (input === "/") return "empty"
+    input = input.split(/[?#]/)[0].replace(URL_ORIGIN, "");
+    if (input === "/") return "empty";
   } else if (!NAME_END.test(input)) {
-    input = input.split(/[?#]/)[0]
+    input = input.split(/[?#]/)[0];
   }
-  if (!input) return "empty"
-  if (input.endsWith("/") || input.endsWith("\\")) return "folder"
+  if (!input) return "empty";
+  if (input.endsWith("/") || input.endsWith("\\")) return "folder";
 
-  const mime = input.split(";")[0].trim()
+  const mime = input.split(";")[0].trim();
   if (MIME_PATTERN.test(mime)) {
-    if (has(MIME_TYPES, mime)) return MIME_TYPES[mime]
-    const [family, subtype] = mime.split("/")
+    if (has(MIME_TYPES, mime)) return MIME_TYPES[mime];
+    const [family, subtype] = mime.split("/");
     // A known extension after a dot makes it a storage key ("image/a.png").
-    const tail = subtype.slice(subtype.lastIndexOf(".") + 1)
-    if (subtype.includes(".") && has(extensions, tail)) return tail
+    const tail = subtype.slice(subtype.lastIndexOf(".") + 1);
+    if (subtype.includes(".") && has(extensions, tail)) return tail;
     // A media subtype counts only inside its own family: audio/webm is audio.
     if (
       has(extensions, subtype) &&
@@ -593,32 +593,32 @@ function getFileType(value: string): FileTypeName | (string & {}) {
         family === "text" ||
         extensions[subtype].category === family)
     ) {
-      return subtype
+      return subtype;
     }
-    return has(MIME_FAMILIES, family) ? MIME_FAMILIES[family] : "empty"
+    return has(MIME_FAMILIES, family) ? MIME_FAMILIES[family] : "empty";
   }
 
-  const name = input.split(/[\\/]/).pop() ?? ""
-  if (has(FILE_NAMES, name)) return FILE_NAMES[name]
-  const dot = name.lastIndexOf(".")
-  const extension = name.slice(dot + 1)
-  if (has(EXTENSION_ALIASES, extension)) return EXTENSION_ALIASES[extension]
+  const name = input.split(/[\\/]/).pop() ?? "";
+  if (has(FILE_NAMES, name)) return FILE_NAMES[name];
+  const dot = name.lastIndexOf(".");
+  const extension = name.slice(dot + 1);
+  if (has(EXTENSION_ALIASES, extension)) return EXTENSION_ALIASES[extension];
   if (!has(extensions, extension)) {
-    const match = NAME_PATTERNS.find(([pattern]) => pattern.test(name))
-    if (match) return match[1]
+    const match = NAME_PATTERNS.find(([pattern]) => pattern.test(name));
+    if (match) return match[1];
   }
   // No dot, or only a leading one: a bare extension or family ("pdf",
   // ".pdf", "image") resolves, anything else ("notes", ".hidden") has no type.
   if (dot <= 0) {
-    return resolveFileType(extension).category === "file" ? "empty" : extension
+    return resolveFileType(extension).category === "file" ? "empty" : extension;
   }
 
-  return extension || "empty"
+  return extension || "empty";
 }
 
 /** The family of any `type`, for grouping or filtering a file list. */
 function getFileTypeCategory(type?: string): FileTypeCategory {
-  return resolveFileType(type).category
+  return resolveFileType(type).category;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -632,7 +632,7 @@ function getFileTypeCategory(type?: string): FileTypeCategory {
  * Parallel strokes are at least 3 units apart: the stroke stays 1px at every
  * size, and closer lines merge at `mini` (18px, where a unit is 0.75px).
  */
-const STROKE = { vectorEffect: "non-scaling-stroke" } as const
+const STROKE = { vectorEffect: "non-scaling-stroke" } as const;
 
 const GLYPHS: Partial<Record<FileTypeCategory, ReactNode>> = {
   document: <path {...STROKE} d="M8 12h8M8 15h5.5M8 18h7" />,
@@ -692,7 +692,7 @@ const GLYPHS: Partial<Record<FileTypeCategory, ReactNode>> = {
       d="M7 12a1 1 0 0 1 1-1h2.25a1 1 0 0 1 .8.4l.9 1.1H16a1 1 0 0 1 1 1V18a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1Z"
     />
   ),
-}
+};
 
 /* -------------------------------------------------------------------------- */
 /*                                  Variants                                  */
@@ -700,22 +700,22 @@ const GLYPHS: Partial<Record<FileTypeCategory, ReactNode>> = {
 
 /** The page: 16 by 20 units with 2-unit corners and a rounded 6-unit fold. */
 const PAGE_PATH =
-  "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7.586a2 2 0 0 1 1.414.586l4.414 4.414A2 2 0 0 1 20 8.414V20a2 2 0 0 1-2 2Z"
-const FOLD_PATH = "M14 2v5a1 1 0 0 0 1 1h5"
+  "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7.586a2 2 0 0 1 1.414.586l4.414 4.414A2 2 0 0 1 20 8.414V20a2 2 0 0 1-2 2Z";
+const FOLD_PATH = "M14 2v5a1 1 0 0 0 1 1h5";
 /** The folded corner, traced along the page edge so it never leaves the page. */
 const FLAP_PATH =
-  "M13.586 2a2 2 0 0 1 1.414.586l4.414 4.414A2 2 0 0 1 20 8.414V8h-5a1 1 0 0 1-1-1V2Z"
+  "M13.586 2a2 2 0 0 1 1.414.586l4.414 4.414A2 2 0 0 1 20 8.414V8h-5a1 1 0 0 1-1-1V2Z";
 
 /**
  * Lyra and Sera square every radius, so the page, its fold and the flap square
  * too: both shapes render, and a per-style variable shows one. Outside a style
  * the var() fallback keeps the rounded page.
  */
-const PAGE_PATH_SQUARE = "M4 22V2h10l6 6v14Z"
-const FOLD_PATH_SQUARE = "M14 2v6h6"
-const FLAP_PATH_SQUARE = "M14 2l6 6h-6Z"
-const ROUND = "[display:var(--file-type-round,inline)]"
-const SQUARE = "[display:var(--file-type-square,none)]"
+const PAGE_PATH_SQUARE = "M4 22V2h10l6 6v14Z";
+const FOLD_PATH_SQUARE = "M14 2v6h6";
+const FLAP_PATH_SQUARE = "M14 2l6 6h-6Z";
+const ROUND = "[display:var(--file-type-round,inline)]";
+const SQUARE = "[display:var(--file-type-square,none)]";
 
 /**
  * CSS variable architecture, all read from the root:
@@ -772,15 +772,15 @@ const fileTypeVariants = cva(
       size: "default",
     },
   }
-)
+);
 
-type FileTypeVariant = "outline" | "solid" | "light" | "mono"
+type FileTypeVariant = "outline" | "solid" | "light" | "mono";
 
 /**
  * Every type in `mono`: the theme's muted gray in place of its own color, with
  * the label text in the page color so it reads in both themes.
  */
-const MONO = "text-muted-foreground [--file-type-foreground:var(--background)]"
+const MONO = "text-muted-foreground [--file-type-foreground:var(--background)]";
 
 const PAGE_CLASS: Record<FileTypeVariant, string> = {
   outline: "fill-transparent stroke-(color:--file-type-outline)",
@@ -788,14 +788,14 @@ const PAGE_CLASS: Record<FileTypeVariant, string> = {
   solid:
     "fill-[var(--file-type-fill,currentColor)] stroke-[var(--file-type-fill,currentColor)]",
   mono: "fill-transparent stroke-(color:--file-type-outline)",
-}
+};
 
 const FOLD_CLASS: Record<FileTypeVariant, string> = {
   outline: "stroke-(color:--file-type-outline)",
   light: "stroke-(color:--file-type-outline)",
   solid: "stroke-white/45",
   mono: "stroke-(color:--file-type-outline)",
-}
+};
 
 /**
  * Solid paints the glyph in the foreground and mono in its gray, already light
@@ -808,7 +808,7 @@ const GLYPH_CLASS: Record<FileTypeVariant, string> = {
   light: "dark:text-[color-mix(in_oklab,currentColor_70%,white)]",
   solid: "text-[color:var(--file-type-glyph,var(--file-type-foreground))]",
   mono: "",
-}
+};
 
 /**
  * The label overhangs the page's left edge, so it is a band in front of the
@@ -839,7 +839,7 @@ const LABEL_TEXT_CLASS: Record<FileTypeVariant, string> = {
   solid:
     "max-w-[calc(200cqw/3)] text-[color:var(--file-type-glyph,var(--file-type-foreground))]",
   mono: "text-(color:--file-type-foreground)",
-}
+};
 
 const LABEL_CLASS: Record<FileTypeVariant, string> = {
   outline: "bg-current",
@@ -847,7 +847,7 @@ const LABEL_CLASS: Record<FileTypeVariant, string> = {
   solid:
     "left-1/6 w-2/3 px-[3cqw] text-[length:min(20.5cqw,calc(65.6cqw/(var(--file-type-chars)*0.8)))] @max-[21px]:px-0 @max-[21px]:text-[length:min(32.5cqw,5.8px,calc(66cqw/(var(--file-type-chars)*0.9)))]",
   mono: "bg-current",
-}
+};
 
 /* -------------------------------------------------------------------------- */
 /*                                  Component                                 */
@@ -859,30 +859,30 @@ type FileTypeProps = Omit<ComponentProps<"span">, "children"> & {
    * `"empty"`. Unknown extensions render as a neutral file with their label.
    * Use `getFileType` to resolve a file name or MIME type.
    */
-  type?: FileTypeName | (string & {})
+  type?: FileTypeName | (string & {});
   /** `mono` draws every type in the theme's gray instead of its own color. */
-  variant?: FileTypeVariant
+  variant?: FileTypeVariant;
   /** A preset box size. A Tailwind `size-*` class in `className` overrides it. */
-  size?: VariantProps<typeof fileTypeVariants>["size"]
+  size?: VariantProps<typeof fileTypeVariants>["size"];
   /** Replaces the extension label, for a version tag or a document code. */
-  label?: ReactNode
+  label?: ReactNode;
   /**
    * Shows the family glyph instead of the label. A family `type` (`"image"`)
    * or a type with no label shows its glyph without it.
    */
-  glyph?: boolean
+  glyph?: boolean;
   /**
    * A custom icon drawn on the page in place of the glyph and the label, in
    * the glyph's color: a lock on a protected file, a link on a shortcut.
    */
-  icon?: ReactNode
+  icon?: ReactNode;
   /**
    * Classes for the label badge, merged last, so its background, radius,
    * padding, font and position can all be replaced. The text is a child of
    * the badge: recolor it with `*:text-*`.
    */
-  labelClassName?: string
-}
+  labelClassName?: string;
+};
 
 function FileType({
   type,
@@ -895,24 +895,24 @@ function FileType({
   className,
   ...props
 }: FileTypeProps) {
-  const resolved = resolveFileType(type)
+  const resolved = resolveFileType(type);
   // `null` hides the label like "", where `??` would fall back to it.
-  const text = label !== undefined ? label : resolved.label
-  const hasText = text !== undefined && text !== null && text !== ""
+  const text = label !== undefined ? label : resolved.label;
+  const hasText = text !== undefined && text !== null && text !== "";
   // The name spells out a key its label shortens (DOCKERFILE, not DOCK).
-  const spelled = resolved.label ? resolved.type.toUpperCase() : undefined
+  const spelled = resolved.label ? resolved.type.toUpperCase() : undefined;
   const typeName = spelled
     ? `${spelled} file`
-    : CATEGORY_NAMES[resolved.category]
+    : CATEGORY_NAMES[resolved.category];
   // A custom string label is part of what the icon says ("V3, DOCX file").
-  const custom = typeof label === "string" ? label.toUpperCase() : ""
+  const custom = typeof label === "string" ? label.toUpperCase() : "";
   const name =
     custom && custom !== resolved.label && custom !== spelled
       ? `${label}, ${typeName}`
-      : typeName
-  const hasIcon = icon !== undefined && icon !== null && icon !== false
-  const showLabel = hasText && !glyph && !hasIcon
-  const glyphNode = showLabel || hasIcon ? null : GLYPHS[resolved.category]
+      : typeName;
+  const hasIcon = icon !== undefined && icon !== null && icon !== false;
+  const showLabel = hasText && !glyph && !hasIcon;
+  const glyphNode = showLabel || hasIcon ? null : GLYPHS[resolved.category];
 
   return (
     <span
@@ -1034,7 +1034,7 @@ function FileType({
         </span>
       ) : null}
     </span>
-  )
+  );
 }
 
 export {
@@ -1048,4 +1048,4 @@ export {
   type FileTypeName,
   type FileTypeProps,
   type FileTypeVariant,
-}
+};

@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest";
+
 import { cn, cnState } from "../packages/parks/src/lib/utils";
 
 describe("packages/parks cn", () => {
   it("keeps custom utilities that tailwind-merge does not know", () => {
-    expect(cn("text-trim", "text-sm", "text-primary-foreground")).toBe("text-trim text-sm text-primary-foreground");
+    expect(cn("text-trim", "text-sm", "text-primary-foreground")).toBe(
+      "text-trim text-sm text-primary-foreground"
+    );
   });
 
   it("lets a later padding win over the frame padding", () => {
@@ -24,9 +27,13 @@ describe("packages/parks cnState", () => {
   });
 
   it("passes state through a function className", () => {
-    const merged = cnState<{ open: boolean }>("p-2", (state) => (state.open ? "p-4" : undefined));
+    const merged = cnState<{ open: boolean }>("p-2", (state) =>
+      state.open ? "p-4" : undefined
+    );
     expect(typeof merged).toBe("function");
-    if (typeof merged !== "function") return;
+    if (typeof merged !== "function") {
+      return;
+    }
     expect(merged({ open: true })).toBe("p-4");
     expect(merged({ open: false })).toBe("p-2");
   });

@@ -1,9 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Progress as ProgressPrimitive } from "@base-ui/react/progress"
-import { isTone, type Tone } from "#lib/tone"
-import { cnState } from "#lib/utils"
+import { Progress as ProgressPrimitive } from "@base-ui/react/progress";
+import * as React from "react";
+
+import { isTone } from "#lib/tone";
+import type { Tone } from "#lib/tone";
+import { cnState } from "#lib/utils";
 
 /*
  * shadcn's Progress, with two additions:
@@ -19,10 +21,10 @@ import { cnState } from "#lib/utils"
  * above a full-width bar.
  */
 type ProgressProps = ProgressPrimitive.Root.Props & {
-  tone?: Tone
-  segments?: boolean | number
-  showValue?: boolean | React.ReactNode
-}
+  tone?: Tone;
+  segments?: boolean | number;
+  showValue?: boolean | React.ReactNode;
+};
 
 function Progress({
   className,
@@ -34,15 +36,19 @@ function Progress({
   showValue,
   ...props
 }: ProgressProps) {
-  const count = segments === true ? max : typeof segments === "number" ? segments : 0
-  const current = value ?? 0
-  const filled = count > 0 ? Math.round((Math.min(Math.max(current, 0), max) / max) * count) : 0
+  const count =
+    segments === true ? max : typeof segments === "number" ? segments : 0;
+  const current = value ?? 0;
+  const filled =
+    count > 0
+      ? Math.round((Math.min(Math.max(current, 0), max) / max) * count)
+      : 0;
   const valueLabel =
     showValue === true
       ? count > 0
         ? `${current}/${max}`
         : `${Math.round((current / max) * 100)}%`
-      : showValue || null
+      : showValue || null;
   return (
     <ProgressPrimitive.Root
       value={value}
@@ -50,18 +56,24 @@ function Progress({
       data-slot="progress"
       data-tone={isTone(tone) ? tone : "neutral"}
       data-inline={valueLabel == null ? undefined : ""}
-      className={cnState("flex flex-wrap gap-3 data-inline:flex-nowrap data-inline:items-center data-inline:gap-2", className)}
+      className={cnState(
+        "flex flex-wrap gap-3 data-inline:flex-nowrap data-inline:items-center data-inline:gap-2",
+        className
+      )}
       {...props}
     >
       {children}
       {count > 0 ? (
-        <span data-slot="progress-track" className="flex h-1 w-full min-w-0 gap-0.5">
+        <span
+          data-slot="progress-track"
+          className="flex h-1 w-full min-w-0 gap-0.5"
+        >
           {Array.from({ length: count }, (_, index) => (
             <span
               key={index}
               data-slot="progress-segment"
               data-filled={index < filled ? "" : undefined}
-              className="h-full flex-1 rounded-full bg-muted data-filled:bg-tone"
+              className="bg-muted data-filled:bg-tone h-full flex-1 rounded-full"
             />
           ))}
         </span>
@@ -71,12 +83,15 @@ function Progress({
         </ProgressTrack>
       )}
       {valueLabel == null ? null : (
-        <span data-slot="progress-value" className="shrink-0 text-xs text-muted-foreground tabular-nums">
+        <span
+          data-slot="progress-value"
+          className="text-muted-foreground shrink-0 text-xs tabular-nums"
+        >
           {valueLabel}
         </span>
       )}
     </ProgressPrimitive.Root>
-  )
+  );
 }
 
 function ProgressTrack({ className, ...props }: ProgressPrimitive.Track.Props) {
@@ -89,7 +104,7 @@ function ProgressTrack({ className, ...props }: ProgressPrimitive.Track.Props) {
       data-slot="progress-track"
       {...props}
     />
-  )
+  );
 }
 
 function ProgressIndicator({
@@ -102,7 +117,7 @@ function ProgressIndicator({
       className={cnState("h-full bg-tone transition-all", className)}
       {...props}
     />
-  )
+  );
 }
 
 function ProgressLabel({ className, ...props }: ProgressPrimitive.Label.Props) {
@@ -112,7 +127,7 @@ function ProgressLabel({ className, ...props }: ProgressPrimitive.Label.Props) {
       data-slot="progress-label"
       {...props}
     />
-  )
+  );
 }
 
 function ProgressValue({ className, ...props }: ProgressPrimitive.Value.Props) {
@@ -125,7 +140,7 @@ function ProgressValue({ className, ...props }: ProgressPrimitive.Value.Props) {
       data-slot="progress-value"
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -134,5 +149,5 @@ export {
   ProgressIndicator,
   ProgressLabel,
   ProgressValue,
-}
-export type { ProgressProps }
+};
+export type { ProgressProps };

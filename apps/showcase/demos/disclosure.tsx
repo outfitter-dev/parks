@@ -1,10 +1,29 @@
 "use client";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@outfitter/parks/components/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@outfitter/parks/components/accordion";
 import { Button } from "@outfitter/parks/components/button";
-import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@outfitter/parks/components/button-group";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@outfitter/parks/components/collapsible";
-import { Item, ItemContent, ItemGroup, ItemMeta, ItemTitle } from "@outfitter/parks/components/item";
+import {
+  ButtonGroup,
+  ButtonGroupSeparator,
+  ButtonGroupText,
+} from "@outfitter/parks/components/button-group";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@outfitter/parks/components/collapsible";
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemMeta,
+  ItemTitle,
+} from "@outfitter/parks/components/item";
 import {
   Pagination,
   PaginationContent,
@@ -15,24 +34,39 @@ import {
   PaginationPrevious,
 } from "@outfitter/parks/components/pagination";
 import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
+
 import { versions } from "#lib/fixtures";
+
 import { Specimen } from "./kit";
 
 export function DisclosureDemo() {
   return (
     <>
-      <Specimen title="Collapsible" note="Opens one block in place: a sidebar group, older versions, a trace step." className="block">
+      <Specimen
+        title="Collapsible"
+        note="Opens one block in place: a sidebar group, older versions, a trace step."
+        className="block"
+      >
         <Collapsible className="max-w-md">
-          <CollapsibleTrigger render={<Button variant="ghost" size="sm" className="group/trigger" />}>
+          <CollapsibleTrigger
+            render={
+              <Button variant="ghost" size="sm" className="group/trigger" />
+            }
+          >
             Older routing versions
-            <AltArrowDownIcon data-icon="inline-end" className="transition-transform group-data-panel-open/trigger:rotate-180" />
+            <AltArrowDownIcon
+              data-icon="inline-end"
+              className="transition-transform group-data-panel-open/trigger:rotate-180"
+            />
           </CollapsibleTrigger>
           <CollapsibleContent>
             <ItemGroup variant="list" className="mt-2">
               {versions.slice(1).map((version) => (
                 <Item key={version.version} size="sm">
                   <ItemContent>
-                    <ItemTitle>v{version.version} · {version.change}</ItemTitle>
+                    <ItemTitle>
+                      v{version.version} · {version.change}
+                    </ItemTitle>
                   </ItemContent>
                   <ItemMeta>{version.when}</ItemMeta>
                 </Item>
@@ -42,24 +76,37 @@ export function DisclosureDemo() {
         </Collapsible>
       </Specimen>
 
-      <Specimen title="Accordion" note="A stack of sections where one opens at a time: settings, help." className="block">
+      <Specimen
+        title="Accordion"
+        note="A stack of sections where one opens at a time: settings, help."
+        className="block"
+      >
         <Accordion className="max-w-md" defaultValue={["wake"]}>
           <AccordionItem value="wake">
             <AccordionTrigger>When does an agent wake?</AccordionTrigger>
             <AccordionContent>
-              <p>On every message in a channel it follows, or only when mentioned, depending on its wake setting.</p>
+              <p>
+                On every message in a channel it follows, or only when
+                mentioned, depending on its wake setting.
+              </p>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="dry-run">
             <AccordionTrigger>What does dry run do?</AccordionTrigger>
             <AccordionContent>
-              <p>Deliveries are recorded in the outbox but not sent, so you can check routing first.</p>
+              <p>
+                Deliveries are recorded in the outbox but not sent, so you can
+                check routing first.
+              </p>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="elevate">
             <AccordionTrigger>Why does admin expire?</AccordionTrigger>
             <AccordionContent>
-              <p>Elevation lasts 15 minutes so a forgotten session can&rsquo;t change routing later.</p>
+              <p>
+                Elevation lasts 15 minutes so a forgotten session can&rsquo;t
+                change routing later.
+              </p>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -71,11 +118,18 @@ export function DisclosureDemo() {
 export function GroupsDemo() {
   return (
     <>
-      <Specimen title="Button group" note="Joined buttons that act as one control: a split action, a pager, a zoom pair.">
+      <Specimen
+        title="Button group"
+        note="Joined buttons that act as one control: a split action, a pager, a zoom pair."
+      >
         <ButtonGroup>
           <Button variant="secondary">Approve</Button>
           <ButtonGroupSeparator />
-          <Button variant="secondary" size="icon" aria-label="More approval options">
+          <Button
+            variant="secondary"
+            size="icon"
+            aria-label="More approval options"
+          >
             <AltArrowDownIcon />
           </Button>
         </ButtonGroup>
@@ -91,7 +145,10 @@ export function GroupsDemo() {
         </ButtonGroup>
       </Specimen>
 
-      <Specimen title="Pagination" note="For the audit log and other long lists. The current page is a secondary button.">
+      <Specimen
+        title="Pagination"
+        note="For the audit log and other long lists. The current page is a secondary button."
+      >
         <Pagination className="mx-0 w-auto">
           <PaginationContent>
             <PaginationItem>

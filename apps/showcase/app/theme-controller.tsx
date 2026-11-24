@@ -1,18 +1,26 @@
 "use client";
 
-import { DialRoot, useDialKitController, type DialConfig } from "dialkit";
-import "dialkit/styles.css";
-import { useEffect, useMemo, useRef } from "react";
-import { defaultShell, isShellStyle, setShell } from "#lib/shell";
 import { isPaletteName, paletteNames } from "@outfitter/parks/lib/palette";
-import { compileTheme, presets, type Mode, type PresetId, type PresetValues } from "#lib/theme";
+import { DialRoot, useDialKitController } from "dialkit";
+
+import "dialkit/styles.css";
+import type { DialConfig } from "dialkit";
+import { useEffect, useMemo, useRef } from "react";
+
+import { defaultShell, isShellStyle, setShell } from "#lib/shell";
+import { compileTheme, presets } from "#lib/theme";
+import type { Mode, PresetId, PresetValues } from "#lib/theme";
 
 const start = presets.luma.values;
 
 const config = {
   loadLuma: { type: "action", label: `Load ${presets.luma.label}` },
   loadLinear: { type: "action", label: `Load ${presets.linear.label}` },
-  mode: { type: "select", options: ["system", "light", "dark"], default: "system" },
+  mode: {
+    type: "select",
+    options: ["system", "light", "dark"],
+    default: "system",
+  },
   shell: {
     style: {
       type: "select",
@@ -46,9 +54,7 @@ const config = {
     rond: [start.type.rond, 0, 100, 1],
     mono: {
       type: "select",
-      options: [
-        { value: "jetbrains", label: "JetBrains Mono" },
-      ],
+      options: [{ value: "jetbrains", label: "JetBrains Mono" }],
       default: start.type.mono,
     },
   },
@@ -96,7 +102,9 @@ export function ThemeController() {
         return;
       }
       const preset = presetActions[action];
-      if (preset) setValuesRef.current?.(presets[preset].values);
+      if (preset) {
+        setValuesRef.current?.(presets[preset].values);
+      }
     },
   });
   const { values, setValues } = dial;
@@ -113,30 +121,44 @@ export function ThemeController() {
     color: {
       ...values.color,
       // Saved settings from before the palette select hold a colour string.
-      brand: isPaletteName(values.color.brand) ? values.color.brand : start.color.brand,
+      brand: isPaletteName(values.color.brand)
+        ? values.color.brand
+        : start.color.brand,
       primary: values.color.primary === "brand" ? "brand" : "ink",
     },
   };
   const css = useMemo(() => compileTheme(tokens), [JSON.stringify(tokens)]);
   cssRef.current = css;
 
-  const shellStyle = isShellStyle(values.shell.style) ? values.shell.style : defaultShell.style;
+  const shellStyle = isShellStyle(values.shell.style)
+    ? values.shell.style
+    : defaultShell.style;
   useEffect(() => {
     setShell({ style: shellStyle, gutter: values.shell.gutter });
-    document.documentElement.style.setProperty("--shell-gutter", `${values.shell.gutter}px`);
+    document.documentElement.style.setProperty(
+      "--shell-gutter",
+      `${values.shell.gutter}px`
+    );
   }, [shellStyle, values.shell.gutter]);
 
   const mode = isMode(values.mode) ? values.mode : "system";
   useEffect(() => {
     const root = document.documentElement;
     root.classList.remove("light", "dark");
-    if (mode !== "system") root.classList.add(mode);
+    if (mode !== "system") {
+      root.classList.add(mode);
+    }
   }, [mode]);
 
   return (
     <>
       <style id="workbench-theme" dangerouslySetInnerHTML={{ __html: css }} />
-      <DialRoot productionEnabled defaultOpen={false} position="bottom-right" theme="system" />
+      <DialRoot
+        productionEnabled
+        defaultOpen={false}
+        position="bottom-right"
+        theme="system"
+      />
     </>
   );
 }

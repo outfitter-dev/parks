@@ -1,10 +1,10 @@
 /** What fits of a breadcrumb path in the width available. */
 export type BreadcrumbFit = {
   /** How many ancestors after the root fold into the overflow menu. */
-  hidden: number
+  hidden: number;
   /** Whether the root shows its icon alone, after every ancestor that can fold has folded. */
-  compactRoot: boolean
-}
+  compactRoot: boolean;
+};
 
 /**
  * Folds ancestors into the overflow menu, nearest the root first, until the
@@ -22,15 +22,20 @@ export function fitBreadcrumb(
   available: number,
   rootHasIcon: boolean
 ): BreadcrumbFit {
-  const foldable = Math.max(0, widths.length - 2)
-  let required = widths.reduce((sum, width) => sum + width, 0)
-  let hidden = 0
+  const foldable = Math.max(0, widths.length - 2);
+  let required = widths.reduce((sum, width) => sum + width, 0);
+  let hidden = 0;
   while (required > available && hidden < foldable) {
-    if (hidden === 0) required += overflowWidth
-    hidden += 1
-    required -= widths[hidden] ?? 0
+    if (hidden === 0) {
+      required += overflowWidth;
+    }
+    hidden += 1;
+    required -= widths[hidden] ?? 0;
   }
-  return { hidden, compactRoot: rootHasIcon && foldable > 0 && required > available }
+  return {
+    hidden,
+    compactRoot: rootHasIcon && foldable > 0 && required > available,
+  };
 }
 
 /**
@@ -39,6 +44,6 @@ export function fitBreadcrumb(
  * root, overflow, current.
  */
 export function hiddenByLimit(count: number, maxItems: number): number {
-  const limit = Math.max(3, Math.floor(maxItems) || 3)
-  return count > limit ? count - limit + 1 : 0
+  const limit = Math.max(3, Math.floor(maxItems) || 3);
+  return count > limit ? count - limit + 1 : 0;
 }

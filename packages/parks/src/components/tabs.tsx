@@ -1,10 +1,12 @@
-"use client"
+"use client";
 
-import { Tabs as TabsPrimitive } from "@base-ui/react/tabs"
-import { cva, type VariantProps } from "class-variance-authority"
-import { segmentItem, segmentTrack } from "#lib/segment"
-import { type ControlSize } from "#lib/size"
-import { cnState } from "#lib/utils"
+import { Tabs as TabsPrimitive } from "@base-ui/react/tabs";
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+
+import { segmentItem, segmentTrack } from "#lib/segment";
+import type { ControlSize } from "#lib/size";
+import { cnState } from "#lib/utils";
 
 function Tabs({
   className,
@@ -22,7 +24,7 @@ function Tabs({
       )}
       {...props}
     />
-  )
+  );
 }
 
 /*
@@ -44,14 +46,15 @@ const tabsListVariants = cva(
       variant: "default",
     },
   }
-)
+);
 
 function TabsList({
   className,
   variant = "default",
   size = "default",
   ...props
-}: TabsPrimitive.List.Props & VariantProps<typeof tabsListVariants> & { size?: ControlSize }) {
+}: TabsPrimitive.List.Props &
+  VariantProps<typeof tabsListVariants> & { size?: ControlSize }) {
   return (
     <TabsPrimitive.List
       data-slot="tabs-list"
@@ -60,7 +63,7 @@ function TabsList({
       className={cnState(tabsListVariants({ variant }), className)}
       {...props}
     />
-  )
+  );
 }
 
 function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props) {
@@ -76,7 +79,7 @@ function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TabsContent({ className, ...props }: TabsPrimitive.Panel.Props) {
@@ -86,7 +89,7 @@ function TabsContent({ className, ...props }: TabsPrimitive.Panel.Props) {
       className={cnState("flex-1 text-sm outline-none", className)}
       {...props}
     />
-  )
+  );
 }
 
-export { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants }
+export { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants };

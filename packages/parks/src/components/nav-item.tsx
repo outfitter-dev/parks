@@ -1,8 +1,10 @@
-import { mergeProps } from "@base-ui/react/merge-props"
-import { useRender } from "@base-ui/react/use-render"
-import { cva, type VariantProps } from "class-variance-authority"
-import { navRow } from "#lib/row"
-import { cnState } from "#lib/utils"
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+
+import { navRow } from "#lib/row";
+import { cnState } from "#lib/utils";
 
 /*
  * A nav row: an icon, a label and an optional count or mark at the end.
@@ -20,13 +22,13 @@ const navItemVariants = cva(navRow, {
   defaultVariants: {
     size: "default",
   },
-})
+});
 
 type NavItemProps = useRender.ComponentProps<"a"> &
   VariantProps<typeof navItemVariants> & {
     /** The page the user is on. Sets aria-current="page". */
-    current?: boolean
-  }
+    current?: boolean;
+  };
 
 /**
  * @example
@@ -36,7 +38,13 @@ type NavItemProps = useRender.ComponentProps<"a"> &
  *   <Badge count={3} className="ms-auto" />
  * </NavItem>
  */
-function NavItem({ className, size = "default", current = false, render, ...props }: NavItemProps) {
+function NavItem({
+  className,
+  size = "default",
+  current = false,
+  render,
+  ...props
+}: NavItemProps) {
   return useRender({
     defaultTagName: "a",
     props: mergeProps<"a">(
@@ -52,7 +60,7 @@ function NavItem({ className, size = "default", current = false, render, ...prop
       size,
       current,
     },
-  })
+  });
 }
 
-export { NavItem, navItemVariants, type NavItemProps }
+export { NavItem, navItemVariants, type NavItemProps };

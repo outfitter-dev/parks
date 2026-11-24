@@ -1,19 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemHeader, ItemMedia, ItemMeta, ItemTitle } from "@outfitter/parks/components/item";
 import { Badge } from "@outfitter/parks/components/badge";
-import { SectionHeader, SectionHeaderDescription, SectionHeaderTitle } from "@outfitter/parks/components/section-header";
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@outfitter/parks/components/empty";
-import { Mark } from "@outfitter/parks/components/mark";
-import {
-  Questionnaire,
-  QuestionnaireChoice,
-  QuestionnaireChoiceDescription,
-  QuestionnaireChoices,
-  QuestionnaireItem,
-  QuestionnaireTitle,
-} from "@outfitter/parks/components/questionnaire";
 import { Button } from "@outfitter/parks/components/button";
 import {
   Card,
@@ -23,23 +10,63 @@ import {
   CardHeader,
   CardTitle,
 } from "@outfitter/parks/components/card";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@outfitter/parks/components/empty";
 import { Input } from "@outfitter/parks/components/input";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemMedia,
+  ItemMeta,
+  ItemTitle,
+} from "@outfitter/parks/components/item";
 import { Label } from "@outfitter/parks/components/label";
+import { Mark } from "@outfitter/parks/components/mark";
 import { Progress } from "@outfitter/parks/components/progress";
+import {
+  Questionnaire,
+  QuestionnaireChoice,
+  QuestionnaireChoiceDescription,
+  QuestionnaireChoices,
+  QuestionnaireItem,
+  QuestionnaireTitle,
+} from "@outfitter/parks/components/questionnaire";
+import {
+  SectionHeader,
+  SectionHeaderDescription,
+  SectionHeaderTitle,
+} from "@outfitter/parks/components/section-header";
 import { Textarea } from "@outfitter/parks/components/textarea";
-import { ToggleGroup, ToggleGroupItem } from "@outfitter/parks/components/toggle-group";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@outfitter/parks/components/toggle-group";
 import type { Tone } from "@outfitter/parks/lib/tone";
 import { cn } from "@outfitter/parks/lib/utils";
-import { KeyIcon } from "@solar-icons/react/outline/key";
+import { InboxIcon as InboxDuotone } from "@solar-icons/react/bold-duotone/inbox";
+import { CheckIcon as CheckBold } from "@solar-icons/react/bold/check";
+import { CheckCircleIcon as CheckCircleBold } from "@solar-icons/react/bold/check-circle";
+import { InboxIcon as InboxBold } from "@solar-icons/react/bold/inbox";
+import { PauseIcon as PauseBold } from "@solar-icons/react/bold/pause";
+import { ShieldKeyholeIcon as ShieldKeyholeBold } from "@solar-icons/react/bold/shield-keyhole";
 import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left";
 import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
-import { InboxIcon as InboxBold } from "@solar-icons/react/bold/inbox";
-import { InboxIcon as InboxDuotone } from "@solar-icons/react/bold-duotone/inbox";
-import { ShieldKeyholeIcon as ShieldKeyholeBold } from "@solar-icons/react/bold/shield-keyhole";
-import { CheckCircleIcon as CheckCircleBold } from "@solar-icons/react/bold/check-circle";
-import { CheckIcon as CheckBold } from "@solar-icons/react/bold/check";
-import { PauseIcon as PauseBold } from "@solar-icons/react/bold/pause";
-import { agents, asks, versions, type Ask } from "#lib/fixtures";
+import { KeyIcon } from "@solar-icons/react/outline/key";
+import { useState } from "react";
+import type { ReactNode } from "react";
+
+import { agents, asks, versions } from "#lib/fixtures";
+import type { Ask } from "#lib/fixtures";
+
 import { AppFrame, PageBar } from "./app-frame";
 import { AgentModeBadge, Signal, VersionRows, Viewport } from "./kit";
 import { outpostNavigation } from "./outpost-navigation";
@@ -67,20 +94,31 @@ function AskRow({
       <ItemHeader>
         <ItemTitle className="gap-2">
           {ask.agent}
-          <span className="font-normal text-muted-foreground">{ask.project}</span>
+          <span className="text-muted-foreground font-normal">
+            {ask.project}
+          </span>
         </ItemTitle>
         <span className="ms-auto flex items-center gap-2">
-          <ItemMeta className="text-xs">{answered ? "Answered" : ask.age}</ItemMeta>
+          <ItemMeta className="text-xs">
+            {answered ? "Answered" : ask.age}
+          </ItemMeta>
           {answered ? (
-            <CheckCircleBold className="size-3.5 shrink-0 text-success-strong" />
+            <CheckCircleBold className="text-success-strong size-3.5 shrink-0" />
           ) : (
-            <span className="grid size-3.5 shrink-0 place-items-center" aria-label="Unread">
+            <span
+              className="grid size-3.5 shrink-0 place-items-center"
+              aria-label="Unread"
+            >
               <Signal tone="new" />
             </span>
           )}
         </span>
       </ItemHeader>
-      <ItemDescription className={cn("basis-full", !answered && "text-foreground")}>{ask.title}</ItemDescription>
+      <ItemDescription
+        className={cn("basis-full", !answered && "text-foreground")}
+      >
+        {ask.title}
+      </ItemDescription>
     </Item>
   );
 }
@@ -89,8 +127,17 @@ type OptionStyle = "cards" | "stacked" | "tray";
 type OptionMark = "none" | "glyph" | "letter" | "number" | "yn";
 type OptionTone = "neutral" | "coded";
 type OptionHeader = "page" | "box";
-type OptionLook = { style: OptionStyle; mark: OptionMark; tone: OptionTone; multi: boolean; header: OptionHeader };
-type MarkTone = Extract<Tone, "neutral" | "success" | "warning" | "destructive" | "info" | "brand">;
+type OptionLook = {
+  style: OptionStyle;
+  mark: OptionMark;
+  tone: OptionTone;
+  multi: boolean;
+  header: OptionHeader;
+};
+type MarkTone = Extract<
+  Tone,
+  "neutral" | "success" | "warning" | "destructive" | "info" | "brand"
+>;
 
 /**
  * Mark glyphs drawn on one stroke so a check and a pause carry the same weight.
@@ -99,42 +146,75 @@ type MarkTone = Extract<Tone, "neutral" | "success" | "warning" | "destructive" 
  */
 function MarkGlyph({ kind }: { kind: "check" | "pause" }) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden className="size-3.5" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
-      {kind === "check" ? <path d="M5 13L9 17L19 7" /> : <path d="M9 6V18M15 6V18" />}
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden
+      className="size-3.5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={3}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {kind === "check" ? (
+        <path d="M5 13L9 17L19 7" />
+      ) : (
+        <path d="M9 6V18M15 6V18" />
+      )}
     </svg>
   );
 }
 
 /** Options whose meaning has a standard sign get a glyph and a tone. Others fall back to a letter. */
-const optionSigns: Record<string, { glyph: "check" | "pause"; tone: MarkTone }> = {
+const optionSigns: Record<
+  string,
+  { glyph: "check" | "pause"; tone: MarkTone }
+> = {
   Approve: { glyph: "check", tone: "success" },
   Hold: { glyph: "pause", tone: "warning" },
 };
 
 /** Tones that letters and numbers cycle through when marks are colour coded. */
-const cycleTones: readonly MarkTone[] = ["info", "brand", "success", "warning", "destructive"];
+const cycleTones: readonly MarkTone[] = [
+  "info",
+  "brand",
+  "success",
+  "warning",
+  "destructive",
+];
 
 /** What sits in an option's corner tile and its tone, or null for no tile. */
-function markFor(mark: OptionMark, label: string, index: number, count: number): { content: ReactNode; tone: MarkTone } | null {
+function markFor(
+  mark: OptionMark,
+  label: string,
+  index: number,
+  count: number
+): { content: ReactNode; tone: MarkTone } | null {
   const letter = String.fromCharCode(65 + index);
   const cycled = cycleTones[index % cycleTones.length] ?? "neutral";
   switch (mark) {
-    case "none":
+    case "none": {
       return null;
+    }
     case "glyph": {
       const sign = optionSigns[label];
-      return sign ? { content: <MarkGlyph kind={sign.glyph} />, tone: sign.tone } : { content: letter, tone: cycled };
+      return sign
+        ? { content: <MarkGlyph kind={sign.glyph} />, tone: sign.tone }
+        : { content: letter, tone: cycled };
     }
-    case "letter":
+    case "letter": {
       return { content: letter, tone: cycled };
-    case "number":
+    }
+    case "number": {
       return { content: String(index + 1), tone: cycled };
-    case "yn":
+    }
+    case "yn": {
       return count === 2
         ? index === 0
           ? { content: "Y", tone: "success" }
           : { content: "N", tone: "destructive" }
         : { content: letter, tone: cycled };
+    }
   }
 }
 
@@ -142,10 +222,15 @@ function markFor(mark: OptionMark, label: string, index: number, count: number):
  * Where each layout puts its choices: cards in a grid, or rows in one box.
  * Tray is the stacked box set in a muted tray, so it takes the stacked rows.
  */
-const stackedBox = "gap-0 overflow-hidden rounded-lg border border-border-muted bg-card";
+const stackedBox =
+  "gap-0 overflow-hidden rounded-lg border border-border-muted bg-card";
 const stackedRow =
   "rounded-none border-x-0 border-t-0 border-b-border-muted last:border-b-0 data-checked:border-b-border-muted data-checked:bg-brand-fill data-checked:ring-0 hover:data-checked:bg-brand-fill";
-const choiceClass: Record<OptionStyle, string> = { cards: "", stacked: stackedRow, tray: stackedRow };
+const choiceClass: Record<OptionStyle, string> = {
+  cards: "",
+  stacked: stackedRow,
+  tray: stackedRow,
+};
 
 function OptionText({ option }: { option: Ask["options"][number] }) {
   return (
@@ -154,7 +239,9 @@ function OptionText({ option }: { option: Ask["options"][number] }) {
         {option.label}
         {option.recommended ? <Badge>Recommended</Badge> : null}
       </span>
-      <QuestionnaireChoiceDescription>{option.detail}</QuestionnaireChoiceDescription>
+      <QuestionnaireChoiceDescription>
+        {option.detail}
+      </QuestionnaireChoiceDescription>
     </>
   );
 }
@@ -181,15 +268,28 @@ function AskOptions({
         ? picked.includes(label)
           ? picked.filter((item) => item !== label)
           : [...picked, label]
-        : [label],
+        : [label]
     );
-  const shortcuts = look.mark === "letter" ? "letters" : look.mark === "number" ? "numbers" : undefined;
+  const shortcuts =
+    look.mark === "letter"
+      ? "letters"
+      : look.mark === "number"
+        ? "numbers"
+        : undefined;
   const boxed = look.style !== "cards";
   const inBox = boxed && look.header === "box";
   const choices = (
-    <QuestionnaireChoices aria-label="Options" className={boxed && !inBox ? stackedBox : boxed ? "gap-0" : undefined}>
+    <QuestionnaireChoices
+      aria-label="Options"
+      className={boxed && !inBox ? stackedBox : boxed ? "gap-0" : undefined}
+    >
       {ask.options.map((option, index) => {
-        const mark = markFor(look.mark, option.label, index, ask.options.length);
+        const mark = markFor(
+          look.mark,
+          option.label,
+          index,
+          ask.options.length
+        );
         const tone = mark && look.tone === "coded" ? mark.tone : "neutral";
         const passMark = mark !== null && shortcuts === undefined;
         return (
@@ -221,7 +321,9 @@ function AskOptions({
   const body = inBox ? (
     // The header sits in the box above the rows, divided by a full-width rule.
     <div className={stackedBox}>
-      <QuestionnaireTitle className="mb-0! w-full border-b border-border px-3 py-2.5">{ask.title}</QuestionnaireTitle>
+      <QuestionnaireTitle className="border-border mb-0! w-full border-b px-3 py-2.5">
+        {ask.title}
+      </QuestionnaireTitle>
       {choices}
     </div>
   ) : (
@@ -230,9 +332,20 @@ function AskOptions({
       {choices}
     </>
   );
-  const subtext = <AskSubtext hint={hint} boxed={boxed} reply={picked.length === 0} onReply={(text) => onPick([text])} />;
+  const subtext = (
+    <AskSubtext
+      hint={hint}
+      boxed={boxed}
+      reply={picked.length === 0}
+      onReply={(text) => onPick([text])}
+    />
+  );
   return (
-    <Questionnaire shortcuts={shortcuts} onSubmit={(event) => event.preventDefault()} className="mt-5 gap-2">
+    <Questionnaire
+      shortcuts={shortcuts}
+      onSubmit={(event) => event.preventDefault()}
+      className="mt-5 gap-2"
+    >
       <QuestionnaireItem name={ask.id} multiple={look.multi} className="gap-2">
         {look.style === "tray" ? (
           <Card variant="tray" className="grid">
@@ -269,7 +382,9 @@ function AskSubtext({
   const [replying, setReplying] = useState(false);
   const [text, setText] = useState("");
   const send = () => {
-    if (text.trim() === "") return;
+    if (text.trim() === "") {
+      return;
+    }
     onReply(text.trim());
     setReplying(false);
     setText("");
@@ -284,8 +399,12 @@ function AskSubtext({
           value={text}
           onChange={(event) => setText(event.target.value)}
           onKeyDown={(event) => {
-            if (event.key === "Enter") send();
-            if (event.key === "Escape") setReplying(false);
+            if (event.key === "Enter") {
+              send();
+            }
+            if (event.key === "Escape") {
+              setReplying(false);
+            }
           }}
         />
         <Button size="sm" variant="ghost" onClick={() => setReplying(false)}>
@@ -298,7 +417,13 @@ function AskSubtext({
     );
   }
   return (
-    <p className={cn("text-muted-foreground", boxed && "ps-[calc(var(--spacing)*3+1px)]")} aria-live="polite">
+    <p
+      className={cn(
+        "text-muted-foreground",
+        boxed && "ps-[calc(var(--spacing)*3+1px)]"
+      )}
+      aria-live="polite"
+    >
       {hint}
       {reply ? (
         <>
@@ -307,7 +432,7 @@ function AskSubtext({
           <button
             type="button"
             onClick={() => setReplying(true)}
-            className="text-foreground underline decoration-border-strong underline-offset-4 hover:decoration-foreground"
+            className="text-foreground decoration-border-strong hover:decoration-foreground underline underline-offset-4"
           >
             reply in chat
           </button>
@@ -332,7 +457,7 @@ function AskDetail({
   const [reply, setReply] = useState("");
   return (
     <div className="mx-auto w-full max-w-xl p-(--pad) @3xl:p-6">
-      <p className="flex items-start gap-2 text-muted-foreground">
+      <p className="text-muted-foreground flex items-start gap-2">
         <Badge variant="outline" className="capitalize">
           {ask.kind}
         </Badge>
@@ -340,13 +465,17 @@ function AskDetail({
           {ask.agent} asked {ask.age} ago
         </span>
       </p>
-      {look.style !== "cards" && look.header === "box" && ask.kind !== "input" ? (
+      {look.style !== "cards" &&
+      look.header === "box" &&
+      ask.kind !== "input" ? (
         // The box carries the question as its header, so the page keeps only the context.
-        <p className="mt-3 text-pretty text-muted-foreground">{ask.context}</p>
+        <p className="text-muted-foreground mt-3 text-pretty">{ask.context}</p>
       ) : (
         <SectionHeader size="lg" className="mt-3">
           <SectionHeaderTitle>{ask.title}</SectionHeaderTitle>
-          <SectionHeaderDescription className="mt-2">{ask.context}</SectionHeaderDescription>
+          <SectionHeaderDescription className="mt-2">
+            {ask.context}
+          </SectionHeaderDescription>
         </SectionHeader>
       )}
       {ask.kind === "input" ? (
@@ -359,8 +488,13 @@ function AskDetail({
             onChange={(event) => setReply(event.target.value)}
           />
           <div className="flex items-center justify-end gap-3">
-            {picked.length > 0 ? <span className="text-muted-foreground">Sent</span> : null}
-            <Button disabled={reply.trim() === ""} onClick={() => onPick([reply.trim()])}>
+            {picked.length > 0 ? (
+              <span className="text-muted-foreground">Sent</span>
+            ) : null}
+            <Button
+              disabled={reply.trim() === ""}
+              onClick={() => onPick([reply.trim()])}
+            >
               Send reply
             </Button>
           </div>
@@ -385,7 +519,9 @@ function AskProgress({
   answers: Readonly<Record<string, readonly string[]>>;
   onJump: (index: number) => void;
 }) {
-  const done = asks.filter((item) => (answers[item.id] ?? []).length > 0).length;
+  const done = asks.filter(
+    (item) => (answers[item.id] ?? []).length > 0
+  ).length;
   return (
     <div className="grid gap-2">
       <div className="flex gap-1">
@@ -403,16 +539,18 @@ function AskProgress({
               <span
                 className={cn(
                   "h-1.5 w-full rounded-full transition-all",
-                  answered ? "bg-brand" : "bg-fill-strong group-hover:bg-border-strong",
+                  answered
+                    ? "bg-brand"
+                    : "bg-fill-strong group-hover:bg-border-strong",
                   index === current && "h-3",
-                  index === current && !answered && "bg-fg-subtle",
+                  index === current && !answered && "bg-fg-subtle"
                 )}
               />
             </button>
           );
         })}
       </div>
-      <p className="flex text-xs text-muted-foreground tabular-nums">
+      <p className="text-muted-foreground flex text-xs tabular-nums">
         <span>{done} answered</span>
         <span className="ml-auto">{asks.length - done} left</span>
       </p>
@@ -441,7 +579,9 @@ function Choice<T extends string>({
         value={[value]}
         onValueChange={(next) => {
           const found = options.find((option) => option.value === next[0]);
-          if (found) onChange(found.value);
+          if (found) {
+            onChange(found.value);
+          }
         }}
       >
         {options.map((option) => (
@@ -460,13 +600,26 @@ export function NeedsYouComposition() {
   /** Which of the two phone screens shows. Wider frames show both columns. */
   const [screen, setScreen] = useState<"list" | "ask">("list");
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
-  const [look, setLook] = useState<OptionLook>({ style: "cards", mark: "none", tone: "neutral", multi: false, header: "page" });
-  const index = Math.max(0, asks.findIndex((item) => item.id === selected));
+  const [look, setLook] = useState<OptionLook>({
+    style: "cards",
+    mark: "none",
+    tone: "neutral",
+    multi: false,
+    header: "page",
+  });
+  const index = Math.max(
+    0,
+    asks.findIndex((item) => item.id === selected)
+  );
   const ask = asks[index];
-  const done = asks.filter((item) => (answers[item.id] ?? []).length > 0).length;
+  const done = asks.filter(
+    (item) => (answers[item.id] ?? []).length > 0
+  ).length;
   const open = (next: number) => {
     const target = asks[next];
-    if (!target) return;
+    if (!target) {
+      return;
+    }
     setSelected(target.id);
     setScreen("ask");
   };
@@ -531,13 +684,20 @@ export function NeedsYouComposition() {
       <Viewport>
         <AppFrame navigation={outpostNavigation} place="needs-you">
           <div className="grid h-full @3xl:grid-cols-[minmax(--spacing(64),--spacing(88))_1fr]">
-            <div className={cn("flex flex-col @3xl:border-r", screen === "ask" && "@max-3xl:hidden")}>
+            <div
+              className={cn(
+                "flex flex-col @3xl:border-r",
+                screen === "ask" && "@max-3xl:hidden"
+              )}
+            >
               <PageBar title="Needs you" className="pe-2">
                 <ToggleGroup
                   aria-label="Show"
                   value={[view]}
                   onValueChange={(next) => {
-                    if (next[0] === "open" || next[0] === "answered") setView(next[0]);
+                    if (next[0] === "open" || next[0] === "answered") {
+                      setView(next[0]);
+                    }
                   }}
                 >
                   <ToggleGroupItem value="open">Open</ToggleGroupItem>
@@ -548,15 +708,19 @@ export function NeedsYouComposition() {
                 <Empty>
                   <EmptyHeader>
                     <EmptyMedia>
-                      <Mark size="lg"><InboxDuotone /></Mark>
+                      <Mark size="lg">
+                        <InboxDuotone />
+                      </Mark>
                     </EmptyMedia>
                     <EmptyTitle>Nothing answered yet today</EmptyTitle>
-                    <EmptyDescription>Asks you reply to move here, with the reply attached.</EmptyDescription>
+                    <EmptyDescription>
+                      Asks you reply to move here, with the reply attached.
+                    </EmptyDescription>
                   </EmptyHeader>
                 </Empty>
               ) : (
                 <>
-                  <p className="px-4 pb-2 text-xs text-muted-foreground tabular-nums @3xl:hidden">
+                  <p className="text-muted-foreground px-4 pb-2 text-xs tabular-nums @3xl:hidden">
                     {done} of {asks.length} answered
                   </p>
                   <div className="p-2 pt-0">
@@ -574,19 +738,32 @@ export function NeedsYouComposition() {
               )}
             </div>
             {view === "open" && ask ? (
-              <div className={cn("flex min-h-160 flex-col @3xl:min-h-0", screen === "list" && "@max-3xl:hidden")}>
+              <div
+                className={cn(
+                  "flex min-h-160 flex-col @3xl:min-h-0",
+                  screen === "list" && "@max-3xl:hidden"
+                )}
+              >
                 <div className="grid gap-3 px-2 pb-3 @3xl:hidden">
                   <div className="flex h-14 items-center gap-1">
-                    <Button variant="ghost" size="sm" onClick={() => setScreen("list")}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setScreen("list")}
+                    >
                       <AltArrowLeftIcon data-icon="inline-start" />
                       All asks
                     </Button>
-                    <span className="ml-auto pe-2 text-muted-foreground tabular-nums">
+                    <span className="text-muted-foreground ml-auto pe-2 tabular-nums">
                       {index + 1} of {asks.length}
                     </span>
                   </div>
                   <div className="px-2">
-                    <AskProgress current={index} answers={answers} onJump={open} />
+                    <AskProgress
+                      current={index}
+                      answers={answers}
+                      onJump={open}
+                    />
                   </div>
                 </div>
                 <div className="flex-1">
@@ -595,20 +772,34 @@ export function NeedsYouComposition() {
                     ask={ask}
                     look={look}
                     picked={answers[ask.id] ?? []}
-                    onPick={(next) => setAnswers({ ...answers, [ask.id]: next })}
+                    onPick={(next) =>
+                      setAnswers({ ...answers, [ask.id]: next })
+                    }
                   />
                 </div>
-                <div className="sticky bottom-0 flex items-center gap-2 border-t bg-background p-2 @3xl:hidden">
-                  <Button variant="ghost" disabled={index === 0} onClick={() => open(index - 1)}>
+                <div className="bg-background sticky bottom-0 flex items-center gap-2 border-t p-2 @3xl:hidden">
+                  <Button
+                    variant="ghost"
+                    disabled={index === 0}
+                    onClick={() => open(index - 1)}
+                  >
                     <AltArrowLeftIcon data-icon="inline-start" />
                     Previous
                   </Button>
                   {last ? (
-                    <Button className="ml-auto" variant={answered ? "default" : "secondary"} onClick={() => setScreen("list")}>
+                    <Button
+                      className="ml-auto"
+                      variant={answered ? "default" : "secondary"}
+                      onClick={() => setScreen("list")}
+                    >
                       {done === asks.length ? "Done" : "Back to list"}
                     </Button>
                   ) : (
-                    <Button className="ml-auto" variant={answered ? "default" : "secondary"} onClick={() => open(index + 1)}>
+                    <Button
+                      className="ml-auto"
+                      variant={answered ? "default" : "secondary"}
+                      onClick={() => open(index + 1)}
+                    >
                       {answered ? "Next" : "Skip"}
                       <AltArrowRightIcon data-icon="inline-end" />
                     </Button>
@@ -631,7 +822,12 @@ export function NeedsYouComposition() {
 export function AgentsComposition() {
   return (
     <Viewport>
-      <AppFrame navigation={outpostNavigation} place="agents" title="Agents" actions={<Button size="sm">New agent</Button>}>
+      <AppFrame
+        navigation={outpostNavigation}
+        place="agents"
+        title="Agents"
+        actions={<Button size="sm">New agent</Button>}
+      >
         <div className="mx-auto w-full max-w-2xl px-(--pad) pt-2 pb-(--pad)">
           <dl className="grid grid-cols-3 gap-3">
             <Stat label="Live" value="3" />
@@ -677,50 +873,58 @@ export function AdminComposition() {
         ]}
         onChange={setList}
       />
-    <Viewport>
-      <AppFrame
-        navigation={outpostNavigation}
-        place="admin"
-        title="Admin"
-        actions={
-          <Badge tone="warning" dot>Elevated · 11:42 left</Badge>
-        }
-      >
-        <div className="grid gap-(--pad) p-(--pad) @5xl:grid-cols-[1fr_--spacing(80)]">
-          <Card>
-            <CardHeader>
-              <CardTitle>Routing versions</CardTitle>
-              <CardDescription>Each save makes a new version. Older ones stay here.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <VersionRows variant={list === "open" ? "list" : "bounded"} />
-            </CardContent>
-            <CardFooter>
-              <Button variant="secondary">Compare</Button>
-              <Button>Roll back to v13</Button>
-            </CardFooter>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Elevation</CardTitle>
-              <CardDescription>Admin access ends on its own.</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-3">
-              <Progress value={78} aria-label="Time left" />
-              <Item variant="muted" size="xs">
-                <ItemMedia variant="icon"><KeyIcon className="text-muted-foreground" /></ItemMedia>
-                <ItemContent>
-                  <ItemTitle className="font-normal">Passkey confirmed at 9:38 PM</ItemTitle>
-                </ItemContent>
-              </Item>
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full">End admin now</Button>
-            </CardFooter>
-          </Card>
-        </div>
-      </AppFrame>
-    </Viewport>
+      <Viewport>
+        <AppFrame
+          navigation={outpostNavigation}
+          place="admin"
+          title="Admin"
+          actions={
+            <Badge tone="warning" dot>
+              Elevated · 11:42 left
+            </Badge>
+          }
+        >
+          <div className="grid gap-(--pad) p-(--pad) @5xl:grid-cols-[1fr_--spacing(80)]">
+            <Card>
+              <CardHeader>
+                <CardTitle>Routing versions</CardTitle>
+                <CardDescription>
+                  Each save makes a new version. Older ones stay here.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <VersionRows variant={list === "open" ? "list" : "bounded"} />
+              </CardContent>
+              <CardFooter>
+                <Button variant="secondary">Compare</Button>
+                <Button>Roll back to v13</Button>
+              </CardFooter>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Elevation</CardTitle>
+                <CardDescription>Admin access ends on its own.</CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-3">
+                <Progress value={78} aria-label="Time left" />
+                <Item variant="muted" size="xs">
+                  <ItemMedia variant="icon">
+                    <KeyIcon className="text-muted-foreground" />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemTitle className="font-normal">
+                      Passkey confirmed at 9:38 PM
+                    </ItemTitle>
+                  </ItemContent>
+                </Item>
+              </CardContent>
+              <CardFooter>
+                <Button className="w-full">End admin now</Button>
+              </CardFooter>
+            </Card>
+          </div>
+        </AppFrame>
+      </Viewport>
     </div>
   );
 }
@@ -756,8 +960,15 @@ function AuthCard({
         <EmptyMedia className="mb-3">
           <TonalMark>{mark}</TonalMark>
         </EmptyMedia>
-        <EmptyTitle render={<h2 />} className="text-xl font-semibold text-balance">{title}</EmptyTitle>
-        <EmptyDescription className="max-w-64 leading-normal">{description}</EmptyDescription>
+        <EmptyTitle
+          render={<h2 />}
+          className="text-xl font-semibold text-balance"
+        >
+          {title}
+        </EmptyTitle>
+        <EmptyDescription className="max-w-64 leading-normal">
+          {description}
+        </EmptyDescription>
       </EmptyHeader>
       <div className="grid gap-3 px-8">{children}</div>
     </Card>
@@ -767,7 +978,7 @@ function AuthCard({
 export function SignInComposition() {
   return (
     <Viewport>
-      <div className="grid min-h-160 place-items-center gap-(--pad) bg-fill-subtle p-(--pad) @3xl:grid-cols-2">
+      <div className="bg-fill-subtle grid min-h-160 place-items-center gap-(--pad) p-(--pad) @3xl:grid-cols-2">
         <AuthCard
           mark={<InboxBold className="size-6" />}
           title="Sign in to Outpost"
@@ -786,7 +997,11 @@ export function SignInComposition() {
             <Label htmlFor="code" className="justify-center">
               Code shown on that device
             </Label>
-            <Input id="code" defaultValue="KXQM-7TRD" className="h-(--button-h) text-center font-mono tracking-widest [--button-h:calc(var(--spacing)*9)]" />
+            <Input
+              id="code"
+              defaultValue="KXQM-7TRD"
+              className="h-(--button-h) text-center font-mono tracking-widest [--button-h:calc(var(--spacing)*9)]"
+            />
           </div>
           <div className="mt-1 grid gap-2">
             <Button size="lg" className="w-full">

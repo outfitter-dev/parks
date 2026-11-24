@@ -1,5 +1,6 @@
-import { cnState } from "#lib/utils"
-import { RefreshIcon } from "@solar-icons/react/outline/refresh"
+import { RefreshIcon } from "@solar-icons/react/outline/refresh";
+
+import { cnState } from "#lib/utils";
 
 function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
   return (
@@ -10,7 +11,7 @@ function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
       className={cnState("size-4 animate-spin", className)}
       {...props}
     />
-  )
+  );
 }
 
-export { Spinner }
+export { Spinner };

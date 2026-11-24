@@ -1,12 +1,14 @@
-import * as React from "react"
-import { Input as InputPrimitive } from "@base-ui/react/input"
-import { controlSize, type ControlSize } from "#lib/size"
-import { cnState } from "#lib/utils"
+import { Input as InputPrimitive } from "@base-ui/react/input";
+import * as React from "react";
+
+import { controlSize } from "#lib/size";
+import type { ControlSize } from "#lib/size";
+import { cnState } from "#lib/utils";
 
 type InputProps = Omit<React.ComponentProps<"input">, "size"> & {
   /** The control scale: xs, sm, default or lg (see #lib/size). */
-  size?: ControlSize
-}
+  size?: ControlSize;
+};
 
 function Input({ className, type, size = "default", ...props }: InputProps) {
   return (
@@ -21,8 +23,8 @@ function Input({ className, type, size = "default", ...props }: InputProps) {
       )}
       {...props}
     />
-  )
+  );
 }
 
-export { Input }
-export type { InputProps }
+export { Input };
+export type { InputProps };

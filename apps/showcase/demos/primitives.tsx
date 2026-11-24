@@ -1,8 +1,15 @@
 "use client";
 
 import { Badge } from "@outfitter/parks/components/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@outfitter/parks/components/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@outfitter/parks/components/card";
 import { paletteNames, steps } from "@outfitter/parks/lib/palette";
+
 import { Specimen, VersionRows } from "./kit";
 
 const swatches = [
@@ -24,8 +31,12 @@ function FoundationSwatches() {
       <div className="grid grid-cols-5 gap-2">
         {swatches.map(([name, className]) => (
           <div key={name}>
-            <div className={`h-10 rounded-md ring-1 ring-border-muted ${className}`} />
-            <p className="mt-1 font-mono text-xs wrap-anywhere text-muted-foreground">{name}</p>
+            <div
+              className={`ring-border-muted h-10 rounded-md ring-1 ${className}`}
+            />
+            <p className="text-muted-foreground mt-1 font-mono text-xs wrap-anywhere">
+              {name}
+            </p>
           </div>
         ))}
       </div>
@@ -53,14 +64,26 @@ function RoleGrid() {
             {roles.map((role) => (
               <div key={role}>
                 <div
-                  className="flex h-10 items-center rounded-md px-2 ring-1 ring-border-muted"
-                  style={{ background: role === "strong" || role === "foreground" ? `var(--${tone}-fill)` : `var(${token(tone, role)})` }}
+                  className="ring-border-muted flex h-10 items-center rounded-md px-2 ring-1"
+                  style={{
+                    background:
+                      role === "strong" || role === "foreground"
+                        ? `var(--${tone}-fill)`
+                        : `var(${token(tone, role)})`,
+                  }}
                 >
                   {role === "strong" || role === "foreground" ? (
-                    <span className="font-medium" style={{ color: `var(${token(tone, role)})` }}>Aa</span>
+                    <span
+                      className="font-medium"
+                      style={{ color: `var(${token(tone, role)})` }}
+                    >
+                      Aa
+                    </span>
                   ) : null}
                 </div>
-                <p className="mt-1 font-mono text-xs wrap-anywhere text-muted-foreground">{role || "base"}</p>
+                <p className="text-muted-foreground mt-1 font-mono text-xs wrap-anywhere">
+                  {role || "base"}
+                </p>
               </div>
             ))}
           </div>
@@ -77,16 +100,24 @@ function ScaleGrid() {
       <div className="grid grid-cols-[6rem_repeat(11,minmax(0,1fr))] gap-1">
         <span />
         {steps.map((step) => (
-          <p key={step} className="text-center font-mono text-xs text-muted-foreground">{step}</p>
+          <p
+            key={step}
+            className="text-muted-foreground text-center font-mono text-xs"
+          >
+            {step}
+          </p>
         ))}
       </div>
       {palette.map((scale) => (
-        <div key={scale} className="grid grid-cols-[6rem_repeat(11,minmax(0,1fr))] items-center gap-1">
-          <p className="font-mono text-muted-foreground">{scale}</p>
+        <div
+          key={scale}
+          className="grid grid-cols-[6rem_repeat(11,minmax(0,1fr))] items-center gap-1"
+        >
+          <p className="text-muted-foreground font-mono">{scale}</p>
           {steps.map((step) => (
             <div
               key={step}
-              className={`h-9 rounded-md ring-1 ring-border-muted bg-${scale}-${step}`}
+              className={`ring-border-muted h-9 rounded-md ring-1 bg-${scale}-${step}`}
               title={`${scale}-${step}`}
             />
           ))}
@@ -105,7 +136,10 @@ export function ColorDemo() {
       <Specimen title="Semantic colors" className="block">
         <div className="grid gap-4">
           {(["light", "dark"] as const).map((mode) => (
-            <div key={mode} className={`${mode} space-y-4 rounded-lg bg-background p-3 text-foreground ring-1 ring-border`}>
+            <div
+              key={mode}
+              className={`${mode} bg-background text-foreground ring-border space-y-4 rounded-lg p-3 ring-1`}
+            >
               <h3 className="font-medium capitalize">{mode}</h3>
               <FoundationSwatches />
               <RoleGrid />
@@ -130,36 +164,70 @@ export function TypeDemo() {
     <>
       <Specimen title="Scale" className="block">
         {scale.map(([name, className]) => (
-          <div key={name} className="flex items-baseline gap-4 border-b py-2 last:border-0">
-            <span className="w-20 shrink-0 font-mono text-muted-foreground">{name}</span>
-            <span className={className}>{name === "Label" ? "Awaiting approval" : "Donna is waiting on your approval"}</span>
+          <div
+            key={name}
+            className="flex items-baseline gap-4 border-b py-2 last:border-0"
+          >
+            <span className="text-muted-foreground w-20 shrink-0 font-mono">
+              {name}
+            </span>
+            <span className={className}>
+              {name === "Label"
+                ? "Awaiting approval"
+                : "Donna is waiting on your approval"}
+            </span>
           </div>
         ))}
       </Specimen>
-      <Specimen title="Allo and JetBrains Mono" note="14px, regular weight, on a shared baseline." className="block">
+      <Specimen
+        title="Allo and JetBrains Mono"
+        note="14px, regular weight, on a shared baseline."
+        className="block"
+      >
         <div className="grid grid-cols-2 items-baseline gap-x-4 gap-y-2 text-sm">
           <h3 className="text-ui-label text-muted-foreground">Allo</h3>
-          <h3 className="text-ui-label text-muted-foreground">JetBrains Mono</h3>
+          <h3 className="text-ui-label text-muted-foreground">
+            JetBrains Mono
+          </h3>
           <span className="[font-family:Allo]">H x gypq 012345</span>
-          <span className="[font-family:'JetBrains_Mono_Variable']">H x gypq 012345</span>
+          <span className="[font-family:'JetBrains_Mono_Variable']">
+            H x gypq 012345
+          </span>
         </div>
-        <p className="mt-3 text-sm">Donna is running <code>outpost status</code>.</p>
+        <p className="mt-3 text-sm">
+          Donna is running <code>outpost status</code>.
+        </p>
       </Specimen>
       <Specimen title="Mono" className="block">
-        <p className="font-mono">outpost_admin_agent_set_destination --agent donna --mode live</p>
-        <p className="mt-2 font-mono text-muted-foreground">sha 7e3786f · 2026-11-22T02:47:28Z</p>
+        <p className="font-mono">
+          outpost_admin_agent_set_destination --agent donna --mode live
+        </p>
+        <p className="text-muted-foreground mt-2 font-mono">
+          sha 7e3786f · 2026-11-22T02:47:28Z
+        </p>
       </Specimen>
-      <Specimen title="Weights" className="grid grid-cols-1 items-start sm:grid-cols-2">
+      <Specimen
+        title="Weights"
+        className="grid grid-cols-1 items-start sm:grid-cols-2"
+      >
         {[
-          { face: "Sans", className: "font-sans", weights: [400, 500, 600, 700] },
+          {
+            face: "Sans",
+            className: "font-sans",
+            weights: [400, 500, 600, 700],
+          },
           { face: "Monospace", className: "font-mono", weights: [400, 500] },
         ].map(({ face, className, weights }) => (
           <div key={face} className="grid gap-1">
             <h3 className="text-ui-label text-muted-foreground">{face}</h3>
             {weights.map((weight) => (
               <div key={weight} className="flex items-baseline gap-3">
-                <span className="font-mono text-xs text-muted-foreground">{weight}</span>
-                <span className={className} style={{ fontWeight: weight }}>Mission control for a fleet of agents</span>
+                <span className="text-muted-foreground font-mono text-xs">
+                  {weight}
+                </span>
+                <span className={className} style={{ fontWeight: weight }}>
+                  Mission control for a fleet of agents
+                </span>
               </div>
             ))}
           </div>
@@ -177,8 +245,10 @@ export function ShapeDemo() {
         note="The frame radius adds the inset to the control radius. The control radius is capped at half its height."
         className="block"
       >
-        <div className="max-w-sm frame p-frame rounded-[calc(var(--control-radius)_+_var(--frame-space))] bg-card shadow-(--shadow-frame) ring-1 ring-border-muted [--control-radius:min(var(--radius-lg),calc(var(--control-h)/2))]">
-          <div className="panel rounded-(--control-radius) bg-panel-fill"><span className="px-inset">Panel</span></div>
+        <div className="frame p-frame bg-card ring-border-muted max-w-sm rounded-[calc(var(--control-radius)_+_var(--frame-space))] shadow-(--shadow-frame) ring-1 [--control-radius:min(var(--radius-lg),calc(var(--control-h)/2))]">
+          <div className="panel bg-panel-fill rounded-(--control-radius)">
+            <span className="px-inset">Panel</span>
+          </div>
           <div className="mt-2 flex h-(--control-h) items-center rounded-(--control-radius) border px-[calc(var(--panel-pad-base)*(1_+_var(--inset-ratio))_-_1px)]">
             Control · --control-h
           </div>
@@ -192,9 +262,13 @@ export function ShapeDemo() {
         <Card className="max-w-sm gap-0">
           <div className="flex items-start justify-between gap-3">
             <p className="px-inset font-medium">Merge once CI is green?</p>
-            <Badge variant="surface" shape="pill">Approval</Badge>
+            <Badge variant="surface" shape="pill">
+              Approval
+            </Badge>
           </div>
-          <p className="mt-1 px-inset pb-0.5 text-muted-foreground">Text sits at --pad + --inset. The pill sits in the corner at --pad.</p>
+          <p className="px-inset text-muted-foreground mt-1 pb-0.5">
+            Text sits at --pad + --inset. The pill sits in the corner at --pad.
+          </p>
         </Card>
       </Specimen>
       <Specimen
@@ -203,21 +277,29 @@ export function ShapeDemo() {
         className="block"
       >
         <div className="grid max-w-2xl items-start gap-4 sm:grid-cols-2">
-          {([
-            ["Frame", "default"],
-            ["Small frame", "sm"],
-          ] as const).map(([label, size]) => (
+          {(
+            [
+              ["Frame", "default"],
+              ["Small frame", "sm"],
+            ] as const
+          ).map(([label, size]) => (
             <Card key={label} size={size} className="gap-0">
               <div className="flex items-start justify-between gap-3">
                 <p className="px-inset font-medium">{label}</p>
-                <Badge variant="surface" shape="pill">Corner</Badge>
+                <Badge variant="surface" shape="pill">
+                  Corner
+                </Badge>
               </div>
-              <div className="panel mt-2 bg-panel-fill">
+              <div className="panel bg-panel-fill mt-2">
                 <div className="flex items-center justify-between gap-3">
                   <span className="ps-inset">Panel</span>
-                  <span className="rounded-inner bg-background px-1.5 py-0.5 font-mono text-xs ring-1 ring-border-muted">piece</span>
+                  <span className="rounded-inner bg-background ring-border-muted px-1.5 py-0.5 font-mono text-xs ring-1">
+                    piece
+                  </span>
                 </div>
-                <p className="px-inset text-muted-foreground">Text inset follows the panel.</p>
+                <p className="px-inset text-muted-foreground">
+                  Text inset follows the panel.
+                </p>
               </div>
             </Card>
           ))}
@@ -231,7 +313,9 @@ export function ShapeDemo() {
         <Card className="max-w-md pb-(--corner-gap)">
           <CardHeader>
             <CardTitle>Routing history</CardTitle>
-            <CardDescription>Every saved version, newest first.</CardDescription>
+            <CardDescription>
+              Every saved version, newest first.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <VersionRows variant="bounded" />
@@ -248,8 +332,10 @@ export function ShapeDemo() {
           ["inner", "rounded-inner"],
         ].map(([name, className]) => (
           <div key={name} className="text-center">
-            <div className={`size-16 bg-muted ring-1 ring-border-muted ${className}`} />
-            <p className="mt-1 font-mono text-muted-foreground">{name}</p>
+            <div
+              className={`bg-muted ring-border-muted size-16 ring-1 ${className}`}
+            />
+            <p className="text-muted-foreground mt-1 font-mono">{name}</p>
           </div>
         ))}
       </Specimen>

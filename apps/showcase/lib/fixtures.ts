@@ -10,11 +10,46 @@ export const agents: {
   destination: string;
   seen: string;
 }[] = [
-  { name: "Donna", runtime: "Devin", mode: "Live", tone: "live", destination: "webhook · devin", seen: "2 min ago" },
-  { name: "Rex", runtime: "exe.dev", mode: "Dry run", tone: "wait", destination: "board · #forge", seen: "14 min ago" },
-  { name: "Ranger lead", runtime: "Claude Code", mode: "Live", tone: "live", destination: "mcp inbox", seen: "1 hr ago" },
-  { name: "Forge lead", runtime: "Claude Code", mode: "Failing", tone: "alert", destination: "webhook · forge", seen: "3 hr ago" },
-  { name: "Climb lead", runtime: "Codex", mode: "Off", tone: "off", destination: "none", seen: "Yesterday" },
+  {
+    name: "Donna",
+    runtime: "Devin",
+    mode: "Live",
+    tone: "live",
+    destination: "webhook · devin",
+    seen: "2 min ago",
+  },
+  {
+    name: "Rex",
+    runtime: "exe.dev",
+    mode: "Dry run",
+    tone: "wait",
+    destination: "board · #forge",
+    seen: "14 min ago",
+  },
+  {
+    name: "Ranger lead",
+    runtime: "Claude Code",
+    mode: "Live",
+    tone: "live",
+    destination: "mcp inbox",
+    seen: "1 hr ago",
+  },
+  {
+    name: "Forge lead",
+    runtime: "Claude Code",
+    mode: "Failing",
+    tone: "alert",
+    destination: "webhook · forge",
+    seen: "3 hr ago",
+  },
+  {
+    name: "Climb lead",
+    runtime: "Codex",
+    mode: "Off",
+    tone: "off",
+    destination: "none",
+    seen: "Yesterday",
+  },
 ];
 
 export type Ask = {
@@ -38,7 +73,11 @@ export const asks: Ask[] = [
     age: "4 min",
     context: "All review threads are resolved. CI is running its last job.",
     options: [
-      { label: "Approve", detail: "Merge when the last check passes.", recommended: true },
+      {
+        label: "Approve",
+        detail: "Merge when the last check passes.",
+        recommended: true,
+      },
       { label: "Hold", detail: "Leave it open for you to look at." },
     ],
   },
@@ -52,7 +91,11 @@ export const asks: Ask[] = [
     context: "Needs about 2.5M fresh tokens. The cap set last week was 1.5M.",
     options: [
       { label: "Run it", detail: "Spend up to 2.5M tokens." },
-      { label: "Half the set", detail: "Stay under the 1.5M cap.", recommended: true },
+      {
+        label: "Half the set",
+        detail: "Stay under the 1.5M cap.",
+        recommended: true,
+      },
       { label: "Skip", detail: "Keep v5 for now." },
     ],
   },
@@ -63,13 +106,29 @@ export const asks: Ask[] = [
     title: "Which runner should the trusted-install check use?",
     project: "forge",
     age: "3 hr",
-    context: "forge#53 is through three review rounds. The open question is the runner image.",
+    context:
+      "forge#53 is through three review rounds. The open question is the runner image.",
     options: [{ label: "Reply", detail: "Answer in the thread." }],
   },
 ];
 
 export const versions = [
-  { version: 14, author: "Matt", change: "Mute Rex outside work hours", when: "Today, 9:41 PM" },
-  { version: 13, author: "Donna", change: "Add the devin webhook route", when: "Today, 6:02 PM" },
-  { version: 12, author: "Matt", change: "Move Forge asks to #forge", when: "Yesterday" },
+  {
+    version: 14,
+    author: "Matt",
+    change: "Mute Rex outside work hours",
+    when: "Today, 9:41 PM",
+  },
+  {
+    version: 13,
+    author: "Donna",
+    change: "Add the devin webhook route",
+    when: "Today, 6:02 PM",
+  },
+  {
+    version: 12,
+    author: "Matt",
+    change: "Move Forge asks to #forge",
+    when: "Yesterday",
+  },
 ];

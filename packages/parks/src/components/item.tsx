@@ -1,10 +1,11 @@
-import * as React from "react"
-import { mergeProps } from "@base-ui/react/merge-props"
-import { useRender } from "@base-ui/react/use-render"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cnState } from "#lib/utils"
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import * as React from "react";
 
-import { Separator } from "#components/separator"
+import { Separator } from "#components/separator";
+import { cnState } from "#lib/utils";
 
 /*
  * A row: lead, title, description, meta and trailing actions. Started from
@@ -26,15 +27,15 @@ const itemGroupVariants = cva("group/item-group flex w-full flex-col", {
   variants: {
     variant: {
       open: "gap-4 has-data-[size=sm]:gap-2.5 has-data-[size=xs]:gap-2",
-      list: "*:data-[slot=item]:rounded-none *:data-[slot=item]:border-0 *:data-[slot=item]:not-last:border-b *:data-[slot=item]:not-last:border-border-muted",
+      list: "*:data-[slot=item]:not-last:border-border-muted *:data-[slot=item]:rounded-none *:data-[slot=item]:border-0 *:data-[slot=item]:not-last:border-b",
       bounded:
-        "overflow-hidden rounded-lg bg-panel-fill *:data-[slot=item]:rounded-none *:data-[slot=item]:border-0 *:data-[slot=item]:not-last:border-b *:data-[slot=item]:not-last:border-border-muted",
+        "bg-panel-fill *:data-[slot=item]:not-last:border-border-muted overflow-hidden rounded-lg *:data-[slot=item]:rounded-none *:data-[slot=item]:border-0 *:data-[slot=item]:not-last:border-b",
     },
   },
   defaultVariants: {
     variant: "open",
   },
-})
+});
 
 function ItemGroup({
   className,
@@ -48,7 +49,7 @@ function ItemGroup({
       className={cnState(itemGroupVariants({ variant }), className)}
       {...props}
     />
-  )
+  );
 }
 
 function ItemSeparator({
@@ -62,23 +63,23 @@ function ItemSeparator({
       className={cnState("my-2", className)}
       {...props}
     />
-  )
+  );
 }
 
 const itemVariants = cva(
-  "group/item flex w-full flex-wrap items-center rounded-lg border text-left text-sm transition-colors duration-100 outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-focus-ring [a]:hover:bg-fill-subtle [button]:hover:bg-fill-subtle data-selected:bg-fill",
+  "group/item focus-visible:border-ring focus-visible:ring-focus-ring [a]:hover:bg-fill-subtle [button]:hover:bg-fill-subtle data-selected:bg-fill flex w-full flex-wrap items-center rounded-lg border text-left text-sm transition-colors duration-100 outline-none focus-visible:ring-3",
   {
     variants: {
       variant: {
         default: "border-transparent",
         outline: "border-border",
-        muted: "border-transparent bg-panel-fill",
+        muted: "bg-panel-fill border-transparent",
       },
       size: {
         default: "gap-2.5 px-3 py-2.5",
         sm: "gap-2.5 px-3 py-2",
         // The control-height row: one line, the same height as a button.
-        xs: "min-h-(--control-h) gap-3 px-text py-1 in-data-[slot=dropdown-menu-content]:p-0",
+        xs: "px-text min-h-(--control-h) gap-3 py-1 in-data-[slot=dropdown-menu-content]:p-0",
       },
     },
     defaultVariants: {
@@ -86,13 +87,13 @@ const itemVariants = cva(
       size: "default",
     },
   }
-)
+);
 
 type ItemProps = useRender.ComponentProps<"div"> &
   VariantProps<typeof itemVariants> & {
     /** The current or picked row: a quiet fill, and `data-selected`. */
-    selected?: boolean
-  }
+    selected?: boolean;
+  };
 
 /**
  * @example
@@ -132,7 +133,7 @@ function Item({
       size,
       selected: Boolean(selected),
     },
-  })
+  });
 }
 
 const itemMediaVariants = cva(
@@ -150,7 +151,7 @@ const itemMediaVariants = cva(
       variant: "default",
     },
   }
-)
+);
 
 /** The lead: a StatusDot, Mark, Avatar, icon, checkbox or short mono label. */
 function ItemMedia({
@@ -165,7 +166,7 @@ function ItemMedia({
       className={cnState(itemMediaVariants({ variant }), className)}
       {...props}
     />
-  )
+  );
 }
 
 function ItemContent({ className, ...props }: React.ComponentProps<"div">) {
@@ -178,7 +179,7 @@ function ItemContent({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function ItemTitle({ className, ...props }: React.ComponentProps<"div">) {
@@ -191,7 +192,7 @@ function ItemTitle({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function ItemDescription({ className, ...props }: React.ComponentProps<"p">) {
@@ -204,7 +205,7 @@ function ItemDescription({ className, ...props }: React.ComponentProps<"p">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 /**
@@ -224,7 +225,7 @@ function ItemMeta({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function ItemActions({ className, ...props }: React.ComponentProps<"div">) {
@@ -237,7 +238,7 @@ function ItemActions({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function ItemHeader({ className, ...props }: React.ComponentProps<"div">) {
@@ -250,7 +251,7 @@ function ItemHeader({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function ItemFooter({ className, ...props }: React.ComponentProps<"div">) {
@@ -263,7 +264,7 @@ function ItemFooter({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -280,5 +281,5 @@ export {
   ItemFooter,
   itemVariants,
   itemGroupVariants,
-}
-export type { ItemProps }
+};
+export type { ItemProps };

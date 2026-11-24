@@ -1,13 +1,14 @@
-import * as React from "react"
-import { mergeProps } from "@base-ui/react/merge-props"
-import { useRender } from "@base-ui/react/use-render"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cnState } from "#lib/utils"
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import * as React from "react";
 
-import { Button } from "#components/button"
+import { Button } from "#components/button";
+import { cnState } from "#lib/utils";
 
 const attachmentVariants = cva(
-  "group/attachment relative flex w-fit max-w-full min-w-0 shrink-0 flex-wrap rounded-xl border border-border-muted bg-card text-card-foreground transition-colors focus-within:ring-2 focus-within:ring-focus-ring has-[>a,>button]:hover:bg-ghost-hover data-[state=error]:border-destructive-border data-[state=idle]:border-dashed data-[state=idle]:border-border",
+  "group/attachment border-border-muted bg-card text-card-foreground focus-within:ring-focus-ring has-[>a,>button]:hover:bg-ghost-hover data-[state=error]:border-destructive-border data-[state=idle]:border-border relative flex w-fit max-w-full min-w-0 shrink-0 flex-wrap rounded-xl border transition-colors focus-within:ring-2 data-[state=idle]:border-dashed",
   {
     variants: {
       size: {
@@ -22,7 +23,7 @@ const attachmentVariants = cva(
       },
     },
   }
-)
+);
 
 function Attachment({
   className,
@@ -32,7 +33,7 @@ function Attachment({
   ...props
 }: React.ComponentProps<"div"> &
   VariantProps<typeof attachmentVariants> & {
-    state?: "idle" | "uploading" | "processing" | "error" | "done"
+    state?: "idle" | "uploading" | "processing" | "error" | "done";
   }) {
   return (
     <div
@@ -43,11 +44,11 @@ function Attachment({
       className={cnState(attachmentVariants({ size, orientation }), className)}
       {...props}
     />
-  )
+  );
 }
 
 const attachmentMediaVariants = cva(
-  "relative flex aspect-square w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-fill text-foreground group-data-[orientation=vertical]/attachment:w-full group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md group-data-[state=error]/attachment:bg-destructive-fill group-data-[state=error]/attachment:text-destructive group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5",
+  "bg-fill text-foreground group-data-[state=error]/attachment:bg-destructive-fill group-data-[state=error]/attachment:text-destructive relative flex aspect-square w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg group-data-[orientation=vertical]/attachment:w-full group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5",
   {
     variants: {
       variant: {
@@ -60,7 +61,7 @@ const attachmentMediaVariants = cva(
       variant: "icon",
     },
   }
-)
+);
 
 function AttachmentMedia({
   className,
@@ -74,7 +75,7 @@ function AttachmentMedia({
       className={cnState(attachmentMediaVariants({ variant }), className)}
       {...props}
     />
-  )
+  );
 }
 
 function AttachmentContent({
@@ -90,7 +91,7 @@ function AttachmentContent({
       )}
       {...props}
     />
-  )
+  );
 }
 
 function AttachmentTitle({
@@ -106,7 +107,7 @@ function AttachmentTitle({
       )}
       {...props}
     />
-  )
+  );
 }
 
 function AttachmentDescription({
@@ -123,7 +124,7 @@ function AttachmentDescription({
       )}
       {...props}
     />
-  )
+  );
 }
 
 function AttachmentActions({
@@ -139,7 +140,7 @@ function AttachmentActions({
       )}
       {...props}
     />
-  )
+  );
 }
 
 function AttachmentAction({
@@ -156,7 +157,7 @@ function AttachmentAction({
       className={className}
       {...props}
     />
-  )
+  );
 }
 
 function AttachmentTrigger({
@@ -178,7 +179,7 @@ function AttachmentTrigger({
     state: {
       slot: "attachment-trigger",
     },
-  })
+  });
 }
 
 function AttachmentGroup({ className, ...props }: React.ComponentProps<"div">) {
@@ -191,7 +192,7 @@ function AttachmentGroup({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -204,4 +205,4 @@ export {
   AttachmentActions,
   AttachmentAction,
   AttachmentTrigger,
-}
+};

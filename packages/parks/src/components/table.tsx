@@ -1,7 +1,8 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { cnState } from "#lib/utils"
+import * as React from "react";
+
+import { cnState } from "#lib/utils";
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
@@ -11,31 +12,33 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
     >
       <table
         data-slot="table"
-        className={cnState("w-full caption-bottom border-separate border-spacing-0 text-sm", className)}
+        className={cnState(
+          "w-full caption-bottom border-separate border-spacing-0 text-sm",
+          className
+        )}
         {...props}
       />
     </div>
-  )
+  );
 }
 
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
-    <thead
-      data-slot="table-header"
-      className={cnState(className)}
-      {...props}
-    />
-  )
+    <thead data-slot="table-header" className={cnState(className)} {...props} />
+  );
 }
 
 function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
   return (
     <tbody
       data-slot="table-body"
-      className={cnState("[&>tr:last-child>td]:border-b-transparent", className)}
+      className={cnState(
+        "[&>tr:last-child>td]:border-b-transparent",
+        className
+      )}
       {...props}
     />
-  )
+  );
 }
 
 function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
@@ -48,7 +51,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
@@ -61,7 +64,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TableHead({ className, ...props }: React.ComponentProps<"th">) {
@@ -74,7 +77,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TableCell({ className, ...props }: React.ComponentProps<"td">) {
@@ -87,7 +90,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
       )}
       {...props}
     />
-  )
+  );
 }
 
 function TableCaption({
@@ -100,7 +103,7 @@ function TableCaption({
       className={cnState("mt-4 text-sm text-muted-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -112,4 +115,4 @@ export {
   TableRow,
   TableCell,
   TableCaption,
-}
+};

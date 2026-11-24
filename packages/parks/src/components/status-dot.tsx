@@ -1,7 +1,10 @@
-import type * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { isTone, type Tone } from "#lib/tone"
-import { cnState } from "#lib/utils"
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
+import type * as React from "react";
+
+import { isTone } from "#lib/tone";
+import type { Tone } from "#lib/tone";
+import { cnState } from "#lib/utils";
 
 /*
  * A small round mark that signals state: the one status dot. It reads the
@@ -12,7 +15,7 @@ import { cnState } from "#lib/utils"
  * (see #lib/tone).
  */
 const statusDotVariants = cva(
-  "relative inline-block shrink-0 rounded-full bg-tone-mark",
+  "bg-tone-mark relative inline-block shrink-0 rounded-full",
   {
     variants: {
       size: {
@@ -21,7 +24,7 @@ const statusDotVariants = cva(
         md: "size-2.5",
       },
       live: {
-        true: "after:absolute after:inset-0 after:animate-live after:rounded-full after:bg-inherit motion-reduce:after:hidden",
+        true: "after:animate-live after:absolute after:inset-0 after:rounded-full after:bg-inherit motion-reduce:after:hidden",
         false: "",
       },
     },
@@ -30,31 +33,40 @@ const statusDotVariants = cva(
       live: false,
     },
   }
-)
+);
 
 type StatusDotProps = Omit<React.ComponentProps<"span">, "children"> &
   VariantProps<typeof statusDotVariants> & {
     /** The colour role. Defaults to neutral. */
-    tone?: Tone
+    tone?: Tone;
     /** Names the state for assistive tech. Without it the dot is decorative. */
-    label?: string
-  }
+    label?: string;
+  };
 
 /**
  * @example
  * <StatusDot tone="success" live label="Live" />
  */
-function StatusDot({ className, tone, size, live, label, ...props }: StatusDotProps) {
+function StatusDot({
+  className,
+  tone,
+  size,
+  live,
+  label,
+  ...props
+}: StatusDotProps) {
   return (
     <span
       data-slot="status-dot"
       data-tone={isTone(tone) ? tone : "neutral"}
-      {...(label ? { role: "img", "aria-label": label } : { "aria-hidden": true })}
+      {...(label
+        ? { role: "img", "aria-label": label }
+        : { "aria-hidden": true })}
       className={cnState(statusDotVariants({ size, live }), className)}
       {...props}
     />
-  )
+  );
 }
 
-export { StatusDot, statusDotVariants }
-export type { StatusDotProps }
+export { StatusDot, statusDotVariants };
+export type { StatusDotProps };
