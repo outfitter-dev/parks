@@ -5,12 +5,12 @@ import "dialkit/styles.css";
 import { useEffect, useMemo, useRef } from "react";
 import { defaultShell, isShellStyle, setShell } from "#lib/shell";
 import { isPaletteName, paletteNames } from "@outfitter/parks/lib/palette";
-import { compileTheme, presets, type Mode, type PresetId, type PresetValues } from "#lib/theme";
+import { compileTheme, presets, type Mode, type PresetId, type PresetValues } from "@outfitter/parks/lib/theme";
 
-const start = presets.luma.values;
+const start = presets.outfitter.values;
 
 const config = {
-  loadLuma: { type: "action", label: `Load ${presets.luma.label}` },
+  loadDefault: { type: "action", label: `Load ${presets.outfitter.label}` },
   loadLinear: { type: "action", label: `Load ${presets.linear.label}` },
   mode: { type: "select", options: ["system", "light", "dark"], default: "system" },
   shell: {
@@ -76,7 +76,7 @@ const config = {
 } satisfies DialConfig;
 
 const presetActions: Record<string, PresetId> = {
-  loadLuma: "luma",
+  loadDefault: "outfitter",
   loadLinear: "linear",
 };
 

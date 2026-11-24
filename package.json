@@ -15,13 +15,14 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "bun run --cwd apps/showcase dev",
-    "build": "bun run --cwd apps/showcase build",
+    "dev": "bun run --cwd packages/parks build && bun run --filter '@outfitter/parks*' dev",
+    "build": "bun run --cwd packages/parks build && bun run --cwd apps/showcase build",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit -p . && bun run --cwd apps/showcase typecheck",
+    "typecheck": "bun run --cwd packages/parks build && tsc --noEmit -p . && bun run --cwd apps/showcase typecheck",
     "check": "bun run typecheck && bun run test",
     "ui:add": "bun scripts/ui-add.ts",
-    "ui:palette": "bun scripts/ui-palette.ts"
+    "ui:palette": "bun scripts/ui-palette.ts",
+    "ui:theme": "bun scripts/ui-theme.ts"
   },
   "devDependencies": {
     "@types/node": "22.20.5",

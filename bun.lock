@@ -42,6 +42,7 @@
     },
     "packages/parks": {
       "name": "@outfitter/parks",
+      "version": "0.0.0",
       "dependencies": {
         "@base-ui/react": "1.9.0",
         "@shadcn/react": "0.3.1",

@@ -7,7 +7,7 @@ export default function Overview() {
       <h1 className="text-2xl font-semibold tracking-tight">Parks showcase</h1>
       <p className="mt-2 max-w-prose text-muted-foreground">
         Every screen and part of Parks, drawn from packages/parks. Open the panel in the
-        corner to switch between the Luma tuned and Linear-like presets, or tune any token live.
+        corner to switch between the Outfitter default and Linear-like presets, or tune any token live.
         &ldquo;Copy tokens&rdquo; copies the CSS for what you see.
       </p>
       {sections.map((section) => (
