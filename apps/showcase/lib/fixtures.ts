@@ -11,7 +11,7 @@ export const agents: {
   seen: string;
 }[] = [
   {
-    name: "Donna",
+    name: "Mardy",
     runtime: "Devin",
     mode: "Live",
     tone: "live",
@@ -19,15 +19,15 @@ export const agents: {
     seen: "2 min ago",
   },
   {
-    name: "Rex",
+    name: "Bartram",
     runtime: "exe.dev",
     mode: "Dry run",
     tone: "wait",
-    destination: "board · #forge",
+    destination: "board · #zion",
     seen: "14 min ago",
   },
   {
-    name: "Ranger lead",
+    name: "Yosemite lead",
     runtime: "Claude Code",
     mode: "Live",
     tone: "live",
@@ -35,15 +35,15 @@ export const agents: {
     seen: "1 hr ago",
   },
   {
-    name: "Forge lead",
+    name: "Zion lead",
     runtime: "Claude Code",
     mode: "Failing",
     tone: "alert",
-    destination: "webhook · forge",
+    destination: "webhook · zion",
     seen: "3 hr ago",
   },
   {
-    name: "Climb lead",
+    name: "Denali lead",
     runtime: "Codex",
     mode: "Off",
     tone: "off",
@@ -66,10 +66,10 @@ export type Ask = {
 export const asks: Ask[] = [
   {
     id: "a1",
-    agent: "Donna",
+    agent: "Mardy",
     kind: "approval",
-    title: "Merge outpost#47 once CI is green?",
-    project: "outpost",
+    title: "Merge sequoia#47 once CI is green?",
+    project: "sequoia",
     age: "4 min",
     context: "All review threads are resolved. CI is running its last job.",
     options: [
@@ -83,10 +83,10 @@ export const asks: Ask[] = [
   },
   {
     id: "a2",
-    agent: "Ranger lead",
+    agent: "Yosemite lead",
     kind: "choice",
     title: "Run the v5 vs v6 held-out comparison?",
-    project: "ranger",
+    project: "yosemite",
     age: "1 hr",
     context: "Needs about 2.5M fresh tokens. The cap set last week was 1.5M.",
     options: [
@@ -101,13 +101,13 @@ export const asks: Ask[] = [
   },
   {
     id: "a3",
-    agent: "Forge lead",
+    agent: "Zion lead",
     kind: "input",
     title: "Which runner should the trusted-install check use?",
-    project: "forge",
+    project: "zion",
     age: "3 hr",
     context:
-      "forge#53 is through three review rounds. The open question is the runner image.",
+      "zion#53 is through three review rounds. The open question is the runner image.",
     options: [{ label: "Reply", detail: "Answer in the thread." }],
   },
 ];
@@ -115,20 +115,20 @@ export const asks: Ask[] = [
 export const versions = [
   {
     version: 14,
-    author: "Matt",
-    change: "Mute Rex outside work hours",
+    author: "Muir",
+    change: "Mute Bartram outside work hours",
     when: "Today, 9:41 PM",
   },
   {
     version: 13,
-    author: "Donna",
+    author: "Mardy",
     change: "Add the devin webhook route",
     when: "Today, 6:02 PM",
   },
   {
     version: 12,
-    author: "Matt",
-    change: "Move Forge asks to #forge",
+    author: "Muir",
+    change: "Move Zion asks to #zion",
     when: "Yesterday",
   },
 ];

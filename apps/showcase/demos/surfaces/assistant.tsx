@@ -30,7 +30,7 @@ import { FileType } from "../reui/file-type";
 import { CodeBlock, CodeFrame, Trace, TraceLine, Turn } from "./parts";
 
 const navigation = {
-  name: "Outpost",
+  name: "Sequoia",
   mark: "O",
   items: [
     {
@@ -52,8 +52,8 @@ const navigation = {
       solid: ChatRoundDotsBold,
     },
     {
-      id: "rex",
-      label: "Why did Rex go quiet?",
+      id: "bartram",
+      label: "Why did Bartram go quiet?",
       icon: ChatRoundDotsIcon,
       solid: ChatRoundDotsBold,
     },
@@ -164,7 +164,7 @@ function Composer() {
       <Textarea
         rows={2}
         aria-label="Message"
-        placeholder="Reply, or ask Donna to do something"
+        placeholder="Reply, or ask Mardy to do something"
         className="field-sizing-fixed min-h-0 resize-none border-0 bg-transparent px-2 py-0 text-[length:inherit] focus-visible:ring-0 md:text-[length:inherit]"
       />
       <div className="flex items-center gap-1">
@@ -173,7 +173,7 @@ function Composer() {
         </Button>
         <Button variant="ghost" size="sm">
           <StarsIcon data-icon="inline-start" />
-          Donna · Devin
+          Mardy · Devin
         </Button>
         <Button
           size="icon-sm"
@@ -207,7 +207,7 @@ export function AssistantSurface() {
             else calls it?
           </Turn>
 
-          <Turn from="agent" name="Donna">
+          <Turn from="agent" name="Mardy">
             <Trace>
               <TraceLine
                 icon={MagnifierIcon}
@@ -252,7 +252,7 @@ export function AssistantSurface() {
 
           <Turn from="you">Go with the recommendation.</Turn>
 
-          <Turn from="agent" name="Donna">
+          <Turn from="agent" name="Mardy">
             <span className="text-muted-foreground flex items-center gap-2">
               <HaloSignal size={20} label="Working" className="text-brand" />
               Adding the alias and a deprecation header

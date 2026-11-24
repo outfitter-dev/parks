@@ -69,8 +69,8 @@ import type { Ask } from "#lib/fixtures";
 
 import { AppFrame, PageBar } from "./app-frame";
 import { AgentModeBadge, Signal, VersionRows, Viewport } from "./kit";
-import { outpostNavigation } from "./outpost-navigation";
 import { Stat } from "./surfaces/parts";
+import { sequoiaNavigation } from "./sequoia-navigation";
 
 function AskRow({
   ask,
@@ -682,7 +682,7 @@ export function NeedsYouComposition() {
         />
       </div>
       <Viewport>
-        <AppFrame navigation={outpostNavigation} place="needs-you">
+        <AppFrame navigation={sequoiaNavigation} place="needs-you">
           <div className="grid h-full @3xl:grid-cols-[minmax(--spacing(64),--spacing(88))_1fr]">
             <div
               className={cn(
@@ -823,7 +823,7 @@ export function AgentsComposition() {
   return (
     <Viewport>
       <AppFrame
-        navigation={outpostNavigation}
+        navigation={sequoiaNavigation}
         place="agents"
         title="Agents"
         actions={<Button size="sm">New agent</Button>}
@@ -875,7 +875,7 @@ export function AdminComposition() {
       />
       <Viewport>
         <AppFrame
-          navigation={outpostNavigation}
+          navigation={sequoiaNavigation}
           place="admin"
           title="Admin"
           actions={
@@ -981,8 +981,8 @@ export function SignInComposition() {
       <div className="bg-fill-subtle grid min-h-160 place-items-center gap-(--pad) p-(--pad) @3xl:grid-cols-2">
         <AuthCard
           mark={<InboxBold className="size-6" />}
-          title="Sign in to Outpost"
-          description="Use your Vercel account. Outpost only reads who you are."
+          title="Sign in to Sequoia"
+          description="Use your Vercel account. Sequoia only reads who you are."
         >
           <Button size="lg" className="w-full">
             Continue with Vercel

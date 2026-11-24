@@ -47,9 +47,9 @@ const onPage = [
 ];
 
 const installs: Record<string, string> = {
-  bun: "bun add -g @outfitter/outpost",
-  npm: "npm install -g @outfitter/outpost",
-  brew: "brew install outfitter-dev/tap/outpost",
+  bun: "bun add -g @outfitter/sequoia",
+  npm: "npm install -g @outfitter/sequoia",
+  brew: "brew install outfitter-dev/tap/sequoia",
 };
 
 function Step({
@@ -89,7 +89,7 @@ export function DocsSurface() {
             <Mark variant="solid" className="font-normal">
               O
             </Mark>
-            Outpost{" "}
+            Sequoia{" "}
             <span className="text-muted-foreground font-normal">Docs</span>
           </span>
           <Button
@@ -162,7 +162,7 @@ export function DocsSurface() {
                 </p>
                 <CodeBlock
                   code={
-                    "outpost login\n✓ Approved on this Mac · signed in as Matt"
+                    "sequoia login\n✓ Approved on this Mac · signed in as Muir"
                   }
                   label="Terminal"
                 />
@@ -173,7 +173,7 @@ export function DocsSurface() {
                   buttons on every device.
                 </p>
                 <CodeBlock
-                  code={`outpost ask create --to matt \\\n  --question "Merge outpost#47 once CI is green?" \\\n  --option Approve --option Hold`}
+                  code={`sequoia ask create --to muir \\\n  --question "Merge sequoia#47 once CI is green?" \\\n  --option Approve --option Hold`}
                   label="Terminal"
                   language="bash"
                   numbers

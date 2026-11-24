@@ -30,7 +30,6 @@ import { Widget2Icon } from "@solar-icons/react/outline/widget-2";
 
 import { AppFrame } from "../app-frame";
 import { HaloSignal, Signal, Viewport } from "../kit";
-import { outpostNavigation } from "../outpost-navigation";
 import {
   Timeline,
   TimelineContent,
@@ -41,6 +40,7 @@ import {
   TimelineSeparator,
   TimelineTitle,
 } from "../reui/timeline";
+import { sequoiaNavigation } from "../sequoia-navigation";
 import { Stat, Heading } from "./parts";
 
 type Lane = "asking" | "working" | "review" | "done";
@@ -66,52 +66,52 @@ type Task = {
 const tasks: Task[] = [
   {
     lane: "asking",
-    title: "Merge outpost#47 once CI is green?",
-    agent: "Donna",
-    project: "outpost",
+    title: "Merge sequoia#47 once CI is green?",
+    agent: "Mardy",
+    project: "sequoia",
     note: "Approval · 4 min",
   },
   {
     lane: "asking",
     title: "Run the v5 vs v6 held-out comparison?",
-    agent: "Ranger lead",
-    project: "ranger",
+    agent: "Yosemite lead",
+    project: "yosemite",
     note: "Choice · 1 hr",
   },
   {
     lane: "working",
     title: "Fix the parent-cycle hang in stackLayers",
-    agent: "Climb lead",
-    project: "climb",
+    agent: "Denali lead",
+    project: "denali",
     steps: { done: 3, total: 5 },
   },
   {
     lane: "working",
     title: "Trusted-install check, round 4",
-    agent: "Forge lead",
-    project: "forge",
+    agent: "Zion lead",
+    project: "zion",
     note: "Running tests",
     progress: 35,
   },
   {
     lane: "review",
     title: "rumdl replaces markdownlint",
-    agent: "Rex",
-    project: "ropes",
+    agent: "Bartram",
+    project: "acadia",
     note: "Devin and Codex reviewing",
   },
   {
     lane: "done",
     title: "Gate policy",
-    agent: "Forge lead",
-    project: "forge",
-    note: "Merged forge#52",
+    agent: "Zion lead",
+    project: "zion",
+    note: "Merged zion#52",
   },
   {
     lane: "done",
     title: "YOSE-43 eval harness",
-    agent: "Ranger lead",
-    project: "ranger",
+    agent: "Yosemite lead",
+    project: "yosemite",
     note: "Merged #56",
   },
 ];
@@ -119,7 +119,7 @@ const tasks: Task[] = [
 const asksCount = tasks.filter((task) => task.lane === "asking").length;
 
 const navigation = {
-  ...outpostNavigation,
+  ...sequoiaNavigation,
   items: [
     {
       id: "overview",
@@ -127,7 +127,7 @@ const navigation = {
       icon: Widget2Icon,
       solid: Widget2Bold,
     },
-    ...outpostNavigation.items.map((item) =>
+    ...sequoiaNavigation.items.map((item) =>
       item.id === "needs-you" ? { ...item, count: asksCount } : item
     ),
   ],
@@ -207,7 +207,7 @@ function RunTimeline() {
     {
       date: "10:02",
       title: "Picked up DENA-44",
-      body: "Read the stack plan and the review on climb#91.",
+      body: "Read the stack plan and the review on denali#91.",
     },
     {
       date: "10:09",
@@ -329,7 +329,7 @@ export function BoardSurface() {
           <div className="grid gap-4 @3xl:grid-cols-[1fr_20rem]">
             <Card>
               <CardHeader>
-                <CardTitle>Climb lead · fix the parent-cycle hang</CardTitle>
+                <CardTitle>Denali lead · fix the parent-cycle hang</CardTitle>
                 <CardDescription>
                   Run card, edited in place as the run moves
                 </CardDescription>
@@ -350,7 +350,7 @@ export function BoardSurface() {
                       <GitBranchIcon className="text-muted-foreground" />
                     </ItemMedia>
                     <ItemContent>
-                      <ItemTitle className="font-normal">climb#91</ItemTitle>
+                      <ItemTitle className="font-normal">denali#91</ItemTitle>
                     </ItemContent>
                     <ItemActions>
                       <Badge tone="warning" dot>
