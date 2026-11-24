@@ -141,13 +141,13 @@ function markFor(mark: OptionMark, label: string, index: number, count: number):
 const choicesClass: Record<OptionStyle, string> = {
   cards: "",
   stacked: "gap-0 overflow-hidden rounded-lg border border-border-muted bg-card",
-  tray: "",
+  tray: "gap-0",
 };
 const choiceClass: Record<OptionStyle, string> = {
   cards: "",
   stacked:
     "rounded-none border-x-0 border-t-0 border-b-border-muted last:border-b-0 px-frame py-frame data-checked:border-b-border-muted data-checked:bg-brand-fill data-checked:ring-0 hover:data-checked:bg-brand-fill",
-  tray: "",
+  tray: "rounded-none border-0 border-t border-border first:border-t-0 data-checked:border-border bg-transparent px-0 py-3 ring-0 data-checked:bg-transparent data-checked:ring-0 hover:bg-transparent",
 };
 
 function OptionText({ option }: { option: Ask["options"][number] }) {
@@ -210,28 +210,93 @@ function AskOptions({
       })}
     </QuestionnaireChoices>
   );
+  const hint =
+    picked.length > 0
+      ? `Posts “${picked.join(", ")}” to the thread as you.`
+      : shortcuts
+        ? `Pick an option, or press its ${shortcuts === "letters" ? "letter" : "number"}.`
+        : look.multi
+          ? "Pick any that apply."
+          : "Pick an option to answer.";
+  if (look.style === "tray") {
+    return (
+      <Questionnaire shortcuts={shortcuts} onSubmit={(event) => event.preventDefault()} className="mt-5">
+        <Card variant="outline" className="gap-0 px-frame pt-frame pb-3">
+          <QuestionnaireItem name={ask.id} multiple={look.multi} className="gap-0">
+            <QuestionnaireTitle className="mb-1!">{ask.title}</QuestionnaireTitle>
+            {choices}
+          </QuestionnaireItem>
+          <TrayFooter hint={picked.length > 0 ? hint : undefined} onReply={(text) => onPick([text])} />
+        </Card>
+      </Questionnaire>
+    );
+  }
   return (
     <Questionnaire shortcuts={shortcuts} onSubmit={(event) => event.preventDefault()} className="mt-5 gap-2">
       <QuestionnaireItem name={ask.id} multiple={look.multi} className="gap-2">
         <QuestionnaireTitle className="sr-only">{ask.title}</QuestionnaireTitle>
-        {look.style === "tray" ? (
-          <Card variant="tray" className="grid">
-            {choices}
-          </Card>
-        ) : (
-          choices
-        )}
+        {choices}
       </QuestionnaireItem>
       <p className="mt-1 text-muted-foreground" aria-live="polite">
-        {picked.length > 0
-          ? `Posts “${picked.join(", ")}” to the thread as you.`
-          : shortcuts
-            ? `Pick an option, or press its ${shortcuts === "letters" ? "letter" : "number"}.`
-            : look.multi
-              ? "Pick any that apply."
-              : "Pick an option to answer."}
+        {hint}
       </p>
     </Questionnaire>
+  );
+}
+
+/**
+ * The tray's last line: quiet text and inline actions under the options, after
+ * Claude's own question cards. "reply in chat" opens a one-line reply in place.
+ */
+function TrayFooter({ hint, onReply }: { hint: string | undefined; onReply: (text: string) => void }) {
+  const [replying, setReplying] = useState(false);
+  const [text, setText] = useState("");
+  const send = () => {
+    if (text.trim() === "") return;
+    onReply(text.trim());
+    setReplying(false);
+    setText("");
+  };
+  return (
+    <div className="mt-2 grid gap-2 text-muted-foreground" aria-live="polite">
+      {replying ? (
+        <div className="flex items-center gap-2">
+          <Input
+            autoFocus
+            size="sm"
+            placeholder="Reply in the thread…"
+            value={text}
+            onChange={(event) => setText(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") send();
+              if (event.key === "Escape") setReplying(false);
+            }}
+          />
+          <Button size="sm" variant="ghost" onClick={() => setReplying(false)}>
+            Cancel
+          </Button>
+          <Button size="sm" disabled={text.trim() === ""} onClick={send}>
+            Send
+          </Button>
+        </div>
+      ) : (
+        <p>
+          {hint ?? (
+            <>
+              Or just{" "}
+              <button
+                type="button"
+                onClick={() => setReplying(true)}
+                className="text-foreground underline decoration-border-strong underline-offset-4 hover:decoration-foreground"
+              >
+                reply in chat
+              </button>
+              .
+            </>
+          )}
+        </p>
+      )}
+    </div>
   );
 }
 
@@ -257,10 +322,15 @@ function AskDetail({
           {ask.agent} asked {ask.age} ago
         </span>
       </p>
-      <SectionHeader size="lg" className="mt-3">
-        <SectionHeaderTitle>{ask.title}</SectionHeaderTitle>
-        <SectionHeaderDescription className="mt-2">{ask.context}</SectionHeaderDescription>
-      </SectionHeader>
+      {look.style === "tray" && ask.kind !== "input" ? (
+        // The tray card carries the question as its header, so the page keeps only the context.
+        <p className="mt-3 text-pretty text-muted-foreground">{ask.context}</p>
+      ) : (
+        <SectionHeader size="lg" className="mt-3">
+          <SectionHeaderTitle>{ask.title}</SectionHeaderTitle>
+          <SectionHeaderDescription className="mt-2">{ask.context}</SectionHeaderDescription>
+        </SectionHeader>
+      )}
       {ask.kind === "input" ? (
         <div className="mt-5 grid gap-2">
           <Label htmlFor="reply">Your reply</Label>

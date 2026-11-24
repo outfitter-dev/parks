@@ -135,6 +135,7 @@ export function BoardSurface() {
         title="Overview"
         actions={
           <>
+            <Badge tone="success" icon={<HaloSignal size={12} label="Syncing" className="text-tone-mark" />}>
               Board synced
             </Badge>
             <Button size="sm">New task</Button>
@@ -203,6 +204,7 @@ export function BoardSurface() {
                     <ItemMedia variant="icon"><CodeSquareIcon className="text-muted-foreground" /></ItemMedia>
                     <ItemContent><ItemTitle className="font-normal">CI · check</ItemTitle></ItemContent>
                     <ItemActions>
+                      <Badge tone="info" icon={<HaloSignal size={12} label="Running" className="text-tone-mark" />}>2 of 4</Badge>
                     </ItemActions>
                   </Item>
                   <Item size="xs" className="px-0">
