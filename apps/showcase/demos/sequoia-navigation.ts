@@ -15,10 +15,10 @@ import { asks } from "#lib/fixtures";
 
 import type { AppNavigation } from "./app-sidebar";
 
-export const outpostNavigation = {
-  name: "Outpost",
+export const sequoiaNavigation = {
+  name: "Sequoia",
   mark: "O",
-  account: "Matt",
+  account: "Muir",
   items: [
     {
       id: "needs-you",

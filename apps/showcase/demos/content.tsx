@@ -268,7 +268,7 @@ const channelChoices = [
   {
     value: "toolkit",
     label: "#toolkit",
-    description: "Shared tooling: Ropes, Climb, Forge.",
+    description: "Shared trails: Zion, Denali, Acadia.",
   },
   {
     value: "signals",
@@ -301,7 +301,7 @@ export function QuestionnaireDemo() {
           <QuestionnaireProgress />
           <QuestionnaireItem name="channel" required>
             <QuestionnaireTitle>
-              Where should Rex post its run summaries?
+              Where should Bartram post its run summaries?
             </QuestionnaireTitle>
             <QuestionnaireChoices>
               {channelChoices.map((choice) => (
@@ -372,10 +372,10 @@ export function QuestionnaireDemo() {
           <QuestionnaireItem name="notify" multiple>
             <QuestionnaireTitle>Who should hear about it?</QuestionnaireTitle>
             <QuestionnaireChoices>
-              <QuestionnaireChoice value="matt" defaultChecked>
-                Matt
+              <QuestionnaireChoice value="muir" defaultChecked>
+                Muir
               </QuestionnaireChoice>
-              <QuestionnaireChoice value="donna">Donna</QuestionnaireChoice>
+              <QuestionnaireChoice value="mardy">Mardy</QuestionnaireChoice>
             </QuestionnaireChoices>
           </QuestionnaireItem>
         </Questionnaire>
@@ -388,7 +388,7 @@ export function QuestionnaireDemo() {
         <Questionnaire>
           <QuestionnaireItem name="merge">
             <QuestionnaireTitle>
-              Merge outpost#47 once checks pass?
+              Merge sequoia#47 once checks pass?
             </QuestionnaireTitle>
             <QuestionnaireChoices className="grid-cols-2">
               <QuestionnaireChoice value="yes" mark="Y" tone="success">
@@ -439,7 +439,7 @@ export function ProseDemo() {
           </li>
         </ol>
         <pre>
-          <code>{`outpost routing restore --version 11`}</code>
+          <code>{`sequoia routing restore --version 11`}</code>
         </pre>
         <hr />
         <p>

@@ -169,7 +169,7 @@ export function TrailsSurface() {
       <AppFrame navigation={navigation} place="topo">
         <ExplorerLayout
           browserLabel="Contracts"
-          path={["outpost", "ask", "ask.create"]}
+          path={["sequoia", "ask", "ask.create"]}
           actions={
             <Button variant="secondary" size="sm">
               Open lock
@@ -207,7 +207,7 @@ export function TrailsSurface() {
               <Badge>v2</Badge>
             </SectionHeaderTitle>
             <SectionHeaderDescription>
-              Ask Matt a question with up to four options. Posts an{" "}
+              Ask Muir a question with up to four options. Posts an{" "}
               <InlineCode>ask.choice@1</InlineCode> block to the thread.
             </SectionHeaderDescription>
           </SectionHeader>
@@ -224,8 +224,8 @@ export function TrailsSurface() {
               </TableHeader>
               <TableBody>
                 {[
-                  ["CLI", "outpost ask create", "No confirm prompt"],
-                  ["MCP", "outpost_ask_create", "destructiveHint: false"],
+                  ["CLI", "sequoia ask create", "No confirm prompt"],
+                  ["MCP", "sequoia_ask_create", "destructiveHint: false"],
                   ["HTTP", "POST /v1/ask", "201 Created"],
                   ["Library", "ask.create(input)", "Result<Ask, AskError>"],
                 ].map(([surface, name, derived]) => (

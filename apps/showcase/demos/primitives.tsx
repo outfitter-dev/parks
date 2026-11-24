@@ -174,7 +174,7 @@ export function TypeDemo() {
             <span className={className}>
               {name === "Label"
                 ? "Awaiting approval"
-                : "Donna is waiting on your approval"}
+                : "Mardy is waiting on your approval"}
             </span>
           </div>
         ))}
@@ -195,12 +195,12 @@ export function TypeDemo() {
           </span>
         </div>
         <p className="mt-3 text-sm">
-          Donna is running <code>outpost status</code>.
+          Mardy is running <code>sequoia status</code>.
         </p>
       </Specimen>
       <Specimen title="Mono" className="block">
         <p className="font-mono">
-          outpost_admin_agent_set_destination --agent donna --mode live
+          sequoia_admin_agent_set_destination --agent mardy --mode live
         </p>
         <p className="text-muted-foreground mt-2 font-mono">
           sha 7e3786f · 2026-11-22T02:47:28Z

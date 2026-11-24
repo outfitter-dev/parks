@@ -70,14 +70,14 @@ export function OverlaysDemo() {
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Remove Rex?</AlertDialogTitle>
+              <AlertDialogTitle>Remove Bartram?</AlertDialogTitle>
               <AlertDialogDescription>
-                Rex stops receiving deliveries and leaves every channel. Its
+                Bartram stops receiving deliveries and leaves every channel. Its
                 history stays in the audit log.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Keep Rex</AlertDialogCancel>
+              <AlertDialogCancel>Keep Bartram</AlertDialogCancel>
               <AlertDialogAction tone="destructive">Remove</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -119,7 +119,7 @@ export function OverlaysDemo() {
             </SheetTrigger>
             <SheetContent side={side}>
               <SheetHeader>
-                <SheetTitle>Donna</SheetTitle>
+                <SheetTitle>Mardy</SheetTitle>
                 <SheetDescription>
                   Devin · webhook · last seen 2 min ago
                 </SheetDescription>
@@ -152,7 +152,7 @@ export function OverlaysDemo() {
                 />
               }
             >
-              @donna
+              @mardy
             </HoverCardTrigger>
             <HoverCardContent className="w-64">
               <div className="flex gap-3">
@@ -160,7 +160,7 @@ export function OverlaysDemo() {
                   <AvatarFallback>DO</AvatarFallback>
                 </Avatar>
                 <div className="grid gap-1">
-                  <p className="font-medium">Donna</p>
+                  <p className="font-medium">Mardy</p>
                   <p className="text-muted-foreground">
                     {agents[0]?.runtime} · {agents[0]?.destination}
                   </p>
@@ -194,7 +194,7 @@ export function OverlaysDemo() {
           onClick={() =>
             toast.add({
               type: "success",
-              title: "Rex muted",
+              title: "Bartram muted",
               description: "No deliveries until you unmute it.",
             })
           }
@@ -223,7 +223,7 @@ export function OverlaysDemo() {
             toast.add({
               type: "error",
               title: "Delivery failed",
-              description: "forge webhook returned 502.",
+              description: "zion webhook returned 502.",
               actionProps: { children: "Retry", onClick: () => {} },
             })
           }

@@ -38,8 +38,8 @@ const statusTone = {
   failed: "destructive",
 } as const;
 
-const agentsCycle = ["Donna", "Rex", "Forge", "Ranger", "Climb"];
-const channelsCycle = ["outfitter", "toolkit", "signals", "test-outpost"];
+const agentsCycle = ["Mardy", "Bartram", "Zion", "Yosemite", "Denali"];
+const channelsCycle = ["outfitter", "toolkit", "signals", "test-sequoia"];
 const statusCycle: Delivery["status"][] = [
   "delivered",
   "delivered",
@@ -52,7 +52,7 @@ const statusCycle: Delivery["status"][] = [
 // Fixtures only: 23 deliveries so the table has three pages at ten rows.
 const deliveries: Delivery[] = Array.from({ length: 23 }, (_, index) => ({
   id: `dlv_${(4810 + index * 7).toString(36)}`,
-  agent: agentsCycle[index % agentsCycle.length] ?? "Donna",
+  agent: agentsCycle[index % agentsCycle.length] ?? "Mardy",
   channel: channelsCycle[(index * 3) % channelsCycle.length] ?? "outfitter",
   status: statusCycle[index % statusCycle.length] ?? "delivered",
   attempts: (index % 4) + 1,

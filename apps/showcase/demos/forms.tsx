@@ -58,8 +58,8 @@ const channels = [
   "outfitter",
   "toolkit",
   "signals",
-  "forge",
-  "ranger",
+  "zion",
+  "yosemite",
   "test-routing",
 ];
 
@@ -74,7 +74,7 @@ export function FormsDemo() {
         <FieldGroup className="max-w-md">
           <Field>
             <FieldLabel htmlFor="field-agent">Agent name</FieldLabel>
-            <Input id="field-agent" placeholder="donna" />
+            <Input id="field-agent" placeholder="mardy" />
             <FieldDescription>Lowercase, used in mentions.</FieldDescription>
           </Field>
           <Field data-invalid>

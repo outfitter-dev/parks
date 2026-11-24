@@ -318,7 +318,7 @@ export function CardDemo() {
       >
         <Card className="max-w-md">
           <CardHeader>
-            <CardTitle>Donna</CardTitle>
+            <CardTitle>Mardy</CardTitle>
             <CardDescription>Devin · overnight PR backlog</CardDescription>
             <CardAction>
               <Badge tone="success" live>
@@ -350,7 +350,7 @@ export function CardDemo() {
             <CardLead>
               <Mark size="lg">D</Mark>
             </CardLead>
-            <CardTitle>Donna</CardTitle>
+            <CardTitle>Mardy</CardTitle>
             <CardDescription>Devin · overnight PR backlog</CardDescription>
             <CardMeta>2 min ago</CardMeta>
             <CardAction>
@@ -452,7 +452,7 @@ export function InputsDemo() {
           <Label htmlFor="agent-name" className="ps-field">
             Agent name
           </Label>
-          <Input id="agent-name" placeholder="donna" />
+          <Input id="agent-name" placeholder="mardy" />
         </div>
         <div className="grid gap-1.5">
           <Label htmlFor="agent-url" className="ps-field">
@@ -617,7 +617,7 @@ export function MenusDemo() {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-52">
             <DropdownMenuGroup>
-              <DropdownMenuLabel>Donna</DropdownMenuLabel>
+              <DropdownMenuLabel>Mardy</DropdownMenuLabel>
               <DropdownMenuItem>
                 <PenIcon /> Edit
                 <DropdownMenuShortcut>E</DropdownMenuShortcut>
@@ -692,9 +692,9 @@ export function MenusDemo() {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Revoke Donna&rsquo;s credential?</DialogTitle>
+              <DialogTitle>Revoke Mardy&rsquo;s credential?</DialogTitle>
               <DialogDescription>
-                Donna stops receiving deliveries at once. You can issue a new
+                Mardy stops receiving deliveries at once. You can issue a new
                 credential later.
               </DialogDescription>
             </DialogHeader>
@@ -772,7 +772,7 @@ function MenuRadios() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger render={<Button variant="secondary" />}>
-        Rex&rsquo;s mode
+        Bartram&rsquo;s mode
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48">
         <DropdownMenuGroup>
@@ -878,16 +878,16 @@ export function FeedbackDemo() {
           <DangerTriangleIcon />
           <AlertTitle>Delivery failing</AlertTitle>
           <AlertDescription>
-            Donna&rsquo;s webhook has returned 502 three times since 9:10 PM.
+            Mardy&rsquo;s webhook has returned 502 three times since 9:10 PM.
           </AlertDescription>
         </Alert>
         <Alert tone="warning">
           <DangerCircleIcon />
           <AlertTitle>Approval waiting</AlertTitle>
           <AlertDescription>
-            Rex has asked to merge{" "}
+            Bartram has asked to merge{" "}
             <CodeRef kind="pr" state="open">
-              outpost#47
+              sequoia#47
             </CodeRef>
             . The request expires in 40 minutes.
           </AlertDescription>
@@ -913,9 +913,9 @@ export function FeedbackDemo() {
           </AlertMeta>
           <AlertDescription>
             <CodeRef kind="pr" state="failing">
-              climb#91
+              denali#91
             </CodeRef>{" "}
-            failed 2 of 4 jobs. Climb lead is looking at it.
+            failed 2 of 4 jobs. Denali lead is looking at it.
           </AlertDescription>
         </Alert>
         <Alert tone="success">
@@ -926,19 +926,19 @@ export function FeedbackDemo() {
           </AlertMeta>
           <AlertDescription>
             <CodeRef kind="pr" state="merged">
-              forge#52
+              zion#52
             </CodeRef>{" "}
             landed on main from <CodeRef kind="branch">gate-policy</CodeRef>.
           </AlertDescription>
         </Alert>
         <Alert tone="warning">
           <DangerCircleIcon />
-          <AlertTitle>Rex went quiet</AlertTitle>
+          <AlertTitle>Bartram went quiet</AlertTitle>
           <AlertMeta>
             <time dateTime="2026-11-22T19:40:00Z">2 hr ago</time>
           </AlertMeta>
           <AlertDescription>
-            No heartbeat since the review on ropes#18 started.
+            No heartbeat since the review on acadia#18 started.
           </AlertDescription>
           <AlertAction>
             <Button variant="secondary" size="xs">
@@ -953,19 +953,19 @@ export function FeedbackDemo() {
         className="flex flex-wrap items-center gap-x-5 gap-y-2"
       >
         <CodeRef kind="pr" state="open">
-          outpost#47
+          sequoia#47
         </CodeRef>
         <CodeRef kind="pr" state="draft">
-          ropes#18
+          acadia#18
         </CodeRef>
         <CodeRef kind="pr" state="merged">
-          forge#52
+          zion#52
         </CodeRef>
         <CodeRef kind="pr" state="closed">
-          climb#88
+          denali#88
         </CodeRef>
         <CodeRef kind="pr" state="failing">
-          climb#91
+          denali#91
         </CodeRef>
         <CodeRef kind="branch">claude/project-thread</CodeRef>
         <CodeRef kind="commit">8203cae</CodeRef>
@@ -979,7 +979,7 @@ export function FeedbackDemo() {
         </Button>
         <span className="text-muted-foreground inline-flex items-center gap-2">
           <Spinner aria-label="Delivering" />
-          Delivering to Donna
+          Delivering to Mardy
         </span>
       </Specimen>
       <Specimen
@@ -1053,7 +1053,7 @@ export function LayoutDemo() {
       >
         <div className="w-full max-w-sm">
           <p className="font-medium">Routing</p>
-          <p className="text-muted-foreground">Version 14, saved by Matt</p>
+          <p className="text-muted-foreground">Version 14, saved by Muir</p>
           <Separator className="my-(--pad)" />
           <div className="text-muted-foreground flex h-5 items-center gap-3">
             <span>History</span>

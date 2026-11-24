@@ -12,14 +12,14 @@ import { CodeBlock } from "./parts";
 const posts = [
   {
     date: "Nov 21",
-    tag: "Outpost",
+    tag: "Sequoia",
     title: "The Board is the record",
-    dek: "Why runtimes post into one Board instead of Outpost polling each of them.",
+    dek: "Why runtimes post into one Board instead of Sequoia polling each of them.",
     read: "6 min",
   },
   {
     date: "Nov 19",
-    tag: "Ropes",
+    tag: "Acadia",
     title: "One plan, four verbs",
     dek: "explain, check, fix and doctor all read the same plan. Nothing runs that explain would not show.",
     read: "8 min",
@@ -129,7 +129,7 @@ function Article() {
   return (
     <article className="mx-auto max-w-2xl px-4 py-12">
       <span className="text-muted-foreground flex items-center gap-2">
-        <Badge variant="outline">Outpost</Badge>
+        <Badge variant="outline">Sequoia</Badge>
         Nov 21 · 6 min read
       </span>
       <h1 className="mt-4 text-4xl font-semibold tracking-tight text-balance">
@@ -144,14 +144,14 @@ function Article() {
           <AvatarFallback className="text-xs font-medium">MG</AvatarFallback>
         </Avatar>
         <span>
-          Matt Galligan
+          John Muir
           <span className="text-muted-foreground block text-xs">Outfitter</span>
         </span>
       </div>
       <Cover className="mt-8 aspect-21/9" />
       <div className="mt-8 flex flex-col gap-5 leading-7">
         <p>
-          Outpost started as a gateway. Each runtime would get an adapter that
+          Sequoia started as a gateway. Each runtime would get an adapter that
           could observe, notify, steer, start and stop. That is five
           capabilities times every runtime we use, and most of them change their
           APIs monthly.
@@ -161,16 +161,16 @@ function Article() {
         </h2>
         <p>
           Every runtime can run a hook or call a CLI. So producers post a run
-          card to the Board, and Outpost edits it in place. The app hides those
-          channels from the main views and decides who gets woken.
+          card to the Board, and Sequoia edits it in place. The app hides
+          those channels from the main views and decides who gets woken.
         </p>
         <blockquote className="border-brand border-s-2 ps-4 text-lg text-pretty">
           Observe broadly, control narrowly. The Board holds the history;
-          Outpost holds the policy.
+          Sequoia holds the policy.
         </blockquote>
         <CodeBlock
           code={
-            '```json#run@1\n{ "agent": "climb-lead", "state": "working", "step": 3 }\n```'
+            '```json#run@1\n{ "agent": "denali-lead", "state": "working", "step": 3 }\n```'
           }
           label="A run card's block"
         />
