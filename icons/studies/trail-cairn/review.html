@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Trail cairn · Linear study</title>
+<style>
+body { font: 16px system-ui; margin: 2rem; } section { display: flex; align-items: center; gap: 24px; padding: 20px; }
+figure { margin: 0; display: grid; justify-items: center; gap: 8px; } figcaption { font-size: 12px; }
+.dark { background: #181818; color: white; } .dark img { filter: invert(1); }
+</style>
+<h1>Trail cairn</h1>
+<script>
+for (const theme of ['light', 'dark']) {
+  const row = document.createElement('section');
+  row.className = theme;
+  for (const size of [16, 20, 24, 48]) {
+    const figure = document.createElement('figure');
+    figure.innerHTML = `<img src="linear.svg" width="${size}" height="${size}" alt="Trail cairn"><figcaption>${size} px</figcaption>`;
+    row.append(figure);
+  }
+  document.body.append(row);
+}
+</script></html>
