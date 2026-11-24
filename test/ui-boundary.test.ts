@@ -138,3 +138,19 @@ describe("packages/parks boundary", () => {
     }
   }
 });
+
+// A component that calls a hook can't render in a React Server Component, so
+// it has to mark itself as a client module for apps that import it directly.
+describe("packages/parks client boundary", () => {
+  const hook = /\buse[A-Z]\w*\(/u;
+  for (const path of sources.filter((file) => file.endsWith(".tsx"))) {
+    const name = relative(root, path);
+    const text = readFileSync(path, "utf8");
+    if (!hook.test(text)) {
+      continue;
+    }
+    it(`${name} starts with "use client"`, () => {
+      expect(text.startsWith('"use client";')).toBe(true);
+    });
+  }
+});
