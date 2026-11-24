@@ -172,14 +172,18 @@ function ignored(lines: readonly string[], line: number, rule: string) {
   );
 }
 
-/** Every rule violation in one file's text, with its line. */
+// Strings come first in the alternation, so a `//` inside one (a URL) isn't read as a comment.
+const stringOrComment =
+  /"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'|`(?:\\.|[^`\\])*`|\/\*[\s\S]*?\*\/|\/\/[^\n]*/gu;
+
 /** Replaces comments with spaces, keeping offsets and line breaks, so prose in comments is not checked. */
 function withoutComments(text: string) {
-  return text.replaceAll(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/gu, (comment) =>
-    comment.replaceAll(/[^\n]/gu, " ")
+  return text.replaceAll(stringOrComment, (found) =>
+    found.startsWith("/") ? found.replaceAll(/[^\n]/gu, " ") : found
   );
 }
 
+/** Every rule violation in one file's text, with its line. */
 function checkSource(text: string, only?: readonly string[]): Violation[] {
   const lines = text.split("\n");
   const code = withoutComments(text);

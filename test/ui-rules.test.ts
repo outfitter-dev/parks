@@ -103,6 +103,15 @@ describe("parks source rules", () => {
     ).toEqual([]);
   });
 
+  it("reads a URL in a string as code, not a comment", () => {
+    expect(
+      rulesIn(
+        `<img src="https://example.com/a.png" className="dark:bg-black w-[13px]" />`
+      )
+    ).toEqual(["dark-variant", "palette-colour", "literal-length"]);
+    expect(rulesIn(`<div /> // className="dark:bg-card"`)).toEqual([]);
+  });
+
   it("reports the line of each finding", () => {
     expect(checkSource(`\n\n<div className="dark:bg-card" />`)[0]?.line).toBe(
       3
