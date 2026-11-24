@@ -117,12 +117,12 @@ export function CodeBlock({
   );
   return (
     <CodeFrame label={label} copyText={code} className={className}>
-      <div style={codeTheme}>
-        <File
-          file={file}
-          options={numbers ? numberedFileOptions : fileOptions}
-        />
-      </div>
+      {/* On the element itself: Pierre's shadow host declares its own colour scheme. */}
+      <File
+        file={file}
+        options={numbers ? numberedFileOptions : fileOptions}
+        style={codeTheme}
+      />
     </CodeFrame>
   );
 }
