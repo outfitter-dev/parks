@@ -338,6 +338,17 @@ export function AppFrame({
           role={overlay ? "dialog" : undefined}
           aria-modal={overlay ? true : undefined}
           inert={!expanded}
+          // Following a link from the sidebar over a narrow page closes it, even
+          // when the app's link component keeps this frame mounted.
+          onClick={(event) => {
+            if (
+              overlay &&
+              event.target instanceof Element &&
+              event.target.closest("a[href]")
+            ) {
+              hide();
+            }
+          }}
           className={cn(
             "absolute z-30 flex w-56 flex-col transition-[translate,opacity,box-shadow]",
             motion,
