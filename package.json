@@ -15,7 +15,7 @@
   "scripts": {
     "bootstrap": "bash scripts/bootstrap.sh",
     "check": "bun run lint && bun run format:check && bun run typecheck && bun run test",
-    "lint": "oxlint .",
+    "lint": "oxlint . && bun run lint:ui-source",
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
     "typecheck": "tsc --noEmit -p . && bun run --cwd apps/showcase typecheck",
@@ -31,7 +31,8 @@
     "ui:theme": "bun scripts/ui-theme.ts",
     "check:contrast": "bun scripts/check-contrast.ts",
     "registry:build": "shadcn build registry.json -o apps/showcase/public/r",
-    "deploy": "bun run build && cf deploy apps/showcase/out"
+    "deploy": "bun run build && cf deploy apps/showcase/out",
+    "lint:ui-source": "bun scripts/check-ui-source.ts"
   },
   "devDependencies": {
     "@changesets/cli": "3.0.3",

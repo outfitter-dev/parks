@@ -3,8 +3,6 @@ import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { checkSource } from "../packages/parks/src/rules/source";
-
 // Registry items are copy-in blocks built on @outfitter/parks. They depend on
 // the package for components and tokens instead of carrying copies, so a
 // block copied into an app still follows the theme.
@@ -54,10 +52,6 @@ describe("registry", () => {
               expect(siblings.has(target), specifier).toBe(true);
             }
           }
-        });
-
-        it(`${file.path} passes the Parks source rules`, () => {
-          expect(checkSource(text)).toEqual([]);
         });
       }
     });
