@@ -197,12 +197,17 @@ function ItemTitle({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-function ItemDescription({ className, ...props }: React.ComponentProps<"p">) {
+function ItemDescription({
+  className,
+  emphasis = "default",
+  ...props
+}: React.ComponentProps<"p"> & { emphasis?: "default" | "strong" }) {
   return (
     <p
       data-slot="item-description"
+      data-emphasis={emphasis}
       className={cnState(
-        "line-clamp-2 text-left text-sm leading-normal font-normal text-muted-foreground group-data-[size=xs]/item:text-xs [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
+        "data-[emphasis=strong]:text-foreground line-clamp-2 text-left text-sm leading-normal font-normal text-muted-foreground group-data-[size=xs]/item:text-xs [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
         className
       )}
       {...props}

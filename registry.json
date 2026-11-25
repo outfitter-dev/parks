@@ -7,7 +7,7 @@
       "name": "ask",
       "type": "registry:block",
       "title": "Ask",
-      "description": "A question for a person with stacked choices, keyboard shortcuts and an optional tray, built on @outfitter/parks.",
+      "description": "Compatibility entry for the QuestionnaireForm component in @outfitter/parks.",
       "dependencies": ["@outfitter/parks"],
       "files": [
         {
@@ -60,19 +60,44 @@
     {
       "name": "ask-queue",
       "type": "registry:block",
-      "title": "Ask queue",
-      "description": "A queue of questions waiting on a person: the list beside the open ask, or two screens with progress on narrow containers; choice asks via the Ask block, written replies otherwise; Open and Answered views.",
+      "title": "Questionnaire queue (Ask compatibility)",
+      "description": "Compatibility entry for the QuestionnaireQueue block.",
       "dependencies": ["@outfitter/parks", "@solar-icons/react"],
       "files": [
         {
           "path": "apps/showcase/registry/ask-queue/ask-queue.tsx",
           "type": "registry:component",
           "target": "components/parks/ask-queue/ask-queue.tsx"
-        },
+        }
+      ],
+      "docs": "Import @outfitter/parks/styles.css once from your root stylesheet before using Parks blocks."
+    },
+    {
+      "name": "questionnaire",
+      "type": "registry:block",
+      "title": "Questionnaire",
+      "description": "A question with choices, keyboard shortcuts and a stacked or tray layout, from the Parks Questionnaire family.",
+      "dependencies": ["@outfitter/parks"],
+      "files": [
         {
           "path": "apps/showcase/registry/ask/ask.tsx",
           "type": "registry:component",
-          "target": "components/parks/ask/ask.tsx"
+          "target": "components/parks/questionnaire/questionnaire.tsx"
+        }
+      ],
+      "docs": "Import @outfitter/parks/styles.css once from your root stylesheet before using Parks blocks."
+    },
+    {
+      "name": "questionnaire-queue",
+      "type": "registry:block",
+      "title": "Questionnaire queue",
+      "description": "A responsive queue of questions using QuestionnaireForm for choices and written replies for open questions.",
+      "dependencies": ["@outfitter/parks", "@solar-icons/react"],
+      "files": [
+        {
+          "path": "apps/showcase/registry/ask-queue/ask-queue.tsx",
+          "type": "registry:component",
+          "target": "components/parks/questionnaire-queue/questionnaire-queue.tsx"
         }
       ],
       "docs": "Import @outfitter/parks/styles.css once from your root stylesheet before using Parks blocks."

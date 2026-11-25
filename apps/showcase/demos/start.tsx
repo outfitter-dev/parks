@@ -1,12 +1,12 @@
 "use client";
 
 import { Prose } from "@outfitter/parks/components/prose";
+import { QuestionnaireForm } from "@outfitter/parks/components/questionnaire";
 
 import { asks } from "#lib/fixtures";
 
-import { AskQueue } from "../registry/ask-queue/ask-queue";
-import type { QueueAsk } from "../registry/ask-queue/ask-queue";
-import { Ask } from "../registry/ask/ask";
+import { QuestionnaireQueue } from "../registry/ask-queue/ask-queue";
+import type { QuestionnaireQuestion } from "../registry/ask-queue/ask-queue";
 import { AppFrame, SidebarToggle } from "./app-frame";
 import { Specimen, Viewport } from "./kit";
 import { sequoiaNavigation } from "./sequoia-navigation";
@@ -30,10 +30,10 @@ const registries = `{
     "@outfitter": "https://parks.outfitter.dev/r/{name}.json"
   }
 }`;
-const add = `bunx shadcn add @outfitter/ask`;
+const add = `bunx shadcn add @outfitter/questionnaire`;
 
 /** The showcase's asks as an Ask queue sees them. */
-const queueAsks: QueueAsk[] = asks.map((item) => ({
+const queueAsks: QuestionnaireQuestion[] = asks.map((item) => ({
   id: item.id,
   title: item.title,
   from: item.agent,
@@ -101,11 +101,11 @@ export function RegistryDemo() {
         <CodeBlock code={add} language="bash" className="mt-3" />
       </Specimen>
       <Specimen
-        title="ask"
+        title="questionnaire"
         note="A question with stacked choices, keyboard shortcuts and an optional tray."
         className="block max-w-xl"
       >
-        <Ask
+        <QuestionnaireForm
           name="sample-ask"
           question="Merge sequoia#47 once checks pass?"
           options={[
@@ -120,13 +120,13 @@ export function RegistryDemo() {
         />
       </Specimen>
       <Specimen
-        title="ask-queue"
-        note="A queue of asks: the list beside the open ask, or two screens with progress when narrow. Choice asks use the ask block; the rest take a written reply."
+        title="questionnaire-queue"
+        note="A queue of questions: the list beside the open question, or two screens with progress when narrow. Choices use QuestionnaireForm; open questions take a written reply."
         className="block"
       >
         <Viewport>
           <AppFrame navigation={sequoiaNavigation} place="needs-you">
-            <AskQueue
+            <QuestionnaireQueue
               asks={queueAsks}
               title="Needs you"
               start={<SidebarToggle />}

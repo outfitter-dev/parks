@@ -23,6 +23,10 @@ const statusDotVariants = cva(
         sm: "size-2",
         md: "size-2.5",
       },
+      variant: {
+        default: "",
+        overlay: "ring-canvas ring-2",
+      },
       live: {
         true: "after:animate-live after:absolute after:inset-0 after:rounded-full after:bg-inherit motion-reduce:after:hidden",
         false: "",
@@ -52,6 +56,7 @@ function StatusDot({
   tone,
   size,
   live,
+  variant,
   label,
   ...props
 }: StatusDotProps) {
@@ -62,7 +67,7 @@ function StatusDot({
       {...(label
         ? { role: "img", "aria-label": label }
         : { "aria-hidden": true })}
-      className={cnState(statusDotVariants({ size, live }), className)}
+      className={cnState(statusDotVariants({ size, live, variant }), className)}
       {...props}
     />
   );
