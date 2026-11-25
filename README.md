@@ -19,7 +19,7 @@ bun add @outfitter/parks
 import { Button } from "@outfitter/parks/components/button";
 ```
 
-See [`packages/parks/README.md`](packages/parks/README.md) for theming, `parks check` and `parks contrast`.
+See [`packages/parks/README.md`](packages/parks/README.md) for theming, the Parks Oxlint plugin, `parks check` and `parks contrast`.
 
 ## Registry
 

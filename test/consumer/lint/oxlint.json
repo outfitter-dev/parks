@@ -1,0 +1,9 @@
+{
+  "categories": { "correctness": "off" },
+  "jsPlugins": ["@outfitter/parks/oxlint"],
+  "rules": {
+    "parks/layout-only-classname": "error",
+    "parks/no-rebuilt-primitives": "error",
+    "parks/icon-button-label": "error"
+  }
+}

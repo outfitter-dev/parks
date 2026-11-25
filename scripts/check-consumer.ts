@@ -48,6 +48,7 @@ writeFileSync(
       type: "module",
       dependencies: {
         "@outfitter/parks": `file:${path.join(work, tarball)}`,
+        oxlint: versions.oxlint,
         react: versions.react,
         "react-dom": versions["react-dom"],
         tailwindcss: versions.tailwindcss,
@@ -60,6 +61,46 @@ writeFileSync(
 );
 run("bun", ["install"], app);
 run("node", ["render.mjs"], app);
+
+// Load the installed tarball through the public plugin export using Oxlint's
+// own parser and diagnostic transport.
+const lintFixtures = ["good", "layout", "native", "label"];
+for (const name of lintFixtures) {
+  cpSync(
+    path.join(app, "lint", `${name}.tsx.txt`),
+    path.join(app, "lint", `${name}.tsx`)
+  );
+}
+run("bunx", ["oxlint", "--config", "lint/oxlint.json", "lint/good.tsx"], app);
+for (const [name, rule] of [
+  ["layout", "layout-only-classname"],
+  ["native", "no-rebuilt-primitives"],
+  ["label", "icon-button-label"],
+]) {
+  const result = spawnSync(
+    "bunx",
+    [
+      "oxlint",
+      "--config",
+      "lint/oxlint.json",
+      "--format",
+      "json",
+      `lint/${name}.tsx`,
+    ],
+    { cwd: app, encoding: "utf8" }
+  );
+  const report: { diagnostics: { code: string }[] } = JSON.parse(result.stdout);
+  if (
+    result.status !== 1 ||
+    report.diagnostics.length !== 1 ||
+    report.diagnostics[0]?.code !== `parks(${rule})`
+  ) {
+    throw new Error(
+      `Parks plugin did not report ${rule}:\n${result.stdout}${result.stderr}`
+    );
+  }
+}
+
 // The registry's blocks build on the packed package as an app would copy
 // them: each file lands at its target, and each block's other dependencies
 // are installed at the versions the showcase uses.
