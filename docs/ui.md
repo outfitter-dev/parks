@@ -100,7 +100,7 @@ Solar (`@solar-icons/react`) is the only icon library. Import each icon on its o
 import { BellIcon } from "@solar-icons/react/linear/bell";
 ```
 
-Use `linear` by default, `bold` for selected states, and `bold-duotone` for empty states. `linear` glyphs are stroked, and the `--icon-stroke` seed sets their weight on the 24-unit grid: at 2.25 the stroke is 1.125px on a 12px icon, 1.3125px at 14, 1.5px at 16, 1.875px at 20 and 2.25px at 24. Do not use `outline`, whose glyphs are filled paths with a fixed weight. Mark icons alongside button text with `data-icon="inline-start"` or `"inline-end"` so the button sets the correct padding. Icons take their color from `currentColor` and their size from the component. `test/icons.test.ts` checks the icon library and import paths.
+Use `linear` by default, `bold` for selected states, and `bold-duotone` for empty states. `linear` glyphs are stroked, and the `--icon-stroke` seed sets their weight on the 24-unit grid: at 2 the stroke is 1px on a 12px icon, about 1.17px at 14, 1.33px at 16, 1.67px at 20 and 2px at 24. Do not use `outline`, whose glyphs are filled paths with a fixed weight. Mark icons alongside button text with `data-icon="inline-start"` or `"inline-end"` so the button sets the correct padding. Icons take their color from `currentColor` and their size from the component. `test/icons.test.ts` checks the icon library and import paths.
 
 ## Theme
 
