@@ -12,7 +12,11 @@ export default {
       create(context) {
         function check(node) {
           const source = node.source;
-          const target = source?.value;
+          const target =
+            source?.type === "TemplateLiteral" &&
+            source.expressions.length === 0
+              ? source.quasis[0]?.value.cooked
+              : source?.value;
           if (typeof target !== "string") {
             return;
           }
@@ -35,6 +39,7 @@ export default {
         return {
           ImportDeclaration: check,
           ImportExpression: check,
+          TSImportType: check,
           ExportNamedDeclaration: check,
           ExportAllDeclaration: check,
         };
