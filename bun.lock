@@ -51,7 +51,7 @@
     },
     "packages/parks": {
       "name": "@outfitter/parks",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "bin": {
         "parks": "dist/rules/cli.js",
       },
