@@ -39,8 +39,14 @@ export type AppNavigation = {
     solid: NavIcon;
     count?: number;
     dot?: boolean;
+    /** Where the place lives. Omit it only in a mock-up. */
+    href?: string;
   }[];
   account?: string;
+  /** Links the account control to a page instead of opening a menu. */
+  accountHref?: string;
+  /** Shows the search control. Defaults to true. */
+  search?: boolean;
 };
 
 /** The dot form, for a place that has something new but no useful number. */
@@ -80,7 +86,7 @@ export function SidebarPanel({
   /** Shown from the rail: the end button docks the sidebar instead of hiding it. */
   onDock?: () => void;
 }) {
-  const { name, mark, items, account } = navigation;
+  const { name, mark, items, account, accountHref, search = true } = navigation;
   const hide = onDock ? (
     <Button
       variant="ghost"
@@ -113,48 +119,56 @@ export function SidebarPanel({
         <span className="truncate">{name}</span>
         {hideAt === "end" || onDock ? hide : null}
       </div>
-      <button
-        type="button"
-        className="bg-background text-muted-foreground mt-3 mb-2 flex h-(--control-h) items-center gap-2 rounded-lg border ps-[calc(--spacing(2)-1px)] pe-2"
-      >
-        <MagnifierIcon className="size-4 shrink-0" />
-        Search
-        <Kbd className="ml-auto">⌘K</Kbd>
-      </button>
+      {search ? (
+        <button
+          type="button"
+          className="bg-background text-muted-foreground mt-3 mb-2 flex h-(--control-h) items-center gap-2 rounded-lg border ps-[calc(--spacing(2)-1px)] pe-2"
+        >
+          <MagnifierIcon className="size-4 shrink-0" />
+          Search
+          <Kbd className="ml-auto">⌘K</Kbd>
+        </button>
+      ) : (
+        <div className="mt-3" />
+      )}
       <nav aria-label={name}>
-        {items.map(({ id, label, icon: Line, solid: Solid, count, dot }) => {
-          const Icon = id === place ? Solid : Line;
-          return (
-            <NavItem
-              key={id}
-              href="#"
-              current={id === place}
-              className="rounded-lg"
-            >
-              <Icon />
-              <span className="truncate">{label}</span>
-              {count ? (
-                <Badge
-                  count={count}
-                  shape="rect"
-                  variant="plain"
-                  className="ms-auto"
-                />
-              ) : dot ? (
-                <NavDot />
-              ) : null}
-            </NavItem>
-          );
-        })}
+        {items.map(
+          ({ id, label, icon: Line, solid: Solid, count, dot, href }) => {
+            const Icon = id === place ? Solid : Line;
+            return (
+              <NavItem
+                key={id}
+                href={href ?? "#"}
+                current={id === place}
+                className="rounded-lg"
+              >
+                <Icon />
+                <span className="truncate">{label}</span>
+                {count ? (
+                  <Badge
+                    count={count}
+                    shape="rect"
+                    variant="plain"
+                    className="ms-auto"
+                  />
+                ) : dot ? (
+                  <NavDot />
+                ) : null}
+              </NavItem>
+            );
+          }
+        )}
       </nav>
       {account ? (
         <NavItem
-          render={<button type="button" />}
+          {...(accountHref
+            ? { href: accountHref }
+            : { render: <button type="button" /> })}
           className="mt-auto rounded-lg"
         >
           <SettingsIcon />
           <span className="truncate">{account}</span>
-          <AltArrowDownIcon className="ms-auto" />
+          {accountHref ? null : <AltArrowDownIcon className="ms-auto" />}
         </NavItem>
       ) : null}
     </>
@@ -195,7 +209,7 @@ export function SidebarRail({
   anchor: RefObject<HTMLDivElement | null>;
   onDock: () => void;
 }) {
-  const { name, mark, items, account } = navigation;
+  const { name, mark, items, account, accountHref, search = true } = navigation;
   const [open, setOpen] = useState(false);
   const margin = Math.max(gutter, POPOVER_MARGIN);
   const item =
@@ -244,66 +258,78 @@ export function SidebarRail({
           />
         </PopoverContent>
       </Popover>
-      <Tooltip>
-        <TooltipTrigger
-          render={
-            <button
-              type="button"
-              aria-label="Search"
-              className={cn(item, "mt-3")}
-            />
-          }
-        >
-          <MagnifierIcon className="size-5 shrink-0" />
-        </TooltipTrigger>
-        <TooltipContent side="right">
-          Search
-          <span className="text-inverse-muted">⌘K</span>
-        </TooltipContent>
-      </Tooltip>
-      <nav aria-label={name} className="mt-2 flex flex-col items-center gap-1">
-        {items.map(({ id, label, icon: Line, solid: Solid, count, dot }) => {
-          const current = id === place;
-          const Icon = current ? Solid : Line;
-          return (
-            <Tooltip key={id}>
-              <TooltipTrigger
-                render={
-                  <a
-                    href="#"
-                    aria-label={label}
-                    aria-current={current ? "page" : undefined}
-                    className={cn(item, current && "bg-fill text-foreground")}
-                  />
-                }
-              >
-                <Icon className="size-5 shrink-0" />
-                {count || dot ? (
-                  <StatusDot
-                    size="xs"
-                    className="bg-tone-strong ring-canvas absolute end-1.5 top-1.5 ring-2"
-                  />
-                ) : null}
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                {label}
-                {count ? (
-                  <span className="text-inverse-muted">{count}</span>
-                ) : null}
-              </TooltipContent>
-            </Tooltip>
-          );
-        })}
-      </nav>
-      {account ? (
+      {search ? (
         <Tooltip>
           <TooltipTrigger
             render={
               <button
                 type="button"
-                aria-label="Account"
-                className={cn(item, "mt-auto")}
+                aria-label="Search"
+                className={cn(item, "mt-3")}
               />
+            }
+          >
+            <MagnifierIcon className="size-5 shrink-0" />
+          </TooltipTrigger>
+          <TooltipContent side="right">
+            Search
+            <span className="text-inverse-muted">⌘K</span>
+          </TooltipContent>
+        </Tooltip>
+      ) : null}
+      <nav aria-label={name} className="mt-2 flex flex-col items-center gap-1">
+        {items.map(
+          ({ id, label, icon: Line, solid: Solid, count, dot, href }) => {
+            const current = id === place;
+            const Icon = current ? Solid : Line;
+            return (
+              <Tooltip key={id}>
+                <TooltipTrigger
+                  render={
+                    <a
+                      href={href ?? "#"}
+                      aria-label={label}
+                      aria-current={current ? "page" : undefined}
+                      className={cn(item, current && "bg-fill text-foreground")}
+                    />
+                  }
+                >
+                  <Icon className="size-5 shrink-0" />
+                  {count || dot ? (
+                    <StatusDot
+                      size="xs"
+                      className="bg-tone-strong ring-canvas absolute end-1.5 top-1.5 ring-2"
+                    />
+                  ) : null}
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  {label}
+                  {count ? (
+                    <span className="text-inverse-muted">{count}</span>
+                  ) : null}
+                </TooltipContent>
+              </Tooltip>
+            );
+          }
+        )}
+      </nav>
+      {account ? (
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              accountHref ? (
+                <a
+                  href={accountHref}
+                  aria-label="Account"
+                  className={cn(item, "mt-auto")}
+                />
+              ) : (
+                <button
+                  type="button"
+                  aria-label="Account"
+                  className={cn(item, "mt-auto")}
+                />
+              )
             }
           >
             <SettingsIcon className="size-5 shrink-0" />
