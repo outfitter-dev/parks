@@ -1,0 +1,9 @@
+{
+  "categories": {
+    "correctness": "off"
+  },
+  "jsPlugins": ["./icon-imports.mjs"],
+  "rules": {
+    "parks-icons/solar-imports": "error"
+  }
+}
