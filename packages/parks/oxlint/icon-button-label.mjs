@@ -21,6 +21,24 @@ function hasLabel(opening) {
   });
 }
 
+/** Hidden descendants contribute no text to a button's accessible name. */
+function isHidden(opening) {
+  const ariaAttribute = attribute(opening, "aria-hidden");
+  const ariaValue = valueOf(ariaAttribute);
+  const htmlAttribute = attribute(opening, "hidden");
+  const htmlValue = valueOf(htmlAttribute);
+  return (
+    (ariaAttribute &&
+      (!ariaAttribute.value ||
+        ariaValue?.value === true ||
+        stringOf(ariaValue) === "true")) ||
+    (htmlAttribute &&
+      (!htmlAttribute.value ||
+        htmlValue?.value === true ||
+        typeof htmlValue?.value === "string"))
+  );
+}
+
 function contentOf(node, icons) {
   if (node.type === "JSXText") {
     return node.value.trim() ? "text" : "empty";
@@ -35,22 +53,17 @@ function contentOf(node, icons) {
     }
     return text.trim() ? "text" : "empty";
   }
-  if (node.type !== "JSXElement") {
+  if (node.type !== "JSXElement" && node.type !== "JSXFragment") {
     return "unknown";
   }
-  const opening = node.openingElement;
-  const hiddenAttribute = attribute(opening, "aria-hidden");
-  const hidden = valueOf(hiddenAttribute);
-  if (
-    hiddenAttribute &&
-    (!hiddenAttribute.value ||
-      hidden?.value === true ||
-      stringOf(hidden) === "true")
-  ) {
-    return "icon";
-  }
-  if (icons.test(nameOf(opening.name))) {
-    return "icon";
+  if (node.type === "JSXElement") {
+    const opening = node.openingElement;
+    if (isHidden(opening)) {
+      return "icon";
+    }
+    if (icons.test(nameOf(opening.name))) {
+      return "icon";
+    }
   }
   const children = new Set(
     node.children.map((child) => contentOf(child, icons))

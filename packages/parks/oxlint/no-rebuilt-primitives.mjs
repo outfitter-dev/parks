@@ -22,10 +22,18 @@ export default {
       JSXOpeningElement(node) {
         const tag = nameOf(node.name);
         // Base UI's render prop intentionally receives native elements.
-        const container = node.parent?.parent;
+        let element = node.parent;
+        while (
+          element?.parent?.type === "ConditionalExpression" ||
+          element?.parent?.type === "LogicalExpression"
+        ) {
+          element = element.parent;
+        }
+        const container = element?.parent;
         if (
           container?.type === "JSXExpressionContainer" &&
-          nameOf(container.parent?.name) === "render"
+          container.parent?.type === "JSXAttribute" &&
+          nameOf(container.parent.name) === "render"
         ) {
           return;
         }

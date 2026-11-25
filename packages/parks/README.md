@@ -95,7 +95,7 @@ Load the Parks plugin in an app that uses the component package. This example us
 ```
 
 - `layout-only-classname` checks styling on imported Parks components. Use classes for placement, such as `mt-2` or `w-full`, and component props such as `tone`, `variant` and `size` for appearance.
-- `no-rebuilt-primitives` points native controls to their Parks equivalents. Hidden, file and range inputs can use native elements. For an intentional native control such as a sidebar backdrop, keep the exception local with an Oxlint suppression and a reason.
+- `no-rebuilt-primitives` points native controls to their Parks equivalents. Hidden, file and range inputs can use native elements. Native elements supplied directly or conditionally through a Base UI `render` prop are supported. Before adding an exception, check whether a Parks component or a variant can express the interaction.
 - `icon-button-label` checks icon-only Parks buttons for an accessible name. Name the action, for example `<Button size="icon" aria-label="Search"><SearchIcon /></Button>`.
 
 These checks read JSX and statically recognizable class names. Use the rendered accessibility tree to verify buttons whose labels come from other components or runtime data.

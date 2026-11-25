@@ -9,7 +9,7 @@ import {
 
 // Padding changes a component's density and belongs in its size API.
 const layout =
-  /^(?:-?(?:m[xytrblse]?|w|h|min-w|max-w|min-h|max-h|size|inset(?:-[xy])?|top|right|bottom|left|start|end|z|order|col|row|gap(?:-[xy])?|space-[xy]|basis|justify-items|grid-cols|grid-rows|grid-flow|auto-cols|auto-rows|items|justify|content|place-items|place-content|self|justify-self|place-self|aspect|translate(?:-[xy])?|scroll-m[xytrblse]?)-.+|flex(?:-(?:1|auto|none|initial|row|col|row-reverse|col-reverse|wrap|nowrap|wrap-reverse))?|grid|inline-flex|inline-grid|grow(?:-.+)?|shrink(?:-.+)?|absolute|relative|fixed|sticky|static|hidden|block|inline|inline-block|contents|sr-only|not-sr-only|(?:group|peer)(?:\/.+)?)$/u;
+  /^(?:-?(?:m[xytrblse]?|w|h|min-w|max-w|min-h|max-h|size|inset(?:-[xy])?|top|right|bottom|left|start|end|z|order|col|row|gap(?:-[xy])?|space-[xy]|basis|justify-items|grid-cols|grid-rows|grid-flow|auto-cols|auto-rows|items|justify|content|place-items|place-content|self|justify-self|place-self|aspect|translate(?:-[xy])?|scroll-m[xytrblse]?)-.+|flex(?:-(?:[0-9]+(?:\.[0-9]+)?|\[[^\]]+\]|\([^)]+\)|auto|none|initial|row|col|row-reverse|col-reverse|wrap|nowrap|wrap-reverse))?|grid|inline-flex|inline-grid|grow(?:-.+)?|shrink(?:-.+)?|absolute|relative|fixed|sticky|static|hidden|block|inline|inline-block|contents|sr-only|not-sr-only|(?:group|peer)(?:\/.+)?)$/u;
 
 export default {
   meta: {
