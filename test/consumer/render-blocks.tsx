@@ -16,7 +16,10 @@ const options = [
   { label: "Hold", detail: "Leave it open to look at." },
 ];
 
-const renders: [string, string, string[]][] = [
+const Icon = () => <svg />;
+
+// [block, rendered HTML, text it must contain, text it must not contain]
+const renders: [string, string, string[], string[]?][] = [
   [
     "ask",
     renderToStaticMarkup(
@@ -78,14 +81,57 @@ const renders: [string, string, string[]][] = [
     ),
     ['data-shell="inset"', "Sequoia", "Home"],
   ],
+  [
+    "app-shell links",
+    // Renders both the docked sidebar and the collapsed rail.
+    renderToStaticMarkup(
+      <AppFrame
+        navigation={{
+          name: "Sequoia",
+          mark: "S",
+          items: [
+            {
+              id: "home",
+              label: "Home",
+              icon: Icon,
+              solid: Icon,
+              href: "/home",
+            },
+            {
+              id: "admin",
+              label: "Admin",
+              icon: Icon,
+              solid: Icon,
+              href: "/admin",
+            },
+          ],
+          account: "Muir",
+          accountHref: "/account",
+          search: false,
+        }}
+        place="home"
+      >
+        <PageBar title="Home" />
+      </AppFrame>
+    ),
+    ['href="/home"', 'href="/admin"', 'href="/account"'],
+    ["Search", 'href="#"'],
+  ],
 ];
 
 let failed = false;
-for (const [name, html, expected] of renders) {
+for (const [name, html, expected, absent = []] of renders) {
   const missing = expected.filter((text) => !html.includes(text));
   if (missing.length > 0) {
     failed = true;
     console.error(`${name} block render is missing ${missing.join(", ")}`);
+  }
+  const present = absent.filter((text) => html.includes(text));
+  if (present.length > 0) {
+    failed = true;
+    console.error(
+      `${name} block render should not contain ${present.join(", ")}`
+    );
   }
 }
 if (failed) {
