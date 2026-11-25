@@ -53,7 +53,7 @@
       "name": "@outfitter/parks",
       "version": "0.1.0",
       "bin": {
-        "parks": "./dist/rules/cli.js",
+        "parks": "dist/rules/cli.js",
       },
       "dependencies": {
         "@base-ui/react": "1.9.0",
