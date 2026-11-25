@@ -52,7 +52,8 @@
     "vitest": "5.1.1"
   },
   "engines": {
-    "bun": ">=1.4.4"
+    "bun": ">=1.4.4",
+    "node": ">=22.15.0"
   },
   "packageManager": "bun@1.4.4",
   "trustedDependencies": []
