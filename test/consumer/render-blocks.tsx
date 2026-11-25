@@ -3,6 +3,11 @@
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { AppFrame, PageBar } from "./components/parks/app-shell/app-shell";
+import {
+  SidebarPanel,
+  SidebarRail,
+} from "./components/parks/app-shell/app-sidebar";
+import type { AppNavigation } from "./components/parks/app-shell/app-sidebar";
 import { AskQueue } from "./components/parks/ask-queue/ask-queue";
 import { Ask } from "./components/parks/ask/ask";
 import { CodeBlock } from "./components/parks/code-block/code-block";
@@ -17,6 +22,30 @@ const options = [
 ];
 
 const Icon = () => <svg />;
+const linked: AppNavigation = {
+  name: "Sequoia",
+  mark: "S",
+  items: [
+    {
+      id: "home",
+      label: "Home",
+      icon: Icon,
+      solid: Icon,
+      href: "/home",
+    },
+    {
+      id: "admin",
+      label: "Admin",
+      icon: Icon,
+      solid: Icon,
+      href: "/admin",
+    },
+  ],
+  account: "Muir",
+  accountHref: "/account",
+  search: false,
+  link: (props) => <a data-app-link="" {...props} />,
+};
 
 // [block, rendered HTML, text it must contain, text it must not contain]
 const renders: [string, string, string[], string[]?][] = [
@@ -85,34 +114,7 @@ const renders: [string, string, string[], string[]?][] = [
     "app-shell links",
     // Renders both the docked sidebar and the collapsed rail.
     renderToStaticMarkup(
-      <AppFrame
-        navigation={{
-          name: "Sequoia",
-          mark: "S",
-          items: [
-            {
-              id: "home",
-              label: "Home",
-              icon: Icon,
-              solid: Icon,
-              href: "/home",
-            },
-            {
-              id: "admin",
-              label: "Admin",
-              icon: Icon,
-              solid: Icon,
-              href: "/admin",
-            },
-          ],
-          account: "Muir",
-          accountHref: "/account",
-          search: false,
-          link: (props) => <a data-app-link="" {...props} />,
-        }}
-        place="home"
-        className="min-h-svh"
-      >
+      <AppFrame navigation={linked} place="home" className="min-h-svh">
         <PageBar title="Home" />
       </AppFrame>
     ),
@@ -123,6 +125,41 @@ const renders: [string, string, string[], string[]?][] = [
       "min-h-svh",
     ],
     ["Search", 'href="#"', "min-h-160"],
+  ],
+  [
+    "app-shell panel links",
+    renderToStaticMarkup(
+      <SidebarPanel
+        navigation={linked}
+        place="home"
+        onHide={() => {}}
+        hideAt="end"
+      />
+    ),
+    [
+      'data-app-link="" href="/home"',
+      'data-app-link="" href="/admin"',
+      'data-app-link="" href="/account"',
+    ],
+    ["Search", 'href="#"'],
+  ],
+  [
+    "app-shell rail links",
+    renderToStaticMarkup(
+      <SidebarRail
+        navigation={linked}
+        place="home"
+        gutter={8}
+        anchor={{ current: null }}
+        onDock={() => {}}
+      />
+    ),
+    [
+      'data-app-link="" href="/home"',
+      'data-app-link="" href="/admin"',
+      'data-app-link="" href="/account"',
+    ],
+    ["Search", 'href="#"'],
   ],
 ];
 
