@@ -69,8 +69,8 @@
   --corner-gap: 0.5rem;
   --control-h: 2rem;
   /* Stroke of a linear icon, on its 24-unit grid. The stroke scales with the
-     glyph: 1.125px at 12, 1.5px at 16, 2.25px at 24. */
-  --icon-stroke: 2.25;
+     glyph: 1px at 12, about 1.33px at 16, 2px at 24. */
+  --icon-stroke: 2;
 
   /* Type */
   --text-control-small: 0.8rem;
