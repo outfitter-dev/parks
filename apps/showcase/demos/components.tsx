@@ -212,7 +212,7 @@ export function BadgeDemo() {
       </Specimen>
       <Specimen
         title="Status"
-        note="Rectangular badges with dots use the same side padding as text-only badges. A neutral dot is lighter than its label."
+        note="A dot on a rectangular badge sits as far from the edge as from its label. A neutral dot is lighter than its label."
       >
         <Badge dot>Off</Badge>
         <Badge tone="info" live>
