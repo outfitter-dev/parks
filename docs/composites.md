@@ -10,7 +10,7 @@ Parks keeps the product layer thin: anything another app could use lives in `@ou
 | Stat | package | core component (done) | A stat tile is generic. |
 | Ask (stacked, tray) | registry `ask` | block (done) | Composed from Questionnaire; apps tune the layout, so it is copied rather than imported. |
 | CodeFrame, CodeBlock | registry `code-block` | block (done) | Depends on Pierre's renderer, which the package should not require. |
-| AppFrame, PageBar, SidebarToggle | registry `app-shell` | block (done) | An app shell every product needs. Opened over the page on a narrow frame, the sidebar is modal: focus moves in, the page is inert, Escape closes it and focus returns to the toggle. |
+| AppFrame, PageBar, SidebarToggle | registry `app-shell` | block (done) | An app shell every product needs. Opened over the page on a narrow frame, the sidebar is modal: focus moves in, the page is inert, Escape closes it and focus returns to the toggle. `className` goes on the frame, such as `min-h-svh` when it is the whole page. |
 | SidebarPanel, SidebarRail | registry `app-shell` | block (done) | Part of the same shell. Each place takes an `href`, and the account an `accountHref`; `search: false` hides the search control until an app wires one up. |
 | Needs you queue | registry `ask-queue` | block (done) | A queue of asks: rows take `from`, `source` and `age`; choice asks use the `ask` block, others a written reply; Open and Answered views; two screens with progress when narrow. The showcase's Needs you composition stays as the design lab for option looks (cards, coded marks, glyphs). |
 | Agents list, Admin versions (VersionRows) | showcase | composition (stays) | Demonstrates Item rows and groups; the data shape is product-specific. |

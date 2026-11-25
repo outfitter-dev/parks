@@ -151,6 +151,7 @@ export function AppFrame({
   shell = defaultShell,
   title,
   actions,
+  className,
   children,
 }: {
   navigation: AppNavigation;
@@ -159,6 +160,8 @@ export function AppFrame({
   /** Omit the title when the page supplies pane-level headers. */
   title?: ReactNode;
   actions?: ReactNode;
+  /** For the frame itself, such as `min-h-svh` when it is the whole page. */
+  className?: string;
   children: ReactNode;
 }) {
   const frameRef = useRef<HTMLDivElement>(null);
@@ -290,7 +293,8 @@ export function AppFrame({
           // --g is the container's gutter: the shell's value, or nothing on a phone.
           inset
             ? "bg-canvas [--g:var(--shell-gutter)] @max-md:[--g:--spacing(0)]"
-            : "bg-background"
+            : "bg-background",
+          className
         )}
       >
         {/* Holds the docked sidebar's width in the page flow, and gives it up as the sidebar shrinks. */}

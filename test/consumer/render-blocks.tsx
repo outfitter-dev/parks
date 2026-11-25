@@ -110,12 +110,13 @@ const renders: [string, string, string[], string[]?][] = [
           search: false,
         }}
         place="home"
+        className="min-h-svh"
       >
         <PageBar title="Home" />
       </AppFrame>
     ),
-    ['href="/home"', 'href="/admin"', 'href="/account"'],
-    ["Search", 'href="#"'],
+    ['href="/home"', 'href="/admin"', 'href="/account"', "min-h-svh"],
+    ["Search", 'href="#"', "min-h-160"],
   ],
 ];
 
