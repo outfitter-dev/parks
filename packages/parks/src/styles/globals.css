@@ -670,6 +670,20 @@
   text-box: trim-start cap alphabetic;
 }
 
+/*
+ * Lifts a trimmed label a quarter of the way from cap height to x-height.
+ * Centred on its capitals alone, a small, mostly lowercase label reads low.
+ * text-lift moves the label itself; text-lift-box goes on a fixed-height box
+ * that centres bare text, where padding below lifts the text by half as much.
+ */
+@utility text-lift {
+  translate: 0 calc((1ex - 1cap) / 4);
+}
+
+@utility text-lift-box {
+  padding-block-end: calc((1cap - 1ex) / 2);
+}
+
 @theme {
   --tracking-ui-title: -0.025em;
   --tracking-ui-heading: -0.012em;
