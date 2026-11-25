@@ -1,5 +1,11 @@
 # @outfitter/parks
 
+## 0.1.1
+
+### Patch Changes
+
+- be92359: Normalize the parks bin path so npm no longer warns at publish.
+
 ## 0.1.0
 
 ### Minor Changes

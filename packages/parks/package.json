@@ -1,6 +1,6 @@
 {
   "name": "@outfitter/parks",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Outfitter's design system: tokens, theme CSS, components and UI rules for React and Tailwind CSS v4.",
   "homepage": "https://parks.outfitter.dev",
   "license": "MIT",
