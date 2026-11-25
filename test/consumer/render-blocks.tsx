@@ -108,6 +108,7 @@ const renders: [string, string, string[], string[]?][] = [
           account: "Muir",
           accountHref: "/account",
           search: false,
+          link: (props) => <a data-app-link="" {...props} />,
         }}
         place="home"
         className="min-h-svh"
@@ -115,7 +116,12 @@ const renders: [string, string, string[], string[]?][] = [
         <PageBar title="Home" />
       </AppFrame>
     ),
-    ['href="/home"', 'href="/admin"', 'href="/account"', "min-h-svh"],
+    [
+      'data-app-link="" href="/home"',
+      'data-app-link="" href="/admin"',
+      'data-app-link="" href="/account"',
+      "min-h-svh",
+    ],
     ["Search", 'href="#"', "min-h-160"],
   ],
 ];

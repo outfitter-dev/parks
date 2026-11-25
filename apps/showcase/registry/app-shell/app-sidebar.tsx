@@ -25,7 +25,7 @@ import { PanelLeftCloseIcon } from "@solar-icons/react/outline/panel-left-close"
 import { PanelLeftOpenIcon } from "@solar-icons/react/outline/panel-left-open";
 import { SettingsIcon } from "@solar-icons/react/outline/settings";
 import { useState } from "react";
-import type { ComponentType, RefObject } from "react";
+import type { ComponentProps, ComponentType, RefObject } from "react";
 
 type NavIcon = ComponentType<{ className?: string }>;
 
@@ -47,6 +47,11 @@ export type AppNavigation = {
   accountHref?: string;
   /** Shows the search control. Defaults to true. */
   search?: boolean;
+  /**
+   * Renders the links, such as Next.js's `Link`, so moving between places is
+   * client-side and keeps the sidebar's state. Defaults to a plain `<a>`.
+   */
+  link?: ComponentType<ComponentProps<"a"> & { href: string }>;
 };
 
 /** The dot form, for a place that has something new but no useful number. */
@@ -86,7 +91,15 @@ export function SidebarPanel({
   /** Shown from the rail: the end button docks the sidebar instead of hiding it. */
   onDock?: () => void;
 }) {
-  const { name, mark, items, account, accountHref, search = true } = navigation;
+  const {
+    name,
+    mark,
+    items,
+    account,
+    accountHref,
+    search = true,
+    link: Anchor = "a",
+  } = navigation;
   const hide = onDock ? (
     <Button
       variant="ghost"
@@ -138,7 +151,7 @@ export function SidebarPanel({
             return (
               <NavItem
                 key={id}
-                href={href ?? "#"}
+                render={<Anchor href={href ?? "#"} />}
                 current={id === place}
                 className="rounded-lg"
               >
@@ -161,9 +174,13 @@ export function SidebarPanel({
       </nav>
       {account ? (
         <NavItem
-          {...(accountHref
-            ? { href: accountHref }
-            : { render: <button type="button" /> })}
+          render={
+            accountHref ? (
+              <Anchor href={accountHref} />
+            ) : (
+              <button type="button" />
+            )
+          }
           className="mt-auto rounded-lg"
         >
           <SettingsIcon />
@@ -209,7 +226,15 @@ export function SidebarRail({
   anchor: RefObject<HTMLDivElement | null>;
   onDock: () => void;
 }) {
-  const { name, mark, items, account, accountHref, search = true } = navigation;
+  const {
+    name,
+    mark,
+    items,
+    account,
+    accountHref,
+    search = true,
+    link: Anchor = "a",
+  } = navigation;
   const [open, setOpen] = useState(false);
   const margin = Math.max(gutter, POPOVER_MARGIN);
   const item =
@@ -286,7 +311,7 @@ export function SidebarRail({
               <Tooltip key={id}>
                 <TooltipTrigger
                   render={
-                    <a
+                    <Anchor
                       href={href ?? "#"}
                       aria-label={label}
                       aria-current={current ? "page" : undefined}
@@ -318,7 +343,7 @@ export function SidebarRail({
           <TooltipTrigger
             render={
               accountHref ? (
-                <a
+                <Anchor
                   href={accountHref}
                   aria-label="Account"
                   className={cn(item, "mt-auto")}
