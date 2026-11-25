@@ -1,7 +1,5 @@
 import { ChatRoundWarningIcon as ChatRoundWarningBold } from "@solar-icons/react/bold/chat-round-warning";
-import { HistoryIcon as HistoryBold } from "@solar-icons/react/bold/history";
 import { InboxIcon as InboxBold } from "@solar-icons/react/bold/inbox";
-import { RoutingIcon as RoutingBold } from "@solar-icons/react/bold/routing";
 import { ShieldKeyholeIcon as ShieldKeyholeBold } from "@solar-icons/react/bold/shield-keyhole";
 import { UsersGroupRoundedIcon as UsersGroupRoundedBold } from "@solar-icons/react/bold/users-group-rounded";
 import { ChatRoundWarningIcon } from "@solar-icons/react/linear/chat-round-warning";
@@ -41,12 +39,12 @@ export const sequoiaNavigation = {
       solid: UsersGroupRoundedBold,
       count: 5,
     },
-    { id: "routing", label: "Routing", icon: RoutingIcon, solid: RoutingBold },
+    { id: "routing", label: "Routing", icon: RoutingIcon, solid: RoutingIcon },
     {
       id: "history",
       label: "History",
       icon: HistoryIcon,
-      solid: HistoryBold,
+      solid: HistoryIcon,
       count: 128,
     },
     {

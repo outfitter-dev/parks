@@ -2,10 +2,10 @@
 
 import { Toast as ToastPrimitive } from "@base-ui/react/toast";
 import { CheckCircleIcon } from "@solar-icons/react/bold/check-circle";
-import { CloseIcon } from "@solar-icons/react/bold/close";
 import { CloseCircleIcon } from "@solar-icons/react/bold/close-circle";
 import { DangerTriangleIcon } from "@solar-icons/react/bold/danger-triangle";
 import { InfoCircleIcon } from "@solar-icons/react/bold/info-circle";
+import { CloseIcon } from "@solar-icons/react/linear/close";
 import * as React from "react";
 
 import { Button } from "#components/button";

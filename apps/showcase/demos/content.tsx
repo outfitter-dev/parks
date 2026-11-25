@@ -35,14 +35,14 @@ import {
 } from "@outfitter/parks/components/resizable";
 import { Spinner } from "@outfitter/parks/components/spinner";
 import { Trace, TraceStep } from "@outfitter/parks/components/trace";
-import { CloseIcon } from "@solar-icons/react/bold/close";
-import { RefreshIcon } from "@solar-icons/react/bold/refresh";
+import { CloseIcon } from "@solar-icons/react/linear/close";
 import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
 import { DangerTriangleIcon } from "@solar-icons/react/linear/danger-triangle";
 import { DocumentTextIcon } from "@solar-icons/react/linear/document-text";
 import { GalleryIcon } from "@solar-icons/react/linear/gallery";
 import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
 import { PenIcon } from "@solar-icons/react/linear/pen";
+import { RefreshIcon } from "@solar-icons/react/linear/refresh";
 import { UploadMinimalisticIcon } from "@solar-icons/react/linear/upload-minimalistic";
 import { useState } from "react";
 

@@ -53,13 +53,13 @@ import {
 import type { Tone } from "@outfitter/parks/lib/tone";
 import { cn } from "@outfitter/parks/lib/utils";
 import { InboxIcon as InboxDuotone } from "@solar-icons/react/bold-duotone/inbox";
-import { CheckIcon as CheckBold } from "@solar-icons/react/bold/check";
 import { CheckCircleIcon as CheckCircleBold } from "@solar-icons/react/bold/check-circle";
 import { InboxIcon as InboxBold } from "@solar-icons/react/bold/inbox";
 import { PauseIcon as PauseBold } from "@solar-icons/react/bold/pause";
 import { ShieldKeyholeIcon as ShieldKeyholeBold } from "@solar-icons/react/bold/shield-keyhole";
 import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
 import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
+import { CheckIcon as CheckBold } from "@solar-icons/react/linear/check";
 import { KeyIcon } from "@solar-icons/react/linear/key";
 import { useState } from "react";
 import type { ReactNode } from "react";
