@@ -100,7 +100,7 @@ Solar (`@solar-icons/react`) is the only icon library. Import each icon on its o
 import { BellIcon } from "@solar-icons/react/outline/bell";
 ```
 
-Use `outline` by default, `bold` for selected states, and `bold-duotone` for empty states. `outline` glyphs are filled paths, so their weight is fixed at 1.5/24 of the icon size; there is no stroke token. Mark icons alongside button text with `data-icon="inline-start"` or `"inline-end"` so the button sets the correct padding. Icons take their color from `currentColor` and their size from the component. `test/icons.test.ts` checks the icon library and import paths.
+Use `outline` by default, `bold` for selected states, and `bold-duotone` for empty states. `outline` glyphs are filled paths, so their weight is fixed at 1.5/24 of the icon size; there is no stroke token. Mark icons alongside button text with `data-icon="inline-start"` or `"inline-end"` so the button sets the correct padding. Icons take their color from `currentColor` and their size from the component. `bun run lint:icons` enforces the library and glyph import paths, including literal dynamic imports. The gallery inventory is checked against the icons used in source.
 
 ## Theme
 
