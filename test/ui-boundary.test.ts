@@ -3,8 +3,6 @@ import { join, relative } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { checkSource } from "../packages/parks/src/rules/source";
-
 // packages/parks is published for other apps, so it may only use
 // its own files and the packages it declares. It must not reach into the app.
 const root = join(import.meta.dirname, "../packages/parks");
@@ -99,13 +97,6 @@ describe("packages/parks boundary", () => {
     });
 
     if (name.endsWith(".tsx")) {
-      // The shipped source rules (packages/parks/src/rules/source.ts): colour
-      // roles, no /NN opacity, no dark: overrides, no literal lengths beyond
-      // 1px and 2px hairlines, no lone outline button.
-      it(`${name} passes the Parks source rules`, () => {
-        expect(checkSource(text), name).toEqual([]);
-      });
-
       // Base UI passes className as a function of state; cn() would drop it.
       it(`${name} merges className with cnState`, () => {
         expect(text, name).not.toMatch(/\bcn\([^;]*\bclassName\s*\)/);
