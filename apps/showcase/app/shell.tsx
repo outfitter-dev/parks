@@ -2,7 +2,7 @@
 
 import { GroupLabel } from "@outfitter/parks/components/group-label";
 import { NavItem } from "@outfitter/parks/components/nav-item";
-import { Widget2Icon } from "@solar-icons/react/outline/widget-2";
+import { Widget2Icon } from "@solar-icons/react/linear/widget-2";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";

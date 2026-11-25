@@ -1,6 +1,6 @@
-import { GitBranchIcon } from "@solar-icons/react/outline/git-branch";
-import { GitCommitIcon } from "@solar-icons/react/outline/git-commit";
-import { GitPullRequestIcon } from "@solar-icons/react/outline/git-pull-request";
+import { GitBranchIcon } from "@solar-icons/react/linear/git-branch";
+import { GitCommitIcon } from "@solar-icons/react/linear/git-commit";
+import { GitPullRequestIcon } from "@solar-icons/react/linear/git-pull-request";
 import * as React from "react";
 
 import { cnState } from "#lib/utils";

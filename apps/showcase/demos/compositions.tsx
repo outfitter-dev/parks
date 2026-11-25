@@ -58,9 +58,9 @@ import { CheckCircleIcon as CheckCircleBold } from "@solar-icons/react/bold/chec
 import { InboxIcon as InboxBold } from "@solar-icons/react/bold/inbox";
 import { PauseIcon as PauseBold } from "@solar-icons/react/bold/pause";
 import { ShieldKeyholeIcon as ShieldKeyholeBold } from "@solar-icons/react/bold/shield-keyhole";
-import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left";
-import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
-import { KeyIcon } from "@solar-icons/react/outline/key";
+import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
+import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
+import { KeyIcon } from "@solar-icons/react/linear/key";
 import { useState } from "react";
 import type { ReactNode } from "react";
 

@@ -34,8 +34,8 @@ import {
 } from "@outfitter/parks/components/toggle-group";
 import { cn } from "@outfitter/parks/lib/utils";
 import { CheckCircleIcon } from "@solar-icons/react/bold/check-circle";
-import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left";
-import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
+import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
+import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
 import { useState } from "react";
 import type { ReactNode } from "react";
 

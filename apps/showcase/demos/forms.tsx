@@ -45,8 +45,8 @@ import {
   RadioGroupItem,
 } from "@outfitter/parks/components/radio-group";
 import { Textarea } from "@outfitter/parks/components/textarea";
-import { CopyIcon } from "@solar-icons/react/outline/copy";
-import { MagnifierIcon } from "@solar-icons/react/outline/magnifier";
+import { CopyIcon } from "@solar-icons/react/linear/copy";
+import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
 import { useState } from "react";
 
 import { agents } from "#lib/fixtures";

@@ -2,7 +2,7 @@
 
 import { Toggle } from "@outfitter/parks/components/toggle";
 import { cn } from "@outfitter/parks/lib/utils";
-import { RulerIcon } from "@solar-icons/react/outline/ruler";
+import { RulerIcon } from "@solar-icons/react/linear/ruler";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 

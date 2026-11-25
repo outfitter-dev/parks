@@ -7,8 +7,8 @@ import {
   BreadcrumbPath,
   BreadcrumbSeparator,
 } from "@outfitter/parks/components/breadcrumb";
-import { FolderIcon } from "@solar-icons/react/outline/folder";
-import { HomeIcon } from "@solar-icons/react/outline/home";
+import { FolderIcon } from "@solar-icons/react/linear/folder";
+import { HomeIcon } from "@solar-icons/react/linear/home";
 
 import { Specimen } from "./kit";
 

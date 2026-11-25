@@ -68,6 +68,9 @@
   --inset-ratio: 0.4;
   --corner-gap: 0.5rem;
   --control-h: 2rem;
+  /* Stroke of a linear icon, on its 24-unit grid. The stroke scales with the
+     glyph: 1.125px at 12, 1.5px at 16, 2.25px at 24. */
+  --icon-stroke: 2.25;
 
   /* Type */
   --text-control-small: 0.8rem;
@@ -844,6 +847,10 @@
 @layer base {
   * {
     @apply border-border outline-focus-ring;
+  }
+  /* Solar's linear glyphs are stroked; the theme sets their weight. */
+  svg.solar {
+    stroke-width: var(--icon-stroke);
   }
   /* Smooth corners everywhere a radius is set. Full pills and dots stay
      true capsules and circles. */

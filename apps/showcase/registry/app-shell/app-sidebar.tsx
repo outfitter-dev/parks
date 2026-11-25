@@ -19,11 +19,11 @@ import {
   TooltipTrigger,
 } from "@outfitter/parks/components/tooltip";
 import { cn } from "@outfitter/parks/lib/utils";
-import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
-import { MagnifierIcon } from "@solar-icons/react/outline/magnifier";
-import { PanelLeftCloseIcon } from "@solar-icons/react/outline/panel-left-close";
-import { PanelLeftOpenIcon } from "@solar-icons/react/outline/panel-left-open";
-import { SettingsIcon } from "@solar-icons/react/outline/settings";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
+import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
+import { PanelLeftCloseIcon } from "@solar-icons/react/linear/panel-left-close";
+import { PanelLeftOpenIcon } from "@solar-icons/react/linear/panel-left-open";
+import { SettingsIcon } from "@solar-icons/react/linear/settings";
 import { useState } from "react";
 import type { ComponentProps, ComponentType, RefObject } from "react";
 

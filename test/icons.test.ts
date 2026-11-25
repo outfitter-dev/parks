@@ -4,7 +4,7 @@ import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 
 // Solar is the one icon library. Every icon is imported on its own from a
-// style subpath, such as @solar-icons/react/outline/bell, so bundles stay small.
+// style subpath, such as @solar-icons/react/linear/bell, so bundles stay small.
 const repo = join(import.meta.dirname, "..");
 const gallery = join(repo, "apps/showcase/demos/icons.tsx");
 const scanned = ["app", "apps", "cli", "lib", "packages", "plugins"];
@@ -69,7 +69,7 @@ describe("icons", () => {
       );
     const listed = Array.from(
       readFileSync(gallery, "utf8").matchAll(
-        /\{\s*name: "([^"]+)",\s*outline:/g
+        /\{\s*name: "([^"]+)",\s*linear:/g
       ),
       ([, name]) => name
     );

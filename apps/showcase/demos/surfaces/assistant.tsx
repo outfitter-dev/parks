@@ -18,11 +18,11 @@ import { ArrowUpIcon } from "@solar-icons/react/bold/arrow-up";
 import { ChatRoundDotsIcon as ChatRoundDotsBold } from "@solar-icons/react/bold/chat-round-dots";
 import { PaperclipIcon } from "@solar-icons/react/bold/paperclip";
 import { PenNewSquareIcon } from "@solar-icons/react/bold/pen-new-square";
-import { ChatRoundDotsIcon } from "@solar-icons/react/outline/chat-round-dots";
-import { CodeSquareIcon } from "@solar-icons/react/outline/code-square";
-import { MagnifierIcon } from "@solar-icons/react/outline/magnifier";
-import { PenIcon } from "@solar-icons/react/outline/pen";
-import { StarsIcon } from "@solar-icons/react/outline/stars";
+import { ChatRoundDotsIcon } from "@solar-icons/react/linear/chat-round-dots";
+import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
+import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
+import { PenIcon } from "@solar-icons/react/linear/pen";
+import { StarsIcon } from "@solar-icons/react/linear/stars";
 import { useState } from "react";
 
 import { AppFrame } from "../app-frame";

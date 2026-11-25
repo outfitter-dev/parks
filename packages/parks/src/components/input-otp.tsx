@@ -1,6 +1,6 @@
 "use client";
 
-import { MinusIcon } from "@solar-icons/react/outline/minus";
+import { MinusIcon } from "@solar-icons/react/linear/minus";
 import { OTPInput, OTPInputContext } from "input-otp";
 import * as React from "react";
 
