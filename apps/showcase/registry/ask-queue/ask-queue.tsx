@@ -26,6 +26,11 @@ import {
   ItemTitle,
 } from "@outfitter/parks/components/item";
 import { Label } from "@outfitter/parks/components/label";
+import {
+  QuestionnaireForm,
+  QuestionnaireStep,
+} from "@outfitter/parks/components/questionnaire";
+import type { QuestionnaireOption } from "@outfitter/parks/components/questionnaire";
 import { StatusDot } from "@outfitter/parks/components/status-dot";
 import { Textarea } from "@outfitter/parks/components/textarea";
 import {
@@ -39,10 +44,7 @@ import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
 import { useState } from "react";
 import type { ReactNode } from "react";
 
-import { Ask } from "../ask/ask";
-import type { AskOption } from "../ask/ask";
-
-type QueueAsk = {
+type QuestionnaireQuestion = {
   id: string;
   /** The question. */
   title: string;
@@ -57,12 +59,12 @@ type QueueAsk = {
   /** Background for the person answering. */
   context?: ReactNode;
   /** Choices; an ask without options takes a written reply. */
-  options?: readonly AskOption[];
+  options?: readonly QuestionnaireOption[];
   multiple?: boolean;
 };
 
-type AskQueueProps = {
-  asks: readonly QueueAsk[];
+type QuestionnaireQueueProps = {
+  asks: readonly QuestionnaireQuestion[];
   title?: ReactNode;
   /** Placed before the title, such as an app shell's sidebar toggle. */
   start?: ReactNode;
@@ -78,7 +80,7 @@ function QueueRow({
   answered,
   onSelect,
 }: {
-  ask: QueueAsk;
+  ask: QuestionnaireQuestion;
   active: boolean;
   answered: boolean;
   onSelect: () => void;
@@ -89,7 +91,8 @@ function QueueRow({
       size="sm"
       onClick={onSelect}
       aria-pressed={active}
-      className={cn("gap-y-1", active && "@3xl:bg-fill")}
+      selected={active}
+      className="gap-y-1"
     >
       <ItemHeader>
         <ItemTitle className="gap-2">
@@ -101,9 +104,7 @@ function QueueRow({
           ) : null}
         </ItemTitle>
         <span className="ms-auto flex items-center gap-2">
-          <ItemMeta className="text-xs">
-            {answered ? "Answered" : ask.age}
-          </ItemMeta>
+          <ItemMeta>{answered ? "Answered" : ask.age}</ItemMeta>
           {answered ? (
             <CheckCircleIcon className="text-success-strong size-3.5 shrink-0" />
           ) : (
@@ -114,7 +115,8 @@ function QueueRow({
         </span>
       </ItemHeader>
       <ItemDescription
-        className={cn("basis-full", !answered && "text-foreground")}
+        emphasis={answered ? "default" : "strong"}
+        className="basis-full"
       >
         {ask.title}
       </ItemDescription>
@@ -128,7 +130,7 @@ function QueueProgress({
   answers,
   onJump,
 }: {
-  asks: readonly QueueAsk[];
+  asks: readonly QuestionnaireQuestion[];
   current: number;
   answers: Readonly<Record<string, readonly string[]>>;
   onJump: (index: number) => void;
@@ -142,25 +144,13 @@ function QueueProgress({
         {asks.map((item, index) => {
           const answered = (answers[item.id] ?? []).length > 0;
           return (
-            <button
+            <QuestionnaireStep
               key={item.id}
-              type="button"
               aria-label={`Ask ${index + 1} of ${asks.length}${answered ? ", answered" : ""}`}
-              aria-current={index === current ? "step" : undefined}
+              current={index === current}
+              completed={answered}
               onClick={() => onJump(index)}
-              className="group flex h-4 flex-1 items-center"
-            >
-              <span
-                className={cn(
-                  "h-1.5 w-full rounded-full transition-all",
-                  answered
-                    ? "bg-brand"
-                    : "bg-fill-strong group-hover:bg-border-strong",
-                  index === current && "h-3",
-                  index === current && !answered && "bg-fg-subtle"
-                )}
-              />
-            </button>
+            />
           );
         })}
       </div>
@@ -177,7 +167,7 @@ function WrittenReply({
   answer,
   onAnswer,
 }: {
-  ask: QueueAsk;
+  ask: QuestionnaireQuestion;
   answer: readonly string[];
   onAnswer: (answer: string[]) => void;
 }) {
@@ -213,20 +203,16 @@ function QueueDetail({
   shortcuts,
   onAnswer,
 }: {
-  ask: QueueAsk;
+  ask: QuestionnaireQuestion;
   answer: readonly string[];
-  layout: AskQueueProps["layout"];
-  shortcuts: AskQueueProps["shortcuts"];
+  layout: QuestionnaireQueueProps["layout"];
+  shortcuts: QuestionnaireQueueProps["shortcuts"];
   onAnswer: (answer: string[]) => void;
 }) {
   return (
     <div className="mx-auto w-full max-w-xl p-(--pad) @3xl:p-6">
       <p className="text-muted-foreground flex items-start gap-2">
-        {ask.kind ? (
-          <Badge variant="outline" className="capitalize">
-            {ask.kind}
-          </Badge>
-        ) : null}
+        {ask.kind ? <Badge variant="outline">{ask.kind}</Badge> : null}
         <span className="min-h-5 leading-5">
           {ask.from} asked {ask.age} ago
         </span>
@@ -237,7 +223,7 @@ function QueueDetail({
         </div>
       ) : null}
       {ask.options && ask.options.length > 0 ? (
-        <Ask
+        <QuestionnaireForm
           key={ask.id}
           className="mt-5"
           name={ask.id}
@@ -264,7 +250,7 @@ function QueueDetail({
   );
 }
 
-export function AskQueue({
+export function QuestionnaireQueue({
   asks,
   title = "Asks",
   start,
@@ -272,7 +258,7 @@ export function AskQueue({
   shortcuts,
   onAnswer,
   className,
-}: AskQueueProps) {
+}: QuestionnaireQueueProps) {
   const [view, setView] = useState<"open" | "answered">("open");
   const [selected, setSelected] = useState(asks[0]?.id);
   /** Which of the two narrow screens shows. Wide containers show both. */
@@ -437,4 +423,10 @@ export function AskQueue({
   );
 }
 
-export type { AskQueueProps, QueueAsk };
+export { QuestionnaireQueue as AskQueue };
+export type {
+  QuestionnaireQueueProps,
+  QuestionnaireQuestion,
+  QuestionnaireQueueProps as AskQueueProps,
+  QuestionnaireQuestion as QueueAsk,
+};

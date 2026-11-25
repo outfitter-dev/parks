@@ -92,13 +92,16 @@ const variantAliases = {
   destructive: { tone: "destructive", variant: "solid" },
 } as const satisfies Record<string, { tone: Tone; variant: Emphasis }>;
 
-type ButtonVariant = Emphasis | keyof typeof variantAliases;
+type ButtonVariant = Emphasis | keyof typeof variantAliases | "backdrop";
 
 function resolveButton(
   variant: ButtonVariant | null | undefined,
   tone: Tone | undefined
 ) {
   const value = variant ?? "solid";
+  if (value === "backdrop") {
+    return { tone: tone ?? "neutral", variant: value };
+  }
   if (value in variantAliases) {
     const alias = variantAliases[value as keyof typeof variantAliases];
     return { tone: tone ?? alias.tone, variant: alias.variant as Emphasis };
@@ -110,7 +113,7 @@ type ButtonProps = ButtonPrimitive.Props &
   Omit<VariantProps<typeof buttonVariants>, "variant"> & {
     /** The colour role. Defaults to neutral, or to the tone an alias names. */
     tone?: Tone;
-    /** Emphasis: solid (default), tint, outline, secondary, ghost, link. */
+    /** Emphasis, or backdrop for a full-surface dismiss target. */
     variant?: ButtonVariant | null;
   };
 
@@ -132,7 +135,9 @@ function Button({
       data-tone={tone}
       data-variant={variant}
       className={cnState(
-        buttonVariants({ variant, size, shape }),
+        variant === "backdrop"
+          ? "bg-overlay animate-in fade-in-0 cursor-default duration-300 outline-none focus-visible:ring-3 focus-visible:ring-focus-ring"
+          : buttonVariants({ variant, size, shape }),
         "data-[tone=destructive]:focus-visible:border-destructive-border data-[tone=destructive]:focus-visible:ring-invalid-ring",
         className
       )}

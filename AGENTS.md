@@ -14,6 +14,8 @@ Read `README.md` and `docs/ui.md` before changing components or tokens. `docs/ui
 
 - This repository is public. Fixtures only: no real people, customer or product data, credentials or internal links. Fixture names come from National Parks and famous explorers and naturalists.
 - `packages/parks` imports only its own files and the packages it declares, and never names a product that uses it. Components use colour roles and the Tailwind scale: no literal colours or palette steps, no `/NN` opacity, no `dark:` overrides, no lengths beyond 1px and 2px hairlines. `test/ui-boundary.test.ts` enforces this.
+- Run the Parks linter on registry code to verify component usage. Reserve tests for behavior the linter cannot verify, such as rendering, interactions and package loading.
+- When a composition needs a lint exception or appearance override, try the existing primitive and compare its rendered states first. Extend the owning component family with a prop or variant when the design calls for it. Document why any remaining exception belongs to the caller.
 - Add shadcn components with `bun run ui:add`, never by hand-copying, and keep the tone handling when re-adding one (see `docs/ui.md`).
 - Every third-party asset, font, icon set or vendored code needs a licence that allows it and an entry in `THIRD_PARTY_NOTICES.md`. Anything of unclear origin stays out.
 - Strict TypeScript: no `any`, no `as` casts where a narrowing works. Do not hard-wrap Markdown prose.

@@ -23,7 +23,7 @@ See [`packages/parks/README.md`](packages/parks/README.md) for theming, the Park
 
 ## Registry
 
-The showcase serves a shadcn registry at `parks.outfitter.dev/r`. Add `"@outfitter": "https://parks.outfitter.dev/r/{name}.json"` to an app's `components.json` registries, then `bunx shadcn add @outfitter/ask`. Blocks depend on `@outfitter/parks` instead of copying its components or tokens. Their sources live in `apps/showcase/registry`, are listed in `registry.json`, and are built by `bun run registry:build`.
+The showcase serves a shadcn registry at `parks.outfitter.dev/r`. Add `"@outfitter": "https://parks.outfitter.dev/r/{name}.json"` to an app's `components.json` registries, then `bunx shadcn add @outfitter/questionnaire-queue`. Blocks depend on `@outfitter/parks` instead of copying its components or tokens. Their sources live in `apps/showcase/registry`, are listed in `registry.json`, and are built by `bun run registry:build`.
 
 ## Layout
 

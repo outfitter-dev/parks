@@ -29,7 +29,7 @@ Re-adding a component that already exists overwrites the file. Badge, Button, Al
 
 ## Tone and emphasis
 
-Colour and emphasis are separate props. `tone` is the colour role: `neutral`, `info`, `success`, `warning`, `destructive`, `brand` or `merged` (`packages/parks/src/lib/tone.ts`). `variant` is emphasis only: Badge takes `tint` (default), `solid`, `outline`, `plain`; Button takes `solid` (default), `tint`, `secondary`, `outline`, `ghost`, `link`. Any tone works with any variant. Never leave an `outline` button on its own: a lone secondary action is `secondary` (grey); outline pairs with a solid button.
+Colour and emphasis are separate props. `tone` is the colour role: `neutral`, `info`, `success`, `warning`, `destructive`, `brand` or `merged` (`packages/parks/src/lib/tone.ts`). `variant` is emphasis only: Badge takes `tint` (default), `solid`, `outline`, `plain`; Button takes `solid` (default), `tint`, `secondary`, `outline`, `ghost`, `link`. Any tone works with any emphasis variant. A full-surface dismiss target uses `Button variant="backdrop"`; the caller places it over the region it dismisses and supplies the accessible action name. Never leave an `outline` button on its own: a lone secondary action is `secondary` (grey); outline pairs with a solid button.
 
 A component sets `data-tone` and its classes read the `--tone-*` roles from `globals.css` (`bg-tone-fill`, `text-tone-foreground`, `ring-tone-border`, `bg-tone-mark` and so on), so there is no compound class per tone and variant. Use the same utilities to give a custom element a tone: set `data-tone` on it.
 
@@ -41,6 +41,8 @@ Build any row of label, meta and trailing action with `Item` (`packages/parks/sr
 
 `Item` takes `variant` (`default`, `outline`, `muted`), `size` (`default`, `sm`, `xs`; `xs` is one control high) and `selected`. Render it as a link or button with `render` to get hover and focus states. Wrap rows in `ItemGroup`: `open` spaces them apart, `list` divides them with rules, and `bounded` also puts them in one rounded panel. Neither component sets a list role; add `role="list"` and `role="listitem"` yourself when the rows are a real list rather than buttons or links.
 
+An unread queue entry uses `ItemDescription emphasis="strong"` when its question needs the primary text colour. An icon with a notification dot uses `StatusDot variant="overlay"` to keep the dot distinct from the glyph underneath.
+
 Disclosure rows that open in place, such as a `TraceStep` with output, stay on Collapsible.
 
 Menu, select and nav rows share one recipe in `packages/parks/src/lib/row.ts`, so weight, padding, icon size and the highlighted state match. Use `NavItem` for a nav link (`current` sets `aria-current="page"` and the same fill as a selected Item; `size="sm"` for dense lists). Menu items, labels and sub-menu triggers take `indent` to line up past an icon column; shadcn's `inset` still works as an alias, but it is not the `--inset` text padding.
@@ -48,6 +50,8 @@ Menu, select and nav rows share one recipe in `packages/parks/src/lib/row.ts`, s
 ## Cards and headers
 
 Every card-like box is a `Card`. `variant` sets the look: `raised` (the default), `outline` (an edge, no shadow, for dense cards in a list), `filled` (a panel fill, for stat tiles) and `tray` (a muted well that holds other cards, which take its concentric radius). `size` is `sm`, `default` or `lg`, and the radius follows the padding. `selected` is the one selected look, a brand ring; rendering a card as a link or button (`render`) makes it `interactive`. A card with no header, content or footer pads evenly, so a bare card needs no padding classes.
+
+Use `PopoverContent variant="frame"` for a floating panel that shares the surrounding shell’s typography, corners and shadow. The shell owns the anchor, dimensions and positioning.
 
 Card, Dialog, Popover and Alert headers share one grid (`packages/parks/src/lib/header.ts`): lead, title, description, meta, then actions. Meta and actions take their own columns, so an Alert with both a time and an action does not overlap. `CardLead` takes an icon, Mark or Avatar; `CardMeta` a time or count; `CardAction` any number of buttons. Titles are `font-semibold` on frames (Card, Dialog) and `font-medium` on rows and popovers (Item, Popover, Alert). `GroupLabel` is the one overline style for a group of rows; menu and select labels use the same style.
 
@@ -84,7 +88,7 @@ These come from shadcn as is, tuned to the tokens above. The workbench shows eac
 ## Data, content and layout
 
 - **Data table.** `#components/data-table` follows shadcn's TanStack Table v9 guide on our `Table`. `useDataTable` and `dataTableColumns` share one feature set (filtering, sorting, visibility, selection, pagination); add `dataTableSelectColumn`, `DataTableColumnHeader`, `DataTableToolbar` and `DataTablePagination` as needed. Read state from `table.state`; v9 has no `getState()`.
-- **Questionnaire.** From `@shadcn/react`. `Questionnaire` with `shortcuts` (`letters` or `numbers`) makes A–D or 1–9 real keys while focus is in the form; `QuestionnaireItem` takes `name` and `multiple`. The Needs you asks are built on it. Radio and checkbox indicators are separate elements because anything with `rounded-full` is forced round.
+- **Questionnaire.** From `@shadcn/react`. `Questionnaire` with `shortcuts` (`letters` or `numbers`) makes A–D or 1–9 real keys while focus is in the form; `QuestionnaireItem` takes `name` and `multiple`. `QuestionnaireForm` composes one question with stacked choices or a tray. `QuestionnaireChoices variant="list"` groups choices within one frame. A navigable questionnaire queue uses `QuestionnaireStep` for each jump target in its progress strip. Radio and checkbox indicators are separate elements because anything with `rounded-full` is forced round.
 - **HaloSignal and Stat.** `HaloSignal` is the loading signal for work in progress: a dot in a halo with a travelling arc, coloured by `tone` and still under reduced motion. A static state is a plain `StatusDot` with text. `Stat` is a stat tile (label, value, optional note) on a filled card; place tiles in a `<dl>`.
 - **Message and Trace.** `Message` is one turn in a conversation (`from="you"` sits in a bubble, `from="agent"` reads as plain content). `Trace` lists an agent's steps as `TraceStep`s with an icon, title, `detail` and `status` (`done`, `running`, `failed`); a step with children opens in place.
 - **Attachment.** An uploaded file, with idle, uploading, done and error states. Context chips in the composer stay as Badges.

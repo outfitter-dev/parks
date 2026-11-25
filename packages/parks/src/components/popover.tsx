@@ -21,9 +21,12 @@ function PopoverContent({
   side = "bottom",
   sideOffset = 4,
   anchor,
+  variant = "default",
   ...props
-}: PopoverPrimitive.Popup.Props &
-  Pick<
+}: PopoverPrimitive.Popup.Props & {
+  /** A frame preserves the surrounding page typography and shell geometry. */
+  variant?: "default" | "frame";
+} & Pick<
     PopoverPrimitive.Positioner.Props,
     "align" | "alignOffset" | "side" | "sideOffset" | "anchor"
   >) {
@@ -39,8 +42,12 @@ function PopoverContent({
       >
         <PopoverPrimitive.Popup
           data-slot="popover-content"
+          data-variant={variant}
           className={cnState(
-            "z-50 flex w-72 origin-(--transform-origin) flex-col gap-2.5 rounded-lg bg-popover p-2.5 text-sm text-popover-foreground shadow-md ring-1 ring-border-muted outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+            "z-50 flex w-72 origin-(--transform-origin) flex-col bg-popover text-popover-foreground ring-1 ring-border-muted outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
+            variant === "frame"
+              ? "gap-0 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] px-2 text-[length:inherit] leading-[inherit] shadow-(--shadow-frame) data-closed:slide-out-to-left-2"
+              : "gap-2.5 rounded-lg p-2.5 text-sm shadow-md data-open:zoom-in-95 data-closed:zoom-out-95",
             className
           )}
           {...props}

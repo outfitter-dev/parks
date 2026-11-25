@@ -11,6 +11,8 @@ import type { AppNavigation } from "./components/parks/app-shell/app-sidebar";
 import { AskQueue } from "./components/parks/ask-queue/ask-queue";
 import { Ask } from "./components/parks/ask/ask";
 import { CodeBlock } from "./components/parks/code-block/code-block";
+import { QuestionnaireQueue } from "./components/parks/questionnaire-queue/questionnaire-queue";
+import { QuestionnaireForm } from "./components/parks/questionnaire/questionnaire";
 
 const options = [
   {
@@ -49,6 +51,22 @@ const linked: AppNavigation = {
 
 // [block, rendered HTML, text it must contain, text it must not contain]
 const renders: [string, string, string[], string[]?][] = [
+  [
+    "questionnaire",
+    renderToStaticMarkup(
+      <QuestionnaireForm
+        name="canonical"
+        question="Which trail?"
+        options={options}
+      />
+    ),
+    ["Which trail?", "Recommended"],
+  ],
+  [
+    "questionnaire-queue",
+    renderToStaticMarkup(<QuestionnaireQueue title="Questions" asks={[]} />),
+    ["Questions", "Nothing waiting"],
+  ],
   [
     "ask",
     renderToStaticMarkup(

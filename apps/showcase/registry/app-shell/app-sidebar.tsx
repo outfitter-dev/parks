@@ -58,14 +58,14 @@ export type AppNavigation = {
 function NavDot() {
   return (
     <span className="ml-auto grid size-5 place-items-center">
-      <StatusDot size="xs" label="New" className="bg-tone-strong" />
+      <StatusDot size="xs" label="New" />
     </span>
   );
 }
 
 function Brand({ mark }: { mark: string }) {
   return (
-    <Mark tone="brand" variant="solid" className="font-normal">
+    <Mark tone="brand" variant="solid">
       {mark}
     </Mark>
   );
@@ -133,14 +133,11 @@ export function SidebarPanel({
         {hideAt === "end" || onDock ? hide : null}
       </div>
       {search ? (
-        <button
-          type="button"
-          className="bg-background text-muted-foreground mt-3 mb-2 flex h-(--control-h) items-center gap-2 rounded-lg border ps-[calc(--spacing(2)-1px)] pe-2"
-        >
+        <Button variant="secondary" shape="rect" className="mt-3 mb-2 w-full">
           <MagnifierIcon className="size-4 shrink-0" />
           Search
           <Kbd className="ml-auto">⌘K</Kbd>
-        </button>
+        </Button>
       ) : (
         <div className="mt-3" />
       )}
@@ -153,7 +150,6 @@ export function SidebarPanel({
                 key={id}
                 render={<Anchor href={href ?? "#"} />}
                 current={id === place}
-                className="rounded-lg"
               >
                 <Icon />
                 <span className="truncate">{label}</span>
@@ -181,7 +177,7 @@ export function SidebarPanel({
               <button type="button" />
             )
           }
-          className="mt-auto rounded-lg"
+          className="mt-auto"
         >
           <SettingsIcon />
           <span className="truncate">{account}</span>
@@ -246,12 +242,19 @@ export function SidebarRail({
           openOnHover
           delay={0}
           closeDelay={200}
-          aria-label="Show sidebar"
-          className="hover:bg-fill-subtle data-popup-open:bg-fill-subtle grid size-9 place-items-center rounded-lg"
+          render={
+            <Button
+              variant="ghost"
+              size="icon-lg"
+              shape="rect"
+              aria-label="Show sidebar"
+            />
+          }
         >
           <Brand mark={mark} />
         </PopoverTrigger>
         <PopoverContent
+          variant="frame"
           anchor={anchor}
           side="right"
           align="start"
@@ -278,8 +281,6 @@ export function SidebarRail({
             height: `calc(var(--anchor-height) - ${margin * 2}px)`,
             width: SIDEBAR_WIDTH,
           }}
-          // Inherit the page type, not the popover's text-sm, so rows keep the docked line height.
-          className="bg-popover data-open:zoom-in-100 data-closed:zoom-out-100 data-closed:slide-out-to-left-2 gap-0 rounded-[calc((var(--radius)+var(--spacing)*2)*var(--corner-scale))] px-2 text-[length:inherit] leading-[inherit] shadow-(--shadow-frame)"
         >
           <SidebarPanel
             navigation={navigation}
@@ -297,10 +298,12 @@ export function SidebarRail({
         <Tooltip>
           <TooltipTrigger
             render={
-              <button
-                type="button"
+              <Button
+                variant="ghost"
+                size="icon-lg"
+                shape="rect"
                 aria-label="Search"
-                className={cn(item, "mt-3")}
+                className="mt-3"
               />
             }
           >
@@ -333,7 +336,8 @@ export function SidebarRail({
                   {count || dot ? (
                     <StatusDot
                       size="xs"
-                      className="bg-tone-strong ring-canvas absolute end-1.5 top-1.5 ring-2"
+                      variant="overlay"
+                      className="absolute end-1.5 top-1.5"
                     />
                   ) : null}
                 </TooltipTrigger>
@@ -359,10 +363,12 @@ export function SidebarRail({
                   className={cn(item, "mt-auto")}
                 />
               ) : (
-                <button
-                  type="button"
+                <Button
+                  variant="ghost"
+                  size="icon-lg"
+                  shape="rect"
                   aria-label="Account"
-                  className={cn(item, "mt-auto")}
+                  className="mt-auto"
                 />
               )
             }

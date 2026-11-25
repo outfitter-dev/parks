@@ -263,11 +263,11 @@ export function AppFrame({
   }, [overlay]);
 
   const backdrop = overlay ? (
-    <button
-      type="button"
+    <Button
+      variant="backdrop"
       aria-label="Hide sidebar"
       onClick={hide}
-      className="bg-overlay animate-in fade-in-0 absolute inset-0 z-20 duration-300"
+      className="absolute inset-0 z-20"
     />
   ) : null;
 
