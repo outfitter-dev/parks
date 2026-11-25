@@ -12,7 +12,7 @@ const skip = new Set([
   "node_modules",
   ".next",
   ".turbo",
-  ".wrangler",
+  ".cloudflare",
   "dist",
   "out",
 ]);

@@ -22,8 +22,7 @@
     "test": "vitest run",
     "dev": "bun scripts/dev.ts",
     "build": "bun run --cwd apps/showcase build",
-    "deploy:check": "bun run build && wrangler deploy --dry-run",
-    "preview": "bun run build && wrangler dev",
+    "deploy:check": "bun run build && cf deploy apps/showcase/out --dry-run",
     "changeset": "changeset",
     "version": "changeset version && bun install",
     "ui:add": "bun scripts/ui-add.ts",
@@ -31,13 +30,15 @@
     "check:consumer": "bun scripts/check-consumer.ts",
     "ui:theme": "bun scripts/ui-theme.ts",
     "check:contrast": "bun scripts/check-contrast.ts",
-    "registry:build": "shadcn build registry.json -o apps/showcase/public/r"
+    "registry:build": "shadcn build registry.json -o apps/showcase/public/r",
+    "deploy": "bun run build && cf deploy apps/showcase/out"
   },
   "devDependencies": {
     "@changesets/cli": "3.0.3",
     "@tailwindcss/cli": "4.3.5",
     "@types/node": "26.6.6",
     "@types/react": "19.3.0",
+    "cf": "1.0.0-rc.6",
     "lefthook": "2.2.2",
     "oxfmt": "0.80.0",
     "oxlint": "1.95.0",
@@ -48,11 +49,11 @@
     "tailwindcss": "4.3.5",
     "typescript": "7.0.2",
     "ultracite": "8.3.1",
-    "vitest": "5.1.1",
-    "wrangler": "4.168.0"
+    "vitest": "5.1.1"
   },
   "engines": {
-    "bun": ">=1.4.4"
+    "bun": ">=1.4.4",
+    "node": ">=22.15.0"
   },
   "packageManager": "bun@1.4.4",
   "trustedDependencies": []
