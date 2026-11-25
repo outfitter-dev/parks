@@ -1,0 +1,16 @@
+{
+  "categories": {
+    "correctness": "off"
+  },
+  "jsPlugins": ["@outfitter/parks/oxlint"],
+  "overrides": [
+    {
+      "files": ["**/*.jsx", "**/*.tsx"],
+      "rules": {
+        "parks/layout-only-classname": "error",
+        "parks/no-rebuilt-primitives": "error",
+        "parks/icon-button-label": "error"
+      }
+    }
+  ]
+}

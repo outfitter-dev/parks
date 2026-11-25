@@ -1,0 +1,5 @@
+import { Button as Action } from "@outfitter/parks/components/button";
+import { cn } from "@outfitter/parks/lib/utils";
+export function BadLayout({ active }: { active: boolean }) {
+  return <Action className={cn("w-full", active && "md:bg-red-500")}>Save</Action>;
+}

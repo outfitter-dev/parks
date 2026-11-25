@@ -4,6 +4,17 @@ import core from "ultracite/oxlint/core";
 export default defineConfig({
   env: { browser: true, node: true },
   extends: [core],
+  jsPlugins: ["./packages/parks/oxlint/index.mjs"],
+  overrides: [
+    {
+      files: ["apps/showcase/registry/**/*.tsx"],
+      rules: {
+        "parks/layout-only-classname": "warn",
+        "parks/no-rebuilt-primitives": "warn",
+        "parks/icon-button-label": "warn",
+      },
+    },
+  ],
   ignorePatterns: [
     ...(core.ignorePatterns ?? []),
     "dist/**",

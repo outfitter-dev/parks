@@ -1,0 +1,27 @@
+import { Button as Action } from "@outfitter/parks/components/button";
+import { Input } from "@outfitter/parks/components/input";
+import { cn } from "@outfitter/parks/lib/utils";
+import { Button as Unrelated } from "other-library";
+
+export function Good({ compact }: { compact: boolean }) {
+  return (
+    <>
+      <Action className="ms-2 w-full md:flex-1">Save</Action>
+      <Action className={cn("md:w-full", compact && "ms-2", compact ? "flex-1" : "self-start")}>Save</Action>
+      <Action render={<button type="button" />}>Save</Action>
+      <Unrelated className="bg-red-500">Save</Unrelated>
+      <Action size="icon" aria-label="Save"><svg /></Action>
+      <Action size="icon"><svg /><span className="sr-only">Save</span></Action>
+      <Action aria-labelledby="save-label"><svg /></Action>
+      <span id="save-label">Save</span>
+      <Input aria-label="Name" />
+      <input type="hidden" value="fixture" />
+      <input type="file" aria-label="Upload" />
+      <input type="range" aria-label="Volume" />
+    </>
+  );
+}
+
+export function Local({ Action }: { Action: React.ComponentType<{ className: string }> }) {
+  return <Action className="bg-red-500" />;
+}
