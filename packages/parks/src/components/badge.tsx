@@ -7,6 +7,7 @@ import type { VariantProps } from "class-variance-authority";
 import type { ReactNode } from "react";
 
 import { StatusDot } from "#components/status-dot";
+import { trimLabel } from "#lib/label";
 import { isTone } from "#lib/tone";
 import type { Tone } from "#lib/tone";
 import { cnState } from "#lib/utils";
@@ -196,16 +197,11 @@ function Badge({
     !lead &&
     (children == null || children === false || children === "");
 
-  let content: ReactNode = children;
+  const label = trimLabel(children, "text-trim label-lift min-w-0");
+  let content: ReactNode = label;
   if (isCount) {
-    content = formatCount(count, max);
+    content = trimLabel(formatCount(count, max));
   } else if (lead) {
-    const label =
-      typeof children === "string" || typeof children === "number" ? (
-        <span className="text-trim label-lift min-w-0">{children}</span>
-      ) : (
-        children
-      );
     content = (
       <>
         {lead === "dot" ? (
@@ -252,7 +248,6 @@ function Badge({
           lead === "icon" &&
             "[--badge-mark:--spacing(3)] data-[size=lg]:[--badge-mark:--spacing(4)]",
           lead === "dot" && shape !== "pill" ? dotInset : markInset,
-          !lead && !isCount && "label-lift-box",
           className
         ),
         children: content,
