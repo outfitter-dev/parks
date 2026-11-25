@@ -13,8 +13,8 @@ import { Button } from "@outfitter/parks/components/button";
 import { cn } from "@outfitter/parks/lib/utils";
 import type { FileContents } from "@pierre/diffs";
 import { File } from "@pierre/diffs/react";
-import { CheckIcon } from "@solar-icons/react/outline/check";
-import { CopyIcon } from "@solar-icons/react/outline/copy";
+import { CheckIcon } from "@solar-icons/react/linear/check";
+import { CopyIcon } from "@solar-icons/react/linear/copy";
 import { useMemo, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 

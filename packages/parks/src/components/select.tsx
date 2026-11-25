@@ -1,9 +1,9 @@
 "use client";
 
 import { Select as SelectPrimitive } from "@base-ui/react/select";
-import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
-import { AltArrowUpIcon } from "@solar-icons/react/outline/alt-arrow-up";
-import { CheckIcon } from "@solar-icons/react/outline/check";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
+import { AltArrowUpIcon } from "@solar-icons/react/linear/alt-arrow-up";
+import { CheckIcon } from "@solar-icons/react/linear/check";
 import * as React from "react";
 
 import { groupLabel } from "#lib/header";

@@ -2,8 +2,8 @@
 
 import { Combobox as ComboboxPrimitive } from "@base-ui/react";
 import { CloseIcon } from "@solar-icons/react/bold/close";
-import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
-import { CheckIcon } from "@solar-icons/react/outline/check";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
+import { CheckIcon } from "@solar-icons/react/linear/check";
 import * as React from "react";
 
 import { Button } from "#components/button";

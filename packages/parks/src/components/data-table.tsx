@@ -15,15 +15,15 @@
  *   <DataTablePagination table={table} />
  */
 
-import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
-import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left";
-import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
-import { AltArrowUpIcon } from "@solar-icons/react/outline/alt-arrow-up";
-import { DoubleAltArrowLeftIcon } from "@solar-icons/react/outline/double-alt-arrow-left";
-import { DoubleAltArrowRightIcon } from "@solar-icons/react/outline/double-alt-arrow-right";
-import { EyeClosedIcon } from "@solar-icons/react/outline/eye-closed";
-import { SortVerticalIcon } from "@solar-icons/react/outline/sort-vertical";
-import { Tuning2Icon } from "@solar-icons/react/outline/tuning-2";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
+import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
+import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
+import { AltArrowUpIcon } from "@solar-icons/react/linear/alt-arrow-up";
+import { DoubleAltArrowLeftIcon } from "@solar-icons/react/linear/double-alt-arrow-left";
+import { DoubleAltArrowRightIcon } from "@solar-icons/react/linear/double-alt-arrow-right";
+import { EyeClosedIcon } from "@solar-icons/react/linear/eye-closed";
+import { SortVerticalIcon } from "@solar-icons/react/linear/sort-vertical";
+import { Tuning2Icon } from "@solar-icons/react/linear/tuning-2";
 import {
   columnFilteringFeature,
   columnVisibilityFeature,

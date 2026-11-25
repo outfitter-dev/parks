@@ -67,226 +67,226 @@ import { UploadMinimalisticIcon as UploadMinimalisticSolid } from "@solar-icons/
 import { UsersGroupRoundedIcon as UsersGroupRoundedSolid } from "@solar-icons/react/bold/users-group-rounded";
 import { Widget2Icon as Widget2Solid } from "@solar-icons/react/bold/widget-2";
 import { WrenchIcon as WrenchSolid } from "@solar-icons/react/bold/wrench";
-import { AltArrowDownIcon as AltArrowDownOutline } from "@solar-icons/react/outline/alt-arrow-down";
-import { AltArrowLeftIcon as AltArrowLeftOutline } from "@solar-icons/react/outline/alt-arrow-left";
-import { AltArrowRightIcon as AltArrowRightOutline } from "@solar-icons/react/outline/alt-arrow-right";
-import { AltArrowUpIcon as AltArrowUpOutline } from "@solar-icons/react/outline/alt-arrow-up";
-import { ArrowRightIcon as ArrowRightOutline } from "@solar-icons/react/outline/arrow-right";
-import { ArrowUpIcon as ArrowUpOutline } from "@solar-icons/react/outline/arrow-up";
-import { BellOffIcon as BellOffOutline } from "@solar-icons/react/outline/bell-off";
-import { BoltIcon as BoltOutline } from "@solar-icons/react/outline/bolt";
-import { BoxIcon as BoxOutline } from "@solar-icons/react/outline/box";
-import { ChatRoundDotsIcon as ChatRoundDotsOutline } from "@solar-icons/react/outline/chat-round-dots";
-import { ChatRoundWarningIcon as ChatRoundWarningOutline } from "@solar-icons/react/outline/chat-round-warning";
-import { CheckIcon as CheckOutline } from "@solar-icons/react/outline/check";
-import { CheckCircleIcon as CheckCircleOutline } from "@solar-icons/react/outline/check-circle";
-import { ChecklistIcon as ChecklistOutline } from "@solar-icons/react/outline/checklist";
-import { CloseIcon as CloseOutline } from "@solar-icons/react/outline/close";
-import { CloseCircleIcon as CloseCircleOutline } from "@solar-icons/react/outline/close-circle";
-import { CodeSquareIcon as CodeSquareOutline } from "@solar-icons/react/outline/code-square";
-import { CopyIcon as CopyOutline } from "@solar-icons/react/outline/copy";
-import { DangerCircleIcon as DangerCircleOutline } from "@solar-icons/react/outline/danger-circle";
-import { DangerTriangleIcon as DangerTriangleOutline } from "@solar-icons/react/outline/danger-triangle";
-import { DatabaseIcon as DatabaseOutline } from "@solar-icons/react/outline/database";
-import { DocumentTextIcon as DocumentTextOutline } from "@solar-icons/react/outline/document-text";
-import { DoubleAltArrowLeftIcon as DoubleAltArrowLeftOutline } from "@solar-icons/react/outline/double-alt-arrow-left";
-import { DoubleAltArrowRightIcon as DoubleAltArrowRightOutline } from "@solar-icons/react/outline/double-alt-arrow-right";
-import { EyeClosedIcon as EyeClosedOutline } from "@solar-icons/react/outline/eye-closed";
-import { FolderIcon as FolderOutline } from "@solar-icons/react/outline/folder";
-import { GalleryIcon as GalleryOutline } from "@solar-icons/react/outline/gallery";
-import { GitBranchIcon as GitBranchOutline } from "@solar-icons/react/outline/git-branch";
-import { GitCommitIcon as GitCommitOutline } from "@solar-icons/react/outline/git-commit";
-import { GitPullRequestIcon as GitPullRequestOutline } from "@solar-icons/react/outline/git-pull-request";
-import { HistoryIcon as HistoryOutline } from "@solar-icons/react/outline/history";
-import { HomeIcon as HomeOutline } from "@solar-icons/react/outline/home";
-import { InboxIcon as InboxOutline } from "@solar-icons/react/outline/inbox";
-import { InfoCircleIcon as InfoCircleOutline } from "@solar-icons/react/outline/info-circle";
-import { KeyIcon as KeyOutline } from "@solar-icons/react/outline/key";
-import { LayersMinimalisticIcon as LayersMinimalisticOutline } from "@solar-icons/react/outline/layers-minimalistic";
-import { MagnifierIcon as MagnifierOutline } from "@solar-icons/react/outline/magnifier";
-import { MenuDotsIcon as MenuDotsOutline } from "@solar-icons/react/outline/menu-dots";
-import { MinusIcon as MinusOutline } from "@solar-icons/react/outline/minus";
-import { PanelLeftCloseIcon as PanelLeftCloseOutline } from "@solar-icons/react/outline/panel-left-close";
-import { PanelLeftOpenIcon as PanelLeftOpenOutline } from "@solar-icons/react/outline/panel-left-open";
-import { PaperclipIcon as PaperclipOutline } from "@solar-icons/react/outline/paperclip";
-import { PauseIcon as PauseOutline } from "@solar-icons/react/outline/pause";
-import { PenIcon as PenOutline } from "@solar-icons/react/outline/pen";
-import { PenNewSquareIcon as PenNewSquareOutline } from "@solar-icons/react/outline/pen-new-square";
-import { RefreshIcon as RefreshOutline } from "@solar-icons/react/outline/refresh";
-import { RoutingIcon as RoutingOutline } from "@solar-icons/react/outline/routing";
-import { RulerIcon as RulerOutline } from "@solar-icons/react/outline/ruler";
-import { SettingsIcon as SettingsOutline } from "@solar-icons/react/outline/settings";
-import { ShieldCheckIcon as ShieldCheckOutline } from "@solar-icons/react/outline/shield-check";
-import { ShieldKeyholeIcon as ShieldKeyholeOutline } from "@solar-icons/react/outline/shield-keyhole";
-import { SortVerticalIcon as SortVerticalOutline } from "@solar-icons/react/outline/sort-vertical";
-import { StarsIcon as StarsOutline } from "@solar-icons/react/outline/stars";
-import { StructureIcon as StructureOutline } from "@solar-icons/react/outline/structure";
-import { TrashBinMinimalisticIcon as TrashBinMinimalisticOutline } from "@solar-icons/react/outline/trash-bin-minimalistic";
-import { Tuning2Icon as Tuning2Outline } from "@solar-icons/react/outline/tuning-2";
-import { UploadMinimalisticIcon as UploadMinimalisticOutline } from "@solar-icons/react/outline/upload-minimalistic";
-import { UsersGroupRoundedIcon as UsersGroupRoundedOutline } from "@solar-icons/react/outline/users-group-rounded";
-import { Widget2Icon as Widget2Outline } from "@solar-icons/react/outline/widget-2";
-import { WrenchIcon as WrenchOutline } from "@solar-icons/react/outline/wrench";
+import { AltArrowDownIcon as AltArrowDownOutline } from "@solar-icons/react/linear/alt-arrow-down";
+import { AltArrowLeftIcon as AltArrowLeftOutline } from "@solar-icons/react/linear/alt-arrow-left";
+import { AltArrowRightIcon as AltArrowRightOutline } from "@solar-icons/react/linear/alt-arrow-right";
+import { AltArrowUpIcon as AltArrowUpOutline } from "@solar-icons/react/linear/alt-arrow-up";
+import { ArrowRightIcon as ArrowRightOutline } from "@solar-icons/react/linear/arrow-right";
+import { ArrowUpIcon as ArrowUpOutline } from "@solar-icons/react/linear/arrow-up";
+import { BellOffIcon as BellOffOutline } from "@solar-icons/react/linear/bell-off";
+import { BoltIcon as BoltOutline } from "@solar-icons/react/linear/bolt";
+import { BoxIcon as BoxOutline } from "@solar-icons/react/linear/box";
+import { ChatRoundDotsIcon as ChatRoundDotsOutline } from "@solar-icons/react/linear/chat-round-dots";
+import { ChatRoundWarningIcon as ChatRoundWarningOutline } from "@solar-icons/react/linear/chat-round-warning";
+import { CheckIcon as CheckOutline } from "@solar-icons/react/linear/check";
+import { CheckCircleIcon as CheckCircleOutline } from "@solar-icons/react/linear/check-circle";
+import { ChecklistIcon as ChecklistOutline } from "@solar-icons/react/linear/checklist";
+import { CloseIcon as CloseOutline } from "@solar-icons/react/linear/close";
+import { CloseCircleIcon as CloseCircleOutline } from "@solar-icons/react/linear/close-circle";
+import { CodeSquareIcon as CodeSquareOutline } from "@solar-icons/react/linear/code-square";
+import { CopyIcon as CopyOutline } from "@solar-icons/react/linear/copy";
+import { DangerCircleIcon as DangerCircleOutline } from "@solar-icons/react/linear/danger-circle";
+import { DangerTriangleIcon as DangerTriangleOutline } from "@solar-icons/react/linear/danger-triangle";
+import { DatabaseIcon as DatabaseOutline } from "@solar-icons/react/linear/database";
+import { DocumentTextIcon as DocumentTextOutline } from "@solar-icons/react/linear/document-text";
+import { DoubleAltArrowLeftIcon as DoubleAltArrowLeftOutline } from "@solar-icons/react/linear/double-alt-arrow-left";
+import { DoubleAltArrowRightIcon as DoubleAltArrowRightOutline } from "@solar-icons/react/linear/double-alt-arrow-right";
+import { EyeClosedIcon as EyeClosedOutline } from "@solar-icons/react/linear/eye-closed";
+import { FolderIcon as FolderOutline } from "@solar-icons/react/linear/folder";
+import { GalleryIcon as GalleryOutline } from "@solar-icons/react/linear/gallery";
+import { GitBranchIcon as GitBranchOutline } from "@solar-icons/react/linear/git-branch";
+import { GitCommitIcon as GitCommitOutline } from "@solar-icons/react/linear/git-commit";
+import { GitPullRequestIcon as GitPullRequestOutline } from "@solar-icons/react/linear/git-pull-request";
+import { HistoryIcon as HistoryOutline } from "@solar-icons/react/linear/history";
+import { HomeIcon as HomeOutline } from "@solar-icons/react/linear/home";
+import { InboxIcon as InboxOutline } from "@solar-icons/react/linear/inbox";
+import { InfoCircleIcon as InfoCircleOutline } from "@solar-icons/react/linear/info-circle";
+import { KeyIcon as KeyOutline } from "@solar-icons/react/linear/key";
+import { LayersMinimalisticIcon as LayersMinimalisticOutline } from "@solar-icons/react/linear/layers-minimalistic";
+import { MagnifierIcon as MagnifierOutline } from "@solar-icons/react/linear/magnifier";
+import { MenuDotsIcon as MenuDotsOutline } from "@solar-icons/react/linear/menu-dots";
+import { MinusIcon as MinusOutline } from "@solar-icons/react/linear/minus";
+import { PanelLeftCloseIcon as PanelLeftCloseOutline } from "@solar-icons/react/linear/panel-left-close";
+import { PanelLeftOpenIcon as PanelLeftOpenOutline } from "@solar-icons/react/linear/panel-left-open";
+import { PaperclipIcon as PaperclipOutline } from "@solar-icons/react/linear/paperclip";
+import { PauseIcon as PauseOutline } from "@solar-icons/react/linear/pause";
+import { PenIcon as PenOutline } from "@solar-icons/react/linear/pen";
+import { PenNewSquareIcon as PenNewSquareOutline } from "@solar-icons/react/linear/pen-new-square";
+import { RefreshIcon as RefreshOutline } from "@solar-icons/react/linear/refresh";
+import { RoutingIcon as RoutingOutline } from "@solar-icons/react/linear/routing";
+import { RulerIcon as RulerOutline } from "@solar-icons/react/linear/ruler";
+import { SettingsIcon as SettingsOutline } from "@solar-icons/react/linear/settings";
+import { ShieldCheckIcon as ShieldCheckOutline } from "@solar-icons/react/linear/shield-check";
+import { ShieldKeyholeIcon as ShieldKeyholeOutline } from "@solar-icons/react/linear/shield-keyhole";
+import { SortVerticalIcon as SortVerticalOutline } from "@solar-icons/react/linear/sort-vertical";
+import { StarsIcon as StarsOutline } from "@solar-icons/react/linear/stars";
+import { StructureIcon as StructureOutline } from "@solar-icons/react/linear/structure";
+import { TrashBinMinimalisticIcon as TrashBinMinimalisticOutline } from "@solar-icons/react/linear/trash-bin-minimalistic";
+import { Tuning2Icon as Tuning2Outline } from "@solar-icons/react/linear/tuning-2";
+import { UploadMinimalisticIcon as UploadMinimalisticOutline } from "@solar-icons/react/linear/upload-minimalistic";
+import { UsersGroupRoundedIcon as UsersGroupRoundedOutline } from "@solar-icons/react/linear/users-group-rounded";
+import { Widget2Icon as Widget2Outline } from "@solar-icons/react/linear/widget-2";
+import { WrenchIcon as WrenchOutline } from "@solar-icons/react/linear/wrench";
 
 import { Specimen } from "./kit";
 
 const icons = [
   {
     name: "alt-arrow-down",
-    outline: AltArrowDownOutline,
+    linear: AltArrowDownOutline,
     solid: AltArrowDownSolid,
   },
   {
     name: "alt-arrow-left",
-    outline: AltArrowLeftOutline,
+    linear: AltArrowLeftOutline,
     solid: AltArrowLeftSolid,
   },
   {
     name: "alt-arrow-right",
-    outline: AltArrowRightOutline,
+    linear: AltArrowRightOutline,
     solid: AltArrowRightSolid,
   },
-  { name: "alt-arrow-up", outline: AltArrowUpOutline, solid: AltArrowUpSolid },
-  { name: "arrow-right", outline: ArrowRightOutline, solid: ArrowRightSolid },
-  { name: "arrow-up", outline: ArrowUpOutline, solid: ArrowUpSolid },
-  { name: "bell-off", outline: BellOffOutline, solid: BellOffSolid },
-  { name: "bolt", outline: BoltOutline, solid: BoltSolid },
-  { name: "box", outline: BoxOutline, solid: BoxSolid },
+  { name: "alt-arrow-up", linear: AltArrowUpOutline, solid: AltArrowUpSolid },
+  { name: "arrow-right", linear: ArrowRightOutline, solid: ArrowRightSolid },
+  { name: "arrow-up", linear: ArrowUpOutline, solid: ArrowUpSolid },
+  { name: "bell-off", linear: BellOffOutline, solid: BellOffSolid },
+  { name: "bolt", linear: BoltOutline, solid: BoltSolid },
+  { name: "box", linear: BoxOutline, solid: BoxSolid },
   {
     name: "chat-round-dots",
-    outline: ChatRoundDotsOutline,
+    linear: ChatRoundDotsOutline,
     solid: ChatRoundDotsSolid,
   },
   {
     name: "chat-round-warning",
-    outline: ChatRoundWarningOutline,
+    linear: ChatRoundWarningOutline,
     solid: ChatRoundWarningSolid,
   },
-  { name: "check", outline: CheckOutline, solid: CheckSolid },
+  { name: "check", linear: CheckOutline, solid: CheckSolid },
   {
     name: "check-circle",
-    outline: CheckCircleOutline,
+    linear: CheckCircleOutline,
     solid: CheckCircleSolid,
   },
-  { name: "checklist", outline: ChecklistOutline, solid: ChecklistSolid },
-  { name: "close", outline: CloseOutline, solid: CloseSolid },
+  { name: "checklist", linear: ChecklistOutline, solid: ChecklistSolid },
+  { name: "close", linear: CloseOutline, solid: CloseSolid },
   {
     name: "close-circle",
-    outline: CloseCircleOutline,
+    linear: CloseCircleOutline,
     solid: CloseCircleSolid,
   },
-  { name: "code-square", outline: CodeSquareOutline, solid: CodeSquareSolid },
-  { name: "copy", outline: CopyOutline, solid: CopySolid },
+  { name: "code-square", linear: CodeSquareOutline, solid: CodeSquareSolid },
+  { name: "copy", linear: CopyOutline, solid: CopySolid },
   {
     name: "danger-circle",
-    outline: DangerCircleOutline,
+    linear: DangerCircleOutline,
     solid: DangerCircleSolid,
   },
   {
     name: "danger-triangle",
-    outline: DangerTriangleOutline,
+    linear: DangerTriangleOutline,
     solid: DangerTriangleSolid,
   },
-  { name: "database", outline: DatabaseOutline, solid: DatabaseSolid },
+  { name: "database", linear: DatabaseOutline, solid: DatabaseSolid },
   {
     name: "document-text",
-    outline: DocumentTextOutline,
+    linear: DocumentTextOutline,
     solid: DocumentTextSolid,
   },
   {
     name: "double-alt-arrow-left",
-    outline: DoubleAltArrowLeftOutline,
+    linear: DoubleAltArrowLeftOutline,
     solid: DoubleAltArrowLeftSolid,
   },
   {
     name: "double-alt-arrow-right",
-    outline: DoubleAltArrowRightOutline,
+    linear: DoubleAltArrowRightOutline,
     solid: DoubleAltArrowRightSolid,
   },
-  { name: "eye-closed", outline: EyeClosedOutline, solid: EyeClosedSolid },
-  { name: "folder", outline: FolderOutline, solid: FolderSolid },
-  { name: "gallery", outline: GalleryOutline, solid: GallerySolid },
-  { name: "git-branch", outline: GitBranchOutline, solid: GitBranchSolid },
-  { name: "git-commit", outline: GitCommitOutline, solid: GitCommitSolid },
+  { name: "eye-closed", linear: EyeClosedOutline, solid: EyeClosedSolid },
+  { name: "folder", linear: FolderOutline, solid: FolderSolid },
+  { name: "gallery", linear: GalleryOutline, solid: GallerySolid },
+  { name: "git-branch", linear: GitBranchOutline, solid: GitBranchSolid },
+  { name: "git-commit", linear: GitCommitOutline, solid: GitCommitSolid },
   {
     name: "git-pull-request",
-    outline: GitPullRequestOutline,
+    linear: GitPullRequestOutline,
     solid: GitPullRequestSolid,
   },
-  { name: "history", outline: HistoryOutline, solid: HistorySolid },
-  { name: "home", outline: HomeOutline, solid: HomeSolid },
-  { name: "inbox", outline: InboxOutline, solid: InboxSolid },
-  { name: "info-circle", outline: InfoCircleOutline, solid: InfoCircleSolid },
-  { name: "key", outline: KeyOutline, solid: KeySolid },
+  { name: "history", linear: HistoryOutline, solid: HistorySolid },
+  { name: "home", linear: HomeOutline, solid: HomeSolid },
+  { name: "inbox", linear: InboxOutline, solid: InboxSolid },
+  { name: "info-circle", linear: InfoCircleOutline, solid: InfoCircleSolid },
+  { name: "key", linear: KeyOutline, solid: KeySolid },
   {
     name: "layers-minimalistic",
-    outline: LayersMinimalisticOutline,
+    linear: LayersMinimalisticOutline,
     solid: LayersMinimalisticSolid,
   },
-  { name: "magnifier", outline: MagnifierOutline, solid: MagnifierSolid },
-  { name: "menu-dots", outline: MenuDotsOutline, solid: MenuDotsSolid },
-  { name: "minus", outline: MinusOutline, solid: MinusSolid },
+  { name: "magnifier", linear: MagnifierOutline, solid: MagnifierSolid },
+  { name: "menu-dots", linear: MenuDotsOutline, solid: MenuDotsSolid },
+  { name: "minus", linear: MinusOutline, solid: MinusSolid },
   {
     name: "panel-left-close",
-    outline: PanelLeftCloseOutline,
+    linear: PanelLeftCloseOutline,
     solid: PanelLeftCloseSolid,
   },
   {
     name: "panel-left-open",
-    outline: PanelLeftOpenOutline,
+    linear: PanelLeftOpenOutline,
     solid: PanelLeftOpenSolid,
   },
-  { name: "paperclip", outline: PaperclipOutline, solid: PaperclipSolid },
-  { name: "pause", outline: PauseOutline, solid: PauseSolid },
-  { name: "pen", outline: PenOutline, solid: PenSolid },
+  { name: "paperclip", linear: PaperclipOutline, solid: PaperclipSolid },
+  { name: "pause", linear: PauseOutline, solid: PauseSolid },
+  { name: "pen", linear: PenOutline, solid: PenSolid },
   {
     name: "pen-new-square",
-    outline: PenNewSquareOutline,
+    linear: PenNewSquareOutline,
     solid: PenNewSquareSolid,
   },
-  { name: "refresh", outline: RefreshOutline, solid: RefreshSolid },
-  { name: "routing", outline: RoutingOutline, solid: RoutingSolid },
-  { name: "ruler", outline: RulerOutline, solid: RulerSolid },
-  { name: "settings", outline: SettingsOutline, solid: SettingsSolid },
+  { name: "refresh", linear: RefreshOutline, solid: RefreshSolid },
+  { name: "routing", linear: RoutingOutline, solid: RoutingSolid },
+  { name: "ruler", linear: RulerOutline, solid: RulerSolid },
+  { name: "settings", linear: SettingsOutline, solid: SettingsSolid },
   {
     name: "shield-check",
-    outline: ShieldCheckOutline,
+    linear: ShieldCheckOutline,
     solid: ShieldCheckSolid,
   },
   {
     name: "shield-keyhole",
-    outline: ShieldKeyholeOutline,
+    linear: ShieldKeyholeOutline,
     solid: ShieldKeyholeSolid,
   },
   {
     name: "sort-vertical",
-    outline: SortVerticalOutline,
+    linear: SortVerticalOutline,
     solid: SortVerticalSolid,
   },
-  { name: "stars", outline: StarsOutline, solid: StarsSolid },
-  { name: "structure", outline: StructureOutline, solid: StructureSolid },
+  { name: "stars", linear: StarsOutline, solid: StarsSolid },
+  { name: "structure", linear: StructureOutline, solid: StructureSolid },
   {
     name: "trash-bin-minimalistic",
-    outline: TrashBinMinimalisticOutline,
+    linear: TrashBinMinimalisticOutline,
     solid: TrashBinMinimalisticSolid,
   },
-  { name: "tuning-2", outline: Tuning2Outline, solid: Tuning2Solid },
+  { name: "tuning-2", linear: Tuning2Outline, solid: Tuning2Solid },
   {
     name: "upload-minimalistic",
-    outline: UploadMinimalisticOutline,
+    linear: UploadMinimalisticOutline,
     solid: UploadMinimalisticSolid,
   },
   {
     name: "users-group-rounded",
-    outline: UsersGroupRoundedOutline,
+    linear: UsersGroupRoundedOutline,
     solid: UsersGroupRoundedSolid,
   },
-  { name: "widget-2", outline: Widget2Outline, solid: Widget2Solid },
-  { name: "wrench", outline: WrenchOutline, solid: WrenchSolid },
+  { name: "widget-2", linear: Widget2Outline, solid: Widget2Solid },
+  { name: "wrench", linear: WrenchOutline, solid: WrenchSolid },
 ];
 
 const styles = [
-  { key: "outline", label: "Outline" },
+  { key: "linear", label: "Linear" },
   { key: "solid", label: "Solid" },
 ] as const;
 

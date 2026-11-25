@@ -1,4 +1,4 @@
-import { RefreshIcon } from "@solar-icons/react/outline/refresh";
+import { RefreshIcon } from "@solar-icons/react/linear/refresh";
 
 import { cnState } from "#lib/utils";
 

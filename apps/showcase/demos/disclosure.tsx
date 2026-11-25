@@ -33,7 +33,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@outfitter/parks/components/pagination";
-import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
 
 import { versions } from "#lib/fixtures";
 

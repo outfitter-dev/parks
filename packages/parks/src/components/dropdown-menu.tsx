@@ -1,8 +1,8 @@
 "use client";
 
 import { Menu as MenuPrimitive } from "@base-ui/react/menu";
-import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
-import { CheckIcon } from "@solar-icons/react/outline/check";
+import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
+import { CheckIcon } from "@solar-icons/react/linear/check";
 import * as React from "react";
 
 import { groupLabel } from "#lib/header";

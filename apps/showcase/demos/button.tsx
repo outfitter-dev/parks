@@ -19,11 +19,11 @@ import {
 } from "@outfitter/parks/components/table";
 import { cn } from "@outfitter/parks/lib/utils";
 import { PenIcon as PenBoldIcon } from "@solar-icons/react/bold/pen";
-import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
-import { ArrowRightIcon } from "@solar-icons/react/outline/arrow-right";
-import { CopyIcon } from "@solar-icons/react/outline/copy";
-import { PenIcon } from "@solar-icons/react/outline/pen";
-import { WrenchIcon } from "@solar-icons/react/outline/wrench";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
+import { ArrowRightIcon } from "@solar-icons/react/linear/arrow-right";
+import { CopyIcon } from "@solar-icons/react/linear/copy";
+import { PenIcon } from "@solar-icons/react/linear/pen";
+import { WrenchIcon } from "@solar-icons/react/linear/wrench";
 
 import { ButtonInspector } from "./button-inspector";
 import { Specimen } from "./kit";

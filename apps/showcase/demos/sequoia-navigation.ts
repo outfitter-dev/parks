@@ -4,12 +4,12 @@ import { InboxIcon as InboxBold } from "@solar-icons/react/bold/inbox";
 import { RoutingIcon as RoutingBold } from "@solar-icons/react/bold/routing";
 import { ShieldKeyholeIcon as ShieldKeyholeBold } from "@solar-icons/react/bold/shield-keyhole";
 import { UsersGroupRoundedIcon as UsersGroupRoundedBold } from "@solar-icons/react/bold/users-group-rounded";
-import { ChatRoundWarningIcon } from "@solar-icons/react/outline/chat-round-warning";
-import { HistoryIcon } from "@solar-icons/react/outline/history";
-import { InboxIcon } from "@solar-icons/react/outline/inbox";
-import { RoutingIcon } from "@solar-icons/react/outline/routing";
-import { ShieldKeyholeIcon } from "@solar-icons/react/outline/shield-keyhole";
-import { UsersGroupRoundedIcon } from "@solar-icons/react/outline/users-group-rounded";
+import { ChatRoundWarningIcon } from "@solar-icons/react/linear/chat-round-warning";
+import { HistoryIcon } from "@solar-icons/react/linear/history";
+import { InboxIcon } from "@solar-icons/react/linear/inbox";
+import { RoutingIcon } from "@solar-icons/react/linear/routing";
+import { ShieldKeyholeIcon } from "@solar-icons/react/linear/shield-keyhole";
+import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
 
 import { asks } from "#lib/fixtures";
 

@@ -2,7 +2,7 @@
 
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
-import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
+import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
 import { useLayoutEffect, useRef, useState } from "react";
 import type { ComponentProps, ReactNode } from "react";
 

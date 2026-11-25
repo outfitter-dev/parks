@@ -97,10 +97,10 @@ These come from shadcn as is, tuned to the tokens above. The workbench shows eac
 Solar (`@solar-icons/react`) is the only icon library. Import each icon on its own from a style subpath, never from the package root:
 
 ```tsx
-import { BellIcon } from "@solar-icons/react/outline/bell";
+import { BellIcon } from "@solar-icons/react/linear/bell";
 ```
 
-Use `outline` by default, `bold` for selected states, and `bold-duotone` for empty states. `outline` glyphs are filled paths, so their weight is fixed at 1.5/24 of the icon size; there is no stroke token. Mark icons alongside button text with `data-icon="inline-start"` or `"inline-end"` so the button sets the correct padding. Icons take their color from `currentColor` and their size from the component. `test/icons.test.ts` checks the icon library and import paths.
+Use `linear` by default, `bold` for selected states, and `bold-duotone` for empty states. `linear` glyphs are stroked, and the `--icon-stroke` seed sets their weight on the 24-unit grid: at 2.25 the stroke is 1.125px on a 12px icon, 1.3125px at 14, 1.5px at 16, 1.875px at 20 and 2.25px at 24. Do not use `outline`, whose glyphs are filled paths with a fixed weight. Mark icons alongside button text with `data-icon="inline-start"` or `"inline-end"` so the button sets the correct padding. Icons take their color from `currentColor` and their size from the component. `test/icons.test.ts` checks the icon library and import paths.
 
 ## Theme
 

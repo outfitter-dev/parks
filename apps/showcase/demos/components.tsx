@@ -114,13 +114,13 @@ import {
 import { tones } from "@outfitter/parks/lib/tone";
 import { InboxIcon as InboxDuotone } from "@solar-icons/react/bold-duotone/inbox";
 import { RefreshIcon as RefreshBoldIcon } from "@solar-icons/react/bold/refresh";
-import { BellOffIcon } from "@solar-icons/react/outline/bell-off";
-import { CheckCircleIcon } from "@solar-icons/react/outline/check-circle";
-import { DangerCircleIcon } from "@solar-icons/react/outline/danger-circle";
-import { DangerTriangleIcon } from "@solar-icons/react/outline/danger-triangle";
-import { InfoCircleIcon } from "@solar-icons/react/outline/info-circle";
-import { PenIcon } from "@solar-icons/react/outline/pen";
-import { TrashBinMinimalisticIcon } from "@solar-icons/react/outline/trash-bin-minimalistic";
+import { BellOffIcon } from "@solar-icons/react/linear/bell-off";
+import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
+import { DangerCircleIcon } from "@solar-icons/react/linear/danger-circle";
+import { DangerTriangleIcon } from "@solar-icons/react/linear/danger-triangle";
+import { InfoCircleIcon } from "@solar-icons/react/linear/info-circle";
+import { PenIcon } from "@solar-icons/react/linear/pen";
+import { TrashBinMinimalisticIcon } from "@solar-icons/react/linear/trash-bin-minimalistic";
 import { Fragment, useState } from "react";
 
 import { agents } from "#lib/fixtures";
