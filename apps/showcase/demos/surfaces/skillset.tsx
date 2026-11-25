@@ -30,8 +30,6 @@ import {
   useFileTreeSelection,
 } from "@pierre/trees/react";
 import { BoxIcon as BoxBold } from "@solar-icons/react/bold/box";
-import { ChecklistIcon as ChecklistBold } from "@solar-icons/react/bold/checklist";
-import { HistoryIcon as HistoryBold } from "@solar-icons/react/bold/history";
 import { LayersMinimalisticIcon as LayersMinimalisticBold } from "@solar-icons/react/bold/layers-minimalistic";
 import { SettingsIcon as SettingsBold } from "@solar-icons/react/bold/settings";
 import { BoxIcon } from "@solar-icons/react/linear/box";
@@ -78,14 +76,14 @@ const navigation = {
       id: "checks",
       label: "Checks",
       icon: ChecklistIcon,
-      solid: ChecklistBold,
+      solid: ChecklistIcon,
       count: 1,
     },
     {
       id: "changes",
       label: "Changes",
       icon: HistoryIcon,
-      solid: HistoryBold,
+      solid: HistoryIcon,
       count: 2,
     },
     {

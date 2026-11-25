@@ -13,7 +13,7 @@
  */
 
 import { Questionnaire as QuestionnairePrimitive } from "@shadcn/react/questionnaire";
-import { CheckIcon } from "@solar-icons/react/bold/check";
+import { CheckIcon } from "@solar-icons/react/linear/check";
 import * as React from "react";
 
 import { Button } from "#components/button";

@@ -113,13 +113,13 @@ import {
 } from "@outfitter/parks/components/tooltip";
 import { tones } from "@outfitter/parks/lib/tone";
 import { InboxIcon as InboxDuotone } from "@solar-icons/react/bold-duotone/inbox";
-import { RefreshIcon as RefreshBoldIcon } from "@solar-icons/react/bold/refresh";
 import { BellOffIcon } from "@solar-icons/react/linear/bell-off";
 import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
 import { DangerCircleIcon } from "@solar-icons/react/linear/danger-circle";
 import { DangerTriangleIcon } from "@solar-icons/react/linear/danger-triangle";
 import { InfoCircleIcon } from "@solar-icons/react/linear/info-circle";
 import { PenIcon } from "@solar-icons/react/linear/pen";
+import { RefreshIcon as RefreshBoldIcon } from "@solar-icons/react/linear/refresh";
 import { TrashBinMinimalisticIcon } from "@solar-icons/react/linear/trash-bin-minimalistic";
 import { Fragment, useState } from "react";
 
