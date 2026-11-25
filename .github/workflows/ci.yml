@@ -27,7 +27,7 @@ jobs:
       # Builds the static site and checks the Worker config; never deploys.
       - name: Cloudflare deploy (dry run)
         env:
-          WRANGLER_SEND_METRICS: "false"
+          CF_SEND_TELEMETRY: "false"
         run: bun run deploy:check
       # Report-only: contrast findings warn but do not block a merge.
       - name: Contrast (report only)

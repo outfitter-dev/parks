@@ -8,7 +8,7 @@ coverage/
 .DS_Store
 *.log
 .vercel
-.wrangler/
+.cloudflare/
 *.tsbuildinfo
 next-env.d.ts
 packages/parks/THIRD_PARTY_NOTICES.md
