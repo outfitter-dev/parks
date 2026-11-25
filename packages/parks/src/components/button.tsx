@@ -2,6 +2,7 @@ import { Button as ButtonPrimitive } from "@base-ui/react/button";
 import { cva } from "class-variance-authority";
 import type { VariantProps } from "class-variance-authority";
 
+import { trimLabel } from "#lib/label";
 import { isTone } from "#lib/tone";
 import type { Tone } from "#lib/tone";
 import { cnState } from "#lib/utils";
@@ -122,6 +123,7 @@ function Button({
   tone: toneProp,
   size = "default",
   shape = "pill",
+  children,
   ...props
 }: ButtonProps) {
   const { tone, variant } = resolveButton(
@@ -139,7 +141,9 @@ function Button({
         className
       )}
       {...props}
-    />
+    >
+      {trimLabel(children)}
+    </ButtonPrimitive>
   );
 }
 

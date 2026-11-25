@@ -660,6 +660,8 @@
 /*
  * Trims the line-height space above the cap height and below the baseline,
  * so a single line centres optically in a fixed-height control.
+ * It works on the text's own box: wrap bare text in a flex container with
+ * trimLabel (#lib/label), as Button and Badge do.
  */
 @utility text-trim {
   text-box: trim-both cap alphabetic;
@@ -676,15 +678,9 @@
 /*
  * Lifts a trimmed label a quarter of the way from cap height to x-height.
  * Centred on its capitals alone, a small, mostly lowercase label reads low.
- * label-lift moves the label itself; label-lift-box goes on a fixed-height box
- * that centres bare text, where padding below lifts the text by half as much.
  */
 @utility label-lift {
   translate: 0 calc((1ex - 1cap) / 4);
-}
-
-@utility label-lift-box {
-  padding-block-end: calc((1cap - 1ex) / 2);
 }
 
 @theme {
