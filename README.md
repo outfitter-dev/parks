@@ -40,7 +40,7 @@ The code moved here from `outfitter-dev/outpost` with its history.
 ./scripts/bootstrap.sh
 bun run dev              # showcase on http://localhost:3100
 bun run check            # lint, format, typecheck and tests
-bun run lint:ui-source   # package and registry theme rules
+bun run lint:ui-source   # package and registry theme rules, plus showcase opacity and dark-mode rules
 bun run check:consumer   # install the packed package into a throwaway app
 ```
 
