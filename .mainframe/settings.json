@@ -1,0 +1,9 @@
+{
+  "setup": "./scripts/bootstrap.sh && bun run --cwd packages/parks build && bun run registry:build",
+  "run": {
+    "showcase": {
+      "command": "bun run --cwd ../../packages/parks dev & watcher=$!; trap 'kill $watcher 2>/dev/null' EXIT INT TERM; bun x next dev --port $MAINFRAME_PORT",
+      "cwd": "apps/showcase"
+    }
+  }
+}
