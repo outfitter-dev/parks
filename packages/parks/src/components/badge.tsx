@@ -31,7 +31,7 @@ import { cnState } from "#lib/utils";
  *   end cap and on a rectangle it is evenly inset. A dot on a rectangle is
  *   the exception: it sits as far from the edge as from the label, or the
  *   small dot would drift toward the edge's side of a lopsided gap.
- * - The label is lifted a little (`text-lift`): centred on its capitals
+ * - The label is lifted a little (`label-lift`): centred on its capitals
  *   alone, a mostly lowercase label reads low. Counts stay centred.
  * - Counts default to a pill and show "99+" above `max`.
  */
@@ -202,7 +202,7 @@ function Badge({
   } else if (lead) {
     const label =
       typeof children === "string" || typeof children === "number" ? (
-        <span className="text-trim text-lift min-w-0">{children}</span>
+        <span className="text-trim label-lift min-w-0">{children}</span>
       ) : (
         children
       );
@@ -252,7 +252,7 @@ function Badge({
           lead === "icon" &&
             "[--badge-mark:--spacing(3)] data-[size=lg]:[--badge-mark:--spacing(4)]",
           lead === "dot" && shape !== "pill" ? dotInset : markInset,
-          !lead && !isCount && "text-lift-box",
+          !lead && !isCount && "label-lift-box",
           className
         ),
         children: content,
