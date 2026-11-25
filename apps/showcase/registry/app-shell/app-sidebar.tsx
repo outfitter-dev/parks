@@ -258,6 +258,16 @@ export function SidebarRail({
           // Pull the popover back over the rail to sit `margin` off the window's left and top.
           sideOffset={margin - RAIL_WIDTH}
           alignOffset={margin}
+          // Following a link closes the popover, even when the app's link
+          // component keeps the frame mounted; the sidebar stays collapsed.
+          onClick={(event) => {
+            if (
+              event.target instanceof Element &&
+              event.target.closest("a[href]")
+            ) {
+              setOpen(false);
+            }
+          }}
           style={{
             // Vertical padding puts the items at the docked sidebar's height; never tighter than the margin.
             paddingTop: Math.max(gutter + SIDEBAR_TOP - margin, POPOVER_MARGIN),
