@@ -30,16 +30,14 @@ import {
   useFileTreeSelection,
 } from "@pierre/trees/react";
 import { BoxIcon as BoxBold } from "@solar-icons/react/bold/box";
-import { ChecklistIcon as ChecklistBold } from "@solar-icons/react/bold/checklist";
-import { HistoryIcon as HistoryBold } from "@solar-icons/react/bold/history";
 import { LayersMinimalisticIcon as LayersMinimalisticBold } from "@solar-icons/react/bold/layers-minimalistic";
 import { SettingsIcon as SettingsBold } from "@solar-icons/react/bold/settings";
-import { BoxIcon } from "@solar-icons/react/outline/box";
-import { ChecklistIcon } from "@solar-icons/react/outline/checklist";
-import { HistoryIcon } from "@solar-icons/react/outline/history";
-import { LayersMinimalisticIcon } from "@solar-icons/react/outline/layers-minimalistic";
-import { SettingsIcon } from "@solar-icons/react/outline/settings";
-import { WrenchIcon } from "@solar-icons/react/outline/wrench";
+import { BoxIcon } from "@solar-icons/react/linear/box";
+import { ChecklistIcon } from "@solar-icons/react/linear/checklist";
+import { HistoryIcon } from "@solar-icons/react/linear/history";
+import { LayersMinimalisticIcon } from "@solar-icons/react/linear/layers-minimalistic";
+import { SettingsIcon } from "@solar-icons/react/linear/settings";
+import { WrenchIcon } from "@solar-icons/react/linear/wrench";
 
 import { AppFrame } from "../app-frame";
 import type { AppNavigation } from "../app-sidebar";
@@ -78,14 +76,14 @@ const navigation = {
       id: "checks",
       label: "Checks",
       icon: ChecklistIcon,
-      solid: ChecklistBold,
+      solid: ChecklistIcon,
       count: 1,
     },
     {
       id: "changes",
       label: "Changes",
       icon: HistoryIcon,
-      solid: HistoryBold,
+      solid: HistoryIcon,
       count: 2,
     },
     {

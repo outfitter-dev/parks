@@ -1,7 +1,7 @@
 "use client";
 
 import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
-import { CheckIcon } from "@solar-icons/react/outline/check";
+import { CheckIcon } from "@solar-icons/react/linear/check";
 
 import { cnState } from "#lib/utils";
 

@@ -43,12 +43,12 @@ import {
 } from "@outfitter/parks/components/sheet";
 import { Toaster, toast } from "@outfitter/parks/components/toast";
 import { TrashBinMinimalisticIcon } from "@solar-icons/react/bold-duotone/trash-bin-minimalistic";
-import { BellOffIcon } from "@solar-icons/react/outline/bell-off";
-import { HomeIcon } from "@solar-icons/react/outline/home";
-import { InboxIcon } from "@solar-icons/react/outline/inbox";
-import { RoutingIcon } from "@solar-icons/react/outline/routing";
-import { SettingsIcon } from "@solar-icons/react/outline/settings";
-import { UsersGroupRoundedIcon } from "@solar-icons/react/outline/users-group-rounded";
+import { BellOffIcon } from "@solar-icons/react/linear/bell-off";
+import { HomeIcon } from "@solar-icons/react/linear/home";
+import { InboxIcon } from "@solar-icons/react/linear/inbox";
+import { RoutingIcon } from "@solar-icons/react/linear/routing";
+import { SettingsIcon } from "@solar-icons/react/linear/settings";
+import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
 import { useEffect, useState } from "react";
 
 import { agents } from "#lib/fixtures";

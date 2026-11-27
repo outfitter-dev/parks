@@ -2,6 +2,7 @@ import { Button as ButtonPrimitive } from "@base-ui/react/button";
 import { cva } from "class-variance-authority";
 import type { VariantProps } from "class-variance-authority";
 
+import { trimLabel } from "#lib/label";
 import { isTone } from "#lib/tone";
 import type { Tone } from "#lib/tone";
 import { cnState } from "#lib/utils";
@@ -11,8 +12,10 @@ import { cnState } from "#lib/utils";
  * control height stay in proportion:
  *
  * - --button-r is the end radius: half the height for a pill, and for a
- *   rect the theme radius grown with the button (a 28px button gets
- *   --radius-md, taller ones add half the difference).
+ *   rect the theme radius grown with the button (a 28px button gets the
+ *   theme radius less one step, taller ones add half the difference). It is
+ *   the round-corner radius: --corner-scale applies once, where the corner
+ *   is drawn, so the padding below never grows with the corner smoothing.
  * - Text sits 2px inside the end radius (never under --spacing(2)).
  * - A leading or trailing glyph sits as far in from the end as from the top
  *   and bottom: on a pill that is the centre of the end cap, on a rect it is
@@ -48,7 +51,7 @@ const buttonVariants = cva(
       },
       shape: {
         pill: "rounded-full [--button-r:calc(var(--button-h)/2)]",
-        rect: "rounded-[calc(var(--button-r)*var(--corner-scale))] [--button-r:max(var(--radius-floor),calc(var(--radius-md)+(var(--button-h)-(--spacing(7)))/2))]",
+        rect: "rounded-[calc(var(--button-r)*var(--corner-scale))] [--button-r:max(var(--radius-floor),calc(var(--radius)-var(--radius-step)+(var(--button-h)-(--spacing(7)))/2))]",
       },
       size: {
         default: `gap-1.5 [--button-h:var(--control-h)] ${textPadding}`,
@@ -120,6 +123,7 @@ function Button({
   tone: toneProp,
   size = "default",
   shape = "pill",
+  children,
   ...props
 }: ButtonProps) {
   const { tone, variant } = resolveButton(
@@ -137,7 +141,9 @@ function Button({
         className
       )}
       {...props}
-    />
+    >
+      {trimLabel(children)}
+    </ButtonPrimitive>
   );
 }
 

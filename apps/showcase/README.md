@@ -25,7 +25,7 @@ Fixtures in `lib/fixtures.ts` are made up. Never load live product data here.
 
 ## Icons and components
 
-Icons are Solar, imported one by one from `@solar-icons/react/outline/<name>` (MIT; icons by 480 Design, CC BY 4.0). The repo’s `ui:add` script maps shadcn’s icon placeholders to Solar.
+Icons are Solar, imported one by one from `@solar-icons/react/linear/<name>` (MIT; icons by 480 Design, CC BY 4.0). The repo’s `ui:add` script maps shadcn’s icon placeholders to Solar.
 
 New components may follow ReUI patterns. ReUI's free components are MIT but built on Radix, so port each one to Base UI rather than installing it as-is.
 

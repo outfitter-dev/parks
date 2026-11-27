@@ -113,14 +113,14 @@ import {
 } from "@outfitter/parks/components/tooltip";
 import { tones } from "@outfitter/parks/lib/tone";
 import { InboxIcon as InboxDuotone } from "@solar-icons/react/bold-duotone/inbox";
-import { RefreshIcon as RefreshBoldIcon } from "@solar-icons/react/bold/refresh";
-import { BellOffIcon } from "@solar-icons/react/outline/bell-off";
-import { CheckCircleIcon } from "@solar-icons/react/outline/check-circle";
-import { DangerCircleIcon } from "@solar-icons/react/outline/danger-circle";
-import { DangerTriangleIcon } from "@solar-icons/react/outline/danger-triangle";
-import { InfoCircleIcon } from "@solar-icons/react/outline/info-circle";
-import { PenIcon } from "@solar-icons/react/outline/pen";
-import { TrashBinMinimalisticIcon } from "@solar-icons/react/outline/trash-bin-minimalistic";
+import { BellOffIcon } from "@solar-icons/react/linear/bell-off";
+import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
+import { DangerCircleIcon } from "@solar-icons/react/linear/danger-circle";
+import { DangerTriangleIcon } from "@solar-icons/react/linear/danger-triangle";
+import { InfoCircleIcon } from "@solar-icons/react/linear/info-circle";
+import { PenIcon } from "@solar-icons/react/linear/pen";
+import { RefreshIcon as RefreshBoldIcon } from "@solar-icons/react/linear/refresh";
+import { TrashBinMinimalisticIcon } from "@solar-icons/react/linear/trash-bin-minimalistic";
 import { Fragment, useState } from "react";
 
 import { agents } from "#lib/fixtures";
@@ -212,7 +212,7 @@ export function BadgeDemo() {
       </Specimen>
       <Specimen
         title="Status"
-        note="Rectangular badges with dots use the same side padding as text-only badges. A neutral dot is lighter than its label."
+        note="A dot on a rectangular badge sits as far from the edge as from its label. A neutral dot is lighter than its label."
       >
         <Badge dot>Off</Badge>
         <Badge tone="info" live>

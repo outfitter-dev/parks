@@ -68,6 +68,9 @@
   --inset-ratio: 0.4;
   --corner-gap: 0.5rem;
   --control-h: 2rem;
+  /* Stroke of a linear icon, on its 24-unit grid. The stroke scales with the
+     glyph: 1px at 12, about 1.33px at 16, 2px at 24. */
+  --icon-stroke: 2;
 
   /* Type */
   --text-control-small: 0.8rem;
@@ -657,6 +660,8 @@
 /*
  * Trims the line-height space above the cap height and below the baseline,
  * so a single line centres optically in a fixed-height control.
+ * It works on the text's own box: wrap bare text in a flex container with
+ * trimLabel (#lib/label), as Button and Badge do.
  */
 @utility text-trim {
   text-box: trim-both cap alphabetic;
@@ -668,6 +673,14 @@
  */
 @utility text-trim-start {
   text-box: trim-start cap alphabetic;
+}
+
+/*
+ * Lifts a trimmed label a quarter of the way from cap height to x-height.
+ * Centred on its capitals alone, a small, mostly lowercase label reads low.
+ */
+@utility label-lift {
+  translate: 0 calc((1ex - 1cap) / 4);
 }
 
 @theme {
@@ -830,6 +843,12 @@
 @layer base {
   * {
     @apply border-border outline-focus-ring;
+  }
+  /* Solar's linear glyphs are stroked; the theme sets their weight. An app
+     that sets Solar's own --solar-stroke-width, or a glyph's strokeWidth
+     prop, still wins. */
+  svg.solar {
+    stroke-width: var(--solar-stroke-width, var(--icon-stroke));
   }
   /* Smooth corners everywhere a radius is set. Full pills and dots stay
      true capsules and circles. */

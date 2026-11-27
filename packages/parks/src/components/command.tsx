@@ -1,7 +1,7 @@
 "use client";
 
-import { CheckIcon } from "@solar-icons/react/outline/check";
-import { MagnifierIcon } from "@solar-icons/react/outline/magnifier";
+import { CheckIcon } from "@solar-icons/react/linear/check";
+import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
 import { Command as CommandPrimitive } from "cmdk";
 import * as React from "react";
 

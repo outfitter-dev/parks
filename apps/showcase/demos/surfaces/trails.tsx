@@ -29,12 +29,12 @@ import { BoltIcon as BoltBold } from "@solar-icons/react/bold/bolt";
 import { DatabaseIcon as DatabaseBold } from "@solar-icons/react/bold/database";
 import { ShieldCheckIcon as ShieldCheckBold } from "@solar-icons/react/bold/shield-check";
 import { StructureIcon as StructureBold } from "@solar-icons/react/bold/structure";
-import { ArrowRightIcon } from "@solar-icons/react/outline/arrow-right";
-import { BoltIcon } from "@solar-icons/react/outline/bolt";
-import { DangerTriangleIcon } from "@solar-icons/react/outline/danger-triangle";
-import { DatabaseIcon } from "@solar-icons/react/outline/database";
-import { ShieldCheckIcon } from "@solar-icons/react/outline/shield-check";
-import { StructureIcon } from "@solar-icons/react/outline/structure";
+import { ArrowRightIcon } from "@solar-icons/react/linear/arrow-right";
+import { BoltIcon } from "@solar-icons/react/linear/bolt";
+import { DangerTriangleIcon } from "@solar-icons/react/linear/danger-triangle";
+import { DatabaseIcon } from "@solar-icons/react/linear/database";
+import { ShieldCheckIcon } from "@solar-icons/react/linear/shield-check";
+import { StructureIcon } from "@solar-icons/react/linear/structure";
 
 import { AppFrame } from "../app-frame";
 import type { AppNavigation } from "../app-sidebar";

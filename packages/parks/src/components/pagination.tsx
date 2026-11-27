@@ -1,6 +1,6 @@
-import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left";
-import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
-import { MenuDotsIcon } from "@solar-icons/react/outline/menu-dots";
+import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
+import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
+import { MenuDotsIcon } from "@solar-icons/react/linear/menu-dots";
 import * as React from "react";
 
 import { Button } from "#components/button";

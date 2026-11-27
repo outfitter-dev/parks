@@ -7,7 +7,7 @@
  * destructive tone. A step with children opens in place to show them.
  */
 
-import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
+import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
 import type * as React from "react";
 
 import {

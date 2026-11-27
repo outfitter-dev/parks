@@ -1,6 +1,6 @@
 import { Accordion as AccordionPrimitive } from "@base-ui/react/accordion";
-import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
-import { AltArrowUpIcon } from "@solar-icons/react/outline/alt-arrow-up";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
+import { AltArrowUpIcon } from "@solar-icons/react/linear/alt-arrow-up";
 
 import { cnState } from "#lib/utils";
 

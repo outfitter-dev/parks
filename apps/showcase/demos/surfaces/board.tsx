@@ -22,11 +22,11 @@ import { Progress } from "@outfitter/parks/components/progress";
 import { StatusDot } from "@outfitter/parks/components/status-dot";
 import { cn } from "@outfitter/parks/lib/utils";
 import { Widget2Icon as Widget2Bold } from "@solar-icons/react/bold/widget-2";
-import { AltArrowDownIcon } from "@solar-icons/react/outline/alt-arrow-down";
-import { CheckCircleIcon } from "@solar-icons/react/outline/check-circle";
-import { CodeSquareIcon } from "@solar-icons/react/outline/code-square";
-import { GitBranchIcon } from "@solar-icons/react/outline/git-branch";
-import { Widget2Icon } from "@solar-icons/react/outline/widget-2";
+import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
+import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
+import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
+import { GitBranchIcon } from "@solar-icons/react/linear/git-branch";
+import { Widget2Icon } from "@solar-icons/react/linear/widget-2";
 
 import { AppFrame } from "../app-frame";
 import { HaloSignal, Signal, Viewport } from "../kit";

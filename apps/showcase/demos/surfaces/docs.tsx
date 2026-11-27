@@ -18,10 +18,10 @@ import {
   TabsTrigger,
 } from "@outfitter/parks/components/tabs";
 import { cn } from "@outfitter/parks/lib/utils";
-import { AltArrowLeftIcon } from "@solar-icons/react/outline/alt-arrow-left";
-import { AltArrowRightIcon } from "@solar-icons/react/outline/alt-arrow-right";
-import { InfoCircleIcon } from "@solar-icons/react/outline/info-circle";
-import { MagnifierIcon } from "@solar-icons/react/outline/magnifier";
+import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
+import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
+import { InfoCircleIcon } from "@solar-icons/react/linear/info-circle";
+import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
 import type { ReactNode } from "react";
 
 import { Viewport } from "../kit";
