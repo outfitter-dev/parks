@@ -8,11 +8,15 @@ import type { ReactNode } from "react";
  * container gets an anonymous box that no class reaches, and it then centres
  * on the font's line box, which sits high. Text that runs together
  * (`{count} items`) stays one label; icons and other elements pass through.
+ * No children stays no children, so `dangerouslySetInnerHTML` still works.
  */
 export function trimLabel(
   children: ReactNode,
   className = "text-trim"
-): ReactNode[] {
+): ReactNode {
+  if (children === undefined || children === null) {
+    return children;
+  }
   const out: ReactNode[] = [];
   let run: (string | number)[] = [];
   const flush = () => {

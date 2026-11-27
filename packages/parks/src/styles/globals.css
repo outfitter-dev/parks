@@ -844,9 +844,11 @@
   * {
     @apply border-border outline-focus-ring;
   }
-  /* Solar's linear glyphs are stroked; the theme sets their weight. */
+  /* Solar's linear glyphs are stroked; the theme sets their weight. An app
+     that sets Solar's own --solar-stroke-width, or a glyph's strokeWidth
+     prop, still wins. */
   svg.solar {
-    stroke-width: var(--icon-stroke);
+    stroke-width: var(--solar-stroke-width, var(--icon-stroke));
   }
   /* Smooth corners everywhere a radius is set. Full pills and dots stay
      true capsules and circles. */
