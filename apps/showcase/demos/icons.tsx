@@ -281,7 +281,11 @@ const sizes = [12, 14, 16, 20, 24] as const;
 export function IconsDemo() {
   return (
     <>
-      <Specimen title="Icon sizes and styles" className="block">
+      <Specimen
+        title="Icon sizes and styles"
+        note="Linear glyphs are stroked at `--icon-stroke`. Where Solar's solid glyph is only a line drawing, such as check and close, the Solid column shows the linear glyph, as the UI does."
+        className="block"
+      >
         <Table aria-label="Solar icon comparison by style and size">
           <colgroup span={1} />
           {styles.map(({ key }) => (
